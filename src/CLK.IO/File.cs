@@ -10,6 +10,23 @@ namespace CLK.IO
     public static class File
     {
         // Methods
+        public static void DeleteReadOnly(string path)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(path) == true) throw new ArgumentException();
+
+            #endregion
+
+            // RootFile
+            if (System.IO.File.Exists(path) == false) return;
+            var rootFile = new FileInfo(path);
+
+            // Delete
+            rootFile.IsReadOnly = false;
+            rootFile.Delete();
+        }
+
         public static List<FileInfo> GetAllFile(string fileName, string searchPath = null)
         {
             #region Contracts

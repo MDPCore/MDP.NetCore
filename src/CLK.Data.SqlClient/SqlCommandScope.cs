@@ -1,12 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CLK.Data.SqlClient
 {
-    public class SqlCommandScope : IDisposable
+    public sealed class SqlCommandScope : IDisposable
     {
         // Fields
         private readonly SqlConnection _connection = null;
@@ -94,7 +92,7 @@ namespace CLK.Data.SqlClient
             this.CleanParameters();
 
             // Execute
-            return _command.ExecuteNonQuery();
+            return this.Execute(() => _command.ExecuteNonQuery());
         }
 
         public object ExecuteScalar()
@@ -103,7 +101,7 @@ namespace CLK.Data.SqlClient
             this.CleanParameters();
 
             // Execute
-            return _command.ExecuteScalar();
+            return this.Execute(() => _command.ExecuteScalar());
         }
 
         public SqlDataReader ExecuteReader()
@@ -112,7 +110,7 @@ namespace CLK.Data.SqlClient
             this.CleanParameters();
 
             // Execute
-            return _command.ExecuteReader();
+            return this.Execute(() => _command.ExecuteReader());
         }
 
 
@@ -140,6 +138,30 @@ namespace CLK.Data.SqlClient
                     // Continue
                     continue;
                 }
+            }
+        }
+
+        private T Execute<T>(Func<T> action)
+        {
+            #region Contracts
+
+            if (action == null) throw new ArgumentNullException($"{nameof(action)}");
+
+            #endregion
+
+            // Execute
+            try
+            {
+                // Invoke
+                return action();
+            }
+            catch (SqlException ex)
+            {
+                // DuplicateKeyException
+                if (ex.Errors[0].Number == 2627) throw new DuplicateKeyException();
+
+                // Throw
+                throw;
             }
         }
     }

@@ -50,7 +50,7 @@ namespace CLK.Data.SqlClient.Dapper
             }
 
             // Execute
-            using (var reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
             {
                 // Parse
                 var resultList = reader.Parse<T>();
@@ -77,7 +77,7 @@ namespace CLK.Data.SqlClient.Dapper
             }
 
             // Execute
-            using (var reader = command.ExecuteReader())
+            using (SqlDataReader reader = command.ExecuteReader())
             {
                 // Parse
                 var resultList = reader.Parse();

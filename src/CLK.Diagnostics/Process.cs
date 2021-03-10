@@ -16,7 +16,7 @@ namespace CLK.Diagnostics
             if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException();
 
             #endregion
-
+            
             // Result
             var syncRoot = new object();
             var resultBuilder = new StringBuilder();
@@ -42,7 +42,7 @@ namespace CLK.Diagnostics
                     resultBuilder.AppendLine(e.Data);
                 }
             };
-
+            
             // Process
             using (var process = new System.Diagnostics.Process())
             {
