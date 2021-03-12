@@ -22,7 +22,7 @@ namespace MDP.AspNetCore.Lab
             #endregion
 
             // Mvc
-            services.AddMvc();
+            services.AddMvc().AddMDP();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

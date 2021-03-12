@@ -1,3 +1,4 @@
+using Autofac;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,7 @@ namespace MDP.AspNetCore.Lab
 {
     public class Program
     {
+        // Methods
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -18,10 +20,49 @@ namespace MDP.AspNetCore.Lab
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebMDP()
+                .ConfigureMDP()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+
+        // Class
+        public class SettingContext
+        {
+            // Constructors
+            public SettingContext()
+            {
+                // Display
+                Console.WriteLine("SettingContext Created");
+            }
+
+
+            // Methods
+            public string GetValue()
+            {
+                // Return
+                return "Hello World!";
+            }
+        }
+
+        public class SettingContextModule : MDP.Module
+        {
+            // Methods
+            protected override void Load(ContainerBuilder builder)
+            {
+                #region Contracts
+
+                if (builder == null) throw new ArgumentException(nameof(builder));
+
+                #endregion
+
+                // SettingContext
+                {
+                    // Register
+                    builder.RegisterType<SettingContext>().As<SettingContext>();
+                }
+            }
+        }
     }
 }

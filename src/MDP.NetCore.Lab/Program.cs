@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ namespace MDP.NetCore.Lab
     public class Program
     {
         // Methods
-        public static void Run(SettingContext settingContext)
+        public static void Run(SettingContext settingContext, IConfiguration configuration)
         {
             #region Contracts
 
@@ -19,8 +20,11 @@ namespace MDP.NetCore.Lab
 
             #endregion
 
-            // Execute
-            settingContext.Execute();
+            // SettingContext
+            Console.WriteLine(settingContext.GetValue());
+
+            // Configuration
+            Console.WriteLine(configuration.GetValue<string>("Setting01"));
         }
 
         public static void Main(string[] args)
@@ -50,10 +54,10 @@ namespace MDP.NetCore.Lab
 
 
             // Methods
-            public void Execute()
+            public string GetValue()
             {
-                // Execute
-                Console.WriteLine("Hello World!");
+                // Return
+                return "Hello World!";
             }
         }
 
