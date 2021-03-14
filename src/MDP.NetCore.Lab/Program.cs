@@ -37,8 +37,8 @@ namespace MDP.NetCore.Lab
                 .ConfigureMDP()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    // ConsoleService
-                    services.AddConsoleService<Program>();
+                    // Program
+                    services.AddProgramService<Program>();
                 });
 
 
