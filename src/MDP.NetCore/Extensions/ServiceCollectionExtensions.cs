@@ -28,7 +28,7 @@ namespace MDP
             return services;
         }        
 
-        public static IServiceCollection AddService<T>(this IServiceCollection services, Action<T> setupAction) where T : class
+        public static IServiceCollection GetService<T>(this IServiceCollection services, Action<T> setupAction) where T : class
         {
             #region Contracts
 

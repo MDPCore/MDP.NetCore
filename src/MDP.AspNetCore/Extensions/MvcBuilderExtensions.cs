@@ -25,7 +25,7 @@ namespace MDP
             #endregion
 
             // WebHostEnvironment
-            mvcBuilder.Services.AddService<IWebHostEnvironment>((hostEnvironment) =>
+            mvcBuilder.Services.GetService<IWebHostEnvironment>((hostEnvironment) =>
             {
                 // ModuleWebAssets
                 hostEnvironment.RegisterModuleWebAsset();
