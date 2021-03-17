@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MDP.NetCore
 {
-    public class ConsoleService<TConsoleService> : BackgroundService where TConsoleService : class
+    public class ProgramService<TProgram> : BackgroundService where TProgram : class
     {
         // Fields
         private readonly IServiceProvider _serviceProvider = null;
@@ -17,7 +17,7 @@ namespace MDP.NetCore
 
 
         // Constructors
-        public ConsoleService(IServiceProvider serviceProvider, IHostApplicationLifetime hostApplicationLifetime)
+        public ProgramService(IServiceProvider serviceProvider, IHostApplicationLifetime hostApplicationLifetime)
         {
             #region Contracts
 
@@ -39,7 +39,7 @@ namespace MDP.NetCore
             return Task.Run(() =>
             {
                 // Run
-                CLK.Reflection.Activator.ExecuteMethod<TConsoleService>(this._serviceProvider, "Run");
+                CLK.Reflection.Activator.ExecuteMethod<TProgram>(this._serviceProvider, "Run");
 
                 // End
                 _hostApplicationLifetime.StopApplication();

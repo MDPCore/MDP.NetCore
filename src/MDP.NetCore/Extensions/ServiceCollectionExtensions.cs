@@ -13,7 +13,7 @@ namespace MDP
     public static class ServiceCollectionExtensions
     {
         // Methods
-        public static IServiceCollection AddConsoleService<TConsoleService>(this IServiceCollection services) where TConsoleService : class
+        public static IServiceCollection AddProgramService<TProgramService>(this IServiceCollection services) where TProgramService : class
         {
             #region Contracts
 
@@ -22,13 +22,13 @@ namespace MDP
             #endregion
 
             // Add
-            services.AddSingleton<IHostedService, ConsoleService<TConsoleService>>();
+            services.AddSingleton<IHostedService, ProgramService<TProgramService>>();
 
             // Return
             return services;
         }        
 
-        public static IServiceCollection AddService<T>(this IServiceCollection services, Action<T> setupAction) where T : class
+        public static IServiceCollection GetService<T>(this IServiceCollection services, Action<T> setupAction) where T : class
         {
             #region Contracts
 
