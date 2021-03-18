@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MDP.NetCore
+namespace MDP
 {
     public class ProgramService<TProgram> : BackgroundService where TProgram : class
     {

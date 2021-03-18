@@ -38,7 +38,7 @@ namespace MDP.NetCore.Lab
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Program
-                    services.AddProgramService<Program>();
+                    services.AddProgram<Program>();
                 });
 
 

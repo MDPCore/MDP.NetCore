@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLK.Core", "CLK.Core\CLK.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Hosting", "MDP.Hosting\MDP.Hosting.csproj", "{66972ADA-0889-40B7-A9CD-079F43D4BD93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SleepZone.Todo.Services", "SleepZone.Todo.Services\SleepZone.Todo.Services.csproj", "{8047DFD2-D3B1-45C8-8DA6-0493148E0180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SleepZone.Todo.Services", "SleepZone.Todo.Services\SleepZone.Todo.Services.csproj", "{8047DFD2-D3B1-45C8-8DA6-0493148E0180}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Working", "MDP.Working\MDP.Working.csproj", "{062A012E-DCF5-470C-92B3-F2C271C319E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{8047DFD2-D3B1-45C8-8DA6-0493148E0180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8047DFD2-D3B1-45C8-8DA6-0493148E0180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8047DFD2-D3B1-45C8-8DA6-0493148E0180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{062A012E-DCF5-470C-92B3-F2C271C319E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{062A012E-DCF5-470C-92B3-F2C271C319E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{062A012E-DCF5-470C-92B3-F2C271C319E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{062A012E-DCF5-470C-92B3-F2C271C319E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{043C7057-9DCC-46C5-833C-1A3AF9E3C58A} = {6C8A620E-75BE-4547-A644-F6C773CE941C}
 		{66972ADA-0889-40B7-A9CD-079F43D4BD93} = {37601B01-BB27-4AE9-B721-5936148BFFB8}
 		{8047DFD2-D3B1-45C8-8DA6-0493148E0180} = {C796E180-8F5B-49EA-B877-CE525B1BA64C}
+		{062A012E-DCF5-470C-92B3-F2C271C319E7} = {37601B01-BB27-4AE9-B721-5936148BFFB8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25EFCCC9-D06F-4E4F-812E-9C006F6A319C}

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -6,13 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLK.IO\CLK.IO.csproj" />
-    <ProjectReference Include="..\CLK.Reflection\CLK.Reflection.csproj" />
     <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.Working\MDP.Working.csproj" />
   </ItemGroup>
 
 </Project>

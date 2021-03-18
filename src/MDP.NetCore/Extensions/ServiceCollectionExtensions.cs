@@ -6,14 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using MDP.NetCore;
 
 namespace MDP
 {
     public static class ServiceCollectionExtensions
     {
         // Methods
-        public static IServiceCollection AddProgramService<TProgramService>(this IServiceCollection services) where TProgramService : class
+        public static IServiceCollection AddProgram<TProgram>(this IServiceCollection services) where TProgram : class
         {
             #region Contracts
 
@@ -22,7 +21,7 @@ namespace MDP
             #endregion
 
             // Add
-            services.AddSingleton<IHostedService, ProgramService<TProgramService>>();
+            services.AddSingleton<IHostedService, ProgramService<TProgram>>();
 
             // Return
             return services;
