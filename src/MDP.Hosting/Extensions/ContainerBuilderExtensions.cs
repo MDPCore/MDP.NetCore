@@ -1,30 +1,34 @@
 ﻿using Autofac;
+using Autofac.Builder;
 using System;
-using System.Reflection;
 
-namespace MDP.Hosting
+namespace MDP
 {
     public static class ContainerBuilderExtensions
     {
         // Methods
-        public static void AddModule(this ContainerBuilder container, string moduleAssemblyFileName = @"*.Hosting.dll")
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterNamed<TService>(this ContainerBuilder container, Func<IComponentContext, string> setupAction) where TService : notnull
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
+            if (setupAction == null) throw new ArgumentException(nameof(setupAction));
 
             #endregion
 
-            // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
-            if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-            moduleAssemblyList.ForEach(moduleAssembly => container.RegisterAssemblyModules<MDP.Module>(moduleAssembly));
+            // Register
+            var registrationBuilder = container.Register<TService>(componentContext =>
+            {
+                // ServiceName
+                var serviceName = setupAction(componentContext);
+                if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
 
-            // EntryAssembly
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
-            container.RegisterAssemblyModules<MDP.Module>(entryAssembly);
+                // Resolve
+                return componentContext.ResolveNamed<TService>(serviceName);
+            });
+
+            // Return
+            return registrationBuilder;
         }
     }
 }

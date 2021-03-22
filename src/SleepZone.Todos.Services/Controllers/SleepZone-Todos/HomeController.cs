@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Lab
 {
-    [Module("CLK-Lab-Module01")]
+    [MDP.Module("SleepZone-Todos")]
     public class HomeController : Controller
     {
         // Methods

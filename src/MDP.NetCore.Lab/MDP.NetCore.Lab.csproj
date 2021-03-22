@@ -18,5 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
   </ItemGroup>
+  
 
 </Project>

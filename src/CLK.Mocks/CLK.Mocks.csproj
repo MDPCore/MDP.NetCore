@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLK.Mocks\CLK.Mocks.csproj" />
-    <ProjectReference Include="..\SleepZone.Todos\SleepZone.Todos.csproj" />
+    <ProjectReference Include="..\CLK.Core\CLK.Core.csproj" />
   </ItemGroup>
 
 </Project>

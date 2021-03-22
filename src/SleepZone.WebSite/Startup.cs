@@ -1,3 +1,4 @@
+using MDP;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,28 +13,40 @@ namespace SleepZone.WebSite
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Methods
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            #region Contracts
+
+            if (app == null) throw new ArgumentException(nameof(app));
+            if (env == null) throw new ArgumentException(nameof(env));
+
+            #endregion
+
+            // Development
+            if (env.IsDevelopment() == true)
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
+            // StaticFile
+            app.UseStaticFiles();
 
+            // Routing
+            app.UseRouting();
+            {
+
+            }
+
+            // Endpoints
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                // Default
+                endpoints.MapControllerRoute
+                (
+                    name: "Default",
+                    pattern: "{controller=Home}/{action=Index}"
+                );
             });
         }
     }

@@ -13,18 +13,6 @@ namespace MDP.AspNetCore.Lab
     public class Startup
     {
         // Methods
-        public void ConfigureServices(IServiceCollection services)
-        {
-            #region Contracts
-
-            if (services == null) throw new ArgumentException(nameof(services));
-
-            #endregion
-
-            // Mvc
-            services.AddMvc().AddMDP();
-        }
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             #region Contracts

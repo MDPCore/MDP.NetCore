@@ -12,7 +12,7 @@ namespace MDP.NetCore.Lab
     public class Program
     {
         // Methods
-        public static void Run(SettingContext settingContext, IConfiguration configuration)
+        public static void Run(SettingContext settingContext)
         {
             #region Contracts
 
@@ -22,9 +22,6 @@ namespace MDP.NetCore.Lab
 
             // SettingContext
             Console.WriteLine(settingContext.GetValue());
-
-            // Configuration
-            Console.WriteLine(configuration.GetValue<string>("Setting01"));
         }
 
         public static void Main(string[] args)
@@ -34,7 +31,11 @@ namespace MDP.NetCore.Lab
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureMDP()
+                .ConfigureMDP(mdpBuilder =>
+                {
+                    // Nothing
+
+                })
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Program
@@ -45,14 +46,6 @@ namespace MDP.NetCore.Lab
         // Class
         public class SettingContext
         {
-            // Constructors
-            public SettingContext()
-            {
-                // Display
-                Console.WriteLine("SettingContext Created");
-            }
-
-
             // Methods
             public string GetValue()
             {
@@ -64,19 +57,16 @@ namespace MDP.NetCore.Lab
         public class SettingContextModule : MDP.Module
         {
             // Methods
-            protected override void Load(ContainerBuilder builder)
+            protected override void ConfigureContainer(ContainerBuilder container)
             {
                 #region Contracts
 
-                if (builder == null) throw new ArgumentException(nameof(builder));
+                if (container == null) throw new ArgumentException(nameof(container));
 
                 #endregion
 
-                // SettingContext
-                {
-                    // Register
-                    builder.RegisterType<SettingContext>().As<SettingContext>();
-                }
+                // Register
+                container.RegisterType<SettingContext>().As<SettingContext>();
             }
         }
     }

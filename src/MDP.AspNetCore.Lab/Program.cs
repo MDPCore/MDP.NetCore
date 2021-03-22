@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MDP.NetCore;
+using Microsoft.Extensions.Options;
 
 namespace MDP.AspNetCore.Lab
 {
@@ -19,25 +21,22 @@ namespace MDP.AspNetCore.Lab
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureMDP()
+            Host.CreateDefaultBuilder(args)                
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    // Startup
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureMDP(mdpBuilder =>
+                {
+                    // Mvc
+                    mdpBuilder.AddMvc();
                 });
 
 
         // Class
         public class SettingContext
         {
-            // Constructors
-            public SettingContext()
-            {
-                // Display
-                Console.WriteLine("SettingContext Created");
-            }
-
-
             // Methods
             public string GetValue()
             {
@@ -49,19 +48,16 @@ namespace MDP.AspNetCore.Lab
         public class SettingContextModule : MDP.Module
         {
             // Methods
-            protected override void Load(ContainerBuilder builder)
+            protected override void ConfigureContainer(ContainerBuilder container)
             {
                 #region Contracts
 
-                if (builder == null) throw new ArgumentException(nameof(builder));
+                if (container == null) throw new ArgumentException(nameof(container));
 
                 #endregion
 
-                // SettingContext
-                {
-                    // Register
-                    builder.RegisterType<SettingContext>().As<SettingContext>();
-                }
+                // Register
+                container.RegisterType<SettingContext>().As<SettingContext>();
             }
         }
     }

@@ -9,7 +9,7 @@ namespace MDP
     public static class ContainerBuilderExtensions
     {
         // Methods
-        public static void ScheduleJob<TJob>(this ContainerBuilder container, Action<TriggerBuilder> setupAction) where TJob : IJob
+        public static void ScheduleJob<TJob>(this ContainerBuilder container, Action<TriggerBuilder> setupAction) where TJob : class, IJob
         {
             #region Contracts
 
@@ -28,7 +28,7 @@ namespace MDP
                     options.AddTrigger(trigger =>
                     {
                         trigger.ForJob(jobKey);
-                        trigger.WithIdentity($"{nameof(TJob)}-trigger-{Guid.NewGuid()}");
+                        trigger.WithIdentity($"{nameof(TJob)}-trigger");
                         setupAction(trigger);
                     });
                 })
