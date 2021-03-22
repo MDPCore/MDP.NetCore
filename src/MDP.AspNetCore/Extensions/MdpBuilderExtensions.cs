@@ -126,11 +126,17 @@ namespace MDP.AspNetCore
                     fileProviderList.Add(fileProvider);
                 }
             }
-            //fileProviderList.Insert(0, hostEnvironment.WebRootFileProvider);
 
-            // Register
-            mvcBuilder.Services.Configure<StaticFileOptions>((options) =>
+            // Add
+            mvcBuilder.Services.AddOptions<StaticFileOptions>().Configure<IWebHostEnvironment>((options, hostEnvironment) =>
             {
+                // FileProvider
+                if (hostEnvironment.WebRootFileProvider != null)
+                {
+                    fileProviderList.Insert(0, hostEnvironment.WebRootFileProvider);
+                }
+
+                // Attach
                 options.FileProvider = new CompositeFileProvider
                 (
                     fileProviderList
@@ -156,7 +162,7 @@ namespace MDP.AspNetCore
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
 
-            // AddApplicationPart
+            // Add
             foreach (var moduleAssembly in moduleAssemblyList)
             {
                 if (registeredAssemblyList.Contains(moduleAssembly) == false)
