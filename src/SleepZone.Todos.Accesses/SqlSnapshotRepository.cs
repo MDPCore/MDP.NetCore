@@ -6,22 +6,27 @@ using System.Threading.Tasks;
 
 namespace SleepZone.Todos.Accesses
 {
-    public class SqlTodoSnapshotRepository : TodoSnapshotRepository
+    public class SqlSnapshotRepository : SnapshotRepository
     {
         // Constructors
-        public SqlTodoSnapshotRepository() 
+        public SqlSnapshotRepository() 
         {
            
         }
 
 
         // Methods
-        public void Add(TodoSnapshot todoSnapshot)
+        public void Add(Snapshot snapshot)
         {
             throw new NotImplementedException();
         }
 
-        public List<TodoSnapshot> FindAll()
+        public Snapshot FindLast()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Snapshot> FindAll()
         {
             throw new NotImplementedException();
         }

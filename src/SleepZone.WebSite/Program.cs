@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MDP.Quartz;
 
 namespace SleepZone.WebSite
 {
@@ -23,12 +24,16 @@ namespace SleepZone.WebSite
             Host.CreateDefaultBuilder(args)                
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    // Startup
                     webBuilder.UseStartup<Startup>();
                 })
                 .ConfigureMDP(mdpBuilder =>
                 {
                     // Mvc
                     mdpBuilder.AddMvc();
+
+                    // Quartz
+                    mdpBuilder.AddQuartz();
                 });                
     }
 }

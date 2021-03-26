@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MDP;
 using SleepZone.Todos.Accesses;
+using Quartz;
 
 namespace SleepZone.Todos.Hosting
 {
@@ -20,6 +21,13 @@ namespace SleepZone.Todos.Hosting
             if (container == null) throw new ArgumentException(nameof(container));
 
             #endregion
+
+            // TodoContextJob
+            container.ScheduleJob<TodoContextJob>((trigger) =>
+            {
+                // Trigger
+                trigger.WithCronSchedule("0/1 * * * * ?");
+            });
 
             // TodoContext
             {
@@ -51,19 +59,19 @@ namespace SleepZone.Todos.Hosting
                 container.RegisterType<MockTodoRepository>().Named<TodoRepository>("Mock");
             }
 
-            // TodoSnapshotRepository
+            // SnapshotRepository
             {
-                // TodoSnapshotRepository
-                container.RegisterNamed<TodoSnapshotRepository>(componentContext =>
+                // SnapshotRepository
+                container.RegisterNamed<SnapshotRepository>(componentContext =>
                 {
                     return "Mock";
                 });
 
-                // SqlTodoSnapshotRepository
-                container.RegisterType<SqlTodoSnapshotRepository>().Named<TodoSnapshotRepository>("Sql");
+                // SqlSnapshotRepository
+                container.RegisterType<SqlSnapshotRepository>().Named<SnapshotRepository>("Sql");
 
-                // MockTodoSnapshotRepository
-                container.RegisterType<MockTodoSnapshotRepository>().Named<TodoSnapshotRepository>("Mock");
+                // MockSnapshotRepository
+                container.RegisterType<MockSnapshotRepository>().Named<SnapshotRepository>("Mock");
             }
         }
     }

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace SleepZone.Todos
 {
-    public class TodoSnapshot
+    public class Snapshot
     {
         // Properties
-        public string TodoSnapshotId { get; set; }
+        public string SnapshotId { get; set; }
 
         public int TotalCount { get; set; }
 

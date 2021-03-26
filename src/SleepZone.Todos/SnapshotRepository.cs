@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace SleepZone.Todos
 {
-    public interface TodoSnapshotRepository
+    public interface SnapshotRepository
     {
         // Methods
-        void Add(TodoSnapshot todoSnapshot);
+        void Add(Snapshot snapshot);
 
-        List<TodoSnapshot> FindAll();
+        Snapshot FindLast();
+
+        List<Snapshot> FindAll();
     }
 }

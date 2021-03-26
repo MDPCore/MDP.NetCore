@@ -11,29 +11,29 @@ namespace SleepZone.Todos
         // Fields
         private readonly TodoRepository _todoRepository = null;
 
-        private readonly TodoSnapshotRepository _todoSnapshotRepository = null;
+        private readonly SnapshotRepository _snapshotRepository = null;
 
 
         // Constructors
-        public TodoContext(TodoRepository todoRepository, TodoSnapshotRepository todoSnapshotRepository)
+        public TodoContext(TodoRepository todoRepository, SnapshotRepository snapshotRepository)
         {
             #region Contracts
 
             if (todoRepository == null) throw new ArgumentException(nameof(todoRepository));
-            if (todoSnapshotRepository == null) throw new ArgumentException(nameof(todoSnapshotRepository));
+            if (snapshotRepository == null) throw new ArgumentException(nameof(snapshotRepository));
 
             #endregion
 
             // Default
             _todoRepository = todoRepository;
-            _todoSnapshotRepository = todoSnapshotRepository;
+            _snapshotRepository = snapshotRepository;
         }
 
 
         // Properties
         public TodoRepository TodoRepository { get { return _todoRepository; } }
 
-        public TodoSnapshotRepository TodoSnapshotRepository { get { return _todoSnapshotRepository; } }
+        public SnapshotRepository SnapshotRepository { get { return _snapshotRepository; } }
 
 
         // Methods
@@ -43,17 +43,17 @@ namespace SleepZone.Todos
             var todoCounts = this.TodoRepository.CountAll();
             if (todoCounts == null) throw new InvalidOperationException(nameof(todoCounts));
 
-            // TodoSnapshot
-            var todoSnapshot = new TodoSnapshot()
+            // Snapshot
+            var snapshot = new Snapshot()
             {
-                TodoSnapshotId = Guid.NewGuid().ToString(),
+                SnapshotId = Guid.NewGuid().ToString(),
                 CreateTime = DateTime.Now,
                 TotalCount = todoCounts.TotalCount,
                 CompleteCount = todoCounts.CompleteCount
             };
 
             // Add
-            this.TodoSnapshotRepository.Add(todoSnapshot);
+            this.SnapshotRepository.Add(snapshot);
         }
     }
 }
