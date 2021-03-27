@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Firebase.Hosting\MDP.Firebase.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.Messaging.Notifications\MDP.Messaging.Notifications.csproj" />
+    <ProjectReference Include="..\MDP.Messaging.Notifications.Mocks\MDP.Messaging.Notifications.Mocks.csproj" />
+    <ProjectReference Include="..\MDP.Messaging.Notifications.Accesses\MDP.Messaging.Notifications.Accesses.csproj" />
+    <ProjectReference Include="..\MDP.Messaging.Notifications.Firebase\MDP.Messaging.Notifications.Firebase.csproj" />
+    <ProjectReference Include="..\MDP.Messaging.Notifications.Services\MDP.Messaging.Notifications.Services.csproj" />
+  </ItemGroup>
+
+</Project>
