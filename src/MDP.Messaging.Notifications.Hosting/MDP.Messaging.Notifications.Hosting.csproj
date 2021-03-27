@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="firebase-admin.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="firebase-admin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications\MDP.Messaging.Notifications.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications.Mocks\MDP.Messaging.Notifications.Mocks.csproj" />
