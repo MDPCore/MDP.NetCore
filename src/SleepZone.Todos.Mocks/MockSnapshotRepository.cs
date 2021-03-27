@@ -10,7 +10,7 @@ namespace SleepZone.Todos.Mocks
     public class MockSnapshotRepository : MockRepository<Snapshot, string>, SnapshotRepository
     {
         // Constructors
-        public MockSnapshotRepository() : base(snapshot => snapshot.SnapshotId)
+        public MockSnapshotRepository() : base(snapshot => Tuple.Create(snapshot.SnapshotId))
         {
             // Default
 
