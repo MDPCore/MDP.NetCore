@@ -27,7 +27,13 @@ namespace MDP.Messaging.Notifications
             _registrationRepository = registrationRepository;
             _notificationProvider = notificationProvider;
         }
-        
+
+
+        // Properties
+        public RegistrationRepository RegistrationRepository { get { return _registrationRepository; } }
+
+        public NotificationProvider NotificationProvider { get { return _notificationProvider; } }
+
 
         // Methods
         public void Register(Registration registration)
@@ -57,16 +63,30 @@ namespace MDP.Messaging.Notifications
             }
         }
 
-        public void Unregister(string userId)
+        public void Unregister(string userId, string deviceType)
         {
             #region Contracts
 
             if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+            if (string.IsNullOrEmpty(deviceType) == true) throw new ArgumentException(nameof(deviceType));
 
             #endregion
 
             // Remove
-            _registrationRepository.RemoveAllByUserId(userId);
+            _registrationRepository.RemoveByUserId(userId, deviceType);
+        }
+
+        public void Send(Notification notification, string userId)
+        {
+            #region Contracts
+
+            if (notification == null || notification.IsValid() == false) throw new ArgumentException(nameof(notification));
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+
+            #endregion
+
+            // Send
+            this.Send(notification, new List<string>() { userId });
         }
 
         public void Send(Notification notification, List<string> userIdList)

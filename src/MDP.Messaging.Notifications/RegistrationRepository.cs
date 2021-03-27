@@ -11,7 +11,9 @@ namespace MDP.Messaging.Notifications
 
         void Update(Registration registration);
 
-        void RemoveAllByUserId(string userId);
+        void RemoveByUserId(string userId, string deviceType);
+
+        Registration FindByUserId(string userId, string deviceType);
 
         List<Registration> FindAllByUserId(List<string> userIdList);
     }

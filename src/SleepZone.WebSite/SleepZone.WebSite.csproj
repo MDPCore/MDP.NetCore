@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MDP.Messaging.Notifications.Hosting\MDP.Messaging.Notifications.Hosting.csproj" />
     <ProjectReference Include="..\SleepZone.Todos.Hosting\SleepZone.Todos.Hosting.csproj" />
   </ItemGroup>
 

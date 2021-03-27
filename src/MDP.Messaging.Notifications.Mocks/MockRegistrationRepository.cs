@@ -18,16 +18,30 @@ namespace MDP.Messaging.Notifications.Mocks
 
 
         // Methods
-        public void RemoveAllByUserId(string userId)
+        public void RemoveByUserId(string userId, string deviceType)
         {
             #region Contracts
 
             if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+            if (string.IsNullOrEmpty(deviceType) == true) throw new ArgumentException(nameof(deviceType));
 
             #endregion
 
-            // RemoveAll
-            this.EntityList.RemoveAll(registration => registration.UserId == userId);
+            // Remove
+            this.Remove(userId, deviceType);
+        }
+
+        public Registration FindByUserId(string userId, string deviceType)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+            if (string.IsNullOrEmpty(deviceType) == true) throw new ArgumentException(nameof(deviceType));
+
+            #endregion
+
+            // Find
+            return this.FindById(userId, deviceType);
         }
 
         public List<Registration> FindAllByUserId(List<string> userIdList)
