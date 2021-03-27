@@ -57,13 +57,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications.Mocks", "MDP.Messaging.Notifications.Mocks\MDP.Messaging.Notifications.Mocks.csproj", "{1CC22008-7DD2-42DB-9F51-C9F54E227560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Messaging.Notifications.Accesses", "MDP.Messaging.Notifications.Accesses\MDP.Messaging.Notifications.Accesses.csproj", "{C97135D3-F904-4024-BA0F-A2624FB1793E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications.Accesses", "MDP.Messaging.Notifications.Accesses\MDP.Messaging.Notifications.Accesses.csproj", "{C97135D3-F904-4024-BA0F-A2624FB1793E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Messaging.Notifications.Services", "MDP.Messaging.Notifications.Services\MDP.Messaging.Notifications.Services.csproj", "{103EAECE-6434-45E0-A1ED-F354DEA6D8AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications.Services", "MDP.Messaging.Notifications.Services\MDP.Messaging.Notifications.Services.csproj", "{103EAECE-6434-45E0-A1ED-F354DEA6D8AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Messaging.Notifications.Hosting", "MDP.Messaging.Notifications.Hosting\MDP.Messaging.Notifications.Hosting.csproj", "{AACFF427-4F8B-411C-B80F-8FA9BD1D48F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications.Hosting", "MDP.Messaging.Notifications.Hosting\MDP.Messaging.Notifications.Hosting.csproj", "{AACFF427-4F8B-411C-B80F-8FA9BD1D48F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Messaging.Notifications.Firebase", "MDP.Messaging.Notifications.Firebase\MDP.Messaging.Notifications.Firebase.csproj", "{1D53264D-5691-45EB-A215-D3312012556D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications.Firebase", "MDP.Messaging.Notifications.Firebase\MDP.Messaging.Notifications.Firebase.csproj", "{1D53264D-5691-45EB-A215-D3312012556D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Firebase.Hosting", "MDP.Firebase.Hosting\MDP.Firebase.Hosting.csproj", "{A7E31A3C-0F87-4907-AFBC-7B382C6CE379}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Firebase", "MDP.Firebase\MDP.Firebase.csproj", "{4C8956F3-C211-4DCD-A028-B7D53A73177E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +179,14 @@ Global
 		{1D53264D-5691-45EB-A215-D3312012556D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D53264D-5691-45EB-A215-D3312012556D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D53264D-5691-45EB-A215-D3312012556D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E31A3C-0F87-4907-AFBC-7B382C6CE379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E31A3C-0F87-4907-AFBC-7B382C6CE379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E31A3C-0F87-4907-AFBC-7B382C6CE379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E31A3C-0F87-4907-AFBC-7B382C6CE379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C8956F3-C211-4DCD-A028-B7D53A73177E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C8956F3-C211-4DCD-A028-B7D53A73177E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C8956F3-C211-4DCD-A028-B7D53A73177E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C8956F3-C211-4DCD-A028-B7D53A73177E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +218,8 @@ Global
 		{103EAECE-6434-45E0-A1ED-F354DEA6D8AB} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
 		{AACFF427-4F8B-411C-B80F-8FA9BD1D48F5} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
 		{1D53264D-5691-45EB-A215-D3312012556D} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
+		{A7E31A3C-0F87-4907-AFBC-7B382C6CE379} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
+		{4C8956F3-C211-4DCD-A028-B7D53A73177E} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25EFCCC9-D06F-4E4F-812E-9C006F6A319C}

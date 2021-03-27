@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Firebase\MDP.Firebase.csproj" />
-    <ProjectReference Include="..\MDP.Messaging.Notifications\MDP.Messaging.Notifications.csproj" />
   </ItemGroup>
 
 </Project>

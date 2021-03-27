@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FirebaseAdmin.Messaging;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +10,21 @@ namespace MDP.Messaging.Notifications.Firebase
 {
     public class FirebaseNotificationProvider : NotificationProvider
     {
-        // Constructors
-        public FirebaseNotificationProvider() 
-        {
-            // Default
+        // Fields
+        private readonly FirebaseMessaging _firebaseMessaging = null;
 
+
+        // Constructors
+        public FirebaseNotificationProvider(FirebaseMessaging firebaseMessaging) 
+        {
+            #region Contracts
+
+            if (firebaseMessaging == null) throw new ArgumentException(nameof(firebaseMessaging));
+
+            #endregion
+
+            // Default
+            _firebaseMessaging = firebaseMessaging;
         }
 
 
@@ -26,6 +38,20 @@ namespace MDP.Messaging.Notifications.Firebase
 
             #endregion
 
+            // Message
+            var message = new FirebaseAdmin.Messaging.MulticastMessage()
+            {
+                Notification = new FirebaseAdmin.Messaging.Notification()
+                {
+                    Title = notification.Title,
+                    Body = notification.Text,
+                },
+                Tokens = registrationList.Select(registration=> registration.Token).ToList()
+            };
+
+            // Send
+            var response = _firebaseMessaging.SendMulticastAsync(message).GetAwaiter().GetResult();
+            if (response == null) throw new InvalidOperationException($"{nameof(response)}=null");
         }
     }
 }

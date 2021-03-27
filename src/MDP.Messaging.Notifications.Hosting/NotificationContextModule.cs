@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MDP;
 using MDP.Messaging.Notifications.Accesses;
 using MDP.Messaging.Notifications.Firebase;
+using System.IO;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
@@ -57,7 +58,7 @@ namespace MDP.Messaging.Notifications.Hosting
                 // NotificationProvider
                 container.RegisterNamed<NotificationProvider>(componentContext =>
                 {
-                    return "Mock";
+                    return "Firebase";
                 });
 
                 // SqlNotificationProvider
