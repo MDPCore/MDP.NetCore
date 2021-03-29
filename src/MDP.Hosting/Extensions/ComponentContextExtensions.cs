@@ -10,66 +10,66 @@ namespace MDP
     internal static partial class ComponentContextExtensions
     {
         // Methods
-        public static TResult Build<TResult>(this IComponentContext componentContext, Func<TResult> resolveAction) where TResult : notnull
+        public static TResult Build<TResult>(this IComponentContext componentContext, Func<TResult> buildAction) where TResult : notnull
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
-            // Resolve
-            return resolveAction
+            // Build
+            return buildAction
             (
                 
             );
         }
 
-        public static TResult Build<T1, TResult>(this IComponentContext componentContext, Func<T1, TResult> resolveAction) where TResult : notnull
+        public static TResult Build<T1, TResult>(this IComponentContext componentContext, Func<T1, TResult> buildAction) where TResult : notnull
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
-            // Resolve
-            return resolveAction
+            // Build
+            return buildAction
             (
                 componentContext.ResolveRequired<T1>()
             );
         }
 
-        public static TResult Build<T1, T2, TResult>(this IComponentContext componentContext, Func<T1, T2, TResult> resolveAction) where TResult : notnull
+        public static TResult Build<T1, T2, TResult>(this IComponentContext componentContext, Func<T1, T2, TResult> buildAction) where TResult : notnull
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
-            // Resolve
-            return resolveAction
+            // Build
+            return buildAction
             (
                 componentContext.ResolveRequired<T1>(),
                 componentContext.ResolveRequired<T2>()
             );
         }
 
-        public static TResult Build<T1, T2, T3, TResult>(this IComponentContext componentContext, Func<T1, T2, T3, TResult> resolveAction) where TResult : notnull
+        public static TResult Build<T1, T2, T3, TResult>(this IComponentContext componentContext, Func<T1, T2, T3, TResult> buildAction) where TResult : notnull
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
-            // Resolve
-            return resolveAction
+            // Build
+            return buildAction
             (
                 componentContext.ResolveRequired<T1>(),
                 componentContext.ResolveRequired<T2>(),
