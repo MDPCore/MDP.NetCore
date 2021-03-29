@@ -65,9 +65,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Messaging.Notifications.Firebase", "MDP.Messaging.Notifications.Firebase\MDP.Messaging.Notifications.Firebase.csproj", "{1D53264D-5691-45EB-A215-D3312012556D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Firebase.Hosting", "MDP.Firebase.Hosting\MDP.Firebase.Hosting.csproj", "{A7E31A3C-0F87-4907-AFBC-7B382C6CE379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Firebase.Hosting", "MDP.Firebase.Hosting\MDP.Firebase.Hosting.csproj", "{A7E31A3C-0F87-4907-AFBC-7B382C6CE379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Firebase", "MDP.Firebase\MDP.Firebase.csproj", "{4C8956F3-C211-4DCD-A028-B7D53A73177E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Firebase", "MDP.Firebase\MDP.Firebase.csproj", "{4C8956F3-C211-4DCD-A028-B7D53A73177E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLK.Configuration", "CLK.Configuration\CLK.Configuration.csproj", "{F8BBD39C-F0AA-489A-A43F-3A94A896D12D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -187,6 +189,10 @@ Global
 		{4C8956F3-C211-4DCD-A028-B7D53A73177E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C8956F3-C211-4DCD-A028-B7D53A73177E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C8956F3-C211-4DCD-A028-B7D53A73177E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8BBD39C-F0AA-489A-A43F-3A94A896D12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8BBD39C-F0AA-489A-A43F-3A94A896D12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8BBD39C-F0AA-489A-A43F-3A94A896D12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8BBD39C-F0AA-489A-A43F-3A94A896D12D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,6 +226,7 @@ Global
 		{1D53264D-5691-45EB-A215-D3312012556D} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
 		{A7E31A3C-0F87-4907-AFBC-7B382C6CE379} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
 		{4C8956F3-C211-4DCD-A028-B7D53A73177E} = {7600E0D3-2BBF-4CE1-BA15-30906977BA60}
+		{F8BBD39C-F0AA-489A-A43F-3A94A896D12D} = {6C8A620E-75BE-4547-A644-F6C773CE941C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25EFCCC9-D06F-4E4F-812E-9C006F6A319C}
