@@ -11,7 +11,6 @@
     <ProjectReference Include="..\MDP.Messaging.Notifications.Mocks\MDP.Messaging.Notifications.Mocks.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications.Accesses\MDP.Messaging.Notifications.Accesses.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications.Firebase\MDP.Messaging.Notifications.Firebase.csproj" />
-    <ProjectReference Include="..\MDP.Messaging.Notifications.Services\MDP.Messaging.Notifications.Services.csproj" />
   </ItemGroup>
 
 </Project>

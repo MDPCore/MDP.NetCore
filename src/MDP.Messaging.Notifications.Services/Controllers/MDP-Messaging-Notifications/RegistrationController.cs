@@ -35,7 +35,7 @@ namespace MDP.Messaging.Notifications
             #region Contracts
 
             if (actionModel == null) throw new ArgumentException(nameof(actionModel));
-            if (actionModel.Registration == null || actionModel.Registration.IsValid() == false) throw new ArgumentException(nameof(actionModel.Registration));
+            if (actionModel.Registration == null) throw new ArgumentException(nameof(actionModel.Registration));
 
             #endregion
 

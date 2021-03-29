@@ -13,9 +13,11 @@ namespace MDP.Messaging.Notifications.Firebase
         // Fields
         private readonly FirebaseMessaging _firebaseMessaging = null;
 
+        private readonly List<FirebaseNotificationFormatter> _firebaseFormatterList = null;
+
 
         // Constructors
-        public FirebaseNotificationProvider(FirebaseMessaging firebaseMessaging) 
+        public FirebaseNotificationProvider(FirebaseMessaging firebaseMessaging, List<FirebaseNotificationFormatter> firebaseFormatterList = null)
         {
             #region Contracts
 
@@ -25,6 +27,7 @@ namespace MDP.Messaging.Notifications.Firebase
 
             // Default
             _firebaseMessaging = firebaseMessaging;
+            _firebaseFormatterList = firebaseFormatterList ?? new List<FirebaseNotificationFormatter>();
         }
 
 
@@ -48,6 +51,13 @@ namespace MDP.Messaging.Notifications.Firebase
                 },
                 Tokens = registrationList.Select(registration=> registration.Token).ToList()
             };
+
+            // Formatter
+            foreach(var firebaseFormatter in _firebaseFormatterList.Where(x=>x.NotificationType== notification.Type))
+            {
+                // Configure
+                firebaseFormatter.Configure(message);
+            }
 
             // Send
             var response = _firebaseMessaging.SendMulticastAsync(message).GetAwaiter().GetResult();
