@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MDP;
 using SleepZone.Todos.Accesses;
 using Quartz;
+using Microsoft.Extensions.Configuration;
 
 namespace SleepZone.Todos.Hosting
 {
@@ -46,32 +47,26 @@ namespace SleepZone.Todos.Hosting
 
             // TodoRepository
             {
-                // TodoRepository
-                container.RegisterNamed<TodoRepository>(componentContext =>
+                // Register
+                container.RegisterSelected<IConfiguration, TodoRepository>(configuration =>
                 {
-                    return "Mock";
+                    // Configuration
+                    return configuration.GetServiceName<TodoRepository>();
                 });
-
-                // SqlTodoRepository
-                container.RegisterType<SqlTodoRepository>().Named<TodoRepository>("Sql");
-
-                // MockTodoRepository
-                container.RegisterType<MockTodoRepository>().Named<TodoRepository>("Mock");
+                container.RegisterNamed<MockTodoRepository, TodoRepository>();
+                container.RegisterNamed<SqlTodoRepository, TodoRepository>();
             }
 
             // SnapshotRepository
             {
-                // SnapshotRepository
-                container.RegisterNamed<SnapshotRepository>(componentContext =>
+                // Register
+                container.RegisterSelected<IConfiguration, SnapshotRepository>(configuration =>
                 {
-                    return "Mock";
+                    // Configuration
+                    return configuration.GetServiceName<SnapshotRepository>();
                 });
-
-                // SqlSnapshotRepository
-                container.RegisterType<SqlSnapshotRepository>().Named<SnapshotRepository>("Sql");
-
-                // MockSnapshotRepository
-                container.RegisterType<MockSnapshotRepository>().Named<SnapshotRepository>("Mock");
+                container.RegisterNamed<MockSnapshotRepository, SnapshotRepository>();
+                container.RegisterNamed<SqlSnapshotRepository, SnapshotRepository>();
             }
         }
     }

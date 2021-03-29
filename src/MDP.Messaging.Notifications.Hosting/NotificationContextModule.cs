@@ -9,6 +9,7 @@ using MDP;
 using MDP.Messaging.Notifications.Accesses;
 using MDP.Messaging.Notifications.Firebase;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
@@ -40,32 +41,25 @@ namespace MDP.Messaging.Notifications.Hosting
 
             // RegistrationRepository
             {
-                // RegistrationRepository
-                container.RegisterNamed<RegistrationRepository>(componentContext =>
+                // Register
+                container.RegisterSelected<IConfiguration, RegistrationRepository>(configuration =>
                 {
-                    return "Mock";
+                    // Configuration
+                    return configuration.GetServiceName<RegistrationRepository>();
                 });
-
-                // SqlRegistrationRepository
-                container.RegisterType<SqlRegistrationRepository>().Named<RegistrationRepository>("Sql");
-
-                // MockRegistrationRepository
-                container.RegisterType<MockRegistrationRepository>().Named<RegistrationRepository>("Mock");
+                container.RegisterNamed<MockRegistrationRepository, RegistrationRepository>();
+                container.RegisterNamed<SqlRegistrationRepository, RegistrationRepository>();
             }
 
             // NotificationProvider
             {
-                // NotificationProvider
-                container.RegisterNamed<NotificationProvider>(componentContext =>
+                container.RegisterSelected<IConfiguration, NotificationProvider>(configuration =>
                 {
-                    return "Firebase";
+                    // Configuration
+                    return configuration.GetServiceName<NotificationProvider>();
                 });
-
-                // SqlNotificationProvider
-                container.RegisterType<FirebaseNotificationProvider>().Named<NotificationProvider>("Firebase");
-
-                // MockNotificationProvider
-                container.RegisterType<MockNotificationProvider>().Named<NotificationProvider>("Mock");
+                container.RegisterNamed<MockNotificationProvider, NotificationProvider>();
+                container.RegisterNamed<FirebaseNotificationProvider, NotificationProvider>();
             }
         }
     }
