@@ -1,14 +1,10 @@
 ﻿using Autofac;
+using CLK.Autofac;
+using MDP;
+using Quartz;
+using SleepZone.Todos.Accesses;
 using SleepZone.Todos.Mocks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MDP;
-using SleepZone.Todos.Accesses;
-using Quartz;
-using Microsoft.Extensions.Configuration;
 
 namespace SleepZone.Todos.Hosting
 {

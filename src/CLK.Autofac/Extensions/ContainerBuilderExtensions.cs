@@ -7,50 +7,44 @@ namespace CLK.Autofac
     public static partial class ContainerBuilderExtensions
     {
         // Methods  
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container, Func<string> nameAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container, Func<string> typeAction)
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
+            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
 
             #endregion
 
             // Register
-            var registrationBuilder = container.Register<TService>(componentContext =>
+            return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
             });
-
-            // Return
-            return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, TService>(this ContainerBuilder container, Func<T1, string> nameAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, TService>(this ContainerBuilder container, Func<T1, string> typeAction)
             where T1 : class
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
+            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
 
             #endregion
 
             // Register
-            var registrationBuilder = container.Register<TService>(componentContext =>
+            return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
             });
-
-            // Return
-            return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> nameAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> typeAction)
             where T1 : class
             where T2 : class
             where TService : class
@@ -58,22 +52,19 @@ namespace CLK.Autofac
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
+            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
 
             #endregion
 
             // Register
-            var registrationBuilder = container.Register<TService>(componentContext =>
+            return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
             });
-
-            // Return
-            return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> nameAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> typeAction)
             where T1 : class
             where T2 : class
             where T3 : class
@@ -82,42 +73,100 @@ namespace CLK.Autofac
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
+            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
 
             #endregion
 
             // Register
-            var registrationBuilder = container.Register<TService>(componentContext =>
+            return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
             });
-
-            // Return
-            return registrationBuilder;
         }
     }
 
     public static partial class ContainerBuilderExtensions
     {
         // Methods 
-        public static IRegistrationBuilder<TImplementation, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementation<TService, TImplementation>(this ContainerBuilder container, Func<string> nameAction)
+        public static IRegistrationBuilder<TImplementation, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementation<TService, TImplementation>(this ContainerBuilder container)
             where TImplementation : TService
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
 
             #endregion
 
-            // ServiceName
-            var serviceName = nameAction();
-            if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
-
             // Return
-            return container.RegisterType<TImplementation>().Named<TService>(serviceName);
+            return container.RegisterType<TImplementation>().Named<TService>(typeof(TImplementation).FullName);
+        }
+
+        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<TService, TImplementation>(this ContainerBuilder container, Func<TImplementation> buildAction)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            #region Contracts
+
+            if (container == null) throw new ArgumentException(nameof(container));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
+
+            #endregion
+
+            // Register
+            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
+        }
+
+        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<T1, TService, TImplementation>(this ContainerBuilder container, Func<T1, TImplementation> buildAction)
+            where T1 : class
+            where TService : class
+            where TImplementation : class, TService
+        {
+            #region Contracts
+
+            if (container == null) throw new ArgumentException(nameof(container));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
+
+            #endregion
+
+            // Register
+            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
+        }
+
+        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<T1, T2, TService, TImplementation>(this ContainerBuilder container, Func<T1, T2, TImplementation> buildAction)
+            where T1 : class
+            where T2 : class
+            where TService : class
+            where TImplementation : class, TService
+        {
+            #region Contracts
+
+            if (container == null) throw new ArgumentException(nameof(container));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
+
+            #endregion
+
+            // Register
+            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
+        }
+
+        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<T1, T2, T3, TService, TImplementation>(this ContainerBuilder container, Func<T1, T2, T3, TImplementation> buildAction)
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where TService : class
+            where TImplementation : class, TService
+        {
+            #region Contracts
+
+            if (container == null) throw new ArgumentException(nameof(container));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
+
+            #endregion
+
+            // Register
+            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
         }
     }
 

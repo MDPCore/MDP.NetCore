@@ -10,6 +10,7 @@ using MDP.Messaging.Notifications.Accesses;
 using MDP.Messaging.Notifications.Firebase;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using CLK.Autofac;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
@@ -46,7 +47,13 @@ namespace MDP.Messaging.Notifications.Hosting
                 container.RegisterImplementation<RegistrationRepository, MockRegistrationRepository>();
 
                 // SqlRegistrationRepository
-                container.RegisterImplementation<RegistrationRepository, SqlRegistrationRepository>();
+                container.RegisterImplementation<IConfiguration, RegistrationRepository, SqlRegistrationRepository>(configuration =>
+                {
+                    return new SqlRegistrationRepository
+                    (
+                        configuration.GetServiceConnectionString<RegistrationRepository>()
+                    );
+                });
             }
 
             // NotificationProvider

@@ -8,10 +8,21 @@ namespace MDP.Messaging.Notifications.Accesses
 {
     public class SqlRegistrationRepository : RegistrationRepository
     {
+        // Fields
+        private readonly string _connectionString = null;
+
+
         // Constructors
-        public SqlRegistrationRepository()
+        public SqlRegistrationRepository(string connectionString)
         {
-            
+            #region Contracts
+
+            if (string.IsNullOrEmpty(connectionString) == true) throw new ArgumentException(nameof(connectionString));
+
+            #endregion
+
+            // Default
+            _connectionString = connectionString;
         }
 
 
