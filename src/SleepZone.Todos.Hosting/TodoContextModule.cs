@@ -49,20 +49,20 @@ namespace SleepZone.Todos.Hosting
             container.RegisterInterface<TodoRepository>();
             {
                 // MockTodoRepository
-                container.RegisterNamed<MockTodoRepository, TodoRepository>();
+                container.RegisterImplementation<TodoRepository, MockTodoRepository>();
 
                 // SqlTodoRepository
-                container.RegisterNamed<SqlTodoRepository, TodoRepository>();
+                container.RegisterImplementation<TodoRepository, SqlTodoRepository>();
             }
 
             // SnapshotRepository
             container.RegisterInterface<SnapshotRepository>();
             {
                 // MockSnapshotRepository
-                container.RegisterNamed<MockSnapshotRepository, SnapshotRepository>();
+                container.RegisterImplementation<SnapshotRepository, MockSnapshotRepository>();
 
                 // SqlSnapshotRepository
-                container.RegisterNamed<SqlSnapshotRepository, SnapshotRepository>();
+                container.RegisterImplementation<SnapshotRepository, SqlSnapshotRepository>();
             }
         }
     }

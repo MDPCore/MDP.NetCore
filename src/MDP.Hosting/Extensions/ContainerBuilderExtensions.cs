@@ -7,32 +7,7 @@ namespace MDP
 {
     public static partial class ContainerBuilderExtensions
     {
-        // Methods     
-        public static IRegistrationBuilder<TImplementer, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterNamed<TImplementer, TService>(this ContainerBuilder container, string serviceName = null)
-            where TImplementer : TService
-            where TService : class
-        {
-            #region Contracts
-
-            if (container == null) throw new ArgumentException(nameof(container));
-
-            #endregion
-
-            // ServiceName
-            serviceName = serviceName ?? typeof(TImplementer).FullName;
-            if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
-
-            // Return
-            return container.RegisterType<TImplementer>().Named<TService>(serviceName);
-        }
-    }
-}
-
-namespace MDP
-{
-    public static partial class ContainerBuilderExtensions
-    {
-        // Methods  
+        // Methods 
         public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container)
             where TService : class
         {
@@ -45,11 +20,37 @@ namespace MDP
             // RegisterInterface
             return container.RegisterInterface<IConfiguration, TService>(configuration =>
             {
-                // ServiceType
-                return configuration.GetServiceType<TService>();
+                // ServiceName
+                var serviceName = configuration.GetServiceType<TService>();
+                if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
+
+                // Return
+                return serviceName;
             });
         }
 
+        public static IRegistrationBuilder<TImplementation, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementation<TService, TImplementation>(this ContainerBuilder container)
+            where TImplementation : TService
+            where TService : class
+        {
+            #region Contracts
+
+            if (container == null) throw new ArgumentException(nameof(container));
+
+            #endregion
+
+            // ServiceName
+            var serviceName = typeof(TImplementation).FullName;
+            if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
+
+            // Return
+            return container.RegisterType<TImplementation>().Named<TService>(serviceName);
+        }
+    }
+
+    public static partial class ContainerBuilderExtensions
+    {
+        // Methods  
         public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container, Func<string> nameAction)
             where TService : class
         {
