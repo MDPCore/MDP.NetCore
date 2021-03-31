@@ -69,6 +69,7 @@ namespace MDP
         // Methods
         public static TValue GetServiceValue<TService, TValue>(this IConfiguration configuration, string key)
            where TService : class
+           where TValue : notnull
         {
             #region Contracts
 
@@ -95,7 +96,8 @@ namespace MDP
             return configuration.GetServiceSection<TService>().Bind<TSetting>();
         }
 
-        public static IConfiguration GetServiceSection<TService>(this IConfiguration configuration) where TService : class
+        public static IConfiguration GetServiceSection<TService>(this IConfiguration configuration)
+            where TService : class
         {
             #region Contracts
 

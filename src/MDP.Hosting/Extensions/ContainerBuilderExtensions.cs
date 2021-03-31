@@ -8,8 +8,8 @@ namespace MDP
     {
         // Methods     
         public static IRegistrationBuilder<TImplementer, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterNamed<TImplementer, TService>(this ContainerBuilder container, string serviceName = null)
-            where TImplementer : notnull
-            where TService : notnull
+            where TImplementer : TService
+            where TService : class
         {
             #region Contracts
 
@@ -29,7 +29,8 @@ namespace MDP
     public static partial class ContainerBuilderExtensions
     {
         // Methods  
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<TService>(this ContainerBuilder container, Func<string> selectAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<TService>(this ContainerBuilder container, Func<string> selectAction) 
+            where TService : class
         {
             #region Contracts
 
@@ -49,7 +50,9 @@ namespace MDP
             return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, TService>(this ContainerBuilder container, Func<T1, string> selectAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, TService>(this ContainerBuilder container, Func<T1, string> selectAction)
+            where T1 : class
+            where TService : class
         {
             #region Contracts
 
@@ -69,7 +72,10 @@ namespace MDP
             return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> selectAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> selectAction)
+            where T1 : class
+            where T2 : class
+            where TService : class
         {
             #region Contracts
 
@@ -89,7 +95,11 @@ namespace MDP
             return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> selectAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> selectAction)
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where TService : class
         {
             #region Contracts
 
@@ -113,7 +123,8 @@ namespace MDP
     public static partial class ContainerBuilderExtensions
     {
         // Methods   
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<TService>(this ContainerBuilder container, Func<TService> resolveAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<TService>(this ContainerBuilder container, Func<TService> resolveAction) 
+            where TService : class
         {
             #region Contracts
 
@@ -130,7 +141,9 @@ namespace MDP
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, TService>(this ContainerBuilder container, Func<T1, TService> resolveAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, TService>(this ContainerBuilder container, Func<T1, TService> resolveAction)
+            where T1 : class
+            where TService : class
         {
             #region Contracts
 
@@ -147,7 +160,10 @@ namespace MDP
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, TService> resolveAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, TService> resolveAction)
+            where T1 : class
+            where T2 : class
+            where TService : class
         {
             #region Contracts
 
@@ -164,7 +180,11 @@ namespace MDP
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, TService> resolveAction) where TService : notnull
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, TService> resolveAction)
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where TService : class
         {
             #region Contracts
 

@@ -10,7 +10,7 @@ namespace MDP
     public static partial class ComponentContextExtensions
     {
         // Methods
-        public static TResult Build<TResult>(this IComponentContext componentContext, Func<TResult> buildAction) where TResult : notnull
+        public static TResult Build<TResult>(this IComponentContext componentContext, Func<TResult> buildAction)
         {
             #region Contracts
 
@@ -26,7 +26,8 @@ namespace MDP
             );
         }
 
-        public static TResult Build<T1, TResult>(this IComponentContext componentContext, Func<T1, TResult> buildAction) where TResult : notnull
+        public static TResult Build<T1, TResult>(this IComponentContext componentContext, Func<T1, TResult> buildAction)
+            where T1 : class
         {
             #region Contracts
 
@@ -42,7 +43,9 @@ namespace MDP
             );
         }
 
-        public static TResult Build<T1, T2, TResult>(this IComponentContext componentContext, Func<T1, T2, TResult> buildAction) where TResult : notnull
+        public static TResult Build<T1, T2, TResult>(this IComponentContext componentContext, Func<T1, T2, TResult> buildAction)
+            where T1 : class
+            where T2 : class
         {
             #region Contracts
 
@@ -59,7 +62,10 @@ namespace MDP
             );
         }
 
-        public static TResult Build<T1, T2, T3, TResult>(this IComponentContext componentContext, Func<T1, T2, T3, TResult> buildAction) where TResult : notnull
+        public static TResult Build<T1, T2, T3, TResult>(this IComponentContext componentContext, Func<T1, T2, T3, TResult> buildAction)
+            where T1 : class
+            where T2 : class
+            where T3: class
         {
             #region Contracts
 
@@ -82,7 +88,7 @@ namespace MDP
     {
         // Methods
         public static TService ResolveNamed<TService>(this IComponentContext componentContext, Func<string> nameAction) 
-            where TService : notnull
+            where TService : class
         {
             #region Contracts
 
@@ -99,7 +105,8 @@ namespace MDP
             return componentContext.ResolveNamed<TService>(serviceName);
         }
 
-        public static TService ResolveRequired<TService>(this IComponentContext componentContext) where TService : notnull
+        public static TService ResolveRequired<TService>(this IComponentContext componentContext) 
+            where TService : class
         {
             #region Contracts
 
