@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\CLK.Autofac\CLK.Autofac.csproj" />
     <ProjectReference Include="..\CLK.Configuration\CLK.Configuration.csproj" />
   </ItemGroup>
 
