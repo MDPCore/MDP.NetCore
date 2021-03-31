@@ -1,10 +1,10 @@
 {
   "MDP.Messaging.Notifications": {
     "RegistrationRepository": {
-      "Name": "MockRegistrationRepository"
+      "Type": "MDP.Messaging.Notifications.Mocks.MockRegistrationRepository"
     },
     "NotificationProvider": {
-      "Name": "FirebaseNotificationProvider"
+      "Type": "MDP.Messaging.Notifications.Firebase.FirebaseNotificationProvider"
     }
   }
 }

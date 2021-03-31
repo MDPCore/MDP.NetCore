@@ -1,10 +1,10 @@
 {
   "SleepZone.Todos": {
     "TodoRepository": {
-      "Name": "MockTodoRepository"
+      "Type": "SleepZone.Todos.Mocks.MockTodoRepository"
     },
-    "SnapshotRepository" : {
-      "Name": "MockSnapshotRepository"
+    "SnapshotRepository": {
+      "Type": "SleepZone.Todos.Mocks.MockSnapshotRepository"
     }
   }
 }

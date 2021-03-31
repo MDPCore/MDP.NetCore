@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Builder;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace MDP
@@ -18,24 +19,44 @@ namespace MDP
             #endregion
 
             // ServiceName
-            serviceName = serviceName ?? typeof(TImplementer).Name;
+            serviceName = serviceName ?? typeof(TImplementer).FullName;
             if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
 
             // Return
             return container.RegisterType<TImplementer>().Named<TService>(serviceName);
         }
     }
+}
 
+namespace MDP
+{
     public static partial class ContainerBuilderExtensions
     {
         // Methods  
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<TService>(this ContainerBuilder container, Func<string> selectAction) 
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container)
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (selectAction == null) throw new ArgumentException(nameof(selectAction));
+
+            #endregion
+
+            // RegisterInterface
+            return container.RegisterInterface<IConfiguration, TService>(configuration =>
+            {
+                // ServiceType
+                return configuration.GetServiceType<TService>();
+            });
+        }
+
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container, Func<string> nameAction)
+            where TService : class
+        {
+            #region Contracts
+
+            if (container == null) throw new ArgumentException(nameof(container));
+            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
 
             #endregion
 
@@ -43,21 +64,21 @@ namespace MDP
             var registrationBuilder = container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(selectAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
             });
 
             // Return
             return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, TService>(this ContainerBuilder container, Func<T1, string> selectAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, TService>(this ContainerBuilder container, Func<T1, string> nameAction)
             where T1 : class
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (selectAction == null) throw new ArgumentException(nameof(selectAction));
+            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
 
             #endregion
 
@@ -65,14 +86,14 @@ namespace MDP
             var registrationBuilder = container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(selectAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
             });
 
             // Return
             return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> selectAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> nameAction)
             where T1 : class
             where T2 : class
             where TService : class
@@ -80,7 +101,7 @@ namespace MDP
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (selectAction == null) throw new ArgumentException(nameof(selectAction));
+            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
 
             #endregion
 
@@ -88,14 +109,14 @@ namespace MDP
             var registrationBuilder = container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(selectAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
             });
 
             // Return
             return registrationBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterSelected<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> selectAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> nameAction)
             where T1 : class
             where T2 : class
             where T3 : class
@@ -104,7 +125,7 @@ namespace MDP
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (selectAction == null) throw new ArgumentException(nameof(selectAction));
+            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
 
             #endregion
 
@@ -112,7 +133,7 @@ namespace MDP
             var registrationBuilder = container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(selectAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(nameAction));
             });
 
             // Return
@@ -123,13 +144,13 @@ namespace MDP
     public static partial class ContainerBuilderExtensions
     {
         // Methods   
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<TService>(this ContainerBuilder container, Func<TService> resolveAction) 
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<TService>(this ContainerBuilder container, Func<TService> buildAction) 
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
@@ -137,18 +158,18 @@ namespace MDP
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.Build(resolveAction);
+                return componentContext.Build(buildAction);
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, TService>(this ContainerBuilder container, Func<T1, TService> resolveAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, TService>(this ContainerBuilder container, Func<T1, TService> buildAction)
             where T1 : class
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
@@ -156,11 +177,11 @@ namespace MDP
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.Build(resolveAction);
+                return componentContext.Build(buildAction);
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, TService> resolveAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, TService> buildAction)
             where T1 : class
             where T2 : class
             where TService : class
@@ -168,7 +189,7 @@ namespace MDP
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
@@ -176,11 +197,11 @@ namespace MDP
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.Build(resolveAction);
+                return componentContext.Build(buildAction);
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, TService> resolveAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, TService> buildAction)
             where T1 : class
             where T2 : class
             where T3 : class
@@ -189,7 +210,7 @@ namespace MDP
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (resolveAction == null) throw new ArgumentException(nameof(resolveAction));
+            if (buildAction == null) throw new ArgumentException(nameof(buildAction));
 
             #endregion
 
@@ -197,7 +218,7 @@ namespace MDP
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.Build(resolveAction);
+                return componentContext.Build(buildAction);
             });
         }
     }

@@ -12,27 +12,12 @@ namespace MDP
     public static partial class ConfigurationExtensions
     {
         // Constants
-        private const string ServiceNameKey = "Name";
-
         private const string ServiceTypeKey = "Type";
 
         private const string ServiceConnectionStringNameKey = "ConnectionString";
 
 
         // Methods
-        public static string GetServiceName<TService>(this IConfiguration configuration)
-            where TService : class
-        {
-            #region Contracts
-
-            if (configuration == null) throw new ArgumentException(nameof(configuration));
-
-            #endregion
-
-            // Return
-            return configuration.GetServiceValue<TService, string>(ServiceNameKey);
-        }
-
         public static string GetServiceType<TService>(this IConfiguration configuration) 
             where TService : class
         {

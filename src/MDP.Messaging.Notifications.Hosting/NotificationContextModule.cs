@@ -40,14 +40,8 @@ namespace MDP.Messaging.Notifications.Hosting
             }
 
             // RegistrationRepository
+            container.RegisterInterface<RegistrationRepository>();
             {
-                // Register
-                container.RegisterSelected<IConfiguration, RegistrationRepository>(configuration =>
-                {
-                    // ServiceName
-                    return configuration.GetServiceName<RegistrationRepository>();
-                });
-
                 // MockRegistrationRepository
                 container.RegisterNamed<MockRegistrationRepository, RegistrationRepository>();
 
@@ -56,14 +50,12 @@ namespace MDP.Messaging.Notifications.Hosting
             }
 
             // NotificationProvider
+            container.RegisterInterface<NotificationProvider>();
             {
-                // Register
-                container.RegisterSelected<IConfiguration, NotificationProvider>(configuration =>
-                {
-                    // ServiceName
-                    return configuration.GetServiceName<NotificationProvider>();
-                });
+                // MockNotificationProvider
                 container.RegisterNamed<MockNotificationProvider, NotificationProvider>();
+
+                // FirebaseNotificationProvider
                 container.RegisterNamed<FirebaseNotificationProvider, NotificationProvider>();
             }
         }

@@ -46,26 +46,22 @@ namespace SleepZone.Todos.Hosting
             }
 
             // TodoRepository
+            container.RegisterInterface<TodoRepository>();
             {
-                // Register
-                container.RegisterSelected<IConfiguration, TodoRepository>(configuration =>
-                {
-                    // Configuration
-                    return configuration.GetServiceName<TodoRepository>();
-                });
+                // MockTodoRepository
                 container.RegisterNamed<MockTodoRepository, TodoRepository>();
+
+                // SqlTodoRepository
                 container.RegisterNamed<SqlTodoRepository, TodoRepository>();
             }
 
             // SnapshotRepository
+            container.RegisterInterface<SnapshotRepository>();
             {
-                // Register
-                container.RegisterSelected<IConfiguration, SnapshotRepository>(configuration =>
-                {
-                    // Configuration
-                    return configuration.GetServiceName<SnapshotRepository>();
-                });
+                // MockSnapshotRepository
                 container.RegisterNamed<MockSnapshotRepository, SnapshotRepository>();
+
+                // SqlSnapshotRepository
                 container.RegisterNamed<SqlSnapshotRepository, SnapshotRepository>();
             }
         }
