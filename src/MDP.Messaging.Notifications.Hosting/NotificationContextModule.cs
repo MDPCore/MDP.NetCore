@@ -44,18 +44,23 @@ namespace MDP.Messaging.Notifications.Hosting
                 // Register
                 container.RegisterSelected<IConfiguration, RegistrationRepository>(configuration =>
                 {
-                    // Configuration
+                    // ServiceName
                     return configuration.GetServiceName<RegistrationRepository>();
                 });
+
+                // MockRegistrationRepository
                 container.RegisterNamed<MockRegistrationRepository, RegistrationRepository>();
+
+                // SqlRegistrationRepository
                 container.RegisterNamed<SqlRegistrationRepository, RegistrationRepository>();
             }
 
             // NotificationProvider
             {
+                // Register
                 container.RegisterSelected<IConfiguration, NotificationProvider>(configuration =>
                 {
-                    // Configuration
+                    // ServiceName
                     return configuration.GetServiceName<NotificationProvider>();
                 });
                 container.RegisterNamed<MockNotificationProvider, NotificationProvider>();
