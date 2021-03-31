@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MDP
 {
-    internal static partial class ComponentContextExtensions
+    public static partial class ComponentContextExtensions
     {
         // Methods
         public static TResult Build<TResult>(this IComponentContext componentContext, Func<TResult> buildAction) where TResult : notnull
@@ -78,20 +78,21 @@ namespace MDP
         }
     }
 
-    internal static partial class ComponentContextExtensions
+    public static partial class ComponentContextExtensions
     {
         // Methods
-        public static TService ResolveNamed<TService>(this IComponentContext componentContext, Func<string> selectAction) where TService : notnull
+        public static TService ResolveNamed<TService>(this IComponentContext componentContext, Func<string> nameAction) 
+            where TService : notnull
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (selectAction == null) throw new ArgumentException(nameof(selectAction));
+            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
 
             #endregion
 
             // ServiceName
-            var serviceName = selectAction();
+            var serviceName = nameAction();
             if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
 
             // Resolve

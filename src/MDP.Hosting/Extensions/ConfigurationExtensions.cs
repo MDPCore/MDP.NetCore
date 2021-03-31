@@ -14,9 +14,27 @@ namespace MDP
         // Constants
         private const string ServiceNameKey = "Name";
 
+        private const string ServiceTypeKey = "Type";
+
+        private const string ServiceConnectionStringNameKey = "ConnectionString";
+
 
         // Methods
-        public static string GetServiceName<TService>(this IConfiguration configuration) where TService : notnull
+        public static string GetServiceName<TService>(this IConfiguration configuration)
+            where TService : class
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException(nameof(configuration));
+
+            #endregion
+
+            // Return
+            return configuration.GetServiceValue<TService, string>(ServiceNameKey);
+        }
+
+        public static string GetServiceType<TService>(this IConfiguration configuration) 
+            where TService : class
         {
             #region Contracts
 
@@ -25,10 +43,47 @@ namespace MDP
             #endregion
 
             // Return
-            return configuration.GetSection<TService>().GetValue<string>(ServiceNameKey);
+            return configuration.GetServiceValue<TService, string>(ServiceTypeKey);
         }
 
-        public static TSetting GetServiceSetting<TService, TSetting>(this IConfiguration configuration) where TService : notnull where TSetting : class, new()
+        public static string GetServiceConnectionString<TService>(this IConfiguration configuration) 
+            where TService : class
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException(nameof(configuration));
+
+            #endregion
+
+            // ServiceConnectionStringName
+            var serviceConnectionStringName = configuration.GetServiceValue<TService, string>(ServiceConnectionStringNameKey);
+            if (string.IsNullOrEmpty(serviceConnectionStringName) == true) throw new InvalidOperationException($"{nameof(serviceConnectionStringName)}=null");
+
+            // Return
+            return configuration.GetConnectionString(serviceConnectionStringName);
+        }
+    }
+
+    public static partial class ConfigurationExtensions
+    {
+        // Methods
+        public static TValue GetServiceValue<TService, TValue>(this IConfiguration configuration, string key)
+           where TService : class
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException(nameof(configuration));
+            if (string.IsNullOrEmpty(key) == true) throw new ArgumentException(nameof(key));
+
+            #endregion
+
+            // Return
+            return configuration.GetServiceSection<TService>().GetValue<TValue>(key);
+        }
+
+        public static TSetting GetServiceSetting<TService, TSetting>(this IConfiguration configuration)
+            where TService : class
+            where TSetting : class, new()
         {
             #region Contracts
 
@@ -37,14 +92,10 @@ namespace MDP
             #endregion
 
             // Return
-            return configuration.GetSection<TService>().Bind<TSetting>();
+            return configuration.GetServiceSection<TService>().Bind<TSetting>();
         }
-    }
 
-    public static partial class ConfigurationExtensions
-    {
-        // Methods
-        public static IConfiguration GetSection<TService>(this IConfiguration configuration) where TService : notnull
+        public static IConfiguration GetServiceSection<TService>(this IConfiguration configuration) where TService : class
         {
             #region Contracts
 
