@@ -89,8 +89,8 @@ namespace CLK.Autofac
     public static partial class ContainerBuilderExtensions
     {
         // Methods 
-        public static IRegistrationBuilder<TImplementation, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementation<TService, TImplementation>(this ContainerBuilder container)
-            where TImplementation : TService
+        public static IRegistrationBuilder<TImplementer, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementer<TService, TImplementer>(this ContainerBuilder container)
+            where TImplementer : TService
             where TService : class
         {
             #region Contracts
@@ -100,12 +100,12 @@ namespace CLK.Autofac
             #endregion
 
             // Return
-            return container.RegisterType<TImplementation>().Named<TService>(typeof(TImplementation).FullName);
+            return container.RegisterType<TImplementer>().Named<TService>(typeof(TImplementer).FullName);
         }
 
-        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<TService, TImplementation>(this ContainerBuilder container, Func<TImplementation> buildAction)
+        public static IRegistrationBuilder<TImplementer, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementer<TService, TImplementer>(this ContainerBuilder container, Func<TImplementer> buildAction)
             where TService : class
-            where TImplementation : class, TService
+            where TImplementer : class, TService
         {
             #region Contracts
 
@@ -115,13 +115,13 @@ namespace CLK.Autofac
             #endregion
 
             // Register
-            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
+            return container.Register(buildAction).Named<TService>(typeof(TImplementer).FullName);
         }
 
-        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<T1, TService, TImplementation>(this ContainerBuilder container, Func<T1, TImplementation> buildAction)
+        public static IRegistrationBuilder<TImplementer, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementer<T1, TService, TImplementer>(this ContainerBuilder container, Func<T1, TImplementer> buildAction)
             where T1 : class
             where TService : class
-            where TImplementation : class, TService
+            where TImplementer : class, TService
         {
             #region Contracts
 
@@ -131,14 +131,14 @@ namespace CLK.Autofac
             #endregion
 
             // Register
-            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
+            return container.Register(buildAction).Named<TService>(typeof(TImplementer).FullName);
         }
 
-        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<T1, T2, TService, TImplementation>(this ContainerBuilder container, Func<T1, T2, TImplementation> buildAction)
+        public static IRegistrationBuilder<TImplementer, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementer<T1, T2, TService, TImplementer>(this ContainerBuilder container, Func<T1, T2, TImplementer> buildAction)
             where T1 : class
             where T2 : class
             where TService : class
-            where TImplementation : class, TService
+            where TImplementer : class, TService
         {
             #region Contracts
 
@@ -148,15 +148,15 @@ namespace CLK.Autofac
             #endregion
 
             // Register
-            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
+            return container.Register(buildAction).Named<TService>(typeof(TImplementer).FullName);
         }
 
-        public static IRegistrationBuilder<TImplementation, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementation<T1, T2, T3, TService, TImplementation>(this ContainerBuilder container, Func<T1, T2, T3, TImplementation> buildAction)
+        public static IRegistrationBuilder<TImplementer, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementer<T1, T2, T3, TService, TImplementer>(this ContainerBuilder container, Func<T1, T2, T3, TImplementer> buildAction)
             where T1 : class
             where T2 : class
             where T3 : class
             where TService : class
-            where TImplementation : class, TService
+            where TImplementer : class, TService
         {
             #region Contracts
 
@@ -166,7 +166,7 @@ namespace CLK.Autofac
             #endregion
 
             // Register
-            return container.Register(buildAction).Named<TService>(typeof(TImplementation).FullName);
+            return container.Register(buildAction).Named<TService>(typeof(TImplementer).FullName);
         }
     }
 

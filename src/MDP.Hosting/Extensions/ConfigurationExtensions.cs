@@ -12,13 +12,15 @@ namespace MDP
     public static partial class ConfigurationExtensions
     {
         // Constants
-        private const string ServiceTypeKey = "Type";
+        private const string ImplementerNameKey = "Implementer";
 
-        private const string ServiceConnectionStringNameKey = "ConnectionString";
+        private const string ConnectionStringNameKey = "ConnectionString";
+
+        private const string ConnectionStringNameDefault = "DefaultConnection";
 
 
         // Methods
-        public static string GetServiceType<TService>(this IConfiguration configuration) 
+        public static string GetImplementer<TService>(this IConfiguration configuration) 
             where TService : class
         {
             #region Contracts
@@ -28,10 +30,10 @@ namespace MDP
             #endregion
 
             // Return
-            return configuration.GetServiceValue<TService, string>(ServiceTypeKey);
+            return configuration.GetValue<TService, string>(ImplementerNameKey);
         }
 
-        public static string GetServiceConnectionString<TService>(this IConfiguration configuration) 
+        public static string GetConnectionString<TService>(this IConfiguration configuration) 
             where TService : class
         {
             #region Contracts
@@ -40,19 +42,20 @@ namespace MDP
 
             #endregion
 
-            // ServiceConnectionStringName
-            var serviceConnectionStringName = configuration.GetServiceValue<TService, string>(ServiceConnectionStringNameKey);
-            if (string.IsNullOrEmpty(serviceConnectionStringName) == true) throw new InvalidOperationException($"{nameof(serviceConnectionStringName)}=null");
+            // ConnectionStringName
+            var connectionStringName = configuration.GetValue<TService, string>(ConnectionStringNameKey);
+            if (string.IsNullOrEmpty(connectionStringName) == true) connectionStringName = ConnectionStringNameDefault;
+            if (string.IsNullOrEmpty(connectionStringName) == true) throw new InvalidOperationException($"{nameof(connectionStringName)}=null");
 
             // Return
-            return configuration.GetConnectionString(serviceConnectionStringName);
+            return configuration.GetConnectionString(connectionStringName);
         }
     }
 
     public static partial class ConfigurationExtensions
     {
         // Methods
-        public static TValue GetServiceValue<TService, TValue>(this IConfiguration configuration, string key)
+        public static TValue GetValue<TService, TValue>(this IConfiguration configuration, string key)
            where TService : class
            where TValue : notnull
         {
@@ -64,10 +67,10 @@ namespace MDP
             #endregion
 
             // Return
-            return configuration.GetServiceSection<TService>().GetValue<TValue>(key);
+            return configuration.GetSection<TService>().GetValue<TValue>(key);
         }
 
-        public static TSetting GetServiceSetting<TService, TSetting>(this IConfiguration configuration)
+        public static TSetting GetSetting<TService, TSetting>(this IConfiguration configuration)
             where TService : class
             where TSetting : class, new()
         {
@@ -78,10 +81,10 @@ namespace MDP
             #endregion
 
             // Return
-            return configuration.GetServiceSection<TService>().Bind<TSetting>();
+            return configuration.GetSection<TService>().Bind<TSetting>();
         }
 
-        public static IConfiguration GetServiceSection<TService>(this IConfiguration configuration)
+        public static IConfiguration GetSection<TService>(this IConfiguration configuration)
             where TService : class
         {
             #region Contracts

@@ -22,7 +22,7 @@ namespace MDP
             return container.RegisterInterface<IConfiguration, TService>(configuration =>
             {
                 // ServiceType
-                var serviceType = configuration.GetServiceType<TService>();
+                var serviceType = configuration.GetImplementer<TService>();
                 if (string.IsNullOrEmpty(serviceType) == true) throw new InvalidOperationException($"{nameof(serviceType)}=null");
 
                 // Return
