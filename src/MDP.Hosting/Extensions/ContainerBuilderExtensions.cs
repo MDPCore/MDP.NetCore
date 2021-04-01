@@ -10,7 +10,7 @@ namespace MDP
     public static partial class ContainerBuilderExtensions
     {
         // Constants
-        public const string ImplementerNameKey = "Implementer";
+        public const string ImplementerNameKey = "Type";
 
 
         // Methods 
@@ -53,12 +53,9 @@ namespace MDP
                 {
                     return componentContext.Build<IConfiguration<TImplementer>, bool>(configuration =>
                     {
-                        // Keyword
-                        if (String.Equals(parameterInfo.Name, ServiceConfigurationExtensions.ConnectionStringNameKey, StringComparison.OrdinalIgnoreCase)) return true;
-
-                        // ParameterValue
-                        var parameterValue = configuration.GetValue<string>(parameterInfo.Name);
-                        if (string.IsNullOrEmpty(parameterValue) == true) return false;
+                        // ParameterValueString
+                        var parameterValueString = configuration.GetValue<string>(parameterInfo.Name);
+                        if (string.IsNullOrEmpty(parameterValueString) == true) return false;
 
                         // Return
                         return true;
@@ -70,15 +67,12 @@ namespace MDP
                 {
                     return componentContext.Build<IConfiguration<TImplementer>, object>(configuration =>
                     {
-                        // Keyword
-                        if (String.Equals(parameterInfo.Name, ServiceConfigurationExtensions.ConnectionStringNameKey, StringComparison.OrdinalIgnoreCase)) return configuration.GetConnectionString();
-
-                        // ParameterValue
-                        var parameterValue = configuration.GetValue<string>(parameterInfo.Name);
-                        if (string.IsNullOrEmpty(parameterValue) == true) return null;
+                        // ParameterValueString
+                        var parameterValueString = configuration.GetValue<string>(parameterInfo.Name);
+                        if (string.IsNullOrEmpty(parameterValueString) == true) return null;
                         
                         // Return
-                        return Convert.ChangeType(parameterValue, parameterInfo.ParameterType);
+                        return Convert.ChangeType(parameterValueString, parameterInfo.ParameterType);
                     });
                 }
 

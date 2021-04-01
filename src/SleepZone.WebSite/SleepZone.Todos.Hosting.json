@@ -1,27 +1,25 @@
 {
   // TodoRepository
   "SleepZone.Todos.TodoRepository": {
-    "Implementer": "SleepZone.Todos.Mocks.MockTodoRepository"
+    // Parameter
+    "Type": "SleepZone.Todos.Mocks.MockTodoRepository",
+
+    // SleepZone.Todos.Accesses.SqlTodoRepository
+    "SleepZone.Todos.Accesses.SqlTodoRepository": {
+      // Parameter
+    }
   },
 
-  "SleepZone.Todos.Mocks.MockTodoRepository": {
+  
 
-  },
-
-  "SleepZone.Todos.Accesses.SqlTodoRepository": {
-
-  },
 
   // SnapshotRepository
   "SleepZone.Todos.SnapshotRepository": {
-    "Implementer": "SleepZone.Todos.Mocks.MockSnapshotRepository"
-  },
-
-  "SleepZone.Todos.Mocks.MockSnapshotRepository": {
-
+    // Parameter
+    "Type": "SleepZone.Todos.Mocks.MockSnapshotRepository"
   },
 
   "SleepZone.Todos.Accesses.SqlSnapshotRepository": {
-
+    // Parameter
   }
 }
