@@ -90,8 +90,8 @@ namespace CLK.Autofac
     {
         // Methods 
         public static IRegistrationBuilder<TImplementer, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementer<TService, TImplementer>(this ContainerBuilder container)
-            where TImplementer : TService
             where TService : class
+            where TImplementer : class, TService
         {
             #region Contracts
 

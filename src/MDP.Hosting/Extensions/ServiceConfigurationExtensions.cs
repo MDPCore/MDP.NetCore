@@ -11,9 +11,9 @@ namespace MDP
     public static partial class ServiceConfigurationExtensions
     {
         // Constants
-        private const string ImplementerNameKey = "Implementer";
+        public const string ImplementerNameKey = "Implementer";
 
-        private const string ConnectionStringNameKey = "ConnectionString";
+        public const string ConnectionStringNameKey = "ConnectionString";
 
         private const string ConnectionStringNameDefault = "DefaultConnection";
 
