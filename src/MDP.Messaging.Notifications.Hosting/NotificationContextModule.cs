@@ -47,11 +47,11 @@ namespace MDP.Messaging.Notifications.Hosting
                 container.RegisterImplementer<RegistrationRepository, MockRegistrationRepository>();
 
                 // SqlRegistrationRepository
-                container.RegisterImplementer<IConfiguration, RegistrationRepository, SqlRegistrationRepository>(configuration =>
+                container.RegisterImplementer<IConfiguration<SqlRegistrationRepository>, RegistrationRepository, SqlRegistrationRepository>(configuration =>
                 {
                     return new SqlRegistrationRepository
                     (
-                        configuration.GetConnectionString<RegistrationRepository>()
+                        configuration.GetConnectionString()
                     );
                 });
             }

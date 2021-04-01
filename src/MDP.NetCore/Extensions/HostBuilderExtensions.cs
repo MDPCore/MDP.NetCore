@@ -36,6 +36,9 @@ namespace MDP.NetCore
             // Container
             hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((container) =>
             {
+                // Service
+                container.AddService();
+
                 // Module
                 container.AddModuleService();
             });
@@ -51,6 +54,18 @@ namespace MDP.NetCore
 
             // Return
             return hostBuilder;
+        }
+
+        private static void AddService(this ContainerBuilder container)
+        {
+            #region Contracts
+
+            if (container == null) throw new ArgumentException(nameof(container));
+
+            #endregion
+
+            // Configuration<TService>
+            container.RegisterGeneric(typeof(Configuration<>)).As(typeof(IConfiguration<>));
         }
 
         private static void AddModuleService(this ContainerBuilder container, string moduleAssemblyFileName = @"*.Hosting.dll")
