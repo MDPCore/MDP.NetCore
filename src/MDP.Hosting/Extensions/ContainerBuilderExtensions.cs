@@ -19,14 +19,14 @@ namespace MDP
             #endregion
 
             // RegisterInterface
-            return container.RegisterInterface<IConfiguration, TService>(configuration =>
+            return container.RegisterInterface<IConfiguration<TService>, TService>(configuration =>
             {
-                // ServiceType
-                var serviceType = configuration.GetImplementer<TService>();
-                if (string.IsNullOrEmpty(serviceType) == true) throw new InvalidOperationException($"{nameof(serviceType)}=null");
+                // ImplementerName
+                var implementerName = configuration.GetImplementerName();
+                if (string.IsNullOrEmpty(implementerName) == true) throw new InvalidOperationException($"{nameof(implementerName)}=null");
 
                 // Return
-                return serviceType;
+                return implementerName;
             });
         }
     }

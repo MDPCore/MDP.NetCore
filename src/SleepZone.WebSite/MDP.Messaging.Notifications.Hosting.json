@@ -1,13 +1,4 @@
 {
-  "MDP.Messaging.Notifications": {
-    "RegistrationRepository": {
-      "Implementer": "MDP.Messaging.Notifications.Accesses.SqlRegistrationRepository"
-    },
-    "NotificationProvider": {
-      "Implementer": "MDP.Messaging.Notifications.Firebase.FirebaseNotificationProvider"
-    }
-  },
-
   // RegistrationRepository
   "MDP.Messaging.Notifications.RegistrationRepository": {
     "Implementer": "MDP.Messaging.Notifications.Mocks.MockRegistrationRepository"
@@ -18,6 +9,19 @@
   },
 
   "MDP.Messaging.Notifications.Accesses.SqlRegistrationRepository": {
+
+  },
+
+  // NotificationProvider
+  "MDP.Messaging.Notifications.NotificationProvider": {
+    "Implementer": "MDP.Messaging.Notifications.Firebase.FirebaseNotificationProvider"
+  },
+
+  "MDP.Messaging.Notifications.Mocks.MockNotificationProvider": {
+
+  },
+
+  "MDP.Messaging.Notifications.Firebase.FirebaseNotificationProvider": {
 
   }
 }

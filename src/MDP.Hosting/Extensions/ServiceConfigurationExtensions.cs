@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CLK.Configuration;
 
 namespace MDP
 {
@@ -20,7 +19,7 @@ namespace MDP
 
 
         // Methods
-        public static string GetImplementer(this IServiceConfiguration configuration) 
+        public static string GetImplementerName(this IServiceConfiguration configuration) 
         {
             #region Contracts
 

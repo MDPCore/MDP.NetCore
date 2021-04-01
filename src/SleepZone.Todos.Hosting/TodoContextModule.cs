@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using CLK.Autofac;
 using MDP;
+using MDP.Quartz;
 using Quartz;
 using SleepZone.Todos.Accesses;
 using SleepZone.Todos.Mocks;

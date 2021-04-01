@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using System;
 
-namespace MDP
+namespace MDP.Quartz
 {
     public static class ServiceCollectionExtensions
     {

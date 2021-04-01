@@ -7,13 +7,13 @@ namespace CLK.Autofac
     public static partial class ContainerBuilderExtensions
     {
         // Methods  
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container, Func<string> typeAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container, Func<string> implementerNameAction)
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
+            if (implementerNameAction == null) throw new ArgumentException(nameof(implementerNameAction));
 
             #endregion
 
@@ -21,18 +21,18 @@ namespace CLK.Autofac
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(implementerNameAction));
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, TService>(this ContainerBuilder container, Func<T1, string> typeAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, TService>(this ContainerBuilder container, Func<T1, string> implementerNameAction)
             where T1 : class
             where TService : class
         {
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
+            if (implementerNameAction == null) throw new ArgumentException(nameof(implementerNameAction));
 
             #endregion
 
@@ -40,11 +40,11 @@ namespace CLK.Autofac
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(implementerNameAction));
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> typeAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, string> implementerNameAction)
             where T1 : class
             where T2 : class
             where TService : class
@@ -52,7 +52,7 @@ namespace CLK.Autofac
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
+            if (implementerNameAction == null) throw new ArgumentException(nameof(implementerNameAction));
 
             #endregion
 
@@ -60,11 +60,11 @@ namespace CLK.Autofac
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(implementerNameAction));
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> typeAction)
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, string> implementerNameAction)
             where T1 : class
             where T2 : class
             where T3 : class
@@ -73,7 +73,7 @@ namespace CLK.Autofac
             #region Contracts
 
             if (container == null) throw new ArgumentException(nameof(container));
-            if (typeAction == null) throw new ArgumentException(nameof(typeAction));
+            if (implementerNameAction == null) throw new ArgumentException(nameof(implementerNameAction));
 
             #endregion
 
@@ -81,7 +81,7 @@ namespace CLK.Autofac
             return container.Register<TService>(componentContext =>
             {
                 // Resolve
-                return componentContext.ResolveNamed<TService>(() => componentContext.Build(typeAction));
+                return componentContext.ResolveNamed<TService>(() => componentContext.Build(implementerNameAction));
             });
         }
     }

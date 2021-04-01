@@ -35,7 +35,7 @@ namespace MDP
                 if (serviceType == null) throw new InvalidOperationException($"{nameof(serviceType)}=null");
 
                 // ServiceSectionKey
-                var serviceSectionKey = $"{serviceType.Namespace}:{serviceType.Name}";
+                var serviceSectionKey = serviceType.FullName;
                 if (string.IsNullOrEmpty(serviceSectionKey) == true) throw new InvalidOperationException($"{nameof(serviceSectionKey)}=null");
 
                 // ServiceSectionValue
