@@ -11,26 +11,12 @@ namespace MDP
     public static partial class ServiceConfigurationExtensions
     {
         // Constants
-        public const string ImplementerNameKey = "Implementer";
-
         public const string ConnectionStringNameKey = "ConnectionString";
 
         private const string ConnectionStringNameDefault = "DefaultConnection";
 
 
         // Methods
-        public static string GetImplementerName(this IServiceConfiguration configuration) 
-        {
-            #region Contracts
-
-            if (configuration == null) throw new ArgumentException(nameof(configuration));
-            
-            #endregion
-
-            // Return
-            return configuration.ServiceSection.GetValue<string>(ImplementerNameKey);
-        }
-
         public static string GetConnectionString(this IServiceConfiguration configuration) 
         {
             #region Contracts
