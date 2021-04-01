@@ -7,27 +7,28 @@ namespace MDP.Messaging.Notifications
     public class Notification
     {
         // Properties
-        public string Title { get; set; }
+        public string Type { get; set; } = null;
 
-        public string Text { get; set; }
+        public string Title { get; set; } = null;
 
-        public string Icon { get; set; }
+        public string Text { get; set; } = null;
 
-        public string Uri { get; set; }
+        public Dictionary<string, string> Metadata { get; } = new Dictionary<string, string>();
 
 
         // Methods
         public bool IsValid()
         {
+            // Type
+            if (string.IsNullOrEmpty(this.Type) == true) return false;
+
             // Title
             if (string.IsNullOrEmpty(this.Title) == true) return false;
 
             // Text
             if (string.IsNullOrEmpty(this.Text) == true) return false;
 
-            // Icon
-
-            // Uri
+            // Metadata
 
 
             // Return

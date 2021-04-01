@@ -4,7 +4,7 @@ using Quartz;
 using System;
 using System.Reflection;
 
-namespace MDP
+namespace MDP.Quartz
 {
     public static class ContainerBuilderExtensions
     {

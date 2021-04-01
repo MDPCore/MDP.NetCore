@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MDP.NetCore;
 
-namespace MDP
+namespace MDP.NetCore
 {
     public static class ServiceCollectionExtensions
     {

@@ -1,13 +1,11 @@
 ﻿using Autofac;
+using CLK.Autofac;
+using MDP;
+using MDP.Quartz;
+using Quartz;
+using SleepZone.Todos.Accesses;
 using SleepZone.Todos.Mocks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MDP;
-using SleepZone.Todos.Accesses;
-using Quartz;
 
 namespace SleepZone.Todos.Hosting
 {
@@ -45,33 +43,19 @@ namespace SleepZone.Todos.Hosting
             }
 
             // TodoRepository
+            container.RegisterInterface<TodoRepository>();
             {
-                // TodoRepository
-                container.RegisterNamed<TodoRepository>(componentContext =>
-                {
-                    return "Mock";
-                });
-
-                // SqlTodoRepository
-                container.RegisterType<SqlTodoRepository>().Named<TodoRepository>("Sql");
-
-                // MockTodoRepository
-                container.RegisterType<MockTodoRepository>().Named<TodoRepository>("Mock");
+                // Implementer
+                container.RegisterImplementer<TodoRepository, MockTodoRepository>();
+                container.RegisterImplementer<TodoRepository, SqlTodoRepository>();
             }
 
             // SnapshotRepository
+            container.RegisterInterface<SnapshotRepository>();
             {
-                // SnapshotRepository
-                container.RegisterNamed<SnapshotRepository>(componentContext =>
-                {
-                    return "Mock";
-                });
-
-                // SqlSnapshotRepository
-                container.RegisterType<SqlSnapshotRepository>().Named<SnapshotRepository>("Sql");
-
-                // MockSnapshotRepository
-                container.RegisterType<MockSnapshotRepository>().Named<SnapshotRepository>("Mock");
+                // Implementer
+                container.RegisterImplementer<SnapshotRepository, MockSnapshotRepository>();
+                container.RegisterImplementer<SnapshotRepository, SqlSnapshotRepository>();
             }
         }
     }

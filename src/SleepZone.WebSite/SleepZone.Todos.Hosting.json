@@ -1,0 +1,25 @@
+{
+  // TodoRepository
+  "SleepZone.Todos.TodoRepository": {
+    // Parameter
+    "Type": "SleepZone.Todos.Mocks.MockTodoRepository",
+
+    // SleepZone.Todos.Accesses.SqlTodoRepository
+    "SleepZone.Todos.Accesses.SqlTodoRepository": {
+      // Parameter
+    }
+  },
+
+  
+
+
+  // SnapshotRepository
+  "SleepZone.Todos.SnapshotRepository": {
+    // Parameter
+    "Type": "SleepZone.Todos.Mocks.MockSnapshotRepository"
+  },
+
+  "SleepZone.Todos.Accesses.SqlSnapshotRepository": {
+    // Parameter
+  }
+}

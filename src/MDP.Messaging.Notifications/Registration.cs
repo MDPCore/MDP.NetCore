@@ -7,11 +7,11 @@ namespace MDP.Messaging.Notifications
     public class Registration
     {
         // Properties
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null;
 
-        public string DeviceType { get; set; }
+        public string DeviceType { get; set; } = null;
 
-        public string Token { get; set; }
+        public string Token { get; set; } = null;
 
 
         // Methods

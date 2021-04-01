@@ -1,0 +1,23 @@
+{
+  // RegistrationRepository
+  "MDP.Messaging.Notifications.RegistrationRepository": {
+    // Parameter
+    "Type": "MDP.Messaging.Notifications.Accesses.SqlRegistrationRepository"
+  },
+
+  "MDP.Messaging.Notifications.Accesses.SqlRegistrationRepository": {
+    // Parameter
+    "ConnectionString": "[ConnectionStrings]DefaultConnection"
+  },
+
+
+  // NotificationProvider
+  "MDP.Messaging.Notifications.NotificationProvider": {
+    // Parameter
+    "Type": "MDP.Messaging.Notifications.Firebase.FirebaseNotificationProvider"
+  },
+
+  "MDP.Messaging.Notifications.Firebase.FirebaseNotificationProvider": {
+    // Parameter
+  }
+}

@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDP.Messaging.Notifications.Hosting\MDP.Messaging.Notifications.Hosting.csproj" />
     <ProjectReference Include="..\SleepZone.Todos.Hosting\SleepZone.Todos.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.Messaging.Notifications.Hosting\MDP.Messaging.Notifications.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.Messaging.Notifications.Services\MDP.Messaging.Notifications.Services.csproj" />
+    <ProjectReference Include="..\SleepZone.Todos.Services\SleepZone.Todos.Services.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

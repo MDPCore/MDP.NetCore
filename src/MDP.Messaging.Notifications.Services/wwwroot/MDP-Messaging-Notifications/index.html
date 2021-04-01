@@ -102,16 +102,17 @@
 
                 // Variables
                 var userId = document.getElementById("send.userId").value;
+                var type = document.getElementById("send.type").value;
                 var title = document.getElementById("send.title").value;
                 var text = document.getElementById("send.text").value;
-                var uri = document.getElementById("send.uri").value;
 
                 // ActionModel
-                var actionModel = {};
+				var actionModel = {};
+                actionModel.notification = {};
+                actionModel.notification.type = type;
+                actionModel.notification.title = title;
+                actionModel.notification.text = text;
                 actionModel.userId = userId;
-                actionModel.title = title;
-                actionModel.text = text;
-                actionModel.uri = uri;
 
                 // Post
 				postRequst("/MDP-Messaging-Notifications/notification/send", actionModel).then(function (response) {
@@ -158,22 +159,22 @@
 
 	<!--Register-->
 	<input type="button" id="register.button" value="Register" /><br />
-	<input type="text" id="register.userId" value="Clark" /><br />
+	UserId:<input type="text" id="register.userId" value="Clark" /><br />
 	<div id="register.result"></div><br />
 	<hr />
 
 	<!--Unregister-->
 	<input type="button" id="unregister.button" value="Unregister" /><br />
-	<input type="text" id="unregister.userId" value="Clark" /><br />
+	UserId:<input type="text" id="unregister.userId" value="Clark" /><br />
 	<div id="unregister.result"></div><br />
 	<hr />
 
 	<!--Send-->
 	<input type="button" id="send.button" value="Send" /><br />
-	<input type="text" id="send.userId" value="Clark" /><br />
-	<input type="text" id="send.title" value="Title001" /><br />
-	<input type="text" id="send.text" value="Text002" /><br />
-	<input type="text" id="send.uri" value="https://tw.yahoo.com/" /><br />
+	UserId:<input type="text" id="send.userId" value="Clark" /><br />
+	Type:<input type="text" id="send.type" value="demo" /><br />
+	Title:<input type="text" id="send.title" value="Title001" /><br />
+	Text:<input type="text" id="send.text" value="Text002" /><br />
 	<div id="send.result"></div><br />
 	<hr />
 

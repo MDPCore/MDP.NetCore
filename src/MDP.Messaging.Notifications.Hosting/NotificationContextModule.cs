@@ -9,6 +9,8 @@ using MDP;
 using MDP.Messaging.Notifications.Accesses;
 using MDP.Messaging.Notifications.Firebase;
 using System.IO;
+using Microsoft.Extensions.Configuration;
+using CLK.Autofac;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
@@ -39,33 +41,19 @@ namespace MDP.Messaging.Notifications.Hosting
             }
 
             // RegistrationRepository
+            container.RegisterInterface<RegistrationRepository>();
             {
-                // RegistrationRepository
-                container.RegisterNamed<RegistrationRepository>(componentContext =>
-                {
-                    return "Mock";
-                });
-
-                // SqlRegistrationRepository
-                container.RegisterType<SqlRegistrationRepository>().Named<RegistrationRepository>("Sql");
-
-                // MockRegistrationRepository
-                container.RegisterType<MockRegistrationRepository>().Named<RegistrationRepository>("Mock");
+                // Implementer
+                container.RegisterImplementer<RegistrationRepository, MockRegistrationRepository>();
+                container.RegisterImplementer<RegistrationRepository, SqlRegistrationRepository>();
             }
 
             // NotificationProvider
+            container.RegisterInterface<NotificationProvider>();
             {
-                // NotificationProvider
-                container.RegisterNamed<NotificationProvider>(componentContext =>
-                {
-                    return "Firebase";
-                });
-
-                // SqlNotificationProvider
-                container.RegisterType<FirebaseNotificationProvider>().Named<NotificationProvider>("Firebase");
-
-                // MockNotificationProvider
-                container.RegisterType<MockNotificationProvider>().Named<NotificationProvider>("Mock");
+                // Implementer
+                container.RegisterImplementer<NotificationProvider, MockNotificationProvider>();
+                container.RegisterImplementer<NotificationProvider, FirebaseNotificationProvider>();
             }
         }
     }
