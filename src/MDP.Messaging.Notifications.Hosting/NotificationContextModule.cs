@@ -43,26 +43,16 @@ namespace MDP.Messaging.Notifications.Hosting
             // RegistrationRepository
             container.RegisterInterface<RegistrationRepository>();
             {
-                // MockRegistrationRepository
+                // Implementer
                 container.RegisterImplementer<RegistrationRepository, MockRegistrationRepository>();
-
-                // SqlRegistrationRepository
-                container.RegisterImplementer<IConfiguration<SqlRegistrationRepository>, RegistrationRepository, SqlRegistrationRepository>(configuration =>
-                {
-                    return new SqlRegistrationRepository
-                    (
-                        configuration.GetConnectionString()
-                    );
-                });
+                container.RegisterImplementer<RegistrationRepository, SqlRegistrationRepository>();
             }
 
             // NotificationProvider
             container.RegisterInterface<NotificationProvider>();
             {
-                // MockNotificationProvider
+                // Implementer
                 container.RegisterImplementer<NotificationProvider, MockNotificationProvider>();
-
-                // FirebaseNotificationProvider
                 container.RegisterImplementer<NotificationProvider, FirebaseNotificationProvider>();
             }
         }

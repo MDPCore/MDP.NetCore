@@ -45,20 +45,16 @@ namespace SleepZone.Todos.Hosting
             // TodoRepository
             container.RegisterInterface<TodoRepository>();
             {
-                // MockTodoRepository
+                // Implementer
                 container.RegisterImplementer<TodoRepository, MockTodoRepository>();
-
-                // SqlTodoRepository
                 container.RegisterImplementer<TodoRepository, SqlTodoRepository>();
             }
 
             // SnapshotRepository
             container.RegisterInterface<SnapshotRepository>();
             {
-                // MockSnapshotRepository
+                // Implementer
                 container.RegisterImplementer<SnapshotRepository, MockSnapshotRepository>();
-
-                // SqlSnapshotRepository
                 container.RegisterImplementer<SnapshotRepository, SqlSnapshotRepository>();
             }
         }

@@ -9,6 +9,10 @@ namespace MDP
 {
     public static partial class ContainerBuilderExtensions
     {
+        // Constants
+        public const string ImplementerNameKey = "Implementer";
+
+
         // Methods 
         public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterInterface<TService>(this ContainerBuilder container)
             where TService : class
@@ -23,7 +27,7 @@ namespace MDP
             return container.RegisterInterface<IConfiguration<TService>, TService>(configuration =>
             {
                 // ImplementerName
-                var implementerName = configuration.GetImplementerName();
+                var implementerName = configuration.GetValue<string>(ImplementerNameKey);
                 if (string.IsNullOrEmpty(implementerName) == true) throw new InvalidOperationException($"{nameof(implementerName)}=null");
 
                 // Return
@@ -31,7 +35,7 @@ namespace MDP
             });
         }
 
-        public static IRegistrationBuilder<TImplementer, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementerXXX<TService, TImplementer>(this ContainerBuilder container)
+        public static IRegistrationBuilder<TImplementer, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementer<TService, TImplementer>(this ContainerBuilder container)
             where TService : class
             where TImplementer : class, TService
         {
@@ -49,6 +53,9 @@ namespace MDP
                 {
                     return componentContext.Build<IConfiguration<TImplementer>, bool>(configuration =>
                     {
+                        // Keyword
+                        if (String.Equals(parameterInfo.Name, ServiceConfigurationExtensions.ConnectionStringNameKey, StringComparison.OrdinalIgnoreCase)) return true;
+
                         // ParameterValue
                         var parameterValue = configuration.GetValue<string>(parameterInfo.Name);
                         if (string.IsNullOrEmpty(parameterValue) == true) return false;
@@ -62,14 +69,14 @@ namespace MDP
                 (parameterInfo, componentContext) =>
                 {
                     return componentContext.Build<IConfiguration<TImplementer>, object>(configuration =>
-                    {                        
-                        // ParameterValue
-                        var parameterValue = configuration.GetValue<string>(parameterInfo.Name);
-                        if (string.IsNullOrEmpty(parameterValue) == true) return null;
-
+                    {
                         // Keyword
                         if (String.Equals(parameterInfo.Name, ServiceConfigurationExtensions.ConnectionStringNameKey, StringComparison.OrdinalIgnoreCase)) return configuration.GetConnectionString();
 
+                        // ParameterValue
+                        var parameterValue = configuration.GetValue<string>(parameterInfo.Name);
+                        if (string.IsNullOrEmpty(parameterValue) == true) return null;
+                        
                         // Return
                         return Convert.ChangeType(parameterValue, parameterInfo.ParameterType);
                     });

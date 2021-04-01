@@ -5,11 +5,11 @@
   },
 
   "MDP.Messaging.Notifications.Mocks.MockRegistrationRepository": {
-
+   
   },
 
   "MDP.Messaging.Notifications.Accesses.SqlRegistrationRepository": {
-
+    
   },
 
   // NotificationProvider

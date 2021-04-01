@@ -89,20 +89,6 @@ namespace CLK.Autofac
     public static partial class ContainerBuilderExtensions
     {
         // Methods 
-        public static IRegistrationBuilder<TImplementer, ConcreteReflectionActivatorData, SingleRegistrationStyle> RegisterImplementer<TService, TImplementer>(this ContainerBuilder container)
-            where TService : class
-            where TImplementer : class, TService
-        {
-            #region Contracts
-
-            if (container == null) throw new ArgumentException(nameof(container));
-
-            #endregion
-
-            // Return
-            return container.RegisterType<TImplementer>().Named<TService>(typeof(TImplementer).FullName);
-        }
-
         public static IRegistrationBuilder<TImplementer, SimpleActivatorData, SingleRegistrationStyle> RegisterImplementer<TService, TImplementer>(this ContainerBuilder container, Func<TImplementer> buildAction)
             where TService : class
             where TImplementer : class, TService
