@@ -159,7 +159,7 @@ namespace CLK.Autofac
     public static partial class ContainerBuilderExtensions
     {
         // Methods   
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<TService>(this ContainerBuilder container, Func<TService> buildAction) 
+        private static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<TService>(this ContainerBuilder container, Func<TService> buildAction) 
             where TService : class
         {
             #region Contracts
@@ -177,7 +177,7 @@ namespace CLK.Autofac
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, TService>(this ContainerBuilder container, Func<T1, TService> buildAction)
+        private static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, TService>(this ContainerBuilder container, Func<T1, TService> buildAction)
             where T1 : class
             where TService : class
         {
@@ -196,7 +196,7 @@ namespace CLK.Autofac
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, TService> buildAction)
+        private static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, TService>(this ContainerBuilder container, Func<T1, T2, TService> buildAction)
             where T1 : class
             where T2 : class
             where TService : class
@@ -216,7 +216,7 @@ namespace CLK.Autofac
             });
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, TService> buildAction)
+        private static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> Register<T1, T2, T3, TService>(this ContainerBuilder container, Func<T1, T2, T3, TService> buildAction)
             where T1 : class
             where T2 : class
             where T3 : class

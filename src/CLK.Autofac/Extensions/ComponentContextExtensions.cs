@@ -87,7 +87,7 @@ namespace CLK.Autofac
     public static partial class ComponentContextExtensions
     {
         // Methods
-        public static TService ResolveNamed<TService>(this IComponentContext componentContext, Func<string> nameAction) 
+        internal static TService ResolveNamed<TService>(this IComponentContext componentContext, Func<string> nameAction) 
             where TService : class
         {
             #region Contracts
@@ -105,7 +105,7 @@ namespace CLK.Autofac
             return componentContext.ResolveNamed<TService>(serviceName);
         }
 
-        public static TService ResolveRequired<TService>(this IComponentContext componentContext) 
+        internal static TService ResolveRequired<TService>(this IComponentContext componentContext) 
             where TService : class
         {
             #region Contracts
