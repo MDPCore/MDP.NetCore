@@ -24,7 +24,7 @@ namespace MDP.Hosting
             #endregion
 
             // RegisterInterface
-            return container.RegisterInterface<IConfiguration<TService>, TService>(configuration =>
+            return container.RegisterInterface<Configuration<TService>, TService>(configuration =>
             {
                 // ImplementerName
                 var implementerName = configuration.GetValue<string>(ImplementerNameKey);
@@ -51,7 +51,7 @@ namespace MDP.Hosting
                 // ParameterSelector
                 (parameterInfo, componentContext) =>
                 {
-                    return componentContext.Build<IConfiguration<TImplementer>, bool>(configuration =>
+                    return componentContext.Build<Configuration<TImplementer>, bool>(configuration =>
                     {
                         // ParameterValueString
                         var parameterValueString = configuration.GetValue<string>(parameterInfo.Name);
@@ -65,7 +65,7 @@ namespace MDP.Hosting
                 // ValueProvider
                 (parameterInfo, componentContext) =>
                 {
-                    return componentContext.Build<IConfiguration<TImplementer>, object>(configuration =>
+                    return componentContext.Build<Configuration<TImplementer>, object>(configuration =>
                     {
                         // ParameterValueString
                         var parameterValueString = configuration.GetValue<string>(parameterInfo.Name);

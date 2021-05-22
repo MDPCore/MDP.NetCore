@@ -66,7 +66,7 @@ namespace MDP.NetCore
             #endregion
 
             // Configuration<TService>
-            container.RegisterGeneric(typeof(Configuration<>)).As(typeof(IConfiguration<>)).SingleInstance();
+            container.RegisterGeneric(typeof(Configuration<>)).As(typeof(Configuration<>)).SingleInstance();
         }
 
         private static void AddModuleService(this ContainerBuilder container, string moduleAssemblyFileName = @"*.Hosting.dll")
