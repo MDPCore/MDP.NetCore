@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SleepZone.Todos.Services
 {
-    [MDP.Module("SleepZone-Todos")]
+    [MDP.AspNetCore.Module("SleepZone-Todos")]
     public partial class SnapshotController : Controller
     {
         // Fields

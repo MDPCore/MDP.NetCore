@@ -11,10 +11,11 @@ using MDP.Messaging.Notifications.Firebase;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using CLK.Autofac;
+using MDP.Hosting;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
-    public class NotificationContextModule : MDP.Module
+    public class NotificationContextModule : MDP.Hosting.Module
     {
         // Methods
         protected override void ConfigureContainer(ContainerBuilder container)

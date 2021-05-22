@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP
+namespace MDP.Hosting
 {
     public class Configuration<TService> : IConfiguration<TService>
         where TService : class

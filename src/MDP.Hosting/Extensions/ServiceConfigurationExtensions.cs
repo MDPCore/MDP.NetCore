@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MDP
+namespace MDP.Hosting
 {
     public static partial class ServiceConfigurationExtensions
     {

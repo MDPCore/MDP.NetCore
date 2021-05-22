@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using MDP.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -80,12 +81,12 @@ namespace MDP.NetCore
             // ModuleAssembly
             var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
             if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-            moduleAssemblyList.ForEach(moduleAssembly => container.RegisterAssemblyModules<MDP.Module>(moduleAssembly));
+            moduleAssemblyList.ForEach(moduleAssembly => container.RegisterAssemblyModules<MDP.Hosting.Module>(moduleAssembly));
 
             // EntryAssembly
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
-            container.RegisterAssemblyModules<MDP.Module>(entryAssembly);
+            container.RegisterAssemblyModules<MDP.Hosting.Module>(entryAssembly);
         }
 
         private static void AddModuleConfiguration(this IConfigurationBuilder configuration, string moduleConfigFileName = @"*.Hosting.json")

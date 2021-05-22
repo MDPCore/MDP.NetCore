@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MDP
+namespace MDP.AspNetCore
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class ModuleAttribute : ApiControllerAttribute, IRouteValueProvider, IRouteTemplateProvider

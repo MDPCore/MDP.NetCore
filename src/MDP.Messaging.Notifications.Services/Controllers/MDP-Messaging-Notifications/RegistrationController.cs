@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MDP.Messaging.Notifications
 {
-    [MDP.Module("MDP-Messaging-Notifications")]
+    [MDP.AspNetCore.Module("MDP-Messaging-Notifications")]
     public partial class RegistrationController : Controller
     {
         // Fields

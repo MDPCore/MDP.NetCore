@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP
+namespace MDP.Hosting
 {
     public abstract class Module : Autofac.Module
     {

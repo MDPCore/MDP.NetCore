@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using CLK.Autofac;
 using MDP;
+using MDP.Hosting;
 using MDP.Quartz;
 using Quartz;
 using SleepZone.Todos.Accesses;
@@ -9,7 +10,7 @@ using System;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class TodoContextModule : MDP.Module
+    public class TodoContextModule : MDP.Hosting.Module
     {
         // Methods
         protected override void ConfigureContainer(ContainerBuilder container)

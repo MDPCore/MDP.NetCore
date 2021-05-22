@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Runtime.InteropServices;
 
-namespace MDP
+namespace MDP.Hosting
 {
     public static partial class ContainerBuilderExtensions
     {

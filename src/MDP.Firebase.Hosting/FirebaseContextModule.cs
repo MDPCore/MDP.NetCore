@@ -12,7 +12,7 @@ using FirebaseAdmin.Messaging;
 
 namespace MDP.Firebase.Hosting
 {
-    public class FirebaseContextModule : MDP.Module
+    public class FirebaseContextModule : MDP.Hosting.Module
     {
         // Methods
         protected override void ConfigureContainer(ContainerBuilder container)

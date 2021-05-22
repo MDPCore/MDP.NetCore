@@ -48,7 +48,7 @@ namespace MDP.Quartz.Lab
             }
         }
 
-        public class SettingContextModule : MDP.Module
+        public class SettingContextModule : MDP.Hosting.Module
         {
             // Methods
             protected override void ConfigureContainer(ContainerBuilder container)
