@@ -31,9 +31,9 @@ namespace MDP.Firebase.Hosting
             container.Register<FirebaseApp>(componentContext =>
             {
                 // ConfigPath
-                var configPath = Path.Combine(entryDirectory, @"firebase-admin.json");
+                var configPath = Path.Combine(entryDirectory, @"MDP.Firebase.Admin.json");
                 if (string.IsNullOrEmpty(configPath) == true) throw new InvalidOperationException($"{nameof(configPath)}=null");
-                if (File.Exists(configPath) == false) return null;
+                if (File.Exists(configPath) == false) throw new InvalidOperationException($"{configPath} not found");
 
                 // Create
                 return FirebaseApp.Create(new AppOptions()

@@ -57,11 +57,28 @@ namespace MDP.Hosting
 
         // Methods
         public TValue GetValue<TValue>(string valueKey)
-           where TValue : notnull
+          where TValue : notnull
         {
             #region Contracts
 
             if (string.IsNullOrEmpty(valueKey) == true) throw new ArgumentException(nameof(valueKey));
+
+            #endregion
+
+            // ValueObject
+            var valueObject = this.GetValue(valueKey, typeof(TValue));
+            if (valueObject == null) return default(TValue);
+
+            // Return
+            return (TValue)valueObject;
+        }
+
+        public object GetValue(string valueKey, Type valueType)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(valueKey) == true) throw new ArgumentException(nameof(valueKey));
+            if (valueType == null) throw new ArgumentException(nameof(valueType));
 
             #endregion
 
@@ -71,7 +88,7 @@ namespace MDP.Hosting
             // ServiceValueString
             var serviceValueString = this.GetServiceValueString(valueKey);
             if (string.IsNullOrEmpty(serviceValueString) == false) valueString = serviceValueString;
-            if (string.IsNullOrEmpty(serviceValueString) == true) return default(TValue);
+            if (string.IsNullOrEmpty(serviceValueString) == true) return null;
 
             // GlobalValueString
             var globalValueString = this.GetGlobalValueString(serviceValueString);
@@ -80,10 +97,11 @@ namespace MDP.Hosting
             // ValueString
             if (string.IsNullOrEmpty(valueString) == true)
             {
-                return default(TValue);
+                return null;
             }
-            return (TValue)Convert.ChangeType(valueString, typeof(TValue));
+            return Convert.ChangeType(valueString, valueType);
         }
+
 
         private string GetServiceValueString(string valueKey)
         {

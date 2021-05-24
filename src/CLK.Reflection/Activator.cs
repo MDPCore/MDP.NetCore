@@ -58,7 +58,7 @@ namespace CLK.Reflection
             );
         }
 
-        public static TInstanceType CreateInstance<TInstanceType>(IServiceProvider serviceProvider, Dictionary<string, object> parameters = null) where TInstanceType : class
+        private static TInstanceType CreateInstance<TInstanceType>(IServiceProvider serviceProvider, Dictionary<string, object> parameters = null) where TInstanceType : class
         {
             #region Contracts
 

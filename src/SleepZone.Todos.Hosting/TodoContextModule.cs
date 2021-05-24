@@ -2,8 +2,6 @@
 using CLK.Autofac;
 using MDP;
 using MDP.Hosting;
-using MDP.Quartz;
-using Quartz;
 using SleepZone.Todos.Accesses;
 using SleepZone.Todos.Mocks;
 using System;
@@ -22,11 +20,11 @@ namespace SleepZone.Todos.Hosting
             #endregion
 
             // TodoContextJob
-            container.ScheduleJob<TodoContextJob>((trigger) =>
-            {
-                // Trigger
-                trigger.WithCronSchedule("0/1 * * * * ?");
-            });
+            //container.ScheduleJob<TodoContextJob>((trigger) =>
+            //{
+            //    // Trigger
+            //    trigger.WithCronSchedule("0/1 * * * * ?");
+            //});
 
             // TodoContext
             {

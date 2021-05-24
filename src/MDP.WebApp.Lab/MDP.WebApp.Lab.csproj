@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.ModuleLab.Hosting\MDP.ModuleLab.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.ModuleLab.Services\MDP.ModuleLab.Services.csproj" />
+    <ProjectReference Include="..\MDP.WebApp\MDP.WebApp.csproj" />
+  </ItemGroup>
+
+</Project>

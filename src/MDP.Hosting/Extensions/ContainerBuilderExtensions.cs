@@ -24,14 +24,14 @@ namespace MDP.Hosting
             #endregion
 
             // RegisterInterface
-            return container.RegisterInterface<Configuration<TService>, TService>(configuration =>
+            return container.Register<IComponentContext, Configuration<TService>, TService>((componentContext, configuration)=>
             {
                 // ImplementerName
                 var implementerName = configuration.GetValue<string>(ImplementerNameKey);
                 if (string.IsNullOrEmpty(implementerName) == true) throw new InvalidOperationException($"{nameof(implementerName)}=null");
 
-                // Return
-                return implementerName;
+                // Resolve
+                return componentContext.ResolveNamed<TService>(implementerName);
             });
         }
 
@@ -46,36 +46,12 @@ namespace MDP.Hosting
             #endregion
 
             // Return
-            return container.RegisterType<TImplementer>().WithParameter
+            return container.RegisterType<ConfigurationParameterDictionary<TService>, TImplementer>
             (
-                // ParameterSelector
-                (parameterInfo, componentContext) =>
+                parameter => 
                 {
-                    return componentContext.Build<Configuration<TImplementer>, bool>(configuration =>
-                    {
-                        // ParameterValueString
-                        var parameterValueString = configuration.GetValue<string>(parameterInfo.Name);
-                        if (string.IsNullOrEmpty(parameterValueString) == true) return false;
-
-                        // Return
-                        return true;
-                    });
-                },
-
-                // ValueProvider
-                (parameterInfo, componentContext) =>
-                {
-                    return componentContext.Build<Configuration<TImplementer>, object>(configuration =>
-                    {
-                        // ParameterValueString
-                        var parameterValueString = configuration.GetValue<string>(parameterInfo.Name);
-                        if (string.IsNullOrEmpty(parameterValueString) == true) return null;
-                        
-                        // Return
-                        return Convert.ChangeType(parameterValueString, parameterInfo.ParameterType);
-                    });
+                    return parameter;
                 }
-
             ).Named<TService>(typeof(TImplementer).FullName);
         }
     }

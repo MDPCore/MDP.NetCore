@@ -10,7 +10,7 @@ namespace SleepZone.Todos.Services
     public class HomeController : Controller
     {
         // Methods
-        public ActionResult<string> Index()
+        public ActionResult Index()
         {
             return View();
         }

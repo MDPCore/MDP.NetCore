@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CLK.Autofac
 {
-    public static partial class ComponentContextExtensions
+    internal static partial class ComponentContextExtensions
     {
         // Methods
         public static TResult Build<TResult>(this IComponentContext componentContext, Func<TResult> buildAction)
@@ -84,28 +84,10 @@ namespace CLK.Autofac
         }
     }
 
-    public static partial class ComponentContextExtensions
+    internal static partial class ComponentContextExtensions
     {
         // Methods
-        internal static TService ResolveNamed<TService>(this IComponentContext componentContext, Func<string> nameAction) 
-            where TService : class
-        {
-            #region Contracts
-
-            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (nameAction == null) throw new ArgumentException(nameof(nameAction));
-
-            #endregion
-
-            // ServiceName
-            var serviceName = nameAction();
-            if (string.IsNullOrEmpty(serviceName) == true) throw new InvalidOperationException($"{nameof(serviceName)}=null");
-
-            // Resolve
-            return componentContext.ResolveNamed<TService>(serviceName);
-        }
-
-        internal static TService ResolveRequired<TService>(this IComponentContext componentContext) 
+        private static TService ResolveRequired<TService>(this IComponentContext componentContext) 
             where TService : class
         {
             #region Contracts

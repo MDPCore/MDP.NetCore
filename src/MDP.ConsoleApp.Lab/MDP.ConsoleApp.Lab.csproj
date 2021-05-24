@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.ConsoleApp\MDP.ConsoleApp.csproj" />
+    <ProjectReference Include="..\MDP.ModuleLab.Hosting\MDP.ModuleLab.Hosting.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
-    <ProjectReference Include="..\MDP.Quartz\MDP.Quartz.csproj" />
     <ProjectReference Include="..\SleepZone.Todos\SleepZone.Todos.csproj" />
     <ProjectReference Include="..\SleepZone.Todos.Mocks\SleepZone.Todos.Mocks.csproj" />
     <ProjectReference Include="..\SleepZone.Todos.Accesses\SleepZone.Todos.Accesses.csproj" />

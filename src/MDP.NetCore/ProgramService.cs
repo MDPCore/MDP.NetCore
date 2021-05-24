@@ -39,7 +39,7 @@ namespace MDP.NetCore
             return Task.Run(() =>
             {
                 // Run
-                CLK.Reflection.Activator.ExecuteMethod<TProgram>(this._serviceProvider, "Run");
+                CLK.Reflection.Activator.ExecuteMethod<TProgram>(_serviceProvider, "Run");
 
                 // End
                 _hostApplicationLifetime.StopApplication();

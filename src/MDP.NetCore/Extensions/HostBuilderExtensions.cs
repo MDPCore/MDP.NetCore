@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace MDP.NetCore
 {
-    public static class HostBuilderExtensions
+    public static partial class HostBuilderExtensions
     {
         // Methods
-        public static IHostBuilder ConfigureMDP(this IHostBuilder hostBuilder, Action<MdpBuilder> configureAction = null)
+        public static IHostBuilder ConfigureNetCore(this IHostBuilder hostBuilder, Action<IHostBuilder> configureAction = null)
         {
             #region Contracts
 
@@ -44,13 +44,10 @@ namespace MDP.NetCore
                 container.AddModuleService();
             });
 
-            // MDP
+            // Expand
             if (configureAction != null)
             {
-                configureAction(new MdpBuilder
-                (
-                    hostBuilder
-                ));
+                configureAction(hostBuilder);
             }
 
             // Return
@@ -67,6 +64,7 @@ namespace MDP.NetCore
 
             // Configuration<TService>
             container.RegisterGeneric(typeof(Configuration<>)).As(typeof(Configuration<>)).SingleInstance();
+            container.RegisterGeneric(typeof(ConfigurationParameterDictionary<>)).As(typeof(ConfigurationParameterDictionary<>)).SingleInstance();
         }
 
         private static void AddModuleService(this ContainerBuilder container, string moduleAssemblyFileName = @"*.Hosting.dll")
