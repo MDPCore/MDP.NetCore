@@ -19,7 +19,7 @@ namespace MDP.AspNetCore
     public static class HostBuilderExtensions
     {
         // Methods
-        public static IHostBuilder ConfigureAspNetCore<TStartup>(this IHostBuilder hostBuilder, Action<IWebHostBuilder> configureAction = null) where TStartup : class
+        public static IHostBuilder ConfigureAspNetCore<TStartup>(this IHostBuilder hostBuilder, Action<IMvcBuilder> configureAction = null) where TStartup : class
         {
             #region Contracts
 
@@ -27,17 +27,11 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // WebHostDefaults
+            // Defaults
             hostBuilder.ConfigureWebHostDefaults(webHostBuilder =>
             {
                 // Startup
                 webHostBuilder.UseStartup<TStartup>();
-
-                // Expand
-                if (configureAction != null)
-                {
-                    configureAction(webHostBuilder);
-                }
             });
 
             // Services
@@ -47,66 +41,122 @@ namespace MDP.AspNetCore
                 var mvcBuilder = services.AddMvc();
                 if (mvcBuilder == null) throw new InvalidOperationException($"{nameof(mvcBuilder)}=null");
 
-                // MvcOptions
-                mvcBuilder.AddMvcOptions((options) =>
+                // Module
+                mvcBuilder.AddModule();
+
+                // ApiVersioning
+                mvcBuilder.AddApiVersioning();
+
+                // ContentNegotiation
+                mvcBuilder.AddContentNegotiation();
+
+                // Expand
+                if (configureAction != null)
                 {
-                    // ApiOutput
-                    {
-                        // NotAcceptable
-                        options.ReturnHttpNotAcceptable = true;
-
-                        // BrowserAcceptHeader
-                        options.RespectBrowserAcceptHeader = true;
-
-                        // OutputFormatters
-                        {
-                            // XML
-                            options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
-
-                            // Null
-                            options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
-                            options.OutputFormatters.Insert(0, new NullOutputFormatter());
-                        }
-                    }
-                });
-
-                // RazorOptions
-                mvcBuilder.AddRazorOptions((options) =>
-                {
-                    // ViewLocationFormats
-                    {
-                        // Area
-                        options.AreaViewLocationFormats.Add("/Views/{2}/{1}/{0}.cshtml");
-                        options.AreaViewLocationFormats.Add("/Views/{2}/Shared/{0}.cshtml");
-                    }
-                });
-
-                // ApiVersion
-                mvcBuilder.Services.AddApiVersioning((options) =>
-                {
-                    // Report
-                    options.ReportApiVersions = true;
-
-                    // Reader
-                    options.ApiVersionReader = new HeaderApiVersionReader("api-version");
-
-                    // Default
-                    options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                });
-
-                // ModuleWebAsset
-                mvcBuilder.AddModuleWebAsset();
-
-                // ModuleApplicationPart
-                mvcBuilder.AddModuleApplicationPart();
+                    configureAction(mvcBuilder);
+                }
             });
 
             // Return
             return hostBuilder;
         }
 
-        private static void AddModuleWebAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.Services.dll")
+
+        private static void AddApiVersioning(this IMvcBuilder mvcBuilder)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+
+            #endregion
+
+            // ApiVersioning
+            mvcBuilder.Services.AddApiVersioning((options) =>
+            {
+                // Report
+                options.ReportApiVersions = true;
+
+                // Reader
+                options.ApiVersionReader = new HeaderApiVersionReader("api-version");
+
+                // Default
+                options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+            });
+        }
+
+        private static void AddContentNegotiation(this IMvcBuilder mvcBuilder)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+
+            #endregion
+
+            // MvcOptions
+            mvcBuilder.AddMvcOptions((options) =>
+            {
+                // ApiOutput
+                {
+                    // NotAcceptable
+                    options.ReturnHttpNotAcceptable = true;
+
+                    // BrowserAcceptHeader
+                    options.RespectBrowserAcceptHeader = true;
+
+                    // OutputFormatters
+                    {
+                        // XML
+                        options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+
+                        // Null
+                        options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+                        options.OutputFormatters.Insert(0, new NullOutputFormatter());
+                    }
+                }
+            });
+        }
+
+
+        private static void AddModule(this IMvcBuilder mvcBuilder)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+
+            #endregion
+
+            // Location
+            mvcBuilder.AddModuleLocation();
+
+            // Asset
+            mvcBuilder.AddModuleAsset();
+
+            // ApplicationPart
+            mvcBuilder.AddModuleApplicationPart();
+        }
+
+        private static void AddModuleLocation(this IMvcBuilder mvcBuilder)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+
+            #endregion
+
+            // RazorOptions
+            mvcBuilder.AddRazorOptions((options) =>
+            {
+                // ViewLocation
+                {
+                    // Area
+                    options.AreaViewLocationFormats.Add("/Views/{2}/{1}/{0}.cshtml");
+                    options.AreaViewLocationFormats.Add("/Views/{2}/Shared/{0}.cshtml");
+                }
+            });
+        }
+
+        private static void AddModuleAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.Services.dll")
         {
             #region Contracts
 
@@ -141,7 +191,7 @@ namespace MDP.AspNetCore
                 }
             }
 
-            // Add
+            // StaticFileOptions
             mvcBuilder.Services.AddOptions<StaticFileOptions>().Configure<IWebHostEnvironment>((options, hostEnvironment) =>
             {
                 // FileProvider
@@ -176,7 +226,7 @@ namespace MDP.AspNetCore
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
 
-            // Add
+            // ApplicationPart
             foreach (var moduleAssembly in moduleAssemblyList)
             {
                 if (registeredAssemblyList.Contains(moduleAssembly) == false)

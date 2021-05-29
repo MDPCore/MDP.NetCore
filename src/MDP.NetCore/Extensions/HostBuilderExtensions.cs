@@ -27,22 +27,8 @@ namespace MDP.NetCore
             // Autofac
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-            // Configuration
-            hostBuilder.ConfigureAppConfiguration((configuration) =>
-            {
-                // Module
-                configuration.AddModuleConfiguration();
-            });
-
-            // Container
-            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((container) =>
-            {
-                // Service
-                container.AddService();
-
-                // Module
-                container.AddModuleService();
-            });
+            // Module
+            hostBuilder.AddModule();
 
             // Expand
             if (configureAction != null)
@@ -54,57 +40,72 @@ namespace MDP.NetCore
             return hostBuilder;
         }
 
-        private static void AddService(this ContainerBuilder container)
+
+        private static void AddModule(this IHostBuilder hostBuilder)
         {
             #region Contracts
 
-            if (container == null) throw new ArgumentException(nameof(container));
+            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
 
             #endregion
 
-            // Configuration<TService>
-            container.RegisterGeneric(typeof(Configuration<>)).As(typeof(Configuration<>)).SingleInstance();
-            container.RegisterGeneric(typeof(ConfigurationParameterDictionary<>)).As(typeof(ConfigurationParameterDictionary<>)).SingleInstance();
+            // Configuration
+            hostBuilder.AddModuleConfiguration();
+
+            // Service
+            hostBuilder.AddModuleService();
         }
 
-        private static void AddModuleService(this ContainerBuilder container, string moduleAssemblyFileName = @"*.Hosting.dll")
+        private static void AddModuleService(this IHostBuilder hostBuilder, string moduleAssemblyFileName = @"*.Hosting.dll")
         {
             #region Contracts
 
-            if (container == null) throw new ArgumentException(nameof(container));
+            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
             if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
 
             #endregion
 
-            // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
-            if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-            moduleAssemblyList.ForEach(moduleAssembly => container.RegisterAssemblyModules<MDP.Hosting.Module>(moduleAssembly));
+            // Container
+            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((container) =>
+            {
+                // Configuration
+                container.RegisterGeneric(typeof(Configuration<>)).As(typeof(Configuration<>)).SingleInstance();
+                container.RegisterGeneric(typeof(ConfigurationParameterDictionary<>)).As(typeof(ConfigurationParameterDictionary<>)).SingleInstance();
 
-            // EntryAssembly
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
-            container.RegisterAssemblyModules<MDP.Hosting.Module>(entryAssembly);
+                // ModuleAssembly
+                var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
+                if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
+                moduleAssemblyList.ForEach(moduleAssembly => container.RegisterAssemblyModules<MDP.Hosting.Module>(moduleAssembly));
+
+                // EntryAssembly
+                var entryAssembly = Assembly.GetEntryAssembly();
+                if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
+                container.RegisterAssemblyModules<MDP.Hosting.Module>(entryAssembly);
+            });
         }
 
-        private static void AddModuleConfiguration(this IConfigurationBuilder configuration, string moduleConfigFileName = @"*.Hosting.json")
+        private static void AddModuleConfiguration(this IHostBuilder hostBuilder, string moduleConfigFileName = @"*.Hosting.json")
         {
             #region Contracts
 
-            if (configuration == null) throw new ArgumentException(nameof(configuration));
+            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
             if (string.IsNullOrEmpty(moduleConfigFileName) == true) throw new ArgumentException(nameof(moduleConfigFileName));
 
             #endregion
 
-            // ModuleConfigFile
-            var moduleConfigFileList = CLK.IO.File.GetAllFile(moduleConfigFileName);
-            if (moduleConfigFileList == null) throw new InvalidOperationException($"{nameof(moduleConfigFileList)}=null");
-            moduleConfigFileList.ForEach(moduleConfigFile => configuration.AddJsonFile(moduleConfigFile.FullName));
+            // AppConfiguration
+            hostBuilder.ConfigureAppConfiguration((configuration) =>
+            {
+                // ModuleConfigFile
+                var moduleConfigFileList = CLK.IO.File.GetAllFile(moduleConfigFileName);
+                if (moduleConfigFileList == null) throw new InvalidOperationException($"{nameof(moduleConfigFileList)}=null");
+                moduleConfigFileList.ForEach(moduleConfigFile => configuration.AddJsonFile(moduleConfigFile.FullName));
 
-            // EntryConfigFile
-            var entryConfigFileName = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "json");
-            if (string.IsNullOrEmpty(entryConfigFileName) == true) throw new ArgumentException(nameof(entryConfigFileName));
-            if (File.Exists(entryConfigFileName) == true) configuration.AddJsonFile(entryConfigFileName);
+                // EntryConfigFile
+                var entryConfigFileName = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "json");
+                if (string.IsNullOrEmpty(entryConfigFileName) == true) throw new ArgumentException(nameof(entryConfigFileName));
+                if (File.Exists(entryConfigFileName) == true) configuration.AddJsonFile(entryConfigFileName);
+            });
         }
     }
 }
