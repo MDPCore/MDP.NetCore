@@ -2,7 +2,10 @@
 using Autofac.Extensions.DependencyInjection;
 using MDP.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,8 +30,12 @@ namespace MDP.NetCore
             // Autofac
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
+            // Service
+            hostBuilder.RemoveConsoleLogger();
+
             // Module
-            hostBuilder.AddModule();
+            hostBuilder.AddModuleConfiguration();
+            hostBuilder.AddModuleService();
 
             // Expand
             if (configureAction != null)
@@ -41,7 +48,8 @@ namespace MDP.NetCore
         }
 
 
-        private static void AddModule(this IHostBuilder hostBuilder)
+        // Service
+        public static void AddConsoleLogger(this IHostBuilder hostBuilder)
         {
             #region Contracts
 
@@ -49,13 +57,33 @@ namespace MDP.NetCore
 
             #endregion
 
-            // Configuration
-            hostBuilder.AddModuleConfiguration();
-
-            // Service
-            hostBuilder.AddModuleService();
+            hostBuilder.ConfigureServices((context, collection) =>
+            {
+                collection.AddLogging(loggingBuilder =>
+                {
+                    // Add
+                    loggingBuilder.AddConsole();
+                });
+            });
         }
 
+        private static void RemoveConsoleLogger(this IHostBuilder hostBuilder)
+        {
+            #region Contracts
+
+            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
+
+            #endregion
+
+            // Services
+            hostBuilder.ConfigureServices((hostContext, services) =>
+            {
+                // Remove
+                services.RemoveService<ConsoleLoggerProvider>();
+            });
+        }
+
+        // Module
         private static void AddModuleService(this IHostBuilder hostBuilder, string moduleAssemblyFileName = @"*.Hosting.dll")
         {
             #region Contracts

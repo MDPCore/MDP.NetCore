@@ -37,6 +37,10 @@ namespace MDP.WebApp
 
             }
 
+            // Auth
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             // Endpoints
             app.UseEndpoints(endpoints =>
             {

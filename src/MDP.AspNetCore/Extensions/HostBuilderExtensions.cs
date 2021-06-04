@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace MDP.AspNetCore
@@ -41,14 +43,18 @@ namespace MDP.AspNetCore
                 var mvcBuilder = services.AddMvc();
                 if (mvcBuilder == null) throw new InvalidOperationException($"{nameof(mvcBuilder)}=null");
 
-                // Module
-                mvcBuilder.AddModule();
+                // Service
+                mvcBuilder.AddHttpContextAccessor();
 
-                // ApiVersioning
+                // Format
+                mvcBuilder.AddUnicodeRanges();
                 mvcBuilder.AddApiVersioning();
-
-                // ContentNegotiation
                 mvcBuilder.AddContentNegotiation();
+
+                // Module
+                mvcBuilder.AddModuleLocation();
+                mvcBuilder.AddModuleAsset();
+                mvcBuilder.AddModuleApplicationPart();
 
                 // Expand
                 if (configureAction != null)
@@ -62,6 +68,36 @@ namespace MDP.AspNetCore
         }
 
 
+        // Service
+        private static void AddHttpContextAccessor(this IMvcBuilder mvcBuilder)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+
+            #endregion
+
+            // JsonOptions
+            mvcBuilder.Services.AddHttpContextAccessor();
+        }
+
+        // Format
+        private static void AddUnicodeRanges(this IMvcBuilder mvcBuilder)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+
+            #endregion
+
+            // JsonOptions
+            mvcBuilder.AddJsonOptions(options =>
+            {
+                // Encoder
+                options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs);
+            });
+        }
+        
         private static void AddApiVersioning(this IMvcBuilder mvcBuilder)
         {
             #region Contracts
@@ -117,25 +153,7 @@ namespace MDP.AspNetCore
             });
         }
 
-
-        private static void AddModule(this IMvcBuilder mvcBuilder)
-        {
-            #region Contracts
-
-            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
-
-            #endregion
-
-            // Location
-            mvcBuilder.AddModuleLocation();
-
-            // Asset
-            mvcBuilder.AddModuleAsset();
-
-            // ApplicationPart
-            mvcBuilder.AddModuleApplicationPart();
-        }
-
+        // Module
         private static void AddModuleLocation(this IMvcBuilder mvcBuilder)
         {
             #region Contracts
