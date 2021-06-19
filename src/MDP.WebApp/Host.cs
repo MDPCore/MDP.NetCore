@@ -30,8 +30,8 @@ namespace MDP.WebApp
                    })
                    .ConfigureNetCore(hostBuilder =>
                    {
-                       // Nothing
-
+                       // Logging
+                       hostBuilder.RemoveConsoleLogger();
                    });
         }
     }

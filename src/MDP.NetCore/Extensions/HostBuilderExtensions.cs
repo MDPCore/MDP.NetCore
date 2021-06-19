@@ -30,9 +30,6 @@ namespace MDP.NetCore
             // Autofac
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-            // Service
-            hostBuilder.RemoveConsoleLogger();
-
             // Module
             hostBuilder.AddModuleConfiguration();
             hostBuilder.AddModuleService();
@@ -67,7 +64,7 @@ namespace MDP.NetCore
             });
         }
 
-        private static void RemoveConsoleLogger(this IHostBuilder hostBuilder)
+        public static void RemoveConsoleLogger(this IHostBuilder hostBuilder)
         {
             #region Contracts
 
