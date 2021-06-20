@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MDP.ModuleLab;
 using MDP.AspNetCore;
 
-namespace MDP.WebApp.Lab
+namespace MDP.WebApp.Lab.Temp
 {
     [Module("MDP-Module02")]
     public class HomeController : Controller

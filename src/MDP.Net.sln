@@ -83,6 +83,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.ModuleLab.Hosting", "MD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.ModuleLab.Services", "MDP.ModuleLab.Services\MDP.ModuleLab.Services.csproj", "{F9ACBFAD-E9D8-43D9-8BF1-F6BB575C8146}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.JwtBearer", "MDP.AspNetCore.Authentication.JwtBearer\MDP.AspNetCore.Authentication.JwtBearer.csproj", "{AA2D69FE-0FD5-45BC-A2DD-0D644DAD14B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.External", "MDP.AspNetCore.Authentication.External\MDP.AspNetCore.Authentication.External.csproj", "{AD5410AE-1D3E-4E3B-9C97-0CD18755F4E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication", "MDP.AspNetCore.Authentication\MDP.AspNetCore.Authentication.csproj", "{8E888209-2FA1-400C-84A9-314EB7E35AC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -225,6 +231,18 @@ Global
 		{F9ACBFAD-E9D8-43D9-8BF1-F6BB575C8146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9ACBFAD-E9D8-43D9-8BF1-F6BB575C8146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9ACBFAD-E9D8-43D9-8BF1-F6BB575C8146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA2D69FE-0FD5-45BC-A2DD-0D644DAD14B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA2D69FE-0FD5-45BC-A2DD-0D644DAD14B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA2D69FE-0FD5-45BC-A2DD-0D644DAD14B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA2D69FE-0FD5-45BC-A2DD-0D644DAD14B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD5410AE-1D3E-4E3B-9C97-0CD18755F4E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD5410AE-1D3E-4E3B-9C97-0CD18755F4E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD5410AE-1D3E-4E3B-9C97-0CD18755F4E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD5410AE-1D3E-4E3B-9C97-0CD18755F4E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E888209-2FA1-400C-84A9-314EB7E35AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E888209-2FA1-400C-84A9-314EB7E35AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E888209-2FA1-400C-84A9-314EB7E35AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E888209-2FA1-400C-84A9-314EB7E35AC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -265,6 +283,9 @@ Global
 		{9CDBE7AE-BD0D-49C7-90C2-3373132AA0DB} = {A43B3A02-E5AB-46A8-811A-2ECDFC14A6CE}
 		{F6972737-BE65-47B4-A9DA-0D8AA64F5D93} = {A43B3A02-E5AB-46A8-811A-2ECDFC14A6CE}
 		{F9ACBFAD-E9D8-43D9-8BF1-F6BB575C8146} = {A43B3A02-E5AB-46A8-811A-2ECDFC14A6CE}
+		{AA2D69FE-0FD5-45BC-A2DD-0D644DAD14B1} = {37601B01-BB27-4AE9-B721-5936148BFFB8}
+		{AD5410AE-1D3E-4E3B-9C97-0CD18755F4E5} = {37601B01-BB27-4AE9-B721-5936148BFFB8}
+		{8E888209-2FA1-400C-84A9-314EB7E35AC2} = {37601B01-BB27-4AE9-B721-5936148BFFB8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25EFCCC9-D06F-4E4F-812E-9C006F6A319C}

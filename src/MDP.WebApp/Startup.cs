@@ -1,3 +1,7 @@
+using MDP.AspNetCore.Authentication;
+using MDP.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +17,61 @@ namespace MDP.WebApp
     public class Startup
     {
         // Methods
+        public void ConfigureServices(IServiceCollection services)
+        {
+            #region Contracts
+
+            if (services == null) throw new ArgumentException(nameof(services));
+
+            #endregion
+
+            // Config
+            var issuer = "MDP.WebApp";
+            var signKey = "12345678901234567890123456789012";
+
+            // Authentication   
+            services.AddAuthentication(options =>
+            {
+                // DefaultScheme
+                options.DefaultScheme = PolicyAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddPolicy(options =>
+            {
+                // DefaultScheme
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                // AuthenticateSchemePolicy
+                options.AuthenticateSchemePolicy = context =>
+                {
+                    // JwtBearer
+                    if (context.HasJwtBearer() == true) return JwtBearerDefaults.AuthenticationScheme;
+
+                    // Default
+                    return options.DefaultScheme;
+                };
+            })
+            .AddCookie(options =>
+            {
+                // Action
+                options.LoginPath = new PathString("/Account/Login");
+                options.AccessDeniedPath = options.LoginPath;
+            })
+            .AddJwtBearer(options =>
+            {
+                // Decode
+                options.Issuer = issuer;
+                options.SignKey = signKey;
+            });
+
+            // SecurityTokenFactory
+            services.AddSecurityTokenFactory(options =>
+            {
+                // Encoded
+                options.Issuer = issuer;
+                options.SignKey = signKey;
+            });
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             #region Contracts
@@ -31,14 +90,16 @@ namespace MDP.WebApp
             // StaticFile
             app.UseStaticFiles();
 
-            // Routing
+            // Authentication
+            app.UseAuthentication();
+
+            // Routing            
             app.UseRouting();
             {
 
             }
 
-            // Auth
-            app.UseAuthentication();
+            // Authorization
             app.UseAuthorization();
 
             // Endpoints
