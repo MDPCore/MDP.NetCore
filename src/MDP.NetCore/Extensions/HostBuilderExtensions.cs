@@ -30,6 +30,9 @@ namespace MDP.NetCore
             // Autofac
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
+            // Service
+            hostBuilder.AddHttpClient();
+
             // Module
             hostBuilder.AddModuleConfiguration();
             hostBuilder.AddModuleService();
@@ -46,6 +49,23 @@ namespace MDP.NetCore
 
 
         // Service
+        public static void AddHttpClient(this IHostBuilder hostBuilder)
+        {
+            #region Contracts
+
+            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
+
+            #endregion
+
+            // Services
+            hostBuilder.ConfigureServices((context, services) =>
+            {
+                // Add
+                services.AddHttpClient();
+            });
+        }
+
+        // Logger
         public static void AddConsoleLogger(this IHostBuilder hostBuilder)
         {
             #region Contracts
@@ -54,9 +74,11 @@ namespace MDP.NetCore
 
             #endregion
 
-            hostBuilder.ConfigureServices((context, collection) =>
+            // Services
+            hostBuilder.ConfigureServices((context, services) =>
             {
-                collection.AddLogging(loggingBuilder =>
+                // Logger
+                services.AddLogging(loggingBuilder =>
                 {
                     // Add
                     loggingBuilder.AddConsole();
@@ -73,7 +95,7 @@ namespace MDP.NetCore
             #endregion
 
             // Services
-            hostBuilder.ConfigureServices((hostContext, services) =>
+            hostBuilder.ConfigureServices((context, services) =>
             {
                 // Remove
                 services.RemoveService<ConsoleLoggerProvider>();

@@ -1,4 +1,5 @@
 using MDP.AspNetCore.Authentication;
+using MDP.AspNetCore.Authentication.External;
 using MDP.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,23 +51,41 @@ namespace MDP.WebApp
                     return options.DefaultScheme;
                 };
             })
+            .AddJwtBearer(options =>
+            {
+                // Decode
+                options.Issuer = issuer;
+                options.SignKey = signKey;
+            })
             .AddCookie(options =>
             {
                 // Action
                 options.LoginPath = new PathString("/Account/Login");
                 options.AccessDeniedPath = options.LoginPath;
             })
-            .AddJwtBearer(options =>
+            .AddExternalCookie(options =>
             {
-                // Decode
-                options.Issuer = issuer;
-                options.SignKey = signKey;
+                // Action
+                options.CallbackPath = new PathString("/Account/ExternalSignIn");
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddGoogle(options =>
+            {
+                // Client
+                options.ClientId = @"";
+                options.ClientSecret = @"";
+            })
+            .AddFacebook(options =>
+            {
+                // Client
+                options.ClientId = @"";
+                options.ClientSecret = @"";
             });
 
             // SecurityTokenFactory
             services.AddSecurityTokenFactory(options =>
             {
-                // Encoded
+                // Encode
                 options.Issuer = issuer;
                 options.SignKey = signKey;
             });

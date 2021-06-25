@@ -1,4 +1,5 @@
 ﻿using MDP.AspNetCore.Authentication.JwtBearer;
+using MDP.AspNetCore.Authentication.External;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MDP.WebApp.Lab
+namespace MDP.WebApp
 {
     public partial class AccountController : Controller
     {
@@ -32,7 +33,6 @@ namespace MDP.WebApp.Lab
 
 
         // Methods
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl = @"/")
         {
@@ -40,33 +40,7 @@ namespace MDP.WebApp.Lab
             if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
 
             // Return
-            return View();
-        }
-
-        [AllowAnonymous]
-        public async Task<ActionResult> Login(string userName, string password = null, string returnUrl = @"/")
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(userName) == true) throw new ArgumentException(nameof(userName));
-
-            #endregion
-
-            // Require
-            if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
-
-            // Validate Password
-            // ...
-
-            // ClaimIdentity
-            var claimIdentity = new ClaimsIdentity("Password");
-            claimIdentity.AddClaim(new Claim(ClaimTypes.Name, userName));
-
-            // SignIn
-            await this.HttpContext.SignInAsync(new ClaimsPrincipal(claimIdentity));
-
-            // Redirect
-            return this.Redirect(returnUrl);
+            return View(@"Index");
         }
 
         [AllowAnonymous]
@@ -83,6 +57,44 @@ namespace MDP.WebApp.Lab
         }
     }
 
+    public partial class AccountController : Controller
+    {
+        // Methods
+        [AllowAnonymous]
+        public async Task<ActionResult> ExternalLogin(string externalScheme, string returnUrl = @"/")
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(externalScheme) == true) throw new ArgumentException(nameof(externalScheme));
+
+            #endregion
+
+            // Require
+            if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
+
+            // ExternalChallenge
+            return await this.HttpContext.ExternalChallengeAsync(externalScheme, returnUrl);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ExternalSignIn(string returnUrl = @"/")
+        {
+            // Require
+            if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
+
+            // ClaimsIdentity
+            var claimsIdentity = await this.HttpContext.ExternalAuthenticateAsync();
+            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}==null");
+
+            // SignIn
+            await this.HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
+            await this.HttpContext.ExternalSignOutAsync();
+
+            // Redirect
+            return this.Redirect(returnUrl);
+        }
+    }
+
     // GetUser
     public partial class AccountController : Controller
     {
@@ -96,10 +108,15 @@ namespace MDP.WebApp.Lab
 
             #endregion
 
+            // ClaimIdentity
+            var claimIdentity = this.User.Identity as ClaimsIdentity;
+            if (claimIdentity == null) throw new InvalidOperationException($"{nameof(claimIdentity)}=null");
+
             // UserModel
             var user = new UserModel();
-            user.UserName = this.User.Identity.Name;
-            user.AuthenticationType = this.User.Identity.AuthenticationType;
+            user.AuthenticationType = claimIdentity.AuthenticationType;
+            user.UserId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            user.UserName = claimIdentity.FindFirst(ClaimTypes.Name)?.Value;
 
             // Return
             return (new GetUserResultModel()
@@ -125,9 +142,11 @@ namespace MDP.WebApp.Lab
         public class UserModel
         {
             // Properties
-            public string UserName { get; set; }
-
             public string AuthenticationType { get; set; }
+
+            public string UserId { get; set; }
+
+            public string UserName { get; set; }
         }
     }
 

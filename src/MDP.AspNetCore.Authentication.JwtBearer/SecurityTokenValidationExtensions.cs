@@ -10,10 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace MDP.AspNetCore.Authentication.JwtBearer
 {
-    public static class JwtBearerExtensions
+    public static class SecurityTokenValidationExtensions
     {
         // Methods
         public static AuthenticationBuilder AddJwtBearer(this AuthenticationBuilder builder, Action<SecurityTokenValidationOptions> configureOptions = null)
@@ -37,38 +38,43 @@ namespace MDP.AspNetCore.Authentication.JwtBearer
 
             #endregion
 
-            // ValidationOptions
+            // AuthenticationOptions
             if (configureOptions != null) builder.Services.Configure(authenticationScheme, configureOptions);
 
-            // JwtBearer
-            builder.Services.AddOptions<JwtBearerOptions>(authenticationScheme).Configure<IOptionsMonitor<SecurityTokenValidationOptions>>((jwtOptions, validationOptionsMonitor) =>
+            // JwtBearerScheme
+            builder.Services.AddOptions<JwtBearerOptions>(authenticationScheme).Configure<IOptionsMonitor<SecurityTokenValidationOptions>>((jwtBearerOptions, authenticationOptionsMonitor) =>
             {
-                // ValidationOptions
-                var validationOptions = validationOptionsMonitor.Get(authenticationScheme);
-                if (validationOptions == null) throw new InvalidOperationException($"{nameof(validationOptions)}=null");
+                // AuthenticationOptions
+                var authenticationOptions = authenticationOptionsMonitor.Get(authenticationScheme);
+                if (authenticationOptions == null) throw new InvalidOperationException($"{nameof(authenticationOptions)}=null");
 
-                // ValidationParameters
-                jwtOptions.TokenValidationParameters = new SecurityTokenValidationParameters(jwtOptions.TokenValidationParameters)
+                // jwtBearerOptions.SecurityTokenValidators
+                {
+                    jwtBearerOptions.SecurityTokenValidators.Clear();
+                    jwtBearerOptions.SecurityTokenValidators.Add(new SecurityTokenValidationHandler());
+                }
+
+                // jwtBearerOptions.ValidationParameters
                 {
                     // Setting
-                    AuthenticationType = "JwtBearer",
+                    jwtBearerOptions.TokenValidationParameters.AuthenticationType = "JwtBearer";
 
                     // Issuer
-                    ValidateIssuer = true,
-                    ValidIssuer = validationOptions.Issuer,
+                    jwtBearerOptions.TokenValidationParameters.ValidateIssuer = true;
+                    jwtBearerOptions.TokenValidationParameters.ValidIssuer = authenticationOptions.Issuer;
 
                     // Audience
-                    ValidateAudience = false,
-                    ValidAudience = null,
+                    jwtBearerOptions.TokenValidationParameters.ValidateAudience = false;
+                    jwtBearerOptions.TokenValidationParameters.ValidAudience = null;
 
                     // Lifetime
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
+                    jwtBearerOptions.TokenValidationParameters.ValidateLifetime = true;
+                    jwtBearerOptions.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
 
                     // Signing                        
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(validationOptions.SignKey)),
-                };
+                    jwtBearerOptions.TokenValidationParameters.ValidateIssuerSigningKey = true;
+                    jwtBearerOptions.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationOptions.SignKey));
+                }
             });
             builder.AddJwtBearer(authenticationScheme, null, null);
 

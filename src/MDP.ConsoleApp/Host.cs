@@ -45,7 +45,7 @@ namespace MDP.ConsoleApp
                        hostBuilder.RemoveConsoleLogger();
 
                        // Services
-                       hostBuilder.ConfigureServices((hostContext, services) =>
+                       hostBuilder.ConfigureServices((context, services) =>
                        {
                            // Program
                            services.AddSingleton<IHostedService, ProgramService<TProgram>>();

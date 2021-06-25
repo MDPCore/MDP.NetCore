@@ -37,7 +37,7 @@ namespace MDP.AspNetCore
             });
 
             // Services
-            hostBuilder.ConfigureServices((hostContext, services) =>
+            hostBuilder.ConfigureServices((context, services) =>
             {
                 // MvcBuilder
                 var mvcBuilder = services.AddMvc();
@@ -174,7 +174,7 @@ namespace MDP.AspNetCore
             });
         }
 
-        private static void AddModuleAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.Services.dll")
+        private static void AddModuleAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.Services.dll|*.Services.Views.dll")
         {
             #region Contracts
 
@@ -187,15 +187,37 @@ namespace MDP.AspNetCore
             var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
             if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
 
+            // RegisteredAssembly
+            var registeredAssemblyList = new List<Assembly>();
+            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
+            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
+
+            // AssetAssembly
+            var assetAssemblyList = new List<Assembly>();
+            foreach(var moduleAssembly in moduleAssemblyList)
+            {
+                if(assetAssemblyList.Contains(moduleAssembly)==false)
+                {
+                    assetAssemblyList.Add(moduleAssembly);
+                }
+            }
+            foreach (var registeredAssembly in registeredAssemblyList)
+            {
+                if (assetAssemblyList.Contains(registeredAssembly) == false)
+                {
+                    assetAssemblyList.Add(registeredAssembly);
+                }
+            }
+
             // FileProviderList
             var fileProviderList = new List<IFileProvider>();
-            foreach (var moduleAssembly in moduleAssemblyList)
+            foreach (var assetAssembly in assetAssemblyList)
             {
                 // FileProvider
                 IFileProvider fileProvider = null;
                 try
                 {
-                    fileProvider = new ManifestEmbeddedFileProvider(moduleAssembly, @"wwwroot");
+                    fileProvider = new ManifestEmbeddedFileProvider(assetAssembly, @"wwwroot");
                 }
                 catch
                 {

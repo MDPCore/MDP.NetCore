@@ -3,19 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\clk.lab.js" />
-    <Content Remove="wwwroot\firebase-init.js" />
-    <Content Remove="wwwroot\firebase-messaging-sw.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="wwwroot\clk.lab.js" />
-    <EmbeddedResource Include="wwwroot\firebase-init.js" />
-    <EmbeddedResource Include="wwwroot\firebase-messaging-sw.js" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\MDP.Messaging.Notifications.Hosting\MDP.Messaging.Notifications.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications.Services\MDP.Messaging.Notifications.Services.csproj" />

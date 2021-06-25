@@ -1,13 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDP.AspNetCore.Authentication.JwtBearer\MDP.AspNetCore.Authentication.JwtBearer.csproj" />
-    <ProjectReference Include="..\MDP.AspNetCore.Authentication\MDP.AspNetCore.Authentication.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\**\*" />
+    <EmbeddedResource Include="wwwroot\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MDP.AspNetCore\MDP.AspNetCore.csproj" />
+    <ProjectReference Include="..\MDP.AspNetCore.Authentication\MDP.AspNetCore.Authentication.csproj" />
+    <ProjectReference Include="..\MDP.AspNetCore.Authentication.External\MDP.AspNetCore.Authentication.External.csproj" />
+    <ProjectReference Include="..\MDP.AspNetCore.Authentication.JwtBearer\MDP.AspNetCore.Authentication.JwtBearer.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.7" />
   </ItemGroup>
 
 </Project>
