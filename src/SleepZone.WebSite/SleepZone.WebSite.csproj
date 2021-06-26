@@ -5,10 +5,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\MDP.Messaging.Notifications.Hosting\MDP.Messaging.Notifications.Hosting.csproj" />
-    <ProjectReference Include="..\MDP.Messaging.Notifications.Services\MDP.Messaging.Notifications.Services.csproj" />
-    <ProjectReference Include="..\MDP.ModuleLab.Hosting\MDP.ModuleLab.Hosting.csproj" />
-    <ProjectReference Include="..\MDP.ModuleLab.Services\MDP.ModuleLab.Services.csproj" />
     <ProjectReference Include="..\MDP.WebApp\MDP.WebApp.csproj" />
     <ProjectReference Include="..\SleepZone.Todos.Hosting\SleepZone.Todos.Hosting.csproj" />
     <ProjectReference Include="..\SleepZone.Todos.Services\SleepZone.Todos.Services.csproj" />

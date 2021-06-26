@@ -194,13 +194,6 @@ namespace MDP.AspNetCore
 
             // AssetAssembly
             var assetAssemblyList = new List<Assembly>();
-            foreach(var moduleAssembly in moduleAssemblyList)
-            {
-                if(assetAssemblyList.Contains(moduleAssembly)==false)
-                {
-                    assetAssemblyList.Add(moduleAssembly);
-                }
-            }
             foreach (var registeredAssembly in registeredAssemblyList)
             {
                 if (assetAssemblyList.Contains(registeredAssembly) == false)
@@ -208,6 +201,14 @@ namespace MDP.AspNetCore
                     assetAssemblyList.Add(registeredAssembly);
                 }
             }
+            foreach (var moduleAssembly in moduleAssemblyList)
+            {
+                if (assetAssemblyList.Contains(moduleAssembly) == true)
+                {
+                    assetAssemblyList.Remove(moduleAssembly);
+                }
+                assetAssemblyList.Add(moduleAssembly);
+            }            
 
             // FileProviderList
             var fileProviderList = new List<IFileProvider>();

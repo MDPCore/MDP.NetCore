@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.ModuleLab.Hosting
+namespace MDP.Module01.Hosting
 {
     public class SettingContextModule : MDP.Hosting.Module
     {

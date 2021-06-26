@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MDP.ModuleLab;
+using MDP.Module01;
 using MDP.AspNetCore;
 
 namespace MDP.WebApp.Lab.Temp

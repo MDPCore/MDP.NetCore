@@ -12,6 +12,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link href="~/Index.css" rel="stylesheet" />
     <script src="~/clk.lab.js"></script>
     <script language="javascript">
         window.onload = function () {
@@ -104,6 +105,20 @@
     UserId=@GetClaimValue(ClaimTypes.NameIdentifier)<br />
     UserName=@GetClaimValue(ClaimTypes.Name)<br />
     <br />
+    <hr />
+
+    <!--MDP.Module01-->
+    <form asp-area="MDP-Module01" asp-controller="Home" asp-action="Index" method="get">
+        <input type="submit" value="MDP.Module01" /><br />
+        <br />
+    </form>
+    <hr />
+
+    <!--MDP.Module02-->
+    <form asp-area="MDP-Module02" asp-controller="Home" asp-action="Index" method="get">
+        <input type="submit" value="MDP.Module02" /><br />
+        <br />
+    </form>
     <hr />
 
     <!--Logout-->

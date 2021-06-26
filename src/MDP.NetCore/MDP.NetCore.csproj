@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
     <ProjectReference Include="..\CLK.IO\CLK.IO.csproj" />
     <ProjectReference Include="..\CLK.Reflection\CLK.Reflection.csproj" />
-    <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
   </ItemGroup>
   
 

@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using MDP.ModuleLab;
+using MDP.Module01;
 using Microsoft.Extensions.Hosting;
 using System;
 

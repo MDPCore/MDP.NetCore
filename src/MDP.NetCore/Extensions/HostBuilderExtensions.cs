@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using MDP.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
@@ -62,6 +63,25 @@ namespace MDP.NetCore
             {
                 // Add
                 services.AddHttpClient();
+            });
+        }
+
+        public static void AddProgramService<TProgram>(this IHostBuilder hostBuilder) where TProgram : class
+        {
+            #region Contracts
+
+            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
+
+            #endregion
+
+            // Services
+            hostBuilder.ConfigureServices((context, services) =>
+            {
+                // Program
+                services.TryAddTransient<TProgram, TProgram>();
+
+                // ProgramService
+                services.TryAddTransient<IHostedService, ProgramService<TProgram>>();
             });
         }
 

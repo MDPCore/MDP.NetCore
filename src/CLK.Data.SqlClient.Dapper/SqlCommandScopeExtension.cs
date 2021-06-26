@@ -32,7 +32,7 @@ namespace CLK.Data.SqlClient.Dapper
             // Return
             return command.ExecuteParseAll(typeHandlerList).FirstOrDefault();
         }
-        
+
 
         public static List<T> ExecuteParseAll<T>(this SqlCommandScope command, List<TypeHandler> typeHandlerList = null)
         {
@@ -41,6 +41,9 @@ namespace CLK.Data.SqlClient.Dapper
             if (command == null) throw new ArgumentException();
 
             #endregion
+
+            // Require
+            if (typeHandlerList == null) typeHandlerList = new List<TypeHandler>();
 
             // TypeHandler
             SqlMapper.ResetTypeHandlers();
@@ -68,6 +71,9 @@ namespace CLK.Data.SqlClient.Dapper
             if (command == null) throw new ArgumentException();
 
             #endregion
+
+            // Require
+            if (typeHandlerList == null) typeHandlerList = new List<TypeHandler>();
 
             // TypeHandler
             SqlMapper.ResetTypeHandlers();

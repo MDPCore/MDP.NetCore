@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.AspNetCore\MDP.AspNetCore.csproj" />
-    <ProjectReference Include="..\MDP.ModuleLab\MDP.ModuleLab.csproj" />
+    <ProjectReference Include="..\MDP.Module01\MDP.Module01.csproj" />
   </ItemGroup>
 
 

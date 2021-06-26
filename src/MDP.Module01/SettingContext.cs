@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.ModuleLab
+namespace MDP.Module01
 {
     public class SettingContext
     {
@@ -12,7 +12,7 @@ namespace MDP.ModuleLab
         public string GetValue()
         {
             // Return
-            return "Hello World 123!";
+            return "Hello World!";
         }
     }
 }

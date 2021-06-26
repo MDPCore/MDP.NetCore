@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MDP.ModuleLab;
+using MDP.Module01;
 using MDP.AspNetCore;
 
-namespace MDP.ModuleLab.Services
+namespace MDP.Module01.Services
 {
     [Module("MDP-Module01")]
     public class HomeController : Controller
