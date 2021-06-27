@@ -1,0 +1,8 @@
+// MDP.Data.SqlClient
+{
+  // SqlCommandOption
+  "MDP.Data.SqlClient.SqlCommand": {
+    "Database01": { "ConnectionString": "Data Source=Localhost\\SQLEXPRESS; User ID=sa; Password=11111;" },
+    "Database02": { "ConnectionString": "Data Source=Localhost\\SQLEXPRESS; User ID=sa; Password=22222;" }
+  }
+}

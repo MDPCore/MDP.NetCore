@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Data;
 using System.Linq;
 
 namespace CLK.Data.SqlClient
@@ -67,11 +68,6 @@ namespace CLK.Data.SqlClient
 
 
         // Properties
-        public SqlParameterCollection Parameters
-        {
-            get { return _command.Parameters; }
-        }
-
         public string CommandText
         {
             get { return _command.CommandText; }
@@ -86,10 +82,35 @@ namespace CLK.Data.SqlClient
 
 
         // Methods
+        public void AddParameter(string name, object value, SqlDbType sqlDbType)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException();
+
+            #endregion
+
+            // Add
+            _command.Parameters.Add(new SqlParameter(name, sqlDbType)).Value = value;
+        }
+
+        public void AddParameter(string name, object value, SqlDbType sqlDbType, int size)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException();
+
+            #endregion
+
+            // Add
+            _command.Parameters.Add(new SqlParameter(name, sqlDbType, size)).Value = value;
+        }
+
+
         public int ExecuteNonQuery()
         {
-            // Clean
-            this.CleanParameters();
+            // Replace
+            this.ReplaceParameters();
 
             // Execute
             return this.Execute(() => _command.ExecuteNonQuery());
@@ -97,8 +118,8 @@ namespace CLK.Data.SqlClient
 
         public object ExecuteScalar()
         {
-            // Clean
-            this.CleanParameters();
+            // Replace
+            this.ReplaceParameters();
 
             // Execute
             return this.Execute(() => _command.ExecuteScalar());
@@ -106,18 +127,18 @@ namespace CLK.Data.SqlClient
 
         public SqlDataReader ExecuteReader()
         {
-            // Clean
-            this.CleanParameters();
+            // Replace
+            this.ReplaceParameters();
 
             // Execute
             return this.Execute(() => _command.ExecuteReader());
         }
 
 
-        private void CleanParameters()
+        private void ReplaceParameters()
         {
             // Parameters
-            foreach (var parameter in this.Parameters.OfType<SqlParameter>())
+            foreach (var parameter in _command.Parameters.OfType<SqlParameter>())
             {
                 // DBNull
                 if (parameter.Value == null)

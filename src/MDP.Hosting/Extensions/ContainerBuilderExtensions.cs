@@ -2,6 +2,7 @@
 using Autofac.Builder;
 using CLK.Autofac;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Runtime.InteropServices;
 
@@ -23,8 +24,8 @@ namespace MDP.Hosting
 
             #endregion
 
-            // RegisterInterface
-            return container.Register<IComponentContext, Configuration<TService>, TService>((componentContext, configuration)=>
+            // Register
+            return container.Register<IComponentContext, Configuration<TService>, TService>((componentContext, configuration) =>
             {
                 // ImplementerName
                 var implementerName = configuration.GetValue<string>(ImplementerNameKey);
@@ -45,10 +46,10 @@ namespace MDP.Hosting
 
             #endregion
 
-            // Return
+            // Register
             return container.RegisterType<ConfigurationParameterDictionary<TService>, TImplementer>
             (
-                parameter => 
+                parameter =>
                 {
                     return parameter;
                 }
