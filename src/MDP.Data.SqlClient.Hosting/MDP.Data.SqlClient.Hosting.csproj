@@ -1,13 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CLK.Data.SqlClient\CLK.Data.SqlClient.csproj" />
     <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
-    <ProjectReference Include="..\MDP.Hosting.Options\MDP.Hosting.Options.csproj" />
-    <ProjectReference Include="..\MDP.Data.SqlClient\MDP.Data.SqlClient.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 using CLK.Autofac;
 using MDP;
 using MDP.Hosting;
+using Microsoft.Extensions.Configuration;
 using SleepZone.Todos.Accesses;
 using SleepZone.Todos.Mocks;
 using System;
@@ -10,6 +11,24 @@ namespace SleepZone.Todos.Hosting
 {
     public class TodoContextModule : MDP.Hosting.Module
     {
+        // Fields
+        private readonly IConfiguration _configuration = null;
+
+
+        // Constructors
+        public TodoContextModule(IConfiguration configuration)
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException(nameof(configuration));
+
+            #endregion
+
+            // Default
+            _configuration = configuration;
+        }
+
+
         // Methods
         protected override void ConfigureContainer(ContainerBuilder container)
         {
@@ -19,43 +38,16 @@ namespace SleepZone.Todos.Hosting
 
             #endregion
 
-            // TodoContextJob
-            //container.ScheduleJob<TodoContextJob>((trigger) =>
-            //{
-            //    // Trigger
-            //    trigger.WithCronSchedule("0/1 * * * * ?");
-            //});
-
             // TodoContext
-            {
-                // Register
-                container.RegisterType<TodoContext>().As<TodoContext>()
+            container.RegisterServiceType<TodoContext, TodoContext, TodoContextFactory, TodoContextOptions>(_configuration, (builder) => builder.SingleInstance());
+            
+            // Accesses
+            container.RegisterServiceType<TodoRepository, SqlTodoRepository, SqlTodoRepositoryFactory>();
+            container.RegisterServiceType<SnapshotRepository, SqlSnapshotRepository, SqlSnapshotRepositoryFactory>();
 
-                // Start
-                .OnActivated((handler) =>
-                {
-
-                })
-
-                // Lifetime
-                .AutoActivate().SingleInstance();
-            }
-
-            // TodoRepository
-            container.RegisterInterface<TodoRepository>();
-            {
-                // Implementer
-                container.RegisterImplementer<TodoRepository, MockTodoRepository>();
-                container.RegisterImplementer<TodoRepository, SqlTodoRepository>();
-            }
-
-            // SnapshotRepository
-            container.RegisterInterface<SnapshotRepository>();
-            {
-                // Implementer
-                container.RegisterImplementer<SnapshotRepository, MockSnapshotRepository>();
-                container.RegisterImplementer<SnapshotRepository, SqlSnapshotRepository>();
-            }
+            // Mocks
+            container.RegisterServiceType<TodoRepository, MockTodoRepository, MockTodoRepositoryFactory, MockTodoRepositoryOptions>(_configuration);
+            container.RegisterServiceType<SnapshotRepository, MockSnapshotRepository, MockSnapshotRepositoryFactory, MockSnapshotRepositoryOptions>(_configuration);
         }
     }
 }

@@ -1,19 +1,16 @@
+// SleepZone.Todos
 {
-  // TodoRepository
-  "SleepZone.Todos.TodoRepository": {
-    "Type": "SleepZone.Todos.Mocks.MockTodoRepository"
+  // TodoContext
+  "SleepZone.Todos.TodoContext": {
+    "TodoRepository": "SleepZone.Todos.Mocks.MockTodoRepository",
+    "SnapshotRepository": "SleepZone.Todos.Accesses.SqlSnapshotRepository"
   },
 
-  "SleepZone.Todos.Accesses.SqlTodoRepository": {
-
-  },
-
-  // SnapshotRepository
-  "SleepZone.Todos.SnapshotRepository": {
-    "Type": "SleepZone.Todos.Mocks.MockSnapshotRepository"
-  },
-
-  "SleepZone.Todos.Accesses.SqlSnapshotRepository": {
-
+  // MockSnapshotRepository
+  "SleepZone.Todos.Mocks.MockTodoRepository": {
+    "TodoList": [
+      { "TodoId": "TodoId-001", "Name": "Name-001", "IsComplete": "true" },
+      { "TodoId": "TodoId-002", "Name": "Name-002", "IsComplete": "false" }
+    ]
   }
 }

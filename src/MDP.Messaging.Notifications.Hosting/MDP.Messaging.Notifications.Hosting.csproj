@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
-    <ProjectReference Include="..\MDP.Firebase.Hosting\MDP.Firebase.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.FirebaseAdmin.Hosting\MDP.FirebaseAdmin.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications\MDP.Messaging.Notifications.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications.Mocks\MDP.Messaging.Notifications.Mocks.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications.Accesses\MDP.Messaging.Notifications.Accesses.csproj" />

@@ -10,23 +10,6 @@ namespace CLK.IO
     public static class File
     {
         // Methods
-        public static void DeleteReadOnly(string path)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(path) == true) throw new ArgumentException();
-
-            #endregion
-
-            // RootFile
-            if (System.IO.File.Exists(path) == false) return;
-            var rootFile = new FileInfo(path);
-
-            // Delete
-            rootFile.IsReadOnly = false;
-            rootFile.Delete();
-        }
-
         public static List<FileInfo> GetAllFile(string fileName, string searchPath = null)
         {
             #region Contracts
@@ -44,12 +27,12 @@ namespace CLK.IO
                 // EntryDirectoryPath
                 var entryDirectoryPath = Directory.GetEntryDirectory();
                 if (string.IsNullOrEmpty(entryDirectoryPath) == true) throw new InvalidOperationException("entryDirectoryPath=null");
-            
+
                 // Setting
                 searchPath = entryDirectoryPath;
             }
             if (System.IO.Directory.Exists(searchPath) == false) throw new InvalidOperationException("searchPath is not exists");
-                
+
             // SearchPatternList
             var searchPatternList = fileName.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
             if (searchPatternList == null) throw new InvalidOperationException();
@@ -77,6 +60,23 @@ namespace CLK.IO
 
             // Return
             return resultFileDictionary.Values.ToList();
+        }
+
+        public static void DeleteReadOnly(string path)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(path) == true) throw new ArgumentException();
+
+            #endregion
+
+            // RootFile
+            if (System.IO.File.Exists(path) == false) return;
+            var rootFile = new FileInfo(path);
+
+            // Delete
+            rootFile.IsReadOnly = false;
+            rootFile.Delete();
         }
     }
 }

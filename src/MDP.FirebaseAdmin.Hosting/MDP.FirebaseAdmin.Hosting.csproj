@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -8,5 +8,8 @@
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
   </ItemGroup>
   
-  
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
+  </ItemGroup>
+
 </Project>

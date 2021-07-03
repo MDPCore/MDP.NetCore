@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Autofac;
+using CLK.Autofac;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,34 +9,64 @@ using System.Threading.Tasks;
 
 namespace MDP.Hosting
 {
-    public abstract class Factory<TComponent, TOptions> where TComponent : class where TOptions : class
+    public abstract class Factory<TService>
+        where TService : class
     {
         // Fields
-        private readonly IOptionsMonitor<TOptions> _optionsMonitor = null;
+        private readonly IComponentContext _componentContext = null;
 
 
         // Constructors
-        public Factory(IOptionsMonitor<TOptions> optionsMonitor)
+        public Factory(IComponentContext componentContext)
         {
             #region Contracts
 
-            if (optionsMonitor == null) throw new ArgumentException(nameof(optionsMonitor));
+            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
 
             #endregion
 
             // Default
-            _optionsMonitor = optionsMonitor;
+            _componentContext = componentContext;
         }
 
 
         // Methods
-        public TComponent Create()
+        public TService Create()
         {
-            // Create
-            return this.Create(Options.DefaultName);
+            // Return
+            return this.Create(_componentContext);
         }
 
-        public TComponent Create(string name)
+        protected abstract TService Create(IComponentContext componentContext);
+    }
+
+    public abstract class Factory<TService, TOptions>
+        where TService : class 
+        where TOptions : class
+    {
+        // Fields
+        private readonly IComponentContext _componentContext = null;
+
+        private readonly IOptionsMonitor<TOptions> _optionsMonitor = null;
+
+
+        // Constructors
+        public Factory(IComponentContext componentContext)
+        {
+            #region Contracts
+
+            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
+
+            #endregion
+
+            // Default
+            _componentContext = componentContext;
+            _optionsMonitor = componentContext.ResolveRequired<IOptionsMonitor<TOptions>>();
+        }
+
+
+        // Methods
+        public TService Create(string name)
         {
             #region Contracts
 
@@ -47,9 +79,9 @@ namespace MDP.Hosting
             if (options == null) throw new InvalidOperationException($"{nameof(options)}=null");
 
             // Return
-            return this.Create(options);
+            return this.Create(_componentContext, options);
         }
 
-        protected abstract TComponent Create(TOptions options);
+        protected abstract TService Create(IComponentContext componentContext, TOptions options);
     }
 }

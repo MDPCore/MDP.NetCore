@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace CLK.Data.SqlClient.Dapper
 {
-    public static class SqlCommandScopeExtension
+    public static class SqlCommandEntityExtension
     {
         // Methods
-        public static T ExecuteParse<T>(this SqlCommandScope command, List<TypeHandler> typeHandlerList = null)
+        public static T ExecuteParse<T>(this SqlCommandEntity command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 
@@ -21,7 +21,7 @@ namespace CLK.Data.SqlClient.Dapper
             return command.ExecuteParseAll<T>(typeHandlerList).FirstOrDefault();
         }
 
-        public static dynamic ExecuteParse(this SqlCommandScope command, List<TypeHandler> typeHandlerList = null)
+        public static dynamic ExecuteParse(this SqlCommandEntity command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 
@@ -34,7 +34,7 @@ namespace CLK.Data.SqlClient.Dapper
         }
 
 
-        public static List<T> ExecuteParseAll<T>(this SqlCommandScope command, List<TypeHandler> typeHandlerList = null)
+        public static List<T> ExecuteParseAll<T>(this SqlCommandEntity command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 
@@ -64,7 +64,7 @@ namespace CLK.Data.SqlClient.Dapper
             }
         }
 
-        public static List<dynamic> ExecuteParseAll(this SqlCommandScope command, List<TypeHandler> typeHandlerList = null)
+        public static List<dynamic> ExecuteParseAll(this SqlCommandEntity command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 

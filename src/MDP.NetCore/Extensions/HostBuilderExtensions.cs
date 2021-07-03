@@ -152,10 +152,6 @@ namespace MDP.NetCore
             // Container
             hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, container) =>
             {
-                // Configuration
-                container.RegisterGeneric(typeof(Configuration<>)).As(typeof(Configuration<>)).SingleInstance();
-                container.RegisterGeneric(typeof(ConfigurationParameterDictionary<>)).As(typeof(ConfigurationParameterDictionary<>)).SingleInstance();
-
                 // ModuleAssembly
                 var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
                 if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");

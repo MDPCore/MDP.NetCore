@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CLK.Data.SqlClient\CLK.Data.SqlClient.csproj" />
     <ProjectReference Include="..\MDP.Messaging.Notifications\MDP.Messaging.Notifications.csproj" />
   </ItemGroup>
 

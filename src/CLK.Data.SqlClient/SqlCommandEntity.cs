@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CLK.Data.SqlClient
 {
-    public sealed class SqlCommandScope : IDisposable
+    public class SqlCommandEntity : IDisposable
     {
         // Fields
         private readonly SqlConnection _connection = null;
@@ -14,7 +14,7 @@ namespace CLK.Data.SqlClient
 
 
         // Constructors
-        public SqlCommandScope(string connectionString)
+        public SqlCommandEntity(string connectionString)
         {
             #region Contracts
 
@@ -31,7 +31,7 @@ namespace CLK.Data.SqlClient
             _command.Connection = _connection;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             // Exception
             Exception exception = null;
@@ -68,13 +68,13 @@ namespace CLK.Data.SqlClient
 
 
         // Properties
-        public string CommandText
+        public virtual string CommandText
         {
             get { return _command.CommandText; }
             set { _command.CommandText = value; }
         }
 
-        public int CommandTimeout
+        public virtual int CommandTimeout
         {
             get { return _command.CommandTimeout; }
             set { _command.CommandTimeout = value; }
@@ -82,7 +82,7 @@ namespace CLK.Data.SqlClient
 
 
         // Methods
-        public void AddParameter(string name, object value, SqlDbType sqlDbType)
+        public virtual void AddParameter(string name, object value, SqlDbType sqlDbType)
         {
             #region Contracts
 
@@ -94,7 +94,7 @@ namespace CLK.Data.SqlClient
             _command.Parameters.Add(new SqlParameter(name, sqlDbType)).Value = value;
         }
 
-        public void AddParameter(string name, object value, SqlDbType sqlDbType, int size)
+        public virtual void AddParameter(string name, object value, SqlDbType sqlDbType, int size)
         {
             #region Contracts
 
@@ -106,34 +106,58 @@ namespace CLK.Data.SqlClient
             _command.Parameters.Add(new SqlParameter(name, sqlDbType, size)).Value = value;
         }
 
-
-        public int ExecuteNonQuery()
+        public virtual void ClearParameters()
         {
-            // Replace
-            this.ReplaceParameters();
+            // Clear
+            _command.Parameters.Clear();
+        }
 
+
+        public virtual int ExecuteNonQuery()
+        {
             // Execute
             return this.Execute(() => _command.ExecuteNonQuery());
         }
 
-        public object ExecuteScalar()
+        public virtual object ExecuteScalar()
         {
-            // Replace
-            this.ReplaceParameters();
-
             // Execute
             return this.Execute(() => _command.ExecuteScalar());
         }
 
-        public SqlDataReader ExecuteReader()
+        public virtual SqlDataReader ExecuteReader()
         {
-            // Replace
-            this.ReplaceParameters();
-
             // Execute
             return this.Execute(() => _command.ExecuteReader());
         }
 
+
+        private T Execute<T>(Func<T> action)
+        {
+            #region Contracts
+
+            if (action == null) throw new ArgumentNullException($"{nameof(action)}");
+
+            #endregion
+
+            // Replace
+            this.ReplaceParameters();
+
+            // Execute
+            try
+            {
+                // Invoke
+                return action();
+            }
+            catch (SqlException ex)
+            {
+                // DuplicateKeyException
+                if (ex.Errors[0].Number == 2627) throw new DuplicateKeyException();
+
+                // Throw
+                throw;
+            }
+        }
 
         private void ReplaceParameters()
         {
@@ -159,30 +183,6 @@ namespace CLK.Data.SqlClient
                     // Continue
                     continue;
                 }
-            }
-        }
-
-        private T Execute<T>(Func<T> action)
-        {
-            #region Contracts
-
-            if (action == null) throw new ArgumentNullException($"{nameof(action)}");
-
-            #endregion
-
-            // Execute
-            try
-            {
-                // Invoke
-                return action();
-            }
-            catch (SqlException ex)
-            {
-                // DuplicateKeyException
-                if (ex.Errors[0].Number == 2627) throw new DuplicateKeyException();
-
-                // Throw
-                throw;
             }
         }
     }

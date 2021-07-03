@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDP.Firebase\MDP.Firebase.csproj" />
+    <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\MDP.Messaging.Notifications\MDP.Messaging.Notifications.csproj" />
   </ItemGroup>
 

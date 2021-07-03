@@ -13,8 +13,7 @@ namespace SleepZone.Todos.Mocks
         public MockTodoRepository() : base(todo => Tuple.Create(todo.TodoId))
         {
             // Default
-            this.Add(new Todo() { TodoId = Guid.NewGuid().ToString(), Name = "DefaultTodo001", IsComplete = true });
-            this.Add(new Todo() { TodoId = Guid.NewGuid().ToString(), Name = "DefaultTodo002", IsComplete = false });
+
         }
 
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLK.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,21 @@ namespace SleepZone.Todos.Accesses
 {
     public class SqlSnapshotRepository : SnapshotRepository
     {
+        // Fields
+        private SqlClientFactory _sqlClientFactory = null;
+
+
         // Constructors
-        public SqlSnapshotRepository() 
+        public SqlSnapshotRepository(SqlClientFactory sqlClientFactory)
         {
-           
+            #region Contracts
+
+            if (sqlClientFactory == null) throw new ArgumentException(nameof(sqlClientFactory));
+
+            #endregion
+
+            // Default
+            _sqlClientFactory = sqlClientFactory;
         }
 
 

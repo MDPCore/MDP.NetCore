@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using MDP;
 using System.IO;
 using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
 using FirebaseAdmin.Messaging;
+using Google.Apis.Auth.OAuth2;
 
-namespace MDP.Firebase.Hosting
+namespace MDP.FirebaseAdmin.Hosting
 {
-    public class FirebaseContextModule : MDP.Hosting.Module
+    public class FirebaseAdminModule : MDP.Hosting.Module
     {
         // Methods
         protected override void ConfigureContainer(ContainerBuilder container)
@@ -27,18 +27,18 @@ namespace MDP.Firebase.Hosting
             var entryDirectory = AppContext.BaseDirectory;
             if (Directory.Exists(entryDirectory) == false) throw new InvalidOperationException($"{nameof(entryDirectory)}=null");
 
-            // FirebaseAdmin
+            // CredentialFilePath
+            var credentialFilePath = Path.Combine(entryDirectory, @"FirebaseAdmin.GoogleCredential.json");
+            if (string.IsNullOrEmpty(credentialFilePath) == true) throw new InvalidOperationException($"{nameof(credentialFilePath)}=null");
+            if (File.Exists(credentialFilePath) == false) return;
+
+            // FirebaseApp
             container.Register<FirebaseApp>(componentContext =>
             {
-                // ConfigPath
-                var configPath = Path.Combine(entryDirectory, @"MDP.Firebase.Admin.json");
-                if (string.IsNullOrEmpty(configPath) == true) throw new InvalidOperationException($"{nameof(configPath)}=null");
-                if (File.Exists(configPath) == false) throw new InvalidOperationException($"{configPath} not found");
-
                 // Create
                 return FirebaseApp.Create(new AppOptions()
                 {
-                    Credential = GoogleCredential.FromFile(configPath)
+                    Credential = GoogleCredential.FromFile(credentialFilePath)
                 });
 
             }).SingleInstance();
@@ -49,7 +49,7 @@ namespace MDP.Firebase.Hosting
                 // Require
                 componentContext.Resolve<FirebaseApp>();
 
-                // Default
+                // Create
                 return FirebaseMessaging.DefaultInstance;
 
             }).SingleInstance();

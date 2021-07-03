@@ -17,6 +17,24 @@ namespace MDP.Messaging.Notifications.Hosting
 {
     public class NotificationContextModule : MDP.Hosting.Module
     {
+        // Fields
+        private readonly IConfiguration _configuration = null;
+
+
+        // Constructors
+        public NotificationContextModule(IConfiguration configuration)
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException(nameof(configuration));
+
+            #endregion
+
+            // Default
+            _configuration = configuration;
+        }
+
+
         // Methods
         protected override void ConfigureContainer(ContainerBuilder container)
         {
@@ -27,35 +45,17 @@ namespace MDP.Messaging.Notifications.Hosting
             #endregion
 
             // NotificationContext
-            {
-                // Register
-                container.RegisterType<NotificationContext>().As<NotificationContext>()
+            container.RegisterServiceType<NotificationContext, NotificationContext, NotificationContextFactory, NotificationContextOptions>(_configuration, (builder) => builder.SingleInstance());
 
-                // Start
-                .OnActivated((handler) =>
-                {
+            // Firebase
+            container.RegisterServiceType<NotificationProvider, FirebaseNotificationProvider, FirebaseNotificationProviderFactory>();
 
-                })
-
-                // Lifetime
-                .AutoActivate().SingleInstance();
-            }
-
-            // RegistrationRepository
-            container.RegisterInterface<RegistrationRepository>();
-            {
-                // Implementer
-                container.RegisterImplementer<RegistrationRepository, MockRegistrationRepository>();
-                container.RegisterImplementer<RegistrationRepository, SqlRegistrationRepository>();
-            }
-
-            // NotificationProvider
-            container.RegisterInterface<NotificationProvider>();
-            {
-                // Implementer
-                container.RegisterImplementer<NotificationProvider, MockNotificationProvider>();
-                container.RegisterImplementer<NotificationProvider, FirebaseNotificationProvider>();
-            }
+            // Accesses
+            container.RegisterServiceType<RegistrationRepository, SqlRegistrationRepository, SqlRegistrationRepositoryFactory>();
+            
+            // Mocks
+            container.RegisterServiceType<RegistrationRepository, MockRegistrationRepository, MockRegistrationRepositoryFactory, MockRegistrationRepositoryOptions>(_configuration);
+            container.RegisterServiceType<NotificationProvider, MockNotificationProvider, MockNotificationProviderFactory, MockNotificationProviderOptions>(_configuration);
         }
     }
 }

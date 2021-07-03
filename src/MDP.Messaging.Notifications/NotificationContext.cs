@@ -40,7 +40,7 @@ namespace MDP.Messaging.Notifications
         {
             #region Contracts
 
-            if (registration == null || registration.IsValid() == false) throw new ArgumentException(nameof(registration));
+            if (registration == null) throw new ArgumentException(nameof(registration));
 
             #endregion
 

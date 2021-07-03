@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CLK.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,20 +10,20 @@ namespace MDP.Messaging.Notifications.Accesses
     public class SqlRegistrationRepository : RegistrationRepository
     {
         // Fields
-        private readonly string _connectionString = null;
+        private SqlClientFactory _sqlClientFactory = null;
 
 
         // Constructors
-        public SqlRegistrationRepository(string connectionString)
+        public SqlRegistrationRepository(SqlClientFactory sqlClientFactory)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(connectionString) == true) throw new ArgumentException(nameof(connectionString));
+            if (sqlClientFactory == null) throw new ArgumentException(nameof(sqlClientFactory));
 
             #endregion
 
             // Default
-            _connectionString = connectionString;
+            _sqlClientFactory = sqlClientFactory;
         }
 
 

@@ -2,24 +2,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using CLK.Autofac;
 using MDP.Hosting;
-using MDP.Hosting.Options;
+using CLK.Data.SqlClient;
+using Microsoft.Extensions.Options;
 
 namespace MDP.Data.SqlClient.Hosting
 {
-    public class SqlCommandFactoryModule : MDP.Hosting.Module
+    public class SqlClientFactoryModule : MDP.Hosting.Module
     {
         // Fields
         private readonly IConfiguration _configuration = null;
 
 
         // Constructors
-        public SqlCommandFactoryModule(IConfiguration configuration)
+        public SqlClientFactoryModule(IConfiguration configuration)
         {
             #region Contracts
 
@@ -41,17 +43,8 @@ namespace MDP.Data.SqlClient.Hosting
 
             #endregion
 
-            // Service
-            container.RegisterType<SqlClientFactory>().As<SqlClientFactory>().SingleInstance();
-            container.RegisterType<DefaultSqlCommandFactory>().As<SqlCommandFactory>().SingleInstance();
-
-            // Options
-            var sqlCommandConfigList = _configuration.GetSection("MDP.Data.SqlClient.SqlCommand")?.GetChildren();
-            if (sqlCommandConfigList == null) sqlCommandConfigList = new List<IConfigurationSection>();
-            foreach (var sqlCommandConfig in sqlCommandConfigList)
-            {
-                container.Configure<SqlCommandOption>(sqlCommandConfig.Key, () => sqlCommandConfig);
-            }  
+            // SqlClientFactory
+            container.RegisterServiceType<SqlClientFactory, SqlClientFactory, SqlClientFactoryFactory, SqlClientFactoryOptions>(_configuration, (builder) => builder.SingleInstance());
         }
     }
 }
