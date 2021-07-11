@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication
+namespace MDP.AspNetCore.Authentication.Policies
 {
     public partial class PolicyAuthenticationDefaults
     {

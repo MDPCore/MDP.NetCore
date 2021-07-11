@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.External
+namespace MDP.AspNetCore.Authentication.ExternalCookies
 {
     public static class ExternalCookieAuthenticationExtensions
     {

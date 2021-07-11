@@ -1,5 +1,5 @@
-using MDP.AspNetCore.Authentication;
-using MDP.AspNetCore.Authentication.External;
+using MDP.AspNetCore.Authentication.Policies;
+using MDP.AspNetCore.Authentication.ExternalCookies;
 using MDP.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,11 +12,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MDP.NetCore.Logging.Log4net;
+using MDP.NetCore.Logging.NLog;
 
 namespace MDP.WebApp
 {
     public class Startup
     {
+        // Config
+        private static string _issuer = "MDP.WebApp";
+
+        private static string _signKey = "12345678901234567890123456789012";
+
+
         // Methods
         public void ConfigureServices(IServiceCollection services)
         {
@@ -26,68 +34,16 @@ namespace MDP.WebApp
 
             #endregion
 
-            // Config
-            var issuer = "MDP.WebApp";
-            var signKey = "12345678901234567890123456789012";
+            // Kernel
+            this.ConfigureLogger(services);
+            this.ConfigureAuthentication(services);
 
-            // Authentication   
-            services.AddAuthentication(options =>
-            {
-                // DefaultScheme
-                options.DefaultScheme = PolicyAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddPolicy(options =>
-            {
-                // DefaultScheme
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
-                // AuthenticateSchemePolicy
-                options.AuthenticateSchemePolicy = context =>
-                {
-                    // JwtBearer
-                    if (context.HasJwtBearer() == true) return JwtBearerDefaults.AuthenticationScheme;
-
-                    // Default
-                    return options.DefaultScheme;
-                };
-            })
-            .AddJwtBearer(options =>
-            {
-                // Decode
-                options.Issuer = issuer;
-                options.SignKey = signKey;
-            })
-            .AddCookie(options =>
-            {
-                // Action
-                options.LoginPath = new PathString("/Account/Login");
-                options.AccessDeniedPath = options.LoginPath;
-            })
-            .AddExternalCookie(options =>
-            {
-                // Action
-                options.CallbackPath = new PathString("/Account/ExternalSignIn");
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddGoogle(options =>
-            {
-                // Client
-                options.ClientId = @"";
-                options.ClientSecret = @"";
-            })
-            .AddFacebook(options =>
-            {
-                // Client
-                options.ClientId = @"";
-                options.ClientSecret = @"";
-            });
-
-            // SecurityTokenFactory
-            services.AddSecurityTokenFactory(options =>
+            // Service
+            this.AddSecurityTokenFactory(services, options =>
             {
                 // Encode
-                options.Issuer = issuer;
-                options.SignKey = signKey;
+                options.Issuer = _issuer;
+                options.SignKey = _signKey;
             });
         }
 
@@ -131,6 +87,117 @@ namespace MDP.WebApp
                     pattern: "{controller=Home}/{action=Index}"
                 );
             });
+        }
+
+
+        // Kernel
+        private IServiceCollection ConfigureLogger(IServiceCollection services)
+        {
+            #region Contracts
+
+            if (services == null) throw new ArgumentException(nameof(services));
+
+            #endregion
+
+            // Log4net
+            services.AddLog4netLogger(options =>
+            {
+                options.Properties["ApplicationName"] = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+            });
+
+            // NLog
+            services.AddNLogLogger(options =>
+            {
+                options.Properties["ApplicationName"] = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+            });
+
+            // Return
+            return services;
+        }
+
+        private IServiceCollection ConfigureAuthentication(IServiceCollection services)
+        {
+            #region Contracts
+
+            if (services == null) throw new ArgumentException(nameof(services));
+
+            #endregion
+
+            // Authentication   
+            services.AddAuthentication(options =>
+            {
+                // DefaultScheme
+                options.DefaultScheme = PolicyAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddPolicy(options =>
+            {
+                // DefaultScheme
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                // AuthenticateSchemePolicy
+                options.AuthenticateSchemePolicy = context =>
+                {
+                    // JwtBearer
+                    if (context.HasJwtBearer() == true) return JwtBearerDefaults.AuthenticationScheme;
+
+                    // Default
+                    return options.DefaultScheme;
+                };
+            })
+            .AddJwtBearer(options =>
+            {
+                // Decode
+                options.Issuer = _issuer;
+                options.SignKey = _signKey;
+            })
+            .AddCookie(options =>
+            {
+                // Action
+                options.LoginPath = new PathString("/Account/Login");
+                options.AccessDeniedPath = options.LoginPath;
+            })
+            .AddExternalCookie(options =>
+            {
+                // Action
+                options.CallbackPath = new PathString("/Account/ExternalSignIn");
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddGoogle(options =>
+            {
+                // Client
+                options.ClientId = @"";
+                options.ClientSecret = @"";
+            })
+            .AddFacebook(options =>
+            {
+                // Client
+                options.ClientId = @"";
+                options.ClientSecret = @"";
+            });
+
+            // Return
+            return services;
+        }
+
+        // Service        
+        public IServiceCollection AddSecurityTokenFactory(IServiceCollection services, Action<SecurityTokenFactoryOptions> configureOptions = null)
+        {
+            #region Contracts
+
+            if (services == null) throw new ArgumentException(nameof(services));
+
+            #endregion
+
+            // SecurityTokenFactory
+            services.AddSecurityTokenFactory(options =>
+            {
+                // Encode
+                options.Issuer = _issuer;
+                options.SignKey = _signKey;
+            });
+
+            // Return
+            return services;
         }
     }
 }

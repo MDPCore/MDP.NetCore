@@ -1,5 +1,5 @@
 ﻿using MDP.AspNetCore.Authentication.JwtBearer;
-using MDP.AspNetCore.Authentication.External;
+using MDP.AspNetCore.Authentication.ExternalCookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;

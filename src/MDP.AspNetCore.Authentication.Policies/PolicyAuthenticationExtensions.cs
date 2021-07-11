@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace MDP.AspNetCore.Authentication
+namespace MDP.AspNetCore.Authentication.Policies
 {
     public static class PolicyAuthenticationExtensions
     {

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.External
+namespace MDP.AspNetCore.Authentication.Policies
 {
-    public class ExternalCookieAuthenticationPostConfigureOptions : IPostConfigureOptions<ExternalCookieAuthenticationOptions>
+    public class PolicyAuthenticationPostConfigureOptions : IPostConfigureOptions<PolicyAuthenticationOptions>
     {
         // Methods
-        public void PostConfigure(string name, ExternalCookieAuthenticationOptions options)
+        public void PostConfigure(string name, PolicyAuthenticationOptions options)
         {
             #region Contracts
 
@@ -21,7 +21,6 @@ namespace MDP.AspNetCore.Authentication.External
 
             // Require
             if (string.IsNullOrEmpty(options.DefaultScheme) == true) throw new InvalidOperationException($"{nameof(options.DefaultScheme)}=null");
-            if (string.IsNullOrEmpty(options.CallbackPath) == true) throw new InvalidOperationException($"{nameof(options.CallbackPath)}=null");
         }
     }
 }

@@ -9,5 +9,5 @@
     <ProjectReference Include="..\MDP.Module01.Hosting\MDP.Module01.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Module01.Services\MDP.Module01.Services.csproj" />
   </ItemGroup>
-
+  
 </Project>

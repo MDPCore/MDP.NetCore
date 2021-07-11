@@ -24,8 +24,8 @@ namespace MDP.ConsoleApp
             return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
                    .ConfigureNetCore(hostBuilder =>
                    {
-                       // Logging
-                       hostBuilder.RemoveConsoleLogger();
+                       // Nothing
+                   
                    });
         }
 
@@ -41,9 +41,6 @@ namespace MDP.ConsoleApp
             return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
                    .ConfigureNetCore(hostBuilder =>
                    {
-                       // Logging
-                       hostBuilder.RemoveConsoleLogger();
-
                        // Program
                        hostBuilder.AddProgramService<TProgram>();
                    });

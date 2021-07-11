@@ -36,8 +36,8 @@ namespace MDP.NetCore
             hostBuilder.AddHttpClient();
 
             // Module
-            hostBuilder.AddModuleConfiguration();
             hostBuilder.AddModuleService();
+            hostBuilder.AddModuleConfiguration();
 
             // Expand
             if (configureAction != null)
@@ -99,43 +99,6 @@ namespace MDP.NetCore
 
                 // ProgramService
                 services.TryAddTransient<IHostedService, ProgramService<TProgram>>();
-            });
-        }
-
-        // Logger
-        public static void AddConsoleLogger(this IHostBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
-
-            #endregion
-
-            // Services
-            hostBuilder.ConfigureServices((context, services) =>
-            {
-                // Logger
-                services.AddLogging(loggingBuilder =>
-                {
-                    // Add
-                    loggingBuilder.AddConsole();
-                });
-            });
-        }
-
-        public static void RemoveConsoleLogger(this IHostBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
-
-            #endregion
-
-            // Services
-            hostBuilder.ConfigureServices((context, services) =>
-            {
-                // Remove
-                services.RemoveService<ConsoleLoggerProvider>();
             });
         }
 

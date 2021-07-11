@@ -1,5 +1,7 @@
 ﻿using MDP.AspNetCore;
 using MDP.NetCore;
+using MDP.NetCore.Logging.Log4net;
+using MDP.NetCore.Logging.NLog;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -30,8 +32,8 @@ namespace MDP.WebApp
                    })
                    .ConfigureNetCore(hostBuilder =>
                    {
-                       // Logging
-                       hostBuilder.RemoveConsoleLogger();
+                       // Nothing
+
                    });
         }
     }

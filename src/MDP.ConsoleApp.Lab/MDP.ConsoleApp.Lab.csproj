@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MDP.ConsoleApp\MDP.ConsoleApp.csproj" />
     <ProjectReference Include="..\MDP.Module01.Hosting\MDP.Module01.Hosting.csproj" />
   </ItemGroup>

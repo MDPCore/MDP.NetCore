@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.External
+namespace MDP.AspNetCore.Authentication.ExternalCookies
 {
     public class ExternalCookieAuthenticationDefaults
     {
