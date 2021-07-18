@@ -17,7 +17,7 @@ namespace CLK.IO
             if (entryAssembly == null) throw new InvalidOperationException("entryAssembly=null");
 
             // EntryAssemblyPath
-            var entryAssemblyPath = Uri.UnescapeDataString((new UriBuilder(entryAssembly.Location)).Path);
+            var entryAssemblyPath = entryAssembly.Location;
             if (string.IsNullOrEmpty(entryAssemblyPath) == true) throw new InvalidOperationException("entryAssemblyPath=null");
 
             // EntryDirectoryPath
