@@ -13,6 +13,8 @@ namespace SleepZone.Todos
 
         private readonly SnapshotRepository _snapshotRepository = null;
 
+        private readonly SnapshotService _snapshotService = null;
+
 
         // Constructors
         public TodoContext(TodoRepository todoRepository, SnapshotRepository snapshotRepository)
@@ -27,6 +29,7 @@ namespace SleepZone.Todos
             // Default
             _todoRepository = todoRepository;
             _snapshotRepository = snapshotRepository;
+            _snapshotService = new SnapshotService(todoRepository, snapshotRepository);
         }
 
 
@@ -35,25 +38,6 @@ namespace SleepZone.Todos
 
         public SnapshotRepository SnapshotRepository { get { return _snapshotRepository; } }
 
-
-        // Methods
-        public void Snapshot()
-        {
-            // TodoCounts
-            var todoCounts = this.TodoRepository.CountAll();
-            if (todoCounts == null) throw new InvalidOperationException(nameof(todoCounts));
-
-            // Snapshot
-            var snapshot = new Snapshot()
-            {
-                SnapshotId = Guid.NewGuid().ToString(),
-                CreateTime = DateTime.Now,
-                TotalCount = todoCounts.TotalCount,
-                CompleteCount = todoCounts.CompleteCount
-            };
-
-            // Add
-            this.SnapshotRepository.Add(snapshot);
-        }
+        public SnapshotService SnapshotService { get { return _snapshotService; } }
     }
 }

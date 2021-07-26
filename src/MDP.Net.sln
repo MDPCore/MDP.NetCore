@@ -105,9 +105,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.NetCore.Logging.NLog", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.NetCore.Logging.Log4net", "MDP.NetCore.Logging.Log4net\MDP.NetCore.Logging.Log4net.csproj", "{3ED39A8B-161C-415C-9067-E49019BB752C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.ExternalCookies", "MDP.AspNetCore.Authentication.ExternalCookies\MDP.AspNetCore.Authentication.ExternalCookies.csproj", "{CC05D740-9666-4D07-95F4-0506E2BD1AC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.ExternalCookies", "MDP.AspNetCore.Authentication.ExternalCookies\MDP.AspNetCore.Authentication.ExternalCookies.csproj", "{CC05D740-9666-4D07-95F4-0506E2BD1AC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Policies", "MDP.AspNetCore.Authentication.Policies\MDP.AspNetCore.Authentication.Policies.csproj", "{EEBFD0C4-DFEF-482F-8112-08E6155D4D43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Policies", "MDP.AspNetCore.Authentication.Policies\MDP.AspNetCore.Authentication.Policies.csproj", "{EEBFD0C4-DFEF-482F-8112-08E6155D4D43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SleepZone.Todos.Tests", "SleepZone.Todos.Tests\SleepZone.Todos.Tests.csproj", "{88E181DC-F343-4C5C-B6A9-B595D9E3F8E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -291,6 +293,10 @@ Global
 		{EEBFD0C4-DFEF-482F-8112-08E6155D4D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEBFD0C4-DFEF-482F-8112-08E6155D4D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEBFD0C4-DFEF-482F-8112-08E6155D4D43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E181DC-F343-4C5C-B6A9-B595D9E3F8E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E181DC-F343-4C5C-B6A9-B595D9E3F8E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88E181DC-F343-4C5C-B6A9-B595D9E3F8E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88E181DC-F343-4C5C-B6A9-B595D9E3F8E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -344,6 +350,7 @@ Global
 		{3ED39A8B-161C-415C-9067-E49019BB752C} = {09D89FD5-0458-431A-8267-04A651A4852F}
 		{CC05D740-9666-4D07-95F4-0506E2BD1AC6} = {09D89FD5-0458-431A-8267-04A651A4852F}
 		{EEBFD0C4-DFEF-482F-8112-08E6155D4D43} = {09D89FD5-0458-431A-8267-04A651A4852F}
+		{88E181DC-F343-4C5C-B6A9-B595D9E3F8E2} = {C796E180-8F5B-49EA-B877-CE525B1BA64C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25EFCCC9-D06F-4E4F-812E-9C006F6A319C}
