@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="MockSnapshotRepositoryOption.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MDP.Data.SqlClient.Hosting\MDP.Data.SqlClient.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
     <ProjectReference Include="..\SleepZone.Todos\SleepZone.Todos.csproj" />
