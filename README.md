@@ -54,4 +54,4 @@ MDP.Net是以領域驅動設計為核心的.NET Core開發平台，協助開發�
 
 - 看到「MDP-Module01/Home/Index」藍色標題內容，代表CSS檔案動態掛載成功。
 
-- 看到「Hello World From MDP.ModuleLab.SettingContext!」訊息內容，代表SettingContext動態註冊成功
+- 看到「Hello World From MDP.ModuleLab.SettingContext!」訊息內容，代表SettingContext動態註冊成功。
