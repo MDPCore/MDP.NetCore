@@ -33,7 +33,8 @@ namespace MDP.AspNetCore
             hostBuilder.ConfigureWebHostDefaults(webHostBuilder =>
             {
                 // Startup
-                webHostBuilder.UseStartup<TStartup>();
+                webHostBuilder.UseSetting(WebHostDefaults.ApplicationKey, Assembly.GetEntryAssembly().FullName);
+                webHostBuilder.UseSetting(WebHostDefaults.StartupAssemblyKey, typeof(TStartup).Assembly.FullName);
             });
 
             // Services

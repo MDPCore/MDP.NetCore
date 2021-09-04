@@ -38,11 +38,11 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
 
             #endregion
 
-            // AuthenticationOptions
+            // ExternalCookieAuthenticationOptions
             if (configureOptions != null) builder.Services.Configure(authenticationScheme, configureOptions);
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<ExternalCookieAuthenticationOptions>, ExternalCookieAuthenticationPostConfigureOptions>());
 
-            // CookieScheme
+            // CookieAuthenticationOptions
             builder.Services.AddOptions<CookieAuthenticationOptions>(authenticationScheme).Configure<IOptionsMonitor<ExternalCookieAuthenticationOptions>>((cookieOptions, authenticationOptionsMonitor) =>
             {
                 // AuthenticationOptions
@@ -53,6 +53,8 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
                 cookieOptions.ForwardChallenge = authenticationOptions.DefaultScheme;
                 cookieOptions.ForwardForbid = authenticationOptions.DefaultScheme;
             });
+
+            // CookieAuthentication
             builder.AddCookie(authenticationScheme, null, null);
 
             // Return

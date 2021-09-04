@@ -41,7 +41,7 @@ namespace MDP.AspNetCore.Authentication.JwtBearer
             // AuthenticationOptions
             if (configureOptions != null) builder.Services.Configure(authenticationScheme, configureOptions);
 
-            // JwtBearerScheme
+            // JwtBearerAuthenticationOptions
             builder.Services.AddOptions<JwtBearerOptions>(authenticationScheme).Configure<IOptionsMonitor<SecurityTokenValidationOptions>>((jwtBearerOptions, authenticationOptionsMonitor) =>
             {
                 // AuthenticationOptions
@@ -76,6 +76,8 @@ namespace MDP.AspNetCore.Authentication.JwtBearer
                     jwtBearerOptions.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationOptions.SignKey));
                 }
             });
+
+            // JwtBearerAuthentication
             builder.AddJwtBearer(authenticationScheme, null, null);
 
             // Return

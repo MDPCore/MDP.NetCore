@@ -76,11 +76,11 @@ namespace MDP.WebApp
             return await this.HttpContext.ExternalChallengeAsync(externalScheme, returnUrl);
         }
 
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = ExternalCookieAuthenticationDefaults.AuthenticationScheme)]
         public async Task<ActionResult> ExternalSignIn(string returnUrl = @"/")
         {
             // Require
-            if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
+            if (this.User.Identity.IsAuthenticated == false) return this.Redirect(returnUrl);
 
             // ClaimsIdentity
             var claimsIdentity = await this.HttpContext.ExternalAuthenticateAsync();

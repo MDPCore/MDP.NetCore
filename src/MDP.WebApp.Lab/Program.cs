@@ -17,6 +17,5 @@ namespace MDP.WebApp.Lab
             // Host
             MDP.WebApp.Host.CreateHostBuilder<Startup>(args).Build().Run();
         }
-        public class Startup : MDP.WebApp.Startup { }
     }
 }

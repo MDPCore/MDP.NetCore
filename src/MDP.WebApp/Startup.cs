@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using MDP.NetCore.Logging.Log4net;
 using MDP.NetCore.Logging.NLog;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using MDP.AspNetCore.Authentication.Line;
+using MDP.AspNetCore.Authentication.GitHub;
 
 namespace MDP.WebApp
 {
     public class Startup
     {
-        // Config
-        private static string _issuer = "MDP.WebApp";
+        // Fields
+        private readonly IConfiguration _configuration = null;
 
-        private static string _signKey = "12345678901234567890123456789012";
+
+        // Constructors
+        public Startup(IConfiguration configuration)
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException(nameof(configuration));
+
+            #endregion
+
+            // Default
+            _configuration = configuration;
+        }
 
 
         // Methods
@@ -39,12 +60,7 @@ namespace MDP.WebApp
             this.ConfigureAuthentication(services);
 
             // Service
-            this.AddSecurityTokenFactory(services, options =>
-            {
-                // Encode
-                options.Issuer = _issuer;
-                options.SignKey = _signKey;
-            });
+            this.AddSecurityTokenFactory(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -144,12 +160,6 @@ namespace MDP.WebApp
                     return options.DefaultScheme;
                 };
             })
-            .AddJwtBearer(options =>
-            {
-                // Decode
-                options.Issuer = _issuer;
-                options.SignKey = _signKey;
-            })
             .AddCookie(options =>
             {
                 // Action
@@ -162,17 +172,39 @@ namespace MDP.WebApp
                 options.CallbackPath = new PathString("/Account/ExternalSignIn");
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
+            .AddJwtBearer(options =>
+            {
+                // Decode
+                options.Issuer = _configuration["Authentication:JwtBearer:Issuer"];
+                options.SignKey = _configuration["Authentication:JwtBearer:SignKey"];
+            }) 
             .AddGoogle(options =>
             {
                 // Client
-                options.ClientId = @"";
-                options.ClientSecret = @"";
+                options.ClientId = _configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
+                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddFacebook(options =>
             {
                 // Client
-                options.ClientId = @"";
-                options.ClientSecret = @"";
+                options.ClientId = _configuration["Authentication:Facebook:ClientId"];
+                options.ClientSecret = _configuration["Authentication:Facebook:ClientSecret"];
+                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddLine(options =>
+            {
+                // Client
+                options.ClientId = _configuration["Authentication:Line:ClientId"];
+                options.ClientSecret = _configuration["Authentication:Line:ClientSecret"];
+                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddGitHub(options => 
+            {
+                // Client
+                options.ClientId = _configuration["Authentication:GitHub:ClientId"];
+                options.ClientSecret = _configuration["Authentication:GitHub:ClientSecret"];
+                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             });
 
             // Return
@@ -180,7 +212,7 @@ namespace MDP.WebApp
         }
 
         // Service        
-        public IServiceCollection AddSecurityTokenFactory(IServiceCollection services, Action<SecurityTokenFactoryOptions> configureOptions = null)
+        public IServiceCollection AddSecurityTokenFactory(IServiceCollection services)
         {
             #region Contracts
 
@@ -192,8 +224,8 @@ namespace MDP.WebApp
             services.AddSecurityTokenFactory(options =>
             {
                 // Encode
-                options.Issuer = _issuer;
-                options.SignKey = _signKey;
+                options.Issuer = _configuration["Authentication:JwtBearer:Issuer"];
+                options.SignKey = _configuration["Authentication:JwtBearer:SignKey"];
             });
 
             // Return
