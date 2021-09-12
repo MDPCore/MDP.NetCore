@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- title -->
+    <title>LIFF | Login</title>
+
+    <!-- meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- stylesheet -->
+    <style>
+        html {
+            font-size: 16px;
+        }
+        div {
+            max-width: 100%;
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- errorMessage -->
+    <div class="hidden">
+        <p>Something went wrong with LIFF initialization.</p>
+        <p id="errorMessage"></p>
+    </div>
+
+    <!-- script -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+        window.onload = function () {
+            liff.init({
+               
+                // liffId
+                liffId: "1656379385-bAxQr3aQ"
+            })
+            .then(() => {
+                                
+                // login
+                if (liff.isLoggedIn() == false) {
+
+                    // redirect
+                    liff.login({ redirectUri: window.location.href });
+
+                    // return
+                    return;
+                }
+
+                // returnUrl
+                var returnUrl = new URLSearchParams(window.location.search).get("returnUrl");
+                if (!returnUrl) returnUrl = "/";
+
+                // signin
+                var signinURL = new URL("/signin-liff", window.location.href);
+                signinURL.searchParams.append("returnUrl", returnUrl);
+                signinURL.searchParams.append("access_token", liff.getAccessToken());
+                signinURL.searchParams.append("id_token", liff.getIDToken());
+                window.location = signinURL.href;
+            })
+            .catch((ex) => {
+
+                // errorMessage
+                document.getElementById("errorMessage").textContent = ex;
+                document.getElementById("errorMessage").parentNode.classList.remove("hidden");
+            });
+        };
+    </script>
+</body>
+</html>

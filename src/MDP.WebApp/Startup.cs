@@ -23,6 +23,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using MDP.AspNetCore.Authentication.Line;
 using MDP.AspNetCore.Authentication.GitHub;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace MDP.WebApp
 {
@@ -58,6 +59,7 @@ namespace MDP.WebApp
             // Kernel
             this.ConfigureLogger(services);
             this.ConfigureAuthentication(services);
+            this.ConfigureForwardedHeaders(services);
 
             // Service
             this.AddSecurityTokenFactory(services);
@@ -71,14 +73,18 @@ namespace MDP.WebApp
             if (env == null) throw new ArgumentException(nameof(env));
 
             #endregion
-
+            
             // Development
             if (env.IsDevelopment() == true)
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            // Network
+            app.UseForwardedHeaders();
+
             // StaticFile
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             // Authentication
@@ -199,6 +205,13 @@ namespace MDP.WebApp
                 options.ClientSecret = _configuration["Authentication:Line:ClientSecret"];
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             })
+            .AddLiff(options =>
+            {
+                // Client
+                options.ClientId = _configuration["Authentication:Line:ClientId"];
+                options.ClientSecret = _configuration["Authentication:Line:ClientSecret"];
+                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+            })
             .AddGitHub(options => 
             {
                 // Client
@@ -207,6 +220,32 @@ namespace MDP.WebApp
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             });
 
+            // Return
+            return services;
+        }
+
+        private IServiceCollection ConfigureForwardedHeaders(IServiceCollection services)
+        {
+            #region Contracts
+
+            if (services == null) throw new ArgumentException(nameof(services));
+
+            #endregion
+
+            // Default
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.All;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
+            // Config
+            services.Configure<ForwardedHeadersOptions>
+            (
+                _configuration.GetSection("Http:ForwardedHeaders")
+            );
+          
             // Return
             return services;
         }

@@ -15,7 +15,7 @@ namespace MDP.WebApp.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.WebApp.Host.CreateHostBuilder<Startup>(args).Build().Run();
+            MDP.WebApp.Host.CreateHostBuilder(args).Build().Run();
         }
     }
 }

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MDP.WebApp;
 
 namespace SleepZone.WebSite
 {
@@ -18,7 +17,7 @@ namespace SleepZone.WebSite
         public static void Main(string[] args)
         {
             // Host
-            MDP.WebApp.Host.CreateHostBuilder<Startup>(args).Build().Run();
+            MDP.WebApp.Host.CreateHostBuilder(args).Build().Run();
         }
     }
 }

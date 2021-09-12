@@ -44,16 +44,16 @@ namespace MDP.WebApp
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> Logout()
+        public async Task<ActionResult> Logout(string returnUrl = @"/")
         {
             // Require
-            if (this.User.Identity.IsAuthenticated == false) return this.Redirect(@"/");
+            if (this.User.Identity.IsAuthenticated == false) return this.Redirect(returnUrl);
 
             // SignIn
             await this.HttpContext.SignOutAsync();
 
             // Redirect
-            return this.Redirect(@"/");
+            return this.Redirect(returnUrl);
         }
     }
 
@@ -76,12 +76,9 @@ namespace MDP.WebApp
             return await this.HttpContext.ExternalChallengeAsync(externalScheme, returnUrl);
         }
 
-        [Authorize(AuthenticationSchemes = ExternalCookieAuthenticationDefaults.AuthenticationScheme)]
+        [ExternalAuthorize]
         public async Task<ActionResult> ExternalSignIn(string returnUrl = @"/")
         {
-            // Require
-            if (this.User.Identity.IsAuthenticated == false) return this.Redirect(returnUrl);
-
             // ClaimsIdentity
             var claimsIdentity = await this.HttpContext.ExternalAuthenticateAsync();
             if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}==null");

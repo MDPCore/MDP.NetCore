@@ -15,7 +15,7 @@ namespace MDP.WebApp
     public static class Host
     {
         // Methods
-        public static IHostBuilder CreateHostBuilder<TStartup>(string[] args) where TStartup : class
+        public static IHostBuilder CreateHostBuilder(string[] args)
         {
             #region Contracts
 
@@ -25,7 +25,7 @@ namespace MDP.WebApp
 
             // HostBuilder
             return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                   .ConfigureAspNetCore<TStartup>(webHostBuilder =>
+                   .ConfigureAspNetCore<Startup>(webHostBuilder =>
                    {
                        // Nothing
 
