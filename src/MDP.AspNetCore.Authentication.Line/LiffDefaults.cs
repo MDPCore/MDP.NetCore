@@ -8,6 +8,8 @@ namespace MDP.AspNetCore.Authentication.Line
     public class LiffDefaults
     {
         // Constants
-        public const string AuthenticationScheme = "Liff";
+        public static readonly string AuthenticationScheme = "Liff";
+
+        public static readonly string ClaimsIssuer = "Line";
     }
 }

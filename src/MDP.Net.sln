@@ -109,7 +109,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SleepZone.Todos.Tests", "Sl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.GitHub", "MDP.AspNetCore.Authentication.GitHub\MDP.AspNetCore.Authentication.GitHub.csproj", "{6EFA1648-88DE-4AE6-8203-4DB153E9B0D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Line", "MDP.AspNetCore.Authentication.Line\MDP.AspNetCore.Authentication.Line.csproj", "{88FDE7F6-B3E3-41CD-BAF6-1CA00FF43848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Line", "MDP.AspNetCore.Authentication.Line\MDP.AspNetCore.Authentication.Line.csproj", "{88FDE7F6-B3E3-41CD-BAF6-1CA00FF43848}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Line.Services", "MDP.AspNetCore.Authentication.Line.Services\MDP.AspNetCore.Authentication.Line.Services.csproj", "{8EB45771-6634-43AF-AA75-9637D23663BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.ExternalCookies.Services", "MDP.AspNetCore.Authentication.ExternalCookies.Services\MDP.AspNetCore.Authentication.ExternalCookies.Services.csproj", "{0E0BB6CB-A115-4478-ACF8-D837B8ADB1A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -297,6 +301,14 @@ Global
 		{88FDE7F6-B3E3-41CD-BAF6-1CA00FF43848}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88FDE7F6-B3E3-41CD-BAF6-1CA00FF43848}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88FDE7F6-B3E3-41CD-BAF6-1CA00FF43848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB45771-6634-43AF-AA75-9637D23663BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EB45771-6634-43AF-AA75-9637D23663BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB45771-6634-43AF-AA75-9637D23663BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EB45771-6634-43AF-AA75-9637D23663BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E0BB6CB-A115-4478-ACF8-D837B8ADB1A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E0BB6CB-A115-4478-ACF8-D837B8ADB1A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E0BB6CB-A115-4478-ACF8-D837B8ADB1A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E0BB6CB-A115-4478-ACF8-D837B8ADB1A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -351,6 +363,8 @@ Global
 		{88E181DC-F343-4C5C-B6A9-B595D9E3F8E2} = {C796E180-8F5B-49EA-B877-CE525B1BA64C}
 		{6EFA1648-88DE-4AE6-8203-4DB153E9B0D8} = {09D89FD5-0458-431A-8267-04A651A4852F}
 		{88FDE7F6-B3E3-41CD-BAF6-1CA00FF43848} = {09D89FD5-0458-431A-8267-04A651A4852F}
+		{8EB45771-6634-43AF-AA75-9637D23663BF} = {09D89FD5-0458-431A-8267-04A651A4852F}
+		{0E0BB6CB-A115-4478-ACF8-D837B8ADB1A7} = {09D89FD5-0458-431A-8267-04A651A4852F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25EFCCC9-D06F-4E4F-812E-9C006F6A319C}

@@ -1,7 +1,5 @@
 ﻿using MDP.AspNetCore.Authentication.JwtBearer;
-using MDP.AspNetCore.Authentication.ExternalCookies;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -44,24 +42,7 @@ namespace MDP.WebApp
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> Logout(string returnUrl = @"/")
-        {
-            // Require
-            if (this.User.Identity.IsAuthenticated == false) return this.Redirect(returnUrl);
-
-            // SignIn
-            await this.HttpContext.SignOutAsync();
-
-            // Redirect
-            return this.Redirect(returnUrl);
-        }
-    }
-
-    public partial class AccountController : Controller
-    {
-        // Methods
-        [AllowAnonymous]
-        public async Task<ActionResult> ExternalLogin(string externalScheme, string returnUrl = @"/")
+        public ActionResult ExternalLogin(string externalScheme, string returnUrl = @"/")
         {
             #region Contracts
 
@@ -72,20 +53,18 @@ namespace MDP.WebApp
             // Require
             if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
 
-            // ExternalChallenge
-            return await this.HttpContext.ExternalChallengeAsync(externalScheme, returnUrl);
+            // Challenge
+            return new ChallengeResult(externalScheme, new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
-        [ExternalAuthorize]
-        public async Task<ActionResult> ExternalSignIn(string returnUrl = @"/")
+        [AllowAnonymous]
+        public async Task<ActionResult> Logout(string returnUrl = @"/")
         {
-            // ClaimsIdentity
-            var claimsIdentity = await this.HttpContext.ExternalAuthenticateAsync();
-            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}==null");
+            // Require
+            if (this.User.Identity.IsAuthenticated == false) return this.Redirect(returnUrl);
 
             // SignIn
-            await this.HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
-            await this.HttpContext.ExternalSignOutAsync();
+            await this.HttpContext.SignOutAsync();
 
             // Redirect
             return this.Redirect(returnUrl);

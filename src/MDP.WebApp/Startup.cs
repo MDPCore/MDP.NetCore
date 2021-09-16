@@ -166,58 +166,57 @@ namespace MDP.WebApp
                     return options.DefaultScheme;
                 };
             })
+            .AddJwtBearer(options =>
+            {
+                // Options
+                options.Issuer = _configuration["Authentication:JwtBearer:Issuer"];
+                options.SignKey = _configuration["Authentication:JwtBearer:SignKey"];
+            })
             .AddCookie(options =>
             {
-                // Action
+                // Options
                 options.LoginPath = new PathString("/Account/Login");
                 options.AccessDeniedPath = options.LoginPath;
             })
             .AddExternalCookie(options =>
             {
-                // Action
-                options.CallbackPath = new PathString("/Account/ExternalSignIn");
+                // Options
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options =>
-            {
-                // Decode
-                options.Issuer = _configuration["Authentication:JwtBearer:Issuer"];
-                options.SignKey = _configuration["Authentication:JwtBearer:SignKey"];
-            }) 
             .AddGoogle(options =>
             {
-                // Client
+                // Options
                 options.ClientId = _configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
-                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+                options.ExternalSignIn();
             })
             .AddFacebook(options =>
             {
-                // Client
+                // Options
                 options.ClientId = _configuration["Authentication:Facebook:ClientId"];
                 options.ClientSecret = _configuration["Authentication:Facebook:ClientSecret"];
-                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+                options.ExternalSignIn();
+            })
+            .AddGitHub(options =>
+            {
+                // Options
+                options.ClientId = _configuration["Authentication:GitHub:ClientId"];
+                options.ClientSecret = _configuration["Authentication:GitHub:ClientSecret"];
+                options.ExternalSignIn();
             })
             .AddLine(options =>
             {
-                // Client
+                // Options
                 options.ClientId = _configuration["Authentication:Line:ClientId"];
                 options.ClientSecret = _configuration["Authentication:Line:ClientSecret"];
-                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+                options.ExternalSignIn();
             })
             .AddLiff(options =>
             {
-                // Client
+                // Options
                 options.ClientId = _configuration["Authentication:Line:ClientId"];
                 options.ClientSecret = _configuration["Authentication:Line:ClientSecret"];
-                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddGitHub(options => 
-            {
-                // Client
-                options.ClientId = _configuration["Authentication:GitHub:ClientId"];
-                options.ClientSecret = _configuration["Authentication:GitHub:ClientSecret"];
-                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+                options.ExternalSignIn();
             });
 
             // Return

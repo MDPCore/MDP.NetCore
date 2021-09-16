@@ -10,6 +10,14 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
 {
     public class ExternalCookieAuthenticationOptions
     {
+        // Constructors
+        public ExternalCookieAuthenticationOptions()
+        {
+            // Options
+            this.CallbackPath = new PathString("/signin-external");
+        }
+
+
         // Properties
         public string DefaultScheme { get; set; }
 

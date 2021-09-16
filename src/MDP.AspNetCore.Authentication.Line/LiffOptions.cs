@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,15 +12,16 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.GitHub
+namespace MDP.AspNetCore.Authentication.Line
 {
-    public class GitHubAuthenticationOptions
+    public class LiffOptions : LineOptions
     {
-        // Properties
-        public string ClientId { get; set; }
-
-        public string ClientSecret { get; set; }
-
-        public string SignInScheme { get; set; }
+        // Constructors
+        public LiffOptions()
+        {
+            // Options
+            this.CallbackPath = new PathString("/signin-liff");
+            this.ClaimsIssuer = LiffDefaults.ClaimsIssuer;
+        }
     }
 }
