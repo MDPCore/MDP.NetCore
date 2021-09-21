@@ -26,28 +26,28 @@
     <hr />
 
     <!--LoginByGoogle-->
-    <form asp-action="ExternalLogin" asp-route-externalScheme="@GoogleDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form asp-action="Login" asp-route-externalScheme="@GoogleDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
         <input type="submit" value="LoginByGoogle" /><br />
         <br />
     </form>
     <hr />
 
     <!--LoginByFacebook-->
-    <form asp-action="ExternalLogin" asp-route-externalScheme="@FacebookDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form asp-action="Login" asp-route-externalScheme="@FacebookDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
         <input type="submit" value="LoginByFacebook" /><br />
         <br />
     </form>
     <hr />
 
     <!--LoginByGitHub-->
-    <form asp-action="ExternalLogin" asp-route-externalScheme="@GitHubDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form asp-action="Login" asp-route-externalScheme="@GitHubDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
         <input type="submit" value="LoginByGitHub" /><br />
         <br />
     </form>
     <hr />
 
     <!--LoginByLine-->
-    <form asp-action="ExternalLogin" asp-route-externalScheme="@LineDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form asp-action="Login" asp-route-externalScheme="@LineDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
         <input type="submit" value="LoginByLine" /><br />
         <br />
     </form>

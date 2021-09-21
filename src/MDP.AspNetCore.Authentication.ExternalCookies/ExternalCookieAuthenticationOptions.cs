@@ -15,6 +15,7 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
         {
             // Options
             this.CallbackPath = new PathString("/signin-external");
+            this.RegisterPath = null;
         }
 
 
@@ -22,5 +23,7 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
         public string DefaultScheme { get; set; }
 
         public PathString CallbackPath { get; set; }
+
+        public PathString RegisterPath { get; set; }
     }
 }

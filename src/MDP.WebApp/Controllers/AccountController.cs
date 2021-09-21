@@ -32,42 +32,28 @@ namespace MDP.WebApp
 
         // Methods
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl = @"/")
+        public ActionResult Login(string externalScheme = null, string returnUrl = null)
         {
             // Require
+            returnUrl = returnUrl ?? this.Url.Content("~/");
             if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
 
-            // Return
+            // Challenge
+            if (string.IsNullOrEmpty(externalScheme) == false) return this.Challenge(new AuthenticationProperties() { RedirectUri = returnUrl }, externalScheme);
+
+            // View
             return View(@"Index");
         }
 
         [AllowAnonymous]
-        public ActionResult ExternalLogin(string externalScheme, string returnUrl = @"/")
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(externalScheme) == true) throw new ArgumentException(nameof(externalScheme));
-
-            #endregion
-
-            // Require
-            if (this.User.Identity.IsAuthenticated == true) return this.Redirect(returnUrl);
-
-            // Challenge
-            return new ChallengeResult(externalScheme, new AuthenticationProperties() { RedirectUri = returnUrl });
-        }
-
-        [AllowAnonymous]
-        public async Task<ActionResult> Logout(string returnUrl = @"/")
+        public ActionResult Logout(string returnUrl = null)
         {
             // Require
+            returnUrl = returnUrl ?? this.Url.Content("~/");
             if (this.User.Identity.IsAuthenticated == false) return this.Redirect(returnUrl);
 
-            // SignIn
-            await this.HttpContext.SignOutAsync();
-
-            // Redirect
-            return this.Redirect(returnUrl);
+            // SignOut
+            return this.SignOut(new AuthenticationProperties() { RedirectUri = returnUrl });
         }
     }
 

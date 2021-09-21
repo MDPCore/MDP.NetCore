@@ -53,6 +53,7 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
                 // RedirectUri
                 var redirectUri = externalCookieAuthenticationOptions.CallbackPath.Add(QueryString.Create(new Dictionary<string, string>()
                 {
+                    { "authenticationScheme", authenticationScheme },
                     { "returnUrl", context.ReturnUri }
                 }));
                 if (string.IsNullOrEmpty(redirectUri) == true) throw new InvalidOperationException($"{nameof(redirectUri)}=null");

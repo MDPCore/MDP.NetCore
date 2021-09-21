@@ -181,6 +181,7 @@ namespace MDP.WebApp
             .AddExternalCookie(options =>
             {
                 // Options
+                options.RegisterPath = new PathString("/registration.html");
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddGoogle(options =>

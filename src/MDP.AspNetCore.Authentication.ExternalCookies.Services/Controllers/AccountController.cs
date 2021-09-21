@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +14,18 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies.Services
     public class AccountController : Controller
     {
         // Methods
-        [ExternalAuthorize]
+        [AllowAnonymous]
         [Route("signin-external")]
-        public async Task<ActionResult> ExternalSignIn(string returnUrl = @"/")
+        public Task<ActionResult> SignIn(string authenticationScheme, string returnUrl = null)
         {
-            // ClaimsIdentity
-            var claimsIdentity = this.User.Identity;
-            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}==null");
+            #region Contracts
 
-            // SignIn
-            await this.HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
-            await this.HttpContext.ExternalSignOutAsync();
+            if (string.IsNullOrEmpty(authenticationScheme) == true) throw new ArgumentException(nameof(authenticationScheme));
 
-            // Redirect
-            return this.Redirect(returnUrl);
+            #endregion
+
+            // Return
+            return this.ExternalSignInAsync(authenticationScheme, returnUrl);
         }
     }
 }
