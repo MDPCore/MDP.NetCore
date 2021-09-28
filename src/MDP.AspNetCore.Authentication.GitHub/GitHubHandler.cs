@@ -41,12 +41,13 @@ namespace MDP.AspNetCore.Authentication.GitHub
             var response = await this.Backchannel.SendAsync(request, this.Context.RequestAborted);
             if (response.IsSuccessStatusCode == false)
             {
-                var content = await response.Content.ReadAsStringAsync(this.Context.RequestAborted);
+                var content = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(content) == false) throw new HttpRequestException(content);
+                if (string.IsNullOrEmpty(content) == true) throw new HttpRequestException($"An error occurred when retrieving GitHub user information ({response.StatusCode}). Please check if the authentication information is correct.");
             }
 
             // Payload
-            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(this.Context.RequestAborted)))
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
                 // CreatingTicketContext
                 var creatingTicketContext = new OAuthCreatingTicketContext(new ClaimsPrincipal(identity), properties, this.Context, this.Scheme, this.Options, this.Backchannel, tokens, payload.RootElement);

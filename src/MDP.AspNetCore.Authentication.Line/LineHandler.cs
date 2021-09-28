@@ -100,15 +100,16 @@ namespace MDP.AspNetCore.Authentication.Line
             var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
             // Response
-            var response = await this.Backchannel.SendAsync(request, this.Context.RequestAborted);
+            var response = await this.Backchannel.SendAsync(request);
             if (response.IsSuccessStatusCode == false)
             {
-                var content = await response.Content.ReadAsStringAsync(this.Context.RequestAborted);
+                var content = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(content) == false) throw new HttpRequestException(content);
+                if (string.IsNullOrEmpty(content) == true) throw new HttpRequestException($"An error occurred when retrieving Line user information ({response.StatusCode}). Please check if the authentication information is correct.");
             }
 
             // Payload
-            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(this.Context.RequestAborted)))
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
                 // ClientId
                 var clientId = payload.RootElement.GetProperty("client_id").ToString();
@@ -136,15 +137,16 @@ namespace MDP.AspNetCore.Authentication.Line
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             // Response
-            var response = await this.Backchannel.SendAsync(request, this.Context.RequestAborted);
+            var response = await this.Backchannel.SendAsync(request);
             if (response.IsSuccessStatusCode == false)
             {
-                var content = await response.Content.ReadAsStringAsync(this.Context.RequestAborted);
+                var content = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(content) == false) throw new HttpRequestException(content);
+                if (string.IsNullOrEmpty(content) == true) throw new HttpRequestException($"An error occurred when retrieving GitHub user information ({response.StatusCode}). Please check if the authentication information is correct.");
             }
 
             // Payload
-            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(this.Context.RequestAborted)))
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
                 // Identity
                 var identity = new ClaimsIdentity(this.Options.ClaimsIssuer ?? this.Scheme.Name);
@@ -175,15 +177,16 @@ namespace MDP.AspNetCore.Authentication.Line
             });
 
             // Response
-            var response = await this.Backchannel.SendAsync(request, this.Context.RequestAborted);
+            var response = await this.Backchannel.SendAsync(request);
             if (response.IsSuccessStatusCode == false)
             {
-                var content = await response.Content.ReadAsStringAsync(this.Context.RequestAborted);
+                var content = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(content) == false) throw new HttpRequestException(content);
+                if (string.IsNullOrEmpty(content) == true) throw new HttpRequestException($"An error occurred when retrieving GitHub user information ({response.StatusCode}). Please check if the authentication information is correct.");
             }
 
             // Payload
-            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync(this.Context.RequestAborted)))
+            using (var payload = JsonDocument.Parse(await response.Content.ReadAsStringAsync()))
             {
                 // Identity
                 var identity = new ClaimsIdentity(this.Options.ClaimsIssuer ?? this.Scheme.Name);

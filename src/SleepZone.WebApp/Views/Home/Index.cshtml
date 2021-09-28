@@ -1,0 +1,132 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
+@{
+    string GetClaimValue(string claimType)
+    {
+        return (User.Identity as ClaimsIdentity)?.FindFirst(claimType)?.Value;
+    }
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="~/index.css" rel="stylesheet" />
+    <script src="~/mdp.web.js"></script>
+    <script language="javascript">
+        window.onload = function () {
+
+            // GetTokenByCookie
+            document.getElementById("getTokenByCookie.button").addEventListener("click", event => {
+
+                // Variables
+
+                // ActionModel
+                var actionModel = {};
+
+                // Post
+                postRequst("/Account/GetToken", actionModel)
+
+                    // Success
+                    .then(function (response) {
+                        document.getElementById("getTokenByCookie.result").innerText = JSON.stringify(response, null, 2);
+                    })
+
+                    // Error
+                    .catch(function (error) {
+                        document.getElementById("getTokenByCookie.result").innerText = JSON.stringify(error, null, 2);
+                    });
+            });
+
+            // GetUserByToken
+            document.getElementById("getUserByToken.button").addEventListener("click", event => {
+
+                // Variables
+                var token = null;
+                if (document.getElementById("getTokenByCookie.result").innerText != "") {
+                    token = JSON.parse(document.getElementById("getTokenByCookie.result").innerText).content.token;
+                }
+                else { document.getElementById("getUserByToken.result").innerText = "token=null"; return; }
+
+                // ActionModel
+                var actionModel = {};
+
+                // Headers
+                var headers = {};
+                headers["Authorization"] = "Bearer " + token;
+
+                // Post
+                postRequst("/Account/GetUser", actionModel, headers)
+
+                    // Success
+                    .then(function (response) {
+                        document.getElementById("getUserByToken.result").innerText = JSON.stringify(response, null, 2);
+                    })
+
+                    // Error
+                    .catch(function (error) {
+                        document.getElementById("getUserByToken.result").innerText = JSON.stringify(error, null, 2);
+                    });
+            });
+
+            // GetUserByCookie
+            document.getElementById("getUserByCookie.button").addEventListener("click", event => {
+
+                // Variables
+
+                // ActionModel
+                var actionModel = {};
+
+                // Post
+                postRequst("/Account/GetUser", actionModel)
+
+                    // Success
+                    .then(function (response) {
+                        document.getElementById("getUserByCookie.result").innerText = JSON.stringify(response, null, 2);
+                    })
+
+                    // Error
+                    .catch(function (error) {
+                        document.getElementById("getUserByCookie.result").innerText = JSON.stringify(error, null, 2);
+                    });
+            });
+        };
+    </script>
+</head>
+<body>
+
+    <!--Title-->
+    <h2>Home.Index</h2>
+    <hr />
+
+    <!--User-->
+    AuthenticationType=@User.Identity.AuthenticationType<br />
+    UserId=@GetClaimValue(ClaimTypes.NameIdentifier)<br />
+    UserName=@GetClaimValue(ClaimTypes.Name)<br />
+    <br />
+    <hr />
+
+    <!--Logout-->
+    <form>
+        <button asp-controller="Account" asp-action="Logout">Logout</button><br />
+        <br />
+    </form>
+    <hr />
+
+    <!--SleepZone.Todos-->
+    <form asp-area="SleepZone-Todos" asp-controller="Home" asp-action="Index" method="get">
+        <input type="submit" value="SleepZone.Todos" /><br />
+        <br />
+    </form>
+    <hr />
+
+    <!--MDP.Messaging.Notifications-->
+    <form action="/MDP-Messaging-Notifications/Index.html" method="get">
+        <input type="submit" value="MDP.Messaging.Notifications" /><br />
+        <br />
+    </form>
+    <hr />
+
+</body>
+</html>
