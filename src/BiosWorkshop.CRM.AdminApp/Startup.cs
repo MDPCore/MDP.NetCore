@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BiosWorkshop.CRM.WebApp
+namespace BiosWorkshop.CRM.AdminApp
 {
     public class Startup
     {

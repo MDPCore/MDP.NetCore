@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MDP.WebPlatform
+namespace BiosWorkshop.CRM.WebApp
 {
     public class HomeController : Controller
     {
@@ -32,14 +32,6 @@ namespace MDP.WebPlatform
         [Authorize]
         public ActionResult Index()
         {
-            // Logger-Message
-            //_logger.LogTrace("Trace Message");
-            //_logger.LogDebug("Debug Message");
-            //_logger.LogInformation("Information Message");
-            //_logger.LogWarning("Warning Message");
-            //_logger.LogError("Error Message");
-            //_logger.LogCritical("Critical Message");
-
             // Return
             return View();
         }

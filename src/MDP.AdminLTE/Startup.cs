@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BiosWorkshop.CRM.Admin.WebApp
+namespace MDP.AdminLTE
 {
     public class Startup
     {
@@ -25,6 +25,9 @@ namespace BiosWorkshop.CRM.Admin.WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 

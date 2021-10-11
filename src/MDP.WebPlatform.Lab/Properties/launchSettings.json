@@ -11,12 +11,11 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "index.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BiosWorkshop.CRM.WebApp": {
+    "MDP.WebPlatform.Lab": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
