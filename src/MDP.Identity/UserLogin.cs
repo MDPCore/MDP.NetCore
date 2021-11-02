@@ -9,12 +9,12 @@ namespace MDP.Identity
     public class UserLogin
     {
         // Properties
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null;
 
-        public string LoginType { get; set; }
+        public string LoginType { get; set; } = null;
 
-        public string LoginValue { get; set; }
+        public string LoginValue { get; set; } = null;
 
-        public DateTime ExpiredAt { get; set; }
+        public DateTime ExpiredAt { get; set; } = DateTime.MaxValue;
     }
 }

@@ -11,6 +11,6 @@ namespace MDP.Identity.Password
         // Constants
         public static readonly string LoginType = "Password";
 
-        public static Int64 ExpireMinutes { get; set; } = Int64.MaxValue;
+        public static long ExpireMinutes { get; set; } = long.MaxValue;
     }
 }

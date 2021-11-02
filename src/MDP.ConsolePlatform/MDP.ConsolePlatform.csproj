@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MDP.NetCore.Logging.Log4net\MDP.NetCore.Logging.Log4net.csproj" />
+    <ProjectReference Include="..\MDP.NetCore.Logging.NLog\MDP.NetCore.Logging.NLog.csproj" />
     <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
   </ItemGroup>
 

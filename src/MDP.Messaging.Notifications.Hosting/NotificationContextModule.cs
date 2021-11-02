@@ -10,7 +10,6 @@ using MDP.Messaging.Notifications.Accesses;
 using MDP.Messaging.Notifications.Firebase;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using CLK.Autofac;
 using MDP.Hosting;
 
 namespace MDP.Messaging.Notifications.Hosting
@@ -36,26 +35,27 @@ namespace MDP.Messaging.Notifications.Hosting
 
 
         // Methods
-        protected override void ConfigureContainer(ContainerBuilder container)
+        protected override void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             #region Contracts
 
-            if (container == null) throw new ArgumentException(nameof(container));
+            if (containerBuilder == null) throw new ArgumentException(nameof(containerBuilder));
 
             #endregion
 
             // NotificationContext
-            container.RegisterServiceType<NotificationContext, NotificationContext, NotificationContextFactory, NotificationContextOptions>(_configuration, (builder) => builder.SingleInstance());
+            containerBuilder.RegisterService<NotificationContext>().SingleInstance();
+            containerBuilder.RegisterFactory<NotificationContext, NotificationContextFactory>();
 
-            // Firebase
-            container.RegisterServiceType<NotificationProvider, FirebaseNotificationProvider, FirebaseNotificationProviderFactory>();
+            // RegistrationRepository
+            containerBuilder.RegisterService<RegistrationRepository>();
+            containerBuilder.RegisterFactory<RegistrationRepository, MockRegistrationRepositoryFactory>();
+            containerBuilder.RegisterFactory<RegistrationRepository, SqlRegistrationRepositoryFactory>();
 
-            // Accesses
-            container.RegisterServiceType<RegistrationRepository, SqlRegistrationRepository, SqlRegistrationRepositoryFactory>();
-            
-            // Mocks
-            container.RegisterServiceType<RegistrationRepository, MockRegistrationRepository, MockRegistrationRepositoryFactory, MockRegistrationRepositoryOptions>(_configuration);
-            container.RegisterServiceType<NotificationProvider, MockNotificationProvider, MockNotificationProviderFactory, MockNotificationProviderOptions>(_configuration);
+            // NotificationProvider
+            containerBuilder.RegisterService<NotificationProvider>();
+            containerBuilder.RegisterFactory<NotificationProvider, MockNotificationProviderFactory>();
+            containerBuilder.RegisterFactory<NotificationProvider, FirebaseNotificationProviderFactory>();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using CLK.Autofac;
 using MDP;
 using MDP.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,24 +10,6 @@ namespace SleepZone.Todos.Hosting
 {
     public class TodoContextModule : MDP.Hosting.Module
     {
-        // Fields
-        private readonly IConfiguration _configuration = null;
-
-
-        // Constructors
-        public TodoContextModule(IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (configuration == null) throw new ArgumentException(nameof(configuration));
-
-            #endregion
-
-            // Default
-            _configuration = configuration;
-        }
-
-
         // Methods
         protected override void ConfigureContainer(ContainerBuilder container)
         {
@@ -39,15 +20,18 @@ namespace SleepZone.Todos.Hosting
             #endregion
 
             // TodoContext
-            container.RegisterServiceType<TodoContext, TodoContext, TodoContextFactory, TodoContextOptions>(_configuration, (builder) => builder.SingleInstance());
-            
-            // Accesses
-            container.RegisterServiceType<TodoRepository, SqlTodoRepository, SqlTodoRepositoryFactory>();
-            container.RegisterServiceType<SnapshotRepository, SqlSnapshotRepository, SqlSnapshotRepositoryFactory>();
+            container.RegisterService<TodoContext>().SingleInstance();
+            container.RegisterFactory<TodoContext, TodoContextFactory>();
 
-            // Mocks
-            container.RegisterServiceType<TodoRepository, MockTodoRepository, MockTodoRepositoryFactory, MockTodoRepositoryOptions>(_configuration);
-            container.RegisterServiceType<SnapshotRepository, MockSnapshotRepository, MockSnapshotRepositoryFactory, MockSnapshotRepositoryOptions>(_configuration);
+            // TodoRepository
+            container.RegisterService<TodoRepository>();
+            container.RegisterFactory<TodoRepository, MockTodoRepositoryFactory>();
+            container.RegisterFactory<TodoRepository, SqlTodoRepositoryFactory>();
+
+            // SnapshotRepository
+            container.RegisterService<SnapshotRepository>();
+            container.RegisterFactory<SnapshotRepository, MockSnapshotRepositoryFactory>();
+            container.RegisterFactory<SnapshotRepository, SqlSnapshotRepositoryFactory>();
         }
     }
 }

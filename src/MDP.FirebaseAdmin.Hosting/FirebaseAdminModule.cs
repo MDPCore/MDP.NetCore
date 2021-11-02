@@ -15,11 +15,11 @@ namespace MDP.FirebaseAdmin.Hosting
     public class FirebaseAdminModule : MDP.Hosting.Module
     {
         // Methods
-        protected override void ConfigureContainer(ContainerBuilder container)
+        protected override void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             #region Contracts
 
-            if (container == null) throw new ArgumentException(nameof(container));
+            if (containerBuilder == null) throw new ArgumentException(nameof(containerBuilder));
 
             #endregion
 
@@ -33,7 +33,7 @@ namespace MDP.FirebaseAdmin.Hosting
             if (File.Exists(credentialFilePath) == false) return;
 
             // FirebaseApp
-            container.Register<FirebaseApp>(componentContext =>
+            containerBuilder.Register<FirebaseApp>(componentContext =>
             {
                 // Create
                 return FirebaseApp.Create(new AppOptions()
@@ -44,7 +44,7 @@ namespace MDP.FirebaseAdmin.Hosting
             }).SingleInstance();
 
             // FirebaseMessaging
-            container.Register<FirebaseMessaging>(componentContext =>
+            containerBuilder.Register<FirebaseMessaging>(componentContext =>
             {
                 // Require
                 componentContext.Resolve<FirebaseApp>();

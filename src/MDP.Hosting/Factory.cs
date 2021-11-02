@@ -1,6 +1,5 @@
 ﻿using Autofac;
-using CLK.Autofac;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,49 +8,19 @@ using System.Threading.Tasks;
 
 namespace MDP.Hosting
 {
-    public abstract class Factory<TService>
+    public interface Factory<TService>
         where TService : class
     {
-        // Fields
-        private readonly IComponentContext _componentContext = null;
-
-
-        // Constructors
-        public Factory(IComponentContext componentContext)
-        {
-            #region Contracts
-
-            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-
-            #endregion
-
-            // Default
-            _componentContext = componentContext;
-        }
-
-
         // Methods
-        public TService Create()
-        {
-            // Return
-            return this.Create(_componentContext);
-        }
-
-        protected abstract TService Create(IComponentContext componentContext);
+        TService Create(IComponentContext componentContext);
     }
 
-    public abstract class Factory<TService, TOptions>
-        where TService : class 
-        where TOptions : class
+    public abstract class Factory<TService, TInstance> : Factory<TService>
+        where TService : class
+        where TInstance : TService
     {
-        // Fields
-        private readonly IComponentContext _componentContext = null;
-
-        private readonly IOptionsMonitor<TOptions> _optionsMonitor = null;
-
-
-        // Constructors
-        public Factory(IComponentContext componentContext)
+        // Methods
+        public TService Create(IComponentContext componentContext)
         {
             #region Contracts
 
@@ -59,29 +28,72 @@ namespace MDP.Hosting
 
             #endregion
 
-            // Default
-            _componentContext = componentContext;
-            _optionsMonitor = componentContext.ResolveRequired<IOptionsMonitor<TOptions>>();
-        }
+            // InitializeFactory
+            if (this.InitializeFactory(componentContext) == false) return null;
 
+            // CreateService
+            return this.CreateService(componentContext);
+        }        
 
-        // Methods
-        public TService Create(string name)
+        protected virtual bool InitializeFactory(IComponentContext componentContext)
         {
             #region Contracts
 
-            if (name == null) throw new ArgumentException(nameof(name));
+            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
 
             #endregion
 
-            // Options
-            var options = _optionsMonitor.Get(name);
-            if (options == null) throw new InvalidOperationException($"{nameof(options)}=null");
+            // Initialize
+            if (this.BindFactory(componentContext) == false) return false;
 
             // Return
-            return this.Create(_componentContext, options);
+            return true;
         }
 
-        protected abstract TService Create(IComponentContext componentContext, TOptions options);
+        protected abstract TInstance CreateService(IComponentContext componentContext);
+
+
+        private bool BindFactory(IComponentContext componentContext)
+        {
+            #region Contracts
+
+            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
+
+            #endregion
+
+            // ConfigRoot
+            var configRoot = componentContext.Resolve<IConfiguration>();
+            if (configRoot == null) throw new InvalidOperationException($"{nameof(configRoot)}=null");
+
+            // BindPath
+            var bindPath = this.CreateBindPath();
+            if (string.IsNullOrEmpty(bindPath) == true) return false;
+
+            // BindSection
+            var bindSection = configRoot.GetSection(bindPath);
+            if (bindSection == null) return false;
+            if (bindSection.Exists() == false) return false;
+
+            // Bind
+            ConfigurationBinder.Bind(bindSection, this);
+
+            // Return
+            return true;
+        }
+
+        protected virtual string CreateBindPath()
+        {
+            // BindPath
+            var bindPath = typeof(TService).Namespace + ":" + this.GetType().Name;
+
+            // Suffix
+            if (bindPath.EndsWith("Factory")==true)
+            {
+                bindPath = bindPath.Substring(0, bindPath.Length - "Factory".Length);
+            }
+
+            // Return
+            return bindPath;
+        }
     }
 }

@@ -1,28 +1,19 @@
 ﻿using CLK.Data.SqlClient;
-using CLK.Autofac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using MDP.Hosting;
 using Autofac;
 using SleepZone.Todos.Accesses;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class SqlSnapshotRepositoryFactory : Factory<SqlSnapshotRepository>
+    public class SqlSnapshotRepositoryFactory : Factory<SnapshotRepository, SqlSnapshotRepository>
     {
-        // Constructors
-        public SqlSnapshotRepositoryFactory(IComponentContext componentContext) : base(componentContext)
-        {
-
-        }
-
-
         // Methods
-        protected override SqlSnapshotRepository Create(IComponentContext componentContext)
+        protected override SqlSnapshotRepository CreateService(IComponentContext componentContext)
         {
             #region Contracts
 
@@ -30,8 +21,11 @@ namespace SleepZone.Todos.Hosting
 
             #endregion
 
-            // Return
-            return componentContext.Resolve<SqlSnapshotRepository>();
+            // Create
+            return new SqlSnapshotRepository
+            (
+                componentContext.Resolve<SqlClientFactory>()
+            );
         }
     }
 }

@@ -8,34 +8,23 @@ using System.Threading.Tasks;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class TodoContextFactory : Factory<TodoContext, TodoContextOptions>
+    public class TodoContextFactory : Factory<TodoContext, TodoContext>
     {
-        // Constructors
-        public TodoContextFactory(IComponentContext componentContext) : base(componentContext)
-        {
-
-        }
-
-
         // Methods
-        protected override TodoContext Create(IComponentContext componentContext, TodoContextOptions options)
+        protected override TodoContext CreateService(IComponentContext componentContext)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (options == null) throw new ArgumentException(nameof(options));
 
             #endregion
 
             // Create
-            var context = new TodoContext
+            return new TodoContext
             (
-                componentContext.ResolveNamed<TodoRepository>(options.TodoRepository),
-                componentContext.ResolveNamed<SnapshotRepository>(options.SnapshotRepository)
+                componentContext.Resolve<TodoRepository>(),
+                componentContext.Resolve<SnapshotRepository>()
             );
-
-            // Return
-            return context;
         }
     }
 }

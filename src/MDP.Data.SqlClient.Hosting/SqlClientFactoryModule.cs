@@ -7,44 +7,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using CLK.Autofac;
 using MDP.Hosting;
 using CLK.Data.SqlClient;
-using Microsoft.Extensions.Options;
 
 namespace MDP.Data.SqlClient.Hosting
 {
     public class SqlClientFactoryModule : MDP.Hosting.Module
     {
-        // Fields
-        private readonly IConfiguration _configuration = null;
-
-
-        // Constructors
-        public SqlClientFactoryModule(IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (configuration == null) throw new ArgumentException(nameof(configuration));
-
-            #endregion
-
-            // Default
-            _configuration = configuration;
-        }
-
-
         // Methods
-        protected override void ConfigureContainer(ContainerBuilder container)
+        protected override void ConfigureContainer(ContainerBuilder containerBuilder)
         {
             #region Contracts
 
-            if (container == null) throw new ArgumentException(nameof(container));
+            if (containerBuilder == null) throw new ArgumentException(nameof(containerBuilder));
 
             #endregion
 
             // SqlClientFactory
-            container.RegisterServiceType<SqlClientFactory, SqlClientFactory, SqlClientFactoryFactory, SqlClientFactoryOptions>(_configuration, (builder) => builder.SingleInstance());
+            containerBuilder.RegisterService<SqlClientFactory>().SingleInstance();
+            containerBuilder.RegisterFactory<SqlClientFactory, SqlClientFactoryFactory>();
         }
     }
 }

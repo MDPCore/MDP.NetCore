@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity.Password
 {
-    public class PasswordService<TUser> : IdentityService<TUser>
-        where TUser : UserBase
+    public class PasswordService<TUser> : LoginService<TUser>
+        where TUser : BaseUser
     {
         // Fields
         private readonly PasswordHasher _passwordHasher = null;
@@ -37,37 +37,28 @@ namespace MDP.Identity.Password
 
             #endregion
 
-            // User
-            var user = this.UserRepository.FindByUserId(userId);
-            if (user == null) return null;
+            // Password
+            password = _passwordHasher.HashPassword(password);
+            if (string.IsNullOrEmpty(password) == true) throw new InvalidOperationException($"{nameof(password)}=null");
 
-            // Login
-            return this.Login(user, password);
+            // LoginType
+            var loginType = PasswordDefaults.LoginType;
+            if (string.IsNullOrEmpty(loginType) == true) throw new InvalidOperationException($"{nameof(loginType)}=null");
+
+            // LoginValue
+            var loginValue = password;
+            if (string.IsNullOrEmpty(loginValue) == true) throw new InvalidOperationException($"{nameof(loginValue)}=null");
+
+            // Base
+            return this.LoginBase(userId, loginType, loginValue);
         }
 
-        public TUser Login(string propertyName, string propertyValue, string password)
+        public TUser Login(string userPropertyName, string userPropertyValue, string password)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(propertyName) == true) throw new ArgumentException(nameof(propertyName));
-            if (string.IsNullOrEmpty(propertyValue) == true) throw new ArgumentException(nameof(propertyValue));
-            if (string.IsNullOrEmpty(password) == true) throw new ArgumentException(nameof(password));
-
-            #endregion
-
-            // User
-            var user = this.UserRepository.FindByProperty(propertyName, propertyValue);
-            if (user == null) return null;
-
-            // Login
-            return this.Login(user, password);
-        }
-
-        private TUser Login(TUser user, string password)
-        {
-            #region Contracts
-
-            if (user==null) throw new ArgumentException(nameof(user));
+            if (string.IsNullOrEmpty(userPropertyName) == true) throw new ArgumentException(nameof(userPropertyName));
+            if (string.IsNullOrEmpty(userPropertyValue) == true) throw new ArgumentException(nameof(userPropertyValue));
             if (string.IsNullOrEmpty(password) == true) throw new ArgumentException(nameof(password));
 
             #endregion
@@ -76,53 +67,20 @@ namespace MDP.Identity.Password
             password = _passwordHasher.HashPassword(password);
             if (string.IsNullOrEmpty(password) == true) throw new InvalidOperationException($"{nameof(password)}=null");
 
-            // UserLogin
-            var userLogin = this.UserLoginRepository.FindByLoginType(user.UserId, PasswordDefaults.LoginType);
-            if (userLogin == null) return null;
-            if (userLogin.LoginValue != password) return null;
-            if (userLogin.ExpiredAt <= DateTime.Now) return null;
+            // LoginType
+            var loginType = PasswordDefaults.LoginType;
+            if (string.IsNullOrEmpty(loginType) == true) throw new InvalidOperationException($"{nameof(loginType)}=null");
 
-            // Return
-            return user;
+            // LoginValue
+            var loginValue = password;
+            if (string.IsNullOrEmpty(loginValue) == true) throw new InvalidOperationException($"{nameof(loginValue)}=null");
+
+            // Base
+            return this.LoginBase(userPropertyName, userPropertyValue, loginType, loginValue);
         }
 
 
-        public void SetPassword(string userId, string password)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
-            if (string.IsNullOrEmpty(password) == true) throw new ArgumentException(nameof(password));
-
-            #endregion
-
-            // User
-            var user = this.UserRepository.FindByUserId(userId);
-            if (user == null) throw new InvalidOperationException($"{nameof(user)}=null");
-
-            // UserLogin
-            var userLogin = this.UserLoginRepository.FindByLoginType(user.UserId, PasswordDefaults.LoginType);
-            if (userLogin == null)
-            {
-                // Create
-                userLogin = this.CreateUserLogin(userId, password);
-                if (userLogin == null) throw new InvalidOperationException($"{nameof(userLogin)}=null");
-
-                // Add
-                this.UserLoginRepository.Add(userLogin);
-            }
-            else
-            {
-                // Create
-                userLogin = this.CreateUserLogin(userId, password);
-                if (userLogin == null) throw new InvalidOperationException($"{nameof(userLogin)}=null");
-
-                // Update
-                this.UserLoginRepository.Update(userLogin);
-            }
-        }
-
-        private UserLogin CreateUserLogin(string userId, string password)
+        public void AllowLogin(string userId, string password)
         {
             #region Contracts
 
@@ -135,17 +93,42 @@ namespace MDP.Identity.Password
             password = _passwordHasher.HashPassword(password);
             if (string.IsNullOrEmpty(password) == true) throw new InvalidOperationException($"{nameof(password)}=null");
 
-            // UserLogin
-            var userLogin = new UserLogin()
-            {
-                UserId = userId,
-                LoginType = PasswordDefaults.LoginType,
-                LoginValue = password,
-                ExpiredAt = (PasswordDefaults.ExpireMinutes == Int64.MaxValue) ? DateTime.MaxValue : DateTime.Now.AddMinutes(PasswordDefaults.ExpireMinutes)
-            };
+            // LoginType
+            var loginType = PasswordDefaults.LoginType;
+            if (string.IsNullOrEmpty(loginType) == true) throw new InvalidOperationException($"{nameof(loginType)}=null");
 
-            // Return
-            return userLogin;
+            // LoginValue
+            var loginValue = password;
+            if (string.IsNullOrEmpty(loginValue) == true) throw new InvalidOperationException($"{nameof(loginValue)}=null");
+
+            // Base
+            this.AllowLoginBase(userId, loginType, loginValue, PasswordDefaults.ExpireMinutes);
+        }
+
+        public void AllowLogin(string userPropertyName, string userPropertyValue, string password)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(userPropertyName) == true) throw new ArgumentException(nameof(userPropertyName));
+            if (string.IsNullOrEmpty(userPropertyValue) == true) throw new ArgumentException(nameof(userPropertyValue));
+            if (string.IsNullOrEmpty(password) == true) throw new ArgumentException(nameof(password));
+
+            #endregion
+
+            // Password
+            password = _passwordHasher.HashPassword(password);
+            if (string.IsNullOrEmpty(password) == true) throw new InvalidOperationException($"{nameof(password)}=null");
+
+            // LoginType
+            var loginType = PasswordDefaults.LoginType;
+            if (string.IsNullOrEmpty(loginType) == true) throw new InvalidOperationException($"{nameof(loginType)}=null");
+
+            // LoginValue
+            var loginValue = password;
+            if (string.IsNullOrEmpty(loginValue) == true) throw new InvalidOperationException($"{nameof(loginValue)}=null");
+
+            // Base
+            this.AllowLoginBase(userPropertyName, userPropertyValue, loginType, loginValue, PasswordDefaults.ExpireMinutes);
         }
     }
 }

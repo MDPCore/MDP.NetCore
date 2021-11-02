@@ -14,5 +14,7 @@
     <ProjectReference Include="..\MDP.Module01.Hosting\MDP.Module01.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Module01.Services\MDP.Module01.Services.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
   
 </Project>

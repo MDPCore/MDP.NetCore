@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace MDP.Identity
 {
     public class IdentityContext<TUser, TUserRepository>
-        where TUser : UserBase
-        where TUserRepository : class, UserBaseRepository<TUser>
+        where TUser : BaseUser
+        where TUserRepository : class, BaseUserRepository<TUser>
     {
         // Fields
         private readonly RoleRepository _roleRepository = null;
@@ -93,8 +93,6 @@ namespace MDP.Identity
             #endregion
 
             // Require
-            user.Verify();
-            userRoleList.Verify();
             if (user.UserId != (userRoleList.GetUserId() ?? user.UserId)) throw new InvalidOperationException($"{nameof(userRoleList)}.UserId is failed.");
 
             // Add

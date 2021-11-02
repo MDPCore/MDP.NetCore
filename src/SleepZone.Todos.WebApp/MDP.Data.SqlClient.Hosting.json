@@ -1,0 +1,13 @@
+{
+  "CLK.Data.SqlClient": {
+
+    // SqlClientFactory
+    "SqlClientFactory": {
+      "ConnectionStrings": {
+        "Database01": "Data Source=Localhost\\SQLEXPRESS; User ID=sa; Password=11111;",
+        "Database02": "Data Source=Localhost\\SQLEXPRESS; User ID=sa; Password=22222;"
+      }
+    }
+
+  }
+}

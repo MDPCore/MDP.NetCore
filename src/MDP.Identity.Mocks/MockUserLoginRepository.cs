@@ -18,7 +18,21 @@ namespace MDP.Identity.Mocks
         }
 
 
+
         // Methods
+        public void RemoveAll(string userId)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+
+            #endregion
+
+            // RemoveAll
+            this.EntityList.RemoveAll(o => o.UserId == userId);
+        }
+
+
         public UserLogin FindByLoginType(string userId, string loginType)
         {
             #region Contracts
@@ -32,7 +46,7 @@ namespace MDP.Identity.Mocks
             return this.EntityList.FirstOrDefault(o => o.UserId == userId && o.LoginType == loginType);
         }
 
-        public UserLogin FindByLoginValue(string loginType, string loginValue)
+        public List<UserLogin> FindAllByLoginValue(string loginType, string loginValue)
         {
             #region Contracts
 
@@ -42,21 +56,7 @@ namespace MDP.Identity.Mocks
             #endregion
 
             // Find
-            return this.EntityList.FirstOrDefault(o => o.LoginType == loginType && o.LoginValue == loginValue);
+            return this.EntityList.FindAll(o => o.LoginType == loginType && o.LoginValue == loginValue);
         }
-       
-        public void RemoveAll(string userId)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
-
-            #endregion
-
-            // RemoveAll
-            this.EntityList.RemoveAll(o => o.UserId == userId);
-        }
-
-        
     }
 }

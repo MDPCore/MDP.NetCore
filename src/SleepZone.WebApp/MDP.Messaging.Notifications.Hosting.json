@@ -1,8 +1,0 @@
-// MDP.Messaging.Notifications
-{
-  // TodoContext
-  "MDP.Messaging.Notifications.NotificationContext": {
-    "RegistrationRepository": "MDP.Messaging.Notifications.Mocks.MockRegistrationRepository",
-    "NotificationProvider": "MDP.Messaging.Notifications.Mocks.MockNotificationProvider"
-  }
-}

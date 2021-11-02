@@ -24,17 +24,7 @@ namespace MDP.WebPlatform
             #endregion
 
             // HostBuilder
-            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                   .ConfigureAspNetCore<Startup>(webHostBuilder =>
-                   {
-                       // Nothing
-
-                   })
-                   .ConfigureNetCore(hostBuilder =>
-                   {
-                       // Nothing
-
-                   });
+            return MDP.AspNetCore.Host.CreateHostBuilder<Startup>(args);
         }
     }
 }

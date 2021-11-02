@@ -12,14 +12,5 @@ namespace MDP.Identity
         public string UserId { get; set; }
 
         public string RoleId { get; set; }
-
-
-        // Methods
-        public virtual void Verify()
-        {
-            // Require
-            if (string.IsNullOrEmpty(this.UserId) == true) throw new InvalidOperationException($"{nameof(this.UserId)}=null");
-            if (string.IsNullOrEmpty(this.RoleId) == true) throw new InvalidOperationException($"{nameof(this.RoleId)}=null");
-        }
     }
 }

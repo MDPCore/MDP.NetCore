@@ -10,8 +10,8 @@ namespace MDP.Identity.Claims
     public class ClaimsDefaults
     {
         // Constants
-        public static readonly string LoginValueClaimType = ClaimTypes.NameIdentifier;
+        public static readonly string IdentifierClaimType = ClaimTypes.NameIdentifier;
 
-        public static Int64 ExpireMinutes { get; set; } = Int64.MaxValue;
+        public static long ExpireMinutes { get; set; } = long.MaxValue;
     }
 }

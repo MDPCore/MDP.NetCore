@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MDP.NetCore
 {
-    public static partial class HostBuilderExtensions
+    public static class HostBuilderExtensions
     {
         // Methods
         public static IHostBuilder ConfigureNetCore(this IHostBuilder hostBuilder, Action<IHostBuilder> configureAction = null)
@@ -32,12 +32,9 @@ namespace MDP.NetCore
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
             // Service
+            hostBuilder.AddModule();
             hostBuilder.AddOptions();
             hostBuilder.AddHttpClient();
-
-            // Module
-            hostBuilder.AddModuleService();
-            hostBuilder.AddModuleConfiguration();
 
             // Expand
             if (configureAction != null)
@@ -51,6 +48,27 @@ namespace MDP.NetCore
 
 
         // Service
+        private static void AddModule(this IHostBuilder hostBuilder)
+        {
+            #region Contracts
+
+            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
+            
+            #endregion
+
+            // AppConfiguration
+            hostBuilder.ConfigureAppConfiguration((configurationBuilder) =>
+            {
+                configurationBuilder.RegisterModule();
+            });
+
+            // ContainerBuilder
+            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, containerBuilder) =>
+            {
+                containerBuilder.RegisterModule();
+            });
+        }
+
         private static void AddOptions(this IHostBuilder hostBuilder)
         {
             #region Contracts
@@ -83,7 +101,8 @@ namespace MDP.NetCore
             });
         }
 
-        public static void AddProgramService<TProgram>(this IHostBuilder hostBuilder) where TProgram : class
+        public static void AddProgramService<TProgram>(this IHostBuilder hostBuilder)
+            where TProgram : class
         {
             #region Contracts
 
@@ -99,87 +118,6 @@ namespace MDP.NetCore
 
                 // ProgramService
                 services.TryAddTransient<IHostedService, ProgramService<TProgram>>();
-            });
-        }
-
-        // Module
-        private static void AddModuleService(this IHostBuilder hostBuilder, string moduleAssemblyFileName = @"*.Hosting.dll")
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
-            if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
-
-            #endregion
-
-            // Container
-            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, container) =>
-            {
-                // ModuleAssembly
-                var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
-                if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-                
-                // EntryAssembly
-                var entryAssembly = Assembly.GetEntryAssembly();
-                if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
-                if (moduleAssemblyList.Contains(entryAssembly) == false) moduleAssemblyList.Add(entryAssembly);
-
-                // ModuleBuilder
-                var moduleBuilder = new ContainerBuilder();
-                {
-                    // Service
-                    moduleBuilder.RegisterInstance<IConfiguration>(hostContext.Configuration);
-                    moduleBuilder.RegisterInstance<IHostEnvironment>(hostContext.HostingEnvironment);
-
-                    // Assembly
-                    moduleAssemblyList.ForEach(moduleAssembly =>
-                    {
-                        moduleBuilder
-                            .RegisterAssemblyTypes(moduleAssembly)
-                            .Where(assemblyType => typeof(MDP.Hosting.Module).IsAssignableFrom(assemblyType))
-                            .As<MDP.Hosting.Module>();
-                    });
-                }
-
-                // ModuleContainer
-                using (var moduleContainer = moduleBuilder.Build())
-                {
-                    foreach (var module in moduleContainer.Resolve<IEnumerable<MDP.Hosting.Module>>())
-                    {
-                        container.RegisterModule(module);
-                    }
-                }
-            });
-        }
-
-        private static void AddModuleConfiguration(this IHostBuilder hostBuilder, string moduleConfigFileName = @"*.Hosting.json")
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
-            if (string.IsNullOrEmpty(moduleConfigFileName) == true) throw new ArgumentException(nameof(moduleConfigFileName));
-
-            #endregion
-
-            // AppConfiguration
-            hostBuilder.ConfigureAppConfiguration((configuration) =>
-            {
-                // ModuleConfigFile
-                var moduleConfigFileList = CLK.IO.File.GetAllFile(moduleConfigFileName);
-                if (moduleConfigFileList == null) throw new InvalidOperationException($"{nameof(moduleConfigFileList)}=null");
-                
-                // EntryConfigFile
-                var entryConfigFileName = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "json");
-                if (string.IsNullOrEmpty(entryConfigFileName) == true) throw new ArgumentException(nameof(entryConfigFileName));
-                var entryConfigFile = new FileInfo(entryConfigFileName);
-                if (entryConfigFile.Exists == true) moduleConfigFileList.RemoveAll(moduleConfigFile => moduleConfigFile.FullName == entryConfigFile.FullName);
-                if (entryConfigFile.Exists == true) moduleConfigFileList.Add(entryConfigFile);
-
-                // Register
-                foreach (var moduleConfigFile in moduleConfigFileList)
-                {
-                    configuration.AddJsonFile(moduleConfigFile.FullName);
-                }
             });
         }
     }

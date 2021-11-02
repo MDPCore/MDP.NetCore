@@ -17,6 +17,6 @@ namespace MDP.Identity
 
         UserLogin FindByLoginType(string userId, string loginType);
 
-        UserLogin FindByLoginValue(string loginType, string loginValue);
+        List<UserLogin> FindAllByLoginValue(string loginType, string loginValue);
     }
 }

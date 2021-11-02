@@ -9,33 +9,26 @@ using System.Threading.Tasks;
 
 namespace MDP.Data.SqlClient.Hosting
 {
-    public class SqlClientFactoryFactory : Factory<SqlClientFactory, SqlClientFactoryOptions>
+    public class SqlClientFactoryFactory : Factory<SqlClientFactory, SqlClientFactory>
     {
-        // Constructors
-        public SqlClientFactoryFactory(IComponentContext componentContext) : base(componentContext)
-        {
-
-        }
+        // Properties
+        public Dictionary<string, string> ConnectionStrings { get; set; }
 
 
         // Methods
-        protected override SqlClientFactory Create(IComponentContext componentContext, SqlClientFactoryOptions options)
+        protected override SqlClientFactory CreateService(IComponentContext componentContext)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (options == null) throw new ArgumentException(nameof(options));
 
             #endregion
 
             // Create
-            var context = new SqlClientFactory
+            return new SqlClientFactory
             (
-                options.ConnectionStrings
+                this.ConnectionStrings
             );
-
-            // Return
-            return context;
         }
     }
 }

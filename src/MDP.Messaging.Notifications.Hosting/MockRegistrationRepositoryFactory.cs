@@ -1,47 +1,41 @@
-﻿using CLK.Autofac;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using MDP.Hosting;
 using Autofac;
 using MDP.Messaging.Notifications.Mocks;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
-    public class MockRegistrationRepositoryFactory : Factory<MockRegistrationRepository, MockRegistrationRepositoryOptions>
+    public class MockRegistrationRepositoryFactory : Factory<RegistrationRepository, MockRegistrationRepository>
     {
-        // Constructors
-        public MockRegistrationRepositoryFactory(IComponentContext componentContext) : base(componentContext)
-        {
-
-        }
+        // Properties
+        public List<Registration> RegistrationList { get; set; } = new List<Registration>();
 
 
         // Methods
-        protected override MockRegistrationRepository Create(IComponentContext componentContext, MockRegistrationRepositoryOptions options)
+        protected override MockRegistrationRepository CreateService(IComponentContext componentContext)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (options == null) throw new ArgumentException(nameof(options));
-
+            
             #endregion
 
             // Repository
             var repository = new MockRegistrationRepository();
 
             // RegistrationList
-            foreach (var registrationOptions in options.RegistrationList)
+            foreach (var registration in this.RegistrationList)
             {
                 // Add
                 repository.Add(new Registration()
                 {
-                    UserId = registrationOptions.UserId,
-                    DeviceType = registrationOptions.DeviceType,
-                    Token = registrationOptions.Token
+                    UserId = registration.UserId,
+                    DeviceType = registration.DeviceType,
+                    Token = registration.Token
                 });
             }
 

@@ -9,12 +9,12 @@ namespace MDP.Identity
     public class UserToken
     {
         // Properties
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null;
 
-        public string TokenType { get; set; }
+        public string TokenType { get; set; } = null;
 
-        public string TokenValue { get; set; }
+        public string TokenValue { get; set; } = null;
 
-        public DateTime ExpiredAt { get; set; }
+        public DateTime ExpiredAt { get; set; } = DateTime.MinValue;
     }
 }

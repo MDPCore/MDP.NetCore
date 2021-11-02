@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace MDP.Identity
 {
     public class IdentityService<TUser>
-        where TUser : UserBase
+        where TUser : BaseUser
     {
         // Properties
         protected RoleRepository RoleRepository { get; private set; }
 
-        protected UserBaseRepository<TUser> UserRepository { get; private set; }
+        protected BaseUserRepository<TUser> UserRepository { get; private set; }
 
         protected UserRoleRepository UserRoleRepository { get; private set; }
 
@@ -25,7 +25,7 @@ namespace MDP.Identity
         internal void Initialize
         (
             RoleRepository roleRepository,
-            UserBaseRepository<TUser> userRepository,
+            BaseUserRepository<TUser> userRepository,
             UserRoleRepository userRoleRepository,
             UserLoginRepository userLoginRepository,
             UserTokenRepository userTokenRepository

@@ -37,7 +37,6 @@ namespace MDP.Identity
             #endregion
 
             // Require
-            userRoleList.Verify();
             if (userId != (userRoleList.GetUserId() ?? userId)) throw new InvalidOperationException($"{nameof(userRoleList)}.UserId is failed.");
 
             // Update

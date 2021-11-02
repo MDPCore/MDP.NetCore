@@ -8,34 +8,29 @@ using System.Threading.Tasks;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
-    public class NotificationContextFactory : Factory<NotificationContext, NotificationContextOptions>
+    public class NotificationContextFactory : Factory<NotificationContext, NotificationContext>
     {
-        // Constructors
-        public NotificationContextFactory(IComponentContext componentContext) : base(componentContext)
-        {
+        // Properties
+        public string RegistrationRepository { get; set; }
 
-        }
+        public string NotificationProvider { get; set; }
 
 
         // Methods
-        protected override NotificationContext Create(IComponentContext componentContext, NotificationContextOptions options)
+        protected override NotificationContext CreateService(IComponentContext componentContext)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (options == null) throw new ArgumentException(nameof(options));
-
+          
             #endregion
 
             // Create
-            var context = new NotificationContext
+            return new NotificationContext
             (
-                componentContext.ResolveNamed<RegistrationRepository>(options.RegistrationRepository),
-                componentContext.ResolveNamed<NotificationProvider>(options.NotificationProvider)
+                componentContext.ResolveNamed<RegistrationRepository>(this.RegistrationRepository),
+                componentContext.ResolveNamed<NotificationProvider>(this.NotificationProvider)
             );
-
-            // Return
-            return context;
         }
     }
 }
