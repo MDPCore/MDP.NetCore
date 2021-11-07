@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CLK.Data.SqlClient.Dapper\CLK.Data.SqlClient.Dapper.csproj" />
     <ProjectReference Include="..\CLK.Data.SqlClient\CLK.Data.SqlClient.csproj" />
     <ProjectReference Include="..\SleepZone.Todos\SleepZone.Todos.csproj" />
   </ItemGroup>

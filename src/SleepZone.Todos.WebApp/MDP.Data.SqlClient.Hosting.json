@@ -4,10 +4,10 @@
     // SqlClientFactory
     "SqlClientFactory": {
       "ConnectionStrings": {
+        "DefaultConnection": "Data Source=CLARK-WORK;Database=DBLab;Integrated Security=True;",
         "Database01": "Data Source=Localhost\\SQLEXPRESS; User ID=sa; Password=11111;",
         "Database02": "Data Source=Localhost\\SQLEXPRESS; User ID=sa; Password=22222;"
       }
-    }
-
+    }    
   }
 }

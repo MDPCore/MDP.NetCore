@@ -44,8 +44,8 @@ namespace CLK.Data.SqlClient
             var commandEntity = this.CreateCommandEntity(connectionString);
             if (commandEntity == null) throw new InvalidOperationException($"{nameof(commandEntity)}=null: name={name}");
 
-            // Create
-            return this.CreateCommandEntity(connectionString); 
+            // Return
+            return commandEntity; 
         }
 
         protected virtual SqlCommandEntity CreateCommandEntity(string connectionString)
