@@ -70,15 +70,15 @@ namespace MDP.WebPlatform
 
             #endregion
 
-            // ClaimIdentity
-            var claimIdentity = this.User.Identity as ClaimsIdentity;
-            if (claimIdentity == null) throw new InvalidOperationException($"{nameof(claimIdentity)}=null");
+            // ClaimsIdentity
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}=null");
 
             // UserModel
             var user = new UserModel();
-            user.AuthenticationType = claimIdentity.AuthenticationType;
-            user.UserId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            user.UserName = claimIdentity.FindFirst(ClaimTypes.Name)?.Value;
+            user.AuthenticationType = claimsIdentity.AuthenticationType;
+            user.UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            user.UserName = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
 
             // Return
             return (new GetUserResultModel()
@@ -125,12 +125,12 @@ namespace MDP.WebPlatform
 
             #endregion
 
-            // ClaimIdentity
-            var claimIdentity = this.User.Identity as ClaimsIdentity;
-            if (claimIdentity == null) throw new InvalidOperationException($"{nameof(claimIdentity)}=null");
+            // ClaimsIdentity
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}=null");
             
             // TokenString
-            var tokenString = _tokenFactory.CreateEncodedJwt(claimIdentity);
+            var tokenString = _tokenFactory.CreateEncodedJwt(claimsIdentity);
             if (string.IsNullOrEmpty(tokenString) == true) throw new InvalidOperationException($"{nameof(tokenString)}=null");
 
             // Return

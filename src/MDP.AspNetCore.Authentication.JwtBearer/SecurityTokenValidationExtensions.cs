@@ -48,13 +48,13 @@ namespace MDP.AspNetCore.Authentication.JwtBearer
                 var authenticationOptions = authenticationOptionsMonitor.Get(authenticationScheme);
                 if (authenticationOptions == null) throw new InvalidOperationException($"{nameof(authenticationOptions)}=null");
 
-                // jwtBearerOptions.SecurityTokenValidators
+                // JwtBearerOptions.SecurityTokenValidators
                 {
                     jwtBearerOptions.SecurityTokenValidators.Clear();
                     jwtBearerOptions.SecurityTokenValidators.Add(new SecurityTokenValidationHandler());
                 }
 
-                // jwtBearerOptions.ValidationParameters
+                // JwtBearerOptions.ValidationParameters
                 {
                     // Setting
                     jwtBearerOptions.TokenValidationParameters.AuthenticationType = "JwtBearer";

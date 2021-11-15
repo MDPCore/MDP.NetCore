@@ -1,0 +1,28 @@
+﻿using MDP.AspNetCore;
+using MDP.NetCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BiosWorkshop.CRM.AdminPlatform
+{
+    public static class Host
+    {
+        // Methods
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            #region Contracts
+
+            if (args == null) throw new ArgumentException(nameof(args));
+
+            #endregion
+
+            // HostBuilder
+            return MDP.AspNetCore.Host.CreateHostBuilder<Startup>(args);
+        }
+    }
+}

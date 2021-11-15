@@ -24,6 +24,7 @@ using System.Text.Json;
 using MDP.AspNetCore.Authentication.Line;
 using MDP.AspNetCore.Authentication.GitHub;
 using Microsoft.AspNetCore.HttpOverrides;
+using MDP.AspNetCore.Authentication.AzureAD;
 
 namespace MDP.WebPlatform
 {
@@ -181,7 +182,7 @@ namespace MDP.WebPlatform
             .AddExternalCookie(options =>
             {
                 // Options
-                //options.RegisterPath = new PathString("/registration.html");
+                //options.RegisterPath = new PathString("/");
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddGoogle(options =>
@@ -203,6 +204,14 @@ namespace MDP.WebPlatform
                 // Options
                 options.ClientId = _configuration["Authentication:GitHub:ClientId"];
                 options.ClientSecret = _configuration["Authentication:GitHub:ClientSecret"];
+                options.ExternalSignIn();
+            })
+            .AddAzureAD(options =>
+            {
+                // Options
+                options.TenantId = _configuration["Authentication:AzureAD:TenantId"];
+                options.ClientId = _configuration["Authentication:AzureAD:ClientId"];
+                options.ClientSecret = _configuration["Authentication:AzureAD:ClientSecret"];
                 options.ExternalSignIn();
             })
             .AddLine(options =>

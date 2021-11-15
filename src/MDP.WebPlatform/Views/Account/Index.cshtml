@@ -53,5 +53,12 @@
     </form>
     <hr />
 
+    <!--LoginByAzureAD-->
+    <form asp-action="Login" asp-route-externalScheme="AzureAD" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+        <input type="submit" value="LoginByAzureAD" /><br />
+        <br />
+    </form>
+    <hr />
+
 </body>
 </html>

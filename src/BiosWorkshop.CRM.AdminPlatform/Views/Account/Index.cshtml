@@ -1,0 +1,33 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using MDP.AspNetCore.Authentication.Line
+@{
+
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <!-- title -->
+    <title>BiosWorkshop.CRM.AdminPlatform</title>
+
+    <!-- meta -->
+    <meta charset="utf-8" />
+
+    <!-- stylesheet -->
+    <link href="~/index.css" rel="stylesheet" />
+</head>
+<body>
+
+    <!--Title-->
+    <h2>BiosWorkshop.CRM.AdminPlatform|Account.Index</h2>
+    <hr />
+
+    <!--LoginByLine-->
+    <form asp-action="Login" asp-route-externalScheme="@LineDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+        <input type="submit" value="LoginByLine" /><br />
+        <br />
+    </form>
+    <hr />
+
+</body>
+</html>
