@@ -3,6 +3,7 @@ using Autofac.Builder;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MDP.Hosting
 {
@@ -52,6 +53,42 @@ namespace MDP.Hosting
             return containerBuilder;
         }
 
+        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterService<TService>(this ContainerBuilder containerBuilder)
+               where TService : class
+        {
+            #region Contracts
+
+            if (containerBuilder == null) throw new ArgumentException(nameof(containerBuilder));
+
+            #endregion
+
+            // Register
+            return containerBuilder.Register<TService>((componentContext, parameterList) =>
+            {
+                // ServiceName
+                var serviceName = parameterList.Cast<ServiceNameParameter>().FirstOrDefault()?.ValueString;
+                if (string.IsNullOrEmpty(serviceName) == true) serviceName = null;
+
+                // ServiceFactoryList
+                var serviceFactoryList = componentContext.Resolve<IEnumerable<Factory<TService>>>();
+                if (serviceFactoryList == null) throw new InvalidOperationException($"{nameof(serviceFactoryList)}=null");
+
+                // Create
+                foreach (var serviceFactory in serviceFactoryList)
+                {
+                    // Service
+                    var service = serviceFactory.Create(componentContext, serviceName);
+                    if (service != null) return service;
+                }
+
+                // Throw
+                {
+                    // Exception
+                    throw new InvalidOperationException($"Service not exists: serviceName={typeof(TService).FullName}");
+                }
+            }).IfNotRegistered(typeof(TService));
+        }
+
         public static IRegistrationBuilder<TFactory, ReflectionActivatorData, SingleRegistrationStyle> RegisterFactory<TService, TFactory>(this ContainerBuilder containerBuilder)
             where TService : class
             where TFactory : Factory<TService>
@@ -64,38 +101,6 @@ namespace MDP.Hosting
 
             // RegisterFactory
             return containerBuilder.RegisterType<TFactory>().As<Factory<TService>>();
-        }
-
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterService<TService>(this ContainerBuilder containerBuilder)
-               where TService : class
-        {
-            #region Contracts
-
-            if (containerBuilder == null) throw new ArgumentException(nameof(containerBuilder));
-
-            #endregion
-
-            // Register
-            return containerBuilder.Register<TService>(componentContext =>
-            {
-                // ServiceFactoryList
-                var serviceFactoryList = componentContext.Resolve<IEnumerable<Factory<TService>>>();
-                if (serviceFactoryList == null) throw new InvalidOperationException($"{nameof(serviceFactoryList)}=null");
-
-                // Create
-                foreach (var serviceFactory in serviceFactoryList)
-                {
-                    // Service
-                    var service = serviceFactory.Create(componentContext);
-                    if (service != null) return service;
-                }
-
-                // Throw
-                {
-                    // Exception
-                    throw new InvalidOperationException($"Service not exists: serviceName={typeof(TService).FullName}");
-                }
-            }).IfNotRegistered(typeof(TService));
         }
     }
 }

@@ -33,6 +33,7 @@ namespace MDP.AspNetCore.Authentication.AzureAD
             this.Scope.Add("openid");
             this.Scope.Add("email");
             this.Scope.Add("profile");
+            this.Scope.Add("User.Read");
 
             // Claim
             this.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");

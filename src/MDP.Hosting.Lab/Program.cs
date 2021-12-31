@@ -32,8 +32,13 @@ namespace MDP.Hosting.Lab
                 var workService = container.Resolve<WorkService>();
                 if (workService == null) throw new InvalidOperationException($"{nameof(workService)}=null");
 
+                // ResolveAAA
+                var workServiceAAA = container.Resolve<WorkService>("AAA");
+                if (workServiceAAA == null) throw new InvalidOperationException($"{nameof(workServiceAAA)}=null");
+
                 // Execute
                 workService.Execute();
+                workServiceAAA.Execute();
             }
         }
     }

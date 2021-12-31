@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace MDP.Hosting
 {
-    public interface Factory<TService>
+    public abstract class Factory<TService>
         where TService : class
     {
         // Methods
-        TService Create(IComponentContext componentContext);
+        internal abstract TService Create(IComponentContext componentContext, string serviceName = null);
     }
 
     public abstract class Factory<TService, TInstance> : Factory<TService>
@@ -20,7 +20,7 @@ namespace MDP.Hosting
         where TInstance : TService
     {
         // Methods
-        public TService Create(IComponentContext componentContext)
+        internal override TService Create(IComponentContext componentContext, string serviceName = null)
         {
             #region Contracts
 
@@ -28,32 +28,20 @@ namespace MDP.Hosting
 
             #endregion
 
-            // InitializeFactory
-            if (this.InitializeFactory(componentContext) == false) return null;
+            // ServiceConfig
+            var serviceConfig = this.CreateServiceConfig(componentContext, serviceName);
+            if (serviceConfig == null) return null;
+
+            // Bind
+            ConfigurationBinder.Bind(serviceConfig, this);
 
             // CreateService
             return this.CreateService(componentContext);
-        }        
-
-        protected virtual bool InitializeFactory(IComponentContext componentContext)
-        {
-            #region Contracts
-
-            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-
-            #endregion
-
-            // Initialize
-            if (this.BindFactory(componentContext) == false) return false;
-
-            // Return
-            return true;
         }
 
         protected abstract TInstance CreateService(IComponentContext componentContext);
 
-
-        private bool BindFactory(IComponentContext componentContext)
+        private IConfigurationSection CreateServiceConfig(IComponentContext componentContext, string serviceName = null)
         {
             #region Contracts
 
@@ -65,35 +53,29 @@ namespace MDP.Hosting
             var configRoot = componentContext.Resolve<IConfiguration>();
             if (configRoot == null) throw new InvalidOperationException($"{nameof(configRoot)}=null");
 
-            // BindPath
-            var bindPath = this.CreateBindPath();
-            if (string.IsNullOrEmpty(bindPath) == true) return false;
+            // NamespaceConfig
+            var namespaceConfig = configRoot.GetSection(typeof(TService).Namespace);
+            if (namespaceConfig == null) return null;
 
-            // BindSection
-            var bindSection = configRoot.GetSection(bindPath);
-            if (bindSection == null) return false;
-            if (bindSection.Exists() == false) return false;
-
-            // Bind
-            ConfigurationBinder.Bind(bindSection, this);
-
-            // Return
-            return true;
-        }
-
-        protected virtual string CreateBindPath()
-        {
-            // BindPath
-            var bindPath = typeof(TService).Namespace + ":" + this.GetType().Name;
-
-            // Suffix
-            if (bindPath.EndsWith("Factory")==true)
+            // ServiceConfigKey
+            var serviceConfigKey = this.GetType().Name;
+            if (serviceConfigKey.EndsWith("Factory") == true)
             {
-                bindPath = bindPath.Substring(0, bindPath.Length - "Factory".Length);
+                serviceConfigKey = serviceConfigKey.Substring(0, serviceConfigKey.Length - "Factory".Length);
             }
+            if (string.IsNullOrEmpty(serviceName) == false)
+            {
+                serviceConfigKey += $"[{serviceName}]";
+            }
+            if (string.IsNullOrEmpty(serviceConfigKey) == true) throw new InvalidOperationException($"{serviceConfigKey}=null");
+
+            // ServiceConfig
+            var serviceConfig = namespaceConfig.GetSection(serviceConfigKey);
+            if (serviceConfig == null) return null;
+            if (serviceConfig.Exists() == false) return null;
 
             // Return
-            return bindPath;
+            return serviceConfig;
         }
     }
 }
