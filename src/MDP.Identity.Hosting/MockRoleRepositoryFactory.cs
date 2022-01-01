@@ -9,19 +9,27 @@ using MDP.Identity.Mocks;
 
 namespace MDP.Identity.Hosting
 {
-    public class MockRoleRepositoryFactory : Factory<RoleRepository, MockRoleRepository>
+    public class MockRoleRepositoryFactory : Factory<RoleRepository, MockRoleRepository, MockRoleRepositoryFactory.Setting>
     {
         // Methods
-        protected override MockRoleRepository CreateService(IComponentContext componentContext)
+        protected override MockRoleRepository CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            
+            if (setting == null) throw new ArgumentException(nameof(setting));
+
             #endregion
 
             // Create
             return new MockRoleRepository();
+        }
+
+
+        // Class
+        public class Setting
+        {
+
         }
     }
 }

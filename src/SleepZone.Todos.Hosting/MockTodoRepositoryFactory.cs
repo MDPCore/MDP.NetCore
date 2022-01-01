@@ -9,26 +9,23 @@ using SleepZone.Todos.Mocks;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class MockTodoRepositoryFactory : Factory<TodoRepository, MockTodoRepository>
+    public class MockTodoRepositoryFactory : Factory<TodoRepository, MockTodoRepository, MockTodoRepositoryFactory.Setting>
     {
-        // Properties
-        public List<Todo> TodoList { get; set; } = new List<Todo>();
-
-
         // Methods
-        protected override MockTodoRepository CreateService(IComponentContext componentContext)
+        protected override MockTodoRepository CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-          
+            if (setting == null) throw new ArgumentException(nameof(setting));
+
             #endregion
 
             // Repository
             var repository = new MockTodoRepository();
 
             // TodoList
-            foreach (var todo in this.TodoList)
+            foreach (var todo in setting.TodoList)
             {
                 // Add
                 repository.Add(new Todo()
@@ -41,6 +38,14 @@ namespace SleepZone.Todos.Hosting
 
             // Return
             return repository;
+        }
+
+
+        // Class
+        public class Setting
+        {
+            // Properties
+            public List<Todo> TodoList { get; set; } = new List<Todo>();
         }
     }
 }

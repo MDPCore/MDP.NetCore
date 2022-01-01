@@ -84,7 +84,7 @@ namespace MDP.Hosting
                 // Throw
                 {
                     // Exception
-                    throw new InvalidOperationException($"Service not exists: serviceName={typeof(TService).FullName}");
+                    throw new InvalidOperationException($"Service not exists: serviceType={typeof(TService).FullName}, serviceName={serviceName}");
                 }
             }).IfNotRegistered(typeof(TService));
         }

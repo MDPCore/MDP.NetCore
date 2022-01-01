@@ -8,23 +8,28 @@ using System.Threading.Tasks;
 
 namespace MDP.NetCore.Lab
 {
-    public class HelloWorkServiceFactory : Factory<WorkService, HelloWorkService>
+    public class HelloWorkServiceFactory : Factory<WorkService, HelloWorkService, HelloWorkServiceFactory.Setting>
     {
-        // Properties
-        public string Message { get; set; }
-
-
         // Methods
-        protected override HelloWorkService CreateService(IComponentContext componentContext)
+        protected override HelloWorkService CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
+            if (setting == null) throw new ArgumentException(nameof(setting));
 
             #endregion
 
             // Create
-            return new HelloWorkService(this.Message);
+            return new HelloWorkService(setting.Message);
+        }
+
+
+        // Class
+        public class Setting
+        {
+            // Properties
+            public string Message { get; set; }
         }
     }
 }

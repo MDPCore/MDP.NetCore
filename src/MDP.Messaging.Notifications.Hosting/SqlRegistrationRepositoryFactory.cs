@@ -10,14 +10,15 @@ using MDP.Messaging.Notifications.Accesses;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
-    public class SqlRegistrationRepositoryFactory : Factory<RegistrationRepository, SqlRegistrationRepository>
+    public class SqlRegistrationRepositoryFactory : Factory<RegistrationRepository, SqlRegistrationRepository, SqlRegistrationRepositoryFactory.Setting>
     {
         // Methods
-        protected override SqlRegistrationRepository CreateService(IComponentContext componentContext)
+        protected override SqlRegistrationRepository CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
+            if (setting == null) throw new ArgumentException(nameof(setting));
 
             #endregion
 
@@ -26,6 +27,13 @@ namespace MDP.Messaging.Notifications.Hosting
             (
                 componentContext.Resolve<SqlClientFactory>()
             );
+        }
+
+
+        // Class
+        public class Setting
+        {
+
         }
     }
 }

@@ -10,14 +10,15 @@ using FirebaseAdmin.Messaging;
 
 namespace MDP.Messaging.Notifications.Hosting
 {
-    public class FirebaseNotificationProviderFactory : Factory<NotificationProvider, FirebaseNotificationProvider>
+    public class FirebaseNotificationProviderFactory : Factory<NotificationProvider, FirebaseNotificationProvider, FirebaseNotificationProviderFactory.Setting>
     {
         // Methods
-        protected override FirebaseNotificationProvider CreateService(IComponentContext componentContext)
+        protected override FirebaseNotificationProvider CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
+            if (setting == null) throw new ArgumentException(nameof(setting));
 
             #endregion
 
@@ -26,6 +27,13 @@ namespace MDP.Messaging.Notifications.Hosting
             (
                 componentContext.Resolve<FirebaseMessaging>()
             );
+        }
+
+
+        // Class
+        public class Setting
+        {
+
         }
     }
 }

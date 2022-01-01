@@ -10,14 +10,15 @@ using SleepZone.Todos.Accesses;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class SqlTodoRepositoryFactory : Factory<TodoRepository, SqlTodoRepository>
+    public class SqlTodoRepositoryFactory : Factory<TodoRepository, SqlTodoRepository, SqlTodoRepositoryFactory.Setting>
     {
         // Methods
-        protected override SqlTodoRepository CreateService(IComponentContext componentContext)
+        protected override SqlTodoRepository CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
+            if (setting == null) throw new ArgumentException(nameof(setting));
 
             #endregion
 
@@ -26,6 +27,13 @@ namespace SleepZone.Todos.Hosting
             (
                 componentContext.Resolve<SqlClientFactory>()
             );
+        }
+
+
+        // Class
+        public class Setting
+        {
+
         }
     }
 }
