@@ -28,17 +28,22 @@ namespace MDP.Hosting.Lab
             // Container
             using (var container = containerBuilder.Build())
             {
-                // Resolve
-                var workService = container.Resolve<WorkService>();
-                if (workService == null) throw new InvalidOperationException($"{nameof(workService)}=null");
+                // ResolveA
+                var workServiceA = container.Resolve<WorkService>();
+                if (workServiceA == null) throw new InvalidOperationException($"{nameof(workServiceA)}=null");
 
-                // ResolveAAA
-                var workServiceAAA = container.Resolve<WorkService>("AAA");
-                if (workServiceAAA == null) throw new InvalidOperationException($"{nameof(workServiceAAA)}=null");
+                // ResolveB
+                var workServiceB = container.Resolve<WorkService>("HelloWorkService");
+                if (workServiceB == null) throw new InvalidOperationException($"{nameof(workServiceB)}=null");
+
+                // ResolveC
+                var workServiceC = container.Resolve<WorkService>("HelloWorkService[999]");
+                if (workServiceC == null) throw new InvalidOperationException($"{nameof(workServiceC)}=null");
 
                 // Execute
-                workService.Execute();
-                workServiceAAA.Execute();
+                workServiceA.Execute();
+                workServiceB.Execute();
+                workServiceC.Execute();
             }
         }
     }

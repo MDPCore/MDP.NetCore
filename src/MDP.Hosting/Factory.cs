@@ -23,11 +23,7 @@ namespace MDP.Hosting
             if (componentContext == null) throw new ArgumentException(nameof(componentContext));
 
             #endregion
-
-            // ConfigRoot
-            var configRoot = componentContext.Resolve<IConfiguration>() as ConfigurationRoot;
-            if (configRoot == null) throw new InvalidOperationException($"{nameof(configRoot)}=null");
-
+                        
             // NamespaceConfigKey
             var namespaceConfigKey = typeof(TService).Namespace;
             if (string.IsNullOrEmpty(namespaceConfigKey) == true) throw new InvalidOperationException($"{nameof(namespaceConfigKey)}=null");
@@ -42,11 +38,21 @@ namespace MDP.Hosting
             {
                 serviceConfigKey = serviceConfigKey.Substring(0, serviceConfigKey.Length - "Factory".Length);
             }
+            if (string.IsNullOrEmpty(serviceConfigKey) == true) throw new InvalidOperationException($"{serviceConfigKey}=null");
+
+            // ServiceName
             if (string.IsNullOrEmpty(serviceName) == false)
             {
-                serviceConfigKey += $"[{serviceName}]";
+                // Require
+                if (serviceName.StartsWith(serviceConfigKey) == false) return null;
+
+                // Replace
+                serviceConfigKey = serviceName;
             }
-            if (string.IsNullOrEmpty(serviceConfigKey) == true) throw new InvalidOperationException($"{serviceConfigKey}=null");
+           
+            // ConfigRoot
+            var configRoot = componentContext.Resolve<IConfiguration>() as ConfigurationRoot;
+            if (configRoot == null) throw new InvalidOperationException($"{nameof(configRoot)}=null");
 
             // NamespaceConfig
             var namespaceConfig = configRoot.GetSection(namespaceConfigKey);
