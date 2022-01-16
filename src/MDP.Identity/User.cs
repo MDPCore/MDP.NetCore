@@ -2,7 +2,7 @@
 
 namespace MDP.Identity
 {
-    public class BaseUser
+    public class User
     {
         // Properties
         public string UserId { get; set; }

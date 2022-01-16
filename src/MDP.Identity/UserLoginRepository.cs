@@ -13,10 +13,10 @@ namespace MDP.Identity
 
         void Update(UserLogin userLogin);
 
-        void RemoveAll(string userId);
+        void Remove(string userId, string loginType);
 
-        UserLogin FindByLoginType(string userId, string loginType);
+        UserLogin FindByLoginValue(string loginType, string loginValue);
 
-        List<UserLogin> FindAllByLoginValue(string loginType, string loginValue);
+        UserLogin FindByLoginValue(string loginType, string loginValue, string userId);
     }
 }

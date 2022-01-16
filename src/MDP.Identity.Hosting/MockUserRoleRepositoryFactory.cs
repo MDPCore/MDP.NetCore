@@ -29,8 +29,7 @@ namespace MDP.Identity.Hosting
         // Class
         public class Setting
         {
-            // Properties
-            public string Message { get; set; } = "Hello World";
+
         }
     }
 }

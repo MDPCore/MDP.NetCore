@@ -6,19 +6,13 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity
 {
-    public interface BaseUserRepository<TUser> where TUser : BaseUser 
+    public interface UserRepository<TUser> where TUser : User
     {
         // Methods
         void Add(TUser user);
 
         void Update(TUser user);
 
-        void Remove(string userId);
-
         TUser FindByUserId(string userId);
-
-        List<TUser> FindAll();
-
-        List<TUser> FindAllByProperty(string propertyName, string propertyValue);
     }
 }

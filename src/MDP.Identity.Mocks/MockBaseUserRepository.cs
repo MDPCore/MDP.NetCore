@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity.Mocks
 {
-    public abstract class MockBaseUserRepository<TUser> : MockRepository<TUser, string>, BaseUserRepository<TUser> 
-        where TUser : BaseUser
+    public abstract class MockUserRepository<TUser> : MockRepository<TUser, string>, UserRepository<TUser> 
+        where TUser : User
     {
         // Constructors
-        public MockBaseUserRepository() : base(user => Tuple.Create(user.UserId))
+        public MockUserRepository() : base(user => Tuple.Create(user.UserId))
         {
             // Default
 
@@ -29,19 +29,6 @@ namespace MDP.Identity.Mocks
 
             // Find
             return this.EntityList.FirstOrDefault(o => o.UserId == userId);
-        }
-
-        public virtual List<TUser> FindAllByProperty(string propertyName, string propertyValue)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(propertyName) == true) throw new ArgumentException(nameof(propertyName));
-            if (string.IsNullOrEmpty(propertyValue) == true) throw new ArgumentException(nameof(propertyValue));
-
-            #endregion
-
-            // Throw
-            throw new NotSupportedException($"{nameof(propertyName)}={propertyName}");
         }
     }
 }

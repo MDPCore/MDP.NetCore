@@ -32,21 +32,7 @@ namespace MDP.Identity.Mocks
             this.EntityList.RemoveAll(o => o.UserId == userId);
         }
 
-
-        public UserLogin FindByLoginType(string userId, string loginType)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
-            if (string.IsNullOrEmpty(loginType) == true) throw new ArgumentException(nameof(loginType));
-
-            #endregion
-
-            // Find
-            return this.EntityList.FirstOrDefault(o => o.UserId == userId && o.LoginType == loginType);
-        }
-
-        public List<UserLogin> FindAllByLoginValue(string loginType, string loginValue)
+        public UserLogin FindByLoginValue(string loginType, string loginValue)
         {
             #region Contracts
 
@@ -56,7 +42,21 @@ namespace MDP.Identity.Mocks
             #endregion
 
             // Find
-            return this.EntityList.FindAll(o => o.LoginType == loginType && o.LoginValue == loginValue);
+            return this.EntityList.FirstOrDefault(o => o.LoginType == loginType && o.LoginValue == loginValue);
+        }
+
+        public UserLogin FindByLoginValue(string loginType, string loginValue, string userId)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(loginType) == true) throw new ArgumentException(nameof(loginType));
+            if (string.IsNullOrEmpty(loginValue) == true) throw new ArgumentException(nameof(loginValue));
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+
+            #endregion
+
+            // Find
+            return this.EntityList.FirstOrDefault(o => o.LoginType == loginType && o.LoginValue == loginValue && o.UserId == userId);
         }
     }
 }

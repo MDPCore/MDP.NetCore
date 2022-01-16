@@ -4,11 +4,11 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace MDP.Identity.Password
+namespace MDP.Identity.Facebook
 {
-    public class PasswordDefaults
+    public class FacebookDefaults
     {
         // Constants
-        public static readonly string LoginType = "Password";
+        public static readonly string LoginType = "Facebook";
     }
 }

@@ -14,7 +14,5 @@ namespace MDP.Identity
         public string LoginType { get; set; } = null;
 
         public string LoginValue { get; set; } = null;
-
-        public DateTime ExpiredAt { get; set; } = DateTime.MaxValue;
     }
 }

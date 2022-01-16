@@ -9,6 +9,8 @@ namespace MDP.Identity
     public interface UserRoleRepository
     {
         // Methods
+        void Add(UserRole userRole);
+
         void Add(List<UserRole> userRoleList);
 
         void RemoveAll(string userId);
