@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity.Mocks
 {
-
     public class MockUserLoginRepository : MockRepository<UserLogin, string, string>, UserLoginRepository
     {
         // Constructors
@@ -16,7 +15,6 @@ namespace MDP.Identity.Mocks
             // Default
 
         }
-
 
 
         // Methods
@@ -32,7 +30,34 @@ namespace MDP.Identity.Mocks
             this.EntityList.RemoveAll(o => o.UserId == userId);
         }
 
-        public UserLogin FindByLoginValue(string loginType, string loginValue)
+        public UserLogin FindByUserId(string userId, string loginType)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+            if (string.IsNullOrEmpty(loginType) == true) throw new ArgumentException(nameof(loginType));
+
+            #endregion
+
+            // Find
+            return this.EntityList.FirstOrDefault(o => o.UserId == userId && o.LoginType == loginType);
+        }
+
+        public UserLogin FindByUserId(string userId, string loginType, string loginValue)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+            if (string.IsNullOrEmpty(loginType) == true) throw new ArgumentException(nameof(loginType));
+            if (string.IsNullOrEmpty(loginValue) == true) throw new ArgumentException(nameof(loginValue));
+
+            #endregion
+
+            // Find
+            return this.EntityList.FirstOrDefault(o=>o.UserId==userId && o.LoginType == loginType && o.LoginValue == loginValue);
+        }
+
+        public UserLogin FindByLoginType(string loginType, string loginValue)
         {
             #region Contracts
 
@@ -45,7 +70,7 @@ namespace MDP.Identity.Mocks
             return this.EntityList.FirstOrDefault(o => o.LoginType == loginType && o.LoginValue == loginValue);
         }
 
-        public UserLogin FindByLoginValue(string loginType, string loginValue, string userId)
+        public UserLogin FindByLoginType(string loginType, string loginValue, string userId)
         {
             #region Contracts
 

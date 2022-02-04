@@ -82,6 +82,18 @@ namespace CLK.Data.SqlClient
 
 
         // Methods
+        public virtual void AddParameter(string name, object value)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException();
+
+            #endregion
+
+            // Add
+            _command.Parameters.Add(new SqlParameter(name, value));
+        }
+
         public virtual void AddParameter(string name, object value, SqlDbType sqlDbType)
         {
             #region Contracts

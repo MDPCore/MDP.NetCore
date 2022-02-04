@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace MDP.Hosting.Lab
 {
-    public class HelloWorkService : WorkService
+    public class DecorateWorkService : WorkService
     {
         // Fields
-        private readonly string _message = null;
+        private readonly WorkService _workService = null;
 
 
         // Constructors
-        public HelloWorkService(string message)
+        public DecorateWorkService(WorkService workService)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(message) == true) throw new ArgumentException(nameof(message));
+            if (workService == null) throw new ArgumentException(nameof(workService));
 
             #endregion
 
             // Default
-            _message = message;
+            _workService = workService;
         }
 
 
@@ -30,7 +30,7 @@ namespace MDP.Hosting.Lab
         public string GetValue()
         {
             // Return
-            return _message;
+            return _workService.GetValue() + " ZZZ";
         }
     }
 }

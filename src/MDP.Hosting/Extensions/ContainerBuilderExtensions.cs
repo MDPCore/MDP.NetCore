@@ -66,7 +66,7 @@ namespace MDP.Hosting
             return containerBuilder.Register<TService>((componentContext, parameterList) =>
             {
                 // ServiceName
-                var serviceName = parameterList.Cast<ServiceNameParameter>().FirstOrDefault()?.ValueString;
+                var serviceName = parameterList.OfType<ServiceNameParameter>().FirstOrDefault()?.ValueString;
                 if (string.IsNullOrEmpty(serviceName) == true) serviceName = null;
 
                 // ServiceFactoryList

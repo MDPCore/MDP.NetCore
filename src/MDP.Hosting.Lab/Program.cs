@@ -33,17 +33,22 @@ namespace MDP.Hosting.Lab
                 if (workServiceA == null) throw new InvalidOperationException($"{nameof(workServiceA)}=null");
 
                 // ResolveB
-                var workServiceB = container.Resolve<WorkService>("HelloWorkService");
-                if (workServiceB == null) throw new InvalidOperationException($"{nameof(workServiceB)}=null");
+                //var workServiceB = container.Resolve<WorkService>("HelloWorkService");
+                //if (workServiceB == null) throw new InvalidOperationException($"{nameof(workServiceB)}=null");
 
                 // ResolveC
                 var workServiceC = container.Resolve<WorkService>("HelloWorkService[999]");
                 if (workServiceC == null) throw new InvalidOperationException($"{nameof(workServiceC)}=null");
 
+                // ResolveD
+                var workServiceD = container.Resolve<WorkService>("DecorateWorkService");
+                if (workServiceD == null) throw new InvalidOperationException($"{nameof(workServiceD)}=null");
+
                 // Execute
-                workServiceA.Execute();
-                workServiceB.Execute();
-                workServiceC.Execute();
+                Console.WriteLine(workServiceA.GetValue());
+                //Console.WriteLine(workServiceB.GetValue());
+                Console.WriteLine(workServiceC.GetValue());
+                Console.WriteLine(workServiceD.GetValue());
             }
         }
     }

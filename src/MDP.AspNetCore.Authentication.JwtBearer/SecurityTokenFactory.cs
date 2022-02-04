@@ -52,10 +52,6 @@ namespace MDP.AspNetCore.Authentication.JwtBearer
                 // AuthenticationType
                 claimList.RemoveAll(claim => claim.Type == SecurityTokenClaimTypes.AuthenticationType);
                 claimList.Add(new Claim(SecurityTokenClaimTypes.AuthenticationType, identity.AuthenticationType));
-
-                // Name
-                claimList.RemoveAll(claim => claim.Type == ClaimTypes.Name);
-                claimList.Add(new Claim(ClaimTypes.Name, identity.Name));
             }
            
             // CreateEncodedJwt

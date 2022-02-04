@@ -22,6 +22,7 @@ namespace MDP.Hosting.Lab
             // WorkService
             containerBuilder.RegisterService<WorkService>();
             containerBuilder.RegisterFactory<WorkService, HelloWorkServiceFactory>();
+            containerBuilder.RegisterFactory<WorkService, DecorateWorkServiceFactory>();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace MDP.Identity
 
         private readonly UserLoginRepository _userLoginRepository = null;
 
-        private readonly List<LoginService<TUser>> _loginServiceList = null;
+        private readonly List<IdentityService> _identityServiceList = null;
 
 
         // Constructors
@@ -29,7 +29,7 @@ namespace MDP.Identity
             TUserRepository userRepository,
             UserRoleRepository userRoleRepository,
             UserLoginRepository userLoginRepository,
-            List<LoginService<TUser>> loginServiceList
+            List<IdentityService> identityServiceList
         )
         {
             #region Contracts
@@ -38,7 +38,7 @@ namespace MDP.Identity
             if (userRepository == null) throw new ArgumentException(nameof(userRepository));
             if (userRoleRepository == null) throw new ArgumentException(nameof(userRoleRepository));
             if (userLoginRepository == null) throw new ArgumentException(nameof(userLoginRepository));
-            if (loginServiceList == null) throw new ArgumentException(nameof(loginServiceList));
+            if (identityServiceList == null) throw new ArgumentException(nameof(identityServiceList));
 
             #endregion
 
@@ -47,12 +47,12 @@ namespace MDP.Identity
             _userRepository = userRepository;
             _userRoleRepository = userRoleRepository;
             _userLoginRepository = userLoginRepository;
-            _loginServiceList = loginServiceList;
+            _identityServiceList = identityServiceList;
 
-            // LoginService
-            foreach (var loginService in _loginServiceList) 
+            // IdentityService
+            foreach (var identityService in _identityServiceList.OfType<IdentityService<TUser>>()) 
             { 
-                loginService.Initialize
+                identityService.Initialize
                 (
                     _userRepository,
                     _userLoginRepository
@@ -70,11 +70,11 @@ namespace MDP.Identity
 
 
         // Methods
-        public TLoginService GetLoginService<TLoginService>()
-            where TLoginService : class
+        public TIdentityService GetService<TIdentityService>()
+            where TIdentityService : class
         {
             // Get
-            return _loginServiceList.Cast<TLoginService>().FirstOrDefault();
+            return _identityServiceList.OfType<TIdentityService>().FirstOrDefault();
         }
     }
 }

@@ -57,7 +57,6 @@ namespace MDP.Hosting
             // NamespaceConfig
             var namespaceConfig = configRoot.GetSection(namespaceConfigKey);
             if (namespaceConfig == null) return null;
-            if (namespaceConfig.Exists() == false) return null;
 
             // ServiceConfig
             var serviceConfig = namespaceConfig.GetSection(serviceConfigKey);
@@ -79,7 +78,7 @@ namespace MDP.Hosting
             #endregion
 
             // JsonSource
-            foreach (var jsonSource in configRoot.Providers.Cast<JsonConfigurationProvider>().Select(o => o.Source))
+            foreach (var jsonSource in configRoot.Providers.OfType<JsonConfigurationProvider>().Select(o => o.Source))
             {
                 // JsonFile
                 var jsonFile = jsonSource.FileProvider?.GetFileInfo(jsonSource.Path);

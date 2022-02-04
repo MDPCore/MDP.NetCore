@@ -9,8 +9,6 @@ namespace MDP.Hosting.Lab
     public interface WorkService
     {
         // Methods
-        void Execute();
-
         string GetValue();
     }
 }

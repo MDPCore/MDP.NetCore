@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity.Password
 {
-    public class PasswordService<TUser> : LoginService<TUser>
-        where TUser : User
+    public class PasswordService<TUser> : IdentityService<TUser>
+        where TUser : class, User
     {
         // Fields
         private readonly PasswordHasher _passwordHasher = null;
@@ -28,31 +28,6 @@ namespace MDP.Identity.Password
 
 
         // Methods
-        public TUser Login(string userId, string password)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
-            if (string.IsNullOrEmpty(password) == true) throw new ArgumentException(nameof(password));
-
-            #endregion
-
-            // HashPassword
-            password = _passwordHasher.HashPassword(password);
-            if (string.IsNullOrEmpty(password) == true) throw new InvalidOperationException($"{nameof(password)}=null");
-
-            // UserLogin
-            var userLogin = this.UserLoginRepository.FindByLoginValue(PasswordDefaults.LoginType, password, userId);
-            if (userLogin == null) return null;
-
-            // User
-            var user = this.UserRepository.FindByUserId(userId);
-            if (user == null) return null;
-
-            // Return
-            return user;
-        }
-
         public void SetPassword(string userId, string password)
         {
             #region Contracts
@@ -74,6 +49,47 @@ namespace MDP.Identity.Password
                 LoginType = PasswordDefaults.LoginType,
                 LoginValue = password
             });
+        }
+
+        public TUser Login(string userId)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+
+            #endregion
+
+            // UserLogin
+            var userLogin = this.UserLoginRepository.FindByUserId(userId, PasswordDefaults.LoginType);
+            if (userLogin == null) return null;
+
+            // User
+            var user = this.UserRepository.FindByUserId(userId);
+            if (user == null) return null;
+
+            // Return
+            return user;
+        }
+
+        public bool Authenticate(string userId, string password)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
+            if (string.IsNullOrEmpty(password) == true) throw new ArgumentException(nameof(password));
+
+            #endregion
+
+            // HashPassword
+            password = _passwordHasher.HashPassword(password);
+            if (string.IsNullOrEmpty(password) == true) throw new InvalidOperationException($"{nameof(password)}=null");
+
+            // UserLogin
+            var userLogin = this.UserLoginRepository.FindByLoginType(PasswordDefaults.LoginType, password, userId);
+            if (userLogin == null) return false;
+
+            // Return
+            return true;
         }
     }
 }

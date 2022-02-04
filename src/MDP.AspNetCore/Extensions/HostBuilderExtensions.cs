@@ -78,7 +78,7 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // JsonOptions
+            // HttpContext
             mvcBuilder.Services.AddHttpContextAccessor();
         }
 

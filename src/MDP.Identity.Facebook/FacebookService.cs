@@ -6,31 +6,10 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity.Facebook
 {
-    public class FacebookService<TUser> : LoginService<TUser>
-        where TUser : User
+    public class FacebookService<TUser> : IdentityService<TUser>
+        where TUser : class, User
     {
         // Methods
-        public TUser Login(string userId, string facebookId)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
-            if (string.IsNullOrEmpty(facebookId) == true) throw new ArgumentException(nameof(facebookId));
-
-            #endregion
-
-            // UserLogin
-            var userLogin = this.UserLoginRepository.FindByLoginValue(FacebookDefaults.LoginType, facebookId);
-            if (userLogin == null) return null;
-
-            // User
-            var user = this.UserRepository.FindByUserId(userId);
-            if (user == null) return null;
-
-            // Return
-            return user;
-        }
-
         public void SetFacebook(string userId, string facebookId)
         {
             #region Contracts
@@ -48,6 +27,26 @@ namespace MDP.Identity.Facebook
                 LoginType = FacebookDefaults.LoginType,
                 LoginValue = facebookId
             });
+        }
+
+        public TUser Login(string facebookId)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(facebookId) == true) throw new ArgumentException(nameof(facebookId));
+
+            #endregion
+
+            // UserLogin
+            var userLogin = this.UserLoginRepository.FindByLoginType(FacebookDefaults.LoginType, facebookId);
+            if (userLogin == null) return null;
+
+            // User
+            var user = this.UserRepository.FindByUserId(userLogin.UserId);
+            if (user == null) return null;
+
+            // Return
+            return user;
         }
     }
 }

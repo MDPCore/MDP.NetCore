@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MDP.Identity.Mocks
 {
     public abstract class MockUserRepository<TUser> : MockRepository<TUser, string>, UserRepository<TUser> 
-        where TUser : User
+        where TUser : class, User
     {
         // Constructors
         public MockUserRepository() : base(user => Tuple.Create(user.UserId))

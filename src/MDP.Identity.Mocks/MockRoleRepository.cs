@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity.Mocks
 {
-
     public class MockRoleRepository : MockRepository<Role, string>, RoleRepository
     {
         // Constructors
