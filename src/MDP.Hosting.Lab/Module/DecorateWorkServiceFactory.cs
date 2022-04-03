@@ -19,12 +19,20 @@ namespace MDP.Hosting.Lab
 
             #endregion
 
+            // ComponentContext
+            var lifetimeComponentContext = componentContext.Resolve<IComponentContext>();
+            if (lifetimeComponentContext == null) throw new InvalidOperationException($"{nameof(lifetimeComponentContext)}=null");
+
             // WorkService
-            var workService = componentContext.Resolve<WorkService>(setting.WorkService);
+            var workService = lifetimeComponentContext.Resolve<WorkService>(setting.WorkService);
             if (workService == null) throw new InvalidOperationException($"{nameof(workService)}=null");
 
             // Create
-            return new DecorateWorkService(workService);
+            return new DecorateWorkService
+            (
+                setting.Message,
+                workService
+            );
         }
 
 
@@ -32,6 +40,8 @@ namespace MDP.Hosting.Lab
         public class Setting
         {
             // Properties
+            public string Message { get; set; } = null;
+
             public string WorkService { get; set; } = null;
         }
     }

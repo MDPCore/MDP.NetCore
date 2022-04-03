@@ -11,10 +11,6 @@ namespace MDP.Identity
         // Methods
         void Add(UserRole userRole);
 
-        void Add(List<UserRole> userRoleList);
-
-        void RemoveAll(string userId);
-
         List<UserRole> FindAllByUserId(string userId);
     }
 }

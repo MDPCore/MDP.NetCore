@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
+    <ProjectReference Include="..\SleepZone.Todos.Members\SleepZone.Todos.Members.csproj" />
+    <ProjectReference Include="..\SleepZone.Todos.Members.Mocks\SleepZone.Todos.Members.Mocks.csproj" />
+    <ProjectReference Include="..\SleepZone.Todos.Members.Accesses\SleepZone.Todos.Members.Accesses.csproj" />
+  </ItemGroup>
+
+</Project>

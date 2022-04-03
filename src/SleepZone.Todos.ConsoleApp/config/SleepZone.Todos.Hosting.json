@@ -1,0 +1,31 @@
+{
+  "SleepZone.Todos": {
+
+    // TodoContext
+    "TodoContext": {
+      "TodoRepository": "MockTodoRepository",
+      "SnapshotRepository": "MockSnapshotRepository"
+    },
+
+    // TodoRepository
+    "SqlTodoRepository": {},
+    "MockTodoRepository": {
+      "TodoList": [
+        {
+          "TodoId": "TodoId-001",
+          "Name": "Name-001",
+          "IsComplete": "true"
+        },
+        {
+          "TodoId": "TodoId-002",
+          "Name": "Name-002",
+          "IsComplete": "false"
+        }
+      ]
+    },
+
+    // SnapshotRepository
+    "SqlSnapshotRepository": {},
+    "MockSnapshotRepository": {}
+  }
+}

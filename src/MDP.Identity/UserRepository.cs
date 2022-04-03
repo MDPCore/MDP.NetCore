@@ -6,9 +6,20 @@ using System.Threading.Tasks;
 
 namespace MDP.Identity
 {
-    public interface UserRepository<TUser> where TUser : User
+    public interface UserRepository
     {
         // Methods
+        bool Exists(string userId);
+    }
+
+    public interface UserRepository<TUser> : UserRepository
+        where TUser : class
+    {
+        // Methods
+        bool Exists(TUser user);
+
+        void Add(TUser user);
+
         TUser FindByUserId(string userId);
     }
 }

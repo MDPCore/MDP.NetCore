@@ -30,18 +30,6 @@ namespace MDP.Identity.Mocks
             this.EntityList.AddRange(userRoleList);
         }
 
-        public void RemoveAll(string userId)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException(nameof(userId));
-
-            #endregion
-
-            // RemoveAll
-            this.EntityList.RemoveAll(o => o.UserId == userId);
-        }
-
         public List<UserRole> FindAllByUserId(string userId)
         {
             #region Contracts
@@ -52,6 +40,6 @@ namespace MDP.Identity.Mocks
 
             // FindAll
             return this.EntityList.FindAll(o => o.UserId == userId);
-        }        
+        }
     }
 }

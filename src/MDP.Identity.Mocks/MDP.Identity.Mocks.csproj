@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLK.Mocks\CLK.Mocks.csproj" />
     <ProjectReference Include="..\MDP.Identity\MDP.Identity.csproj" />
+    <ProjectReference Include="..\CLK.Mocks\CLK.Mocks.csproj" />
   </ItemGroup>
 
 </Project>

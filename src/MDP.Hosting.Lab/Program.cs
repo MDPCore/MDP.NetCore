@@ -33,22 +33,32 @@ namespace MDP.Hosting.Lab
                 if (workServiceA == null) throw new InvalidOperationException($"{nameof(workServiceA)}=null");
 
                 // ResolveB
-                //var workServiceB = container.Resolve<WorkService>("HelloWorkService");
-                //if (workServiceB == null) throw new InvalidOperationException($"{nameof(workServiceB)}=null");
+                var workServiceB = container.Resolve<WorkService>("HelloWorkService");
+                if (workServiceB == null) throw new InvalidOperationException($"{nameof(workServiceB)}=null");
 
                 // ResolveC
-                var workServiceC = container.Resolve<WorkService>("HelloWorkService[999]");
+                var workServiceC = container.Resolve<WorkService>("HelloWorkService[456]");
                 if (workServiceC == null) throw new InvalidOperationException($"{nameof(workServiceC)}=null");
 
                 // ResolveD
-                var workServiceD = container.Resolve<WorkService>("DecorateWorkService");
+                var workServiceD = container.Resolve<WorkService>("DecorateWorkService[AAA]");
                 if (workServiceD == null) throw new InvalidOperationException($"{nameof(workServiceD)}=null");
+
+                // ResolveE
+                var workServiceE = container.Resolve<WorkService>("DecorateWorkService[BBB]");
+                if (workServiceE == null) throw new InvalidOperationException($"{nameof(workServiceE)}=null");
+                
+                // ResolveF
+                var workServiceF = container.Resolve<WorkService>("DecorateWorkService[CCC]");
+                if (workServiceF == null) throw new InvalidOperationException($"{nameof(workServiceF)}=null");
 
                 // Execute
                 Console.WriteLine(workServiceA.GetValue());
-                //Console.WriteLine(workServiceB.GetValue());
+                Console.WriteLine(workServiceB.GetValue());
                 Console.WriteLine(workServiceC.GetValue());
                 Console.WriteLine(workServiceD.GetValue());
+                Console.WriteLine(workServiceE.GetValue());
+                Console.WriteLine(workServiceF.GetValue());
             }
         }
     }

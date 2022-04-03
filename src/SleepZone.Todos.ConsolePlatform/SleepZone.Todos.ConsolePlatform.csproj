@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="config\log4net.config" />
+    <None Remove="config\nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
+    <ProjectReference Include="..\MDP.NetCore.Logging.NLog\MDP.NetCore.Logging.NLog.csproj" />
+    <ProjectReference Include="..\MDP.NetCore.Logging.Log4net\MDP.NetCore.Logging.Log4net.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="config\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="config\log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="config\nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

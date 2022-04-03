@@ -23,8 +23,8 @@ namespace SleepZone.Todos.Hosting
             // Create
             return new TodoContext
             (
-                componentContext.Resolve<TodoRepository>(),
-                componentContext.Resolve<SnapshotRepository>()
+                componentContext.Resolve<TodoRepository>(setting.TodoRepository),
+                componentContext.Resolve<SnapshotRepository>(setting.SnapshotRepository)
             );
         }
 
@@ -32,7 +32,10 @@ namespace SleepZone.Todos.Hosting
         // Class
         public class Setting
         {
+            // Properties
+            public string TodoRepository { get; set; }
 
+            public string SnapshotRepository { get; set; }
         }
     }
 }

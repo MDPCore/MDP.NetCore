@@ -8,8 +8,6 @@
     <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Identity\MDP.Identity.csproj" />
     <ProjectReference Include="..\MDP.Identity.Mocks\MDP.Identity.Mocks.csproj" />
-    <ProjectReference Include="..\MDP.Identity.Password\MDP.Identity.Password.csproj" />
-    <ProjectReference Include="..\MDP.Identity.Facebook\MDP.Identity.Facebook.csproj" />
   </ItemGroup>
 
 </Project>

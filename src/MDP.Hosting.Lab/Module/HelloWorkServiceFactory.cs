@@ -28,7 +28,7 @@ namespace MDP.Hosting.Lab
         public class Setting
         {
             // Properties
-            public string Message { get; set; } = "Hello World";
+            public string Message { get; set; } = null;
         }
     }
 }

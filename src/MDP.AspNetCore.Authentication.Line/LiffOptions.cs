@@ -23,5 +23,13 @@ namespace MDP.AspNetCore.Authentication.Line
             this.CallbackPath = new PathString("/signin-liff");
             this.ClaimsIssuer = LiffDefaults.ClaimsIssuer;
         }
+
+
+        // Properties
+        public string LiffId { get; set; }
+
+        public string LiffName { get; set; }
+
+        public string LiffColor { get; set; } 
     }
 }

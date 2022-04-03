@@ -11,4 +11,8 @@
     <PackageReference Include="NLog.Extensions.Logging" Version="1.7.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CLK.IO\CLK.IO.csproj" />
+  </ItemGroup>
+
 </Project>

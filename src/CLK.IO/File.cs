@@ -10,6 +10,18 @@ namespace CLK.IO
     public static class File
     {
         // Methods
+        public static FileInfo GetFile(string fileName, string searchPath = null)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException();
+
+            #endregion
+
+            // Return
+            return GetAllFile(fileName, searchPath).FirstOrDefault();
+        }
+
         public static List<FileInfo> GetAllFile(string fileName, string searchPath = null)
         {
             #region Contracts
@@ -45,7 +57,7 @@ namespace CLK.IO
                 if (searchDirectory == null) throw new InvalidOperationException("searchDirectory=null");
 
                 // SearchFileList
-                var searchFileList = searchDirectory.GetFiles(System.IO.Path.GetFileName(Path.Combine(searchPath, searchPattern)), SearchOption.TopDirectoryOnly);
+                var searchFileList = searchDirectory.GetFiles(System.IO.Path.GetFileName(Path.Combine(searchPath, searchPattern)), SearchOption.AllDirectories);
                 if (searchFileList == null) throw new InvalidOperationException();
 
                 // Add
@@ -61,6 +73,7 @@ namespace CLK.IO
             // Return
             return resultFileDictionary.Values.ToList();
         }
+
 
         public static void DeleteReadOnly(string path)
         {

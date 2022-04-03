@@ -70,8 +70,9 @@ namespace MDP.NetCore.Logging.Log4net
 
             #endregion
 
-            // Require
-            if (File.Exists(configFileName) == false) throw new InvalidOperationException($"{configFileName} not found.");
+            // ConfigFile
+            var configFile = CLK.IO.File.GetFile(configFileName);
+            if (configFile == null) throw new InvalidOperationException($"{configFileName} not found.");
 
             // GlobalContext
             foreach (var propertyPair in properties)

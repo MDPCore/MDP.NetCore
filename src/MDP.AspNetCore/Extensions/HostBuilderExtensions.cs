@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -90,6 +91,12 @@ namespace MDP.AspNetCore
             if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
 
             #endregion
+
+            // HtmlEncoder
+            mvcBuilder.Services.AddSingleton<HtmlEncoder>
+            (
+                HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+            );
 
             // JsonOptions
             mvcBuilder.AddJsonOptions(options =>

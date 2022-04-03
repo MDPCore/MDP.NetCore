@@ -6,13 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\MDP.AspNetCore\MDP.AspNetCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDP.AspNetCore\MDP.AspNetCore.csproj" />
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

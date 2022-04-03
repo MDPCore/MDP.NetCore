@@ -17,7 +17,7 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
     public static class ExternalCookieAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddExternalCookie(this AuthenticationBuilder builder, Action<ExternalCookieAuthenticationOptions> configureOptions = null)
+        public static AuthenticationBuilder AddExternalCookie(this AuthenticationBuilder builder, Action<CookieAuthenticationOptions> configureOptions = null)
         {
             #region Contracts
 
@@ -25,37 +25,8 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
 
             #endregion
 
-            // Return
-            return builder.AddExternalCookie(ExternalCookieAuthenticationDefaults.AuthenticationScheme, configureOptions);
-        }
-
-        public static AuthenticationBuilder AddExternalCookie(this AuthenticationBuilder builder, string authenticationScheme, Action<ExternalCookieAuthenticationOptions> configureOptions = null)
-        {
-            #region Contracts
-
-            if (builder == null) throw new ArgumentException(nameof(builder));
-            if (string.IsNullOrEmpty(authenticationScheme) == true) throw new ArgumentException(nameof(authenticationScheme));
-
-            #endregion
-
-            // ExternalCookieAuthenticationOptions
-            if (configureOptions != null) builder.Services.Configure(authenticationScheme, configureOptions);
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<ExternalCookieAuthenticationOptions>, ExternalCookieAuthenticationPostConfigureOptions>());
-
-            // CookieAuthenticationOptions
-            builder.Services.AddOptions<CookieAuthenticationOptions>(authenticationScheme).Configure<IOptionsMonitor<ExternalCookieAuthenticationOptions>>((cookieOptions, authenticationOptionsMonitor) =>
-            {
-                // AuthenticationOptions
-                var authenticationOptions = authenticationOptionsMonitor.Get(authenticationScheme);
-                if (authenticationOptions == null) throw new InvalidOperationException($"{nameof(authenticationOptions)}=null");
-
-                // CookieOptions
-                cookieOptions.ForwardChallenge = authenticationOptions.DefaultScheme;
-                cookieOptions.ForwardForbid = authenticationOptions.DefaultScheme;
-            });
-
-            // CookieAuthentication
-            builder.AddCookie(authenticationScheme, null, null);
+            // AddCookie
+            builder.AddCookie(ExternalCookieAuthenticationDefaults.AuthenticationScheme, ExternalCookieAuthenticationDefaults.AuthenticationScheme, configureOptions);
 
             // Return
             return builder;

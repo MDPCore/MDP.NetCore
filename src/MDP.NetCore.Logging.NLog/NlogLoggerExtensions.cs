@@ -87,7 +87,10 @@ namespace MDP.NetCore.Logging.NLog
             // ConfigFileName
             var configFileName = options.ConfigFileName;
             if (string.IsNullOrEmpty(configFileName) == true) throw new InvalidOperationException($"{nameof(configFileName)}=null");
-            if (File.Exists(configFileName) == false) throw new InvalidOperationException($"{configFileName} not found.");
+
+            // ConfigFile
+            var configFile = CLK.IO.File.GetFile(configFileName);
+            if (configFile == null) throw new InvalidOperationException($"{configFileName} not found.");
 
             // Properties
             var properties = options.Properties;
@@ -100,7 +103,7 @@ namespace MDP.NetCore.Logging.NLog
             }
 
             // LogFactory
-            var logFactory = NLogLib.LogManager.LoadConfiguration(configFileName);
+            var logFactory = NLogLib.LogManager.LoadConfiguration(configFile.FullName);
             if (logFactory == null) throw new InvalidOperationException($"{nameof(logFactory)}=null");
 
             // Return

@@ -15,11 +15,5 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
             // Default
             this.AuthenticationSchemes = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
         }
-
-        public ExternalAuthorizeAttribute(string policy) : base(policy)
-        {
-            // Default
-            this.AuthenticationSchemes = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
-        }
     }
 }

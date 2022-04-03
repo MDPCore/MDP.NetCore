@@ -17,7 +17,7 @@ namespace SleepZone.Todos.WebApp
         public static void Main(string[] args)
         {
             // Host
-            MDP.WebPlatform.Host.CreateHostBuilder(args).Build().Run();
+            SleepZone.Todos.WebPlatform.Host.Run(args);
         }
     }
 }

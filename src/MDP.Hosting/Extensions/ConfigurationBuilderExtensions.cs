@@ -21,16 +21,26 @@ namespace MDP.Hosting
 
             #endregion
 
-            // ModuleConfigFile
-            var moduleConfigFileList = CLK.IO.File.GetAllFile(moduleConfigFileName);
-            if (moduleConfigFileList == null) throw new InvalidOperationException($"{nameof(moduleConfigFileList)}=null");
+            // moduleConfigFileNameList
+            var moduleConfigFileNameList = new List<string>();
+            {
+                // ModuleConfigFileName
+                moduleConfigFileNameList.Add(moduleConfigFileName);
 
-            // EntryConfigFile
-            var entryConfigFileName = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "json");
-            if (string.IsNullOrEmpty(entryConfigFileName) == true) throw new ArgumentException(nameof(entryConfigFileName));
-            var entryConfigFile = new FileInfo(entryConfigFileName);
-            if (entryConfigFile.Exists == true) moduleConfigFileList.RemoveAll(moduleConfigFile => moduleConfigFile.FullName == entryConfigFile.FullName);
-            if (entryConfigFile.Exists == true) moduleConfigFileList.Add(entryConfigFile);
+                // AppConfigFileName
+                var appConfigFileName = "appsettings.json";
+                if (string.IsNullOrEmpty(appConfigFileName) == true) throw new InvalidOperationException($"{nameof(appConfigFileName)}=null");
+                moduleConfigFileNameList.Add(appConfigFileName);
+
+                // EntryConfigFileName
+                var entryConfigFileName = Assembly.GetEntryAssembly().GetName().Name + ".json";
+                if (string.IsNullOrEmpty(entryConfigFileName) == true) throw new InvalidOperationException($"{nameof(entryConfigFileName)}=null");
+                moduleConfigFileNameList.Add(entryConfigFileName);
+            }
+
+            // ModuleConfigFile
+            var moduleConfigFileList = CLK.IO.File.GetAllFile(string.Join("|", moduleConfigFileNameList));
+            if (moduleConfigFileList == null) throw new InvalidOperationException($"{nameof(moduleConfigFileList)}=null");
 
             // Register
             foreach (var moduleConfigFile in moduleConfigFileList)
