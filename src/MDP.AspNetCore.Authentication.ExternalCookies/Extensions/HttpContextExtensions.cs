@@ -26,6 +26,19 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
             // AuthenticateAsync
             return httpContext.AuthenticateAsync(ExternalCookieAuthenticationDefaults.AuthenticationScheme);
         }
+                
+        public static Task ExternalSignOutAsync(this HttpContext httpContext)
+        {
+            #region Contracts
+
+            if (httpContext == null) throw new ArgumentException(nameof(httpContext));
+
+            #endregion
+
+            // SignOutAsync
+            return httpContext.SignOutAsync(ExternalCookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
 
         public static Task<string> ExternalGetTokenAsync(this HttpContext httpContext, string tokenName)
         {
@@ -38,18 +51,6 @@ namespace MDP.AspNetCore.Authentication.ExternalCookies
 
             // AuthenticateAsync
             return httpContext.GetTokenAsync(ExternalCookieAuthenticationDefaults.AuthenticationScheme, tokenName);
-        }
-
-        public static Task ExternalSignOutAsync(this HttpContext httpContext)
-        {
-            #region Contracts
-
-            if (httpContext == null) throw new ArgumentException(nameof(httpContext));
-
-            #endregion
-
-            // SignOutAsync
-            return httpContext.SignOutAsync(ExternalCookieAuthenticationDefaults.AuthenticationScheme);
         }
     }
 }

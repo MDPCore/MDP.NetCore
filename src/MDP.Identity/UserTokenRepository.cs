@@ -11,8 +11,8 @@ namespace MDP.Identity
         // Methods
         void Add(UserToken userToken);
 
-        void Remove(string userId, string tokenType);
+        void Remove(string userId, string loginType, string tokenType);
 
-        UserToken FindByTokenType(string userId, string tokenType);
+        UserToken FindByTokenType(string userId, string loginType, string tokenType);
     }
 }

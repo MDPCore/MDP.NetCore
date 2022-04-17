@@ -65,7 +65,7 @@ namespace MDP.NetCore
             // ContainerBuilder
             hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, containerBuilder) =>
             {
-                containerBuilder.RegisterModule();
+                containerBuilder.RegisterModule(hostContext.Configuration);
             });
         }
 

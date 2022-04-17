@@ -147,6 +147,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SleepZone.Todos.Members.Ide
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SleepZone.Todos.Members.Identity.Hosting", "SleepZone.Todos.Members.Identity.Hosting\SleepZone.Todos.Members.Identity.Hosting.csproj", "{2B936B6B-3393-4C2B-95DA-34ED8CCBA529}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Identity.AspNetCore.Authentication", "MDP.Identity.AspNetCore.Authentication\MDP.Identity.AspNetCore.Authentication.csproj", "{9A374234-4ABF-43ED-9FA3-394E04F25B68}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Identity.AspNetCore.Authentication.Hosting", "MDP.Identity.AspNetCore.Authentication.Hosting\MDP.Identity.AspNetCore.Authentication.Hosting.csproj", "{5EB9DBEE-BC6E-4D4E-B4BC-0A3B8CB68A9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Identity.Google", "MDP.Identity.Google\MDP.Identity.Google.csproj", "{B3D23FEA-2AC1-41C1-A1AB-7C7DA03C99F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Identity.Google.Hosting", "MDP.Identity.Google.Hosting\MDP.Identity.Google.Hosting.csproj", "{320B75BE-CFE0-46C1-B72F-A6A6DA28C882}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -397,6 +405,22 @@ Global
 		{2B936B6B-3393-4C2B-95DA-34ED8CCBA529}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B936B6B-3393-4C2B-95DA-34ED8CCBA529}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B936B6B-3393-4C2B-95DA-34ED8CCBA529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A374234-4ABF-43ED-9FA3-394E04F25B68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A374234-4ABF-43ED-9FA3-394E04F25B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A374234-4ABF-43ED-9FA3-394E04F25B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A374234-4ABF-43ED-9FA3-394E04F25B68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB9DBEE-BC6E-4D4E-B4BC-0A3B8CB68A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB9DBEE-BC6E-4D4E-B4BC-0A3B8CB68A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB9DBEE-BC6E-4D4E-B4BC-0A3B8CB68A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB9DBEE-BC6E-4D4E-B4BC-0A3B8CB68A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3D23FEA-2AC1-41C1-A1AB-7C7DA03C99F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3D23FEA-2AC1-41C1-A1AB-7C7DA03C99F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3D23FEA-2AC1-41C1-A1AB-7C7DA03C99F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3D23FEA-2AC1-41C1-A1AB-7C7DA03C99F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{320B75BE-CFE0-46C1-B72F-A6A6DA28C882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{320B75BE-CFE0-46C1-B72F-A6A6DA28C882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{320B75BE-CFE0-46C1-B72F-A6A6DA28C882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{320B75BE-CFE0-46C1-B72F-A6A6DA28C882}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -469,6 +493,10 @@ Global
 		{D3E9DF7C-5639-4A7A-9BD3-88B10A198C90} = {A43B3A02-E5AB-46A8-811A-2ECDFC14A6CE}
 		{8ED44B4F-BBB1-4FA5-91DE-4FE9B1CDE8E1} = {A43B3A02-E5AB-46A8-811A-2ECDFC14A6CE}
 		{2B936B6B-3393-4C2B-95DA-34ED8CCBA529} = {A43B3A02-E5AB-46A8-811A-2ECDFC14A6CE}
+		{9A374234-4ABF-43ED-9FA3-394E04F25B68} = {223C9772-B80E-4851-A4A2-7B0CB92E7064}
+		{5EB9DBEE-BC6E-4D4E-B4BC-0A3B8CB68A9C} = {223C9772-B80E-4851-A4A2-7B0CB92E7064}
+		{B3D23FEA-2AC1-41C1-A1AB-7C7DA03C99F7} = {223C9772-B80E-4851-A4A2-7B0CB92E7064}
+		{320B75BE-CFE0-46C1-B72F-A6A6DA28C882} = {223C9772-B80E-4851-A4A2-7B0CB92E7064}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25EFCCC9-D06F-4E4F-812E-9C006F6A319C}

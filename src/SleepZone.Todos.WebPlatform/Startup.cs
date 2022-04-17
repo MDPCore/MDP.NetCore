@@ -193,12 +193,11 @@ namespace SleepZone.Todos.WebPlatform
                 // Options
                 options.ClientId = _configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
-                options.Scope.Add("https://www.googleapis.com/auth/calendar");
                 options.AccessType = "offline";
                 options.SaveTokens = true;
 
                 // Register
-                options.SignInPath("/Account/Register");
+                options.SignInPath("/Account/ExternalLogin");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddFacebook(options =>
@@ -208,7 +207,7 @@ namespace SleepZone.Todos.WebPlatform
                 options.ClientSecret = _configuration["Authentication:Facebook:ClientSecret"];
 
                 // Register
-                options.SignInPath("/Account/Register");
+                options.SignInPath("/Account/ExternalLogin");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddGitHub(options =>
@@ -218,7 +217,7 @@ namespace SleepZone.Todos.WebPlatform
                 options.ClientSecret = _configuration["Authentication:GitHub:ClientSecret"];
 
                 // Register
-                options.SignInPath("/Account/Register");
+                options.SignInPath("/Account/ExternalLogin");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddAzureAD(options =>
@@ -229,7 +228,7 @@ namespace SleepZone.Todos.WebPlatform
                 options.ClientSecret = _configuration["Authentication:AzureAD:ClientSecret"];
 
                 // Register
-                options.SignInPath("/Account/Register");
+                options.SignInPath("/Account/ExternalLogin");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddLine(options =>
@@ -239,7 +238,7 @@ namespace SleepZone.Todos.WebPlatform
                 options.ClientSecret = _configuration["Authentication:Line:ClientSecret"];
 
                 // Register
-                options.SignInPath("/Account/Register");
+                options.SignInPath("/Account/ExternalLogin");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddLiff(options =>
@@ -252,7 +251,7 @@ namespace SleepZone.Todos.WebPlatform
                 options.ClientSecret = _configuration["Authentication:Line:ClientSecret"];
 
                 // Register
-                options.SignInPath("/Account/Register");
+                options.SignInPath("/Account/ExternalLogin");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             });
 

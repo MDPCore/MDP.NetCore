@@ -20,9 +20,8 @@ namespace MDP.Hosting.Lab
             #endregion
 
             // WorkService
-            containerBuilder.RegisterService<WorkService>();
-            containerBuilder.RegisterFactory<WorkService, HelloWorkServiceFactory>();
-            containerBuilder.RegisterFactory<WorkService, DecorateWorkServiceFactory>();
+            containerBuilder.RegisterFactory<WorkService, HelloWorkServiceFactory>(this.Configuration);
+            containerBuilder.RegisterFactory<WorkService, DecorateWorkServiceFactory>(this.Configuration);
         }
     }
 }

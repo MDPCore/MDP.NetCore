@@ -2,6 +2,7 @@
 using MDP.AspNetCore.Authentication.JwtBearer;
 using MDP.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SleepZone.Todos.Members;
@@ -72,7 +73,7 @@ namespace SleepZone.Todos.WebPlatform
     {
         // Methods
         [ExternalAuthorize]
-        public async Task<ActionResult> Register(string returnUrl = null)
+        public async Task<ActionResult> ExternalLogin(string returnUrl = null)
         {
             // ReturnUrl
             returnUrl = returnUrl ?? this.Url.Content("~/");
@@ -81,20 +82,40 @@ namespace SleepZone.Todos.WebPlatform
             // AuthenticateResult
             var authenticateResult = await this.HttpContext.ExternalAuthenticateAsync();
             if (authenticateResult.Succeeded == false) throw new InvalidOperationException($"{nameof(authenticateResult)}==null");
-            
-            // ClaimsIdentity
-            var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}==null");
-            if (claimsIdentity.IsAuthenticated == false) throw new InvalidOperationException($"{nameof(claimsIdentity)}==null");
 
-            // AccessToken
-            var refreshToken = await HttpContext.ExternalGetTokenAsync("refresh_token");
+            // ExternalIdentity
+            var externalIdentity = this.User.Identity as ClaimsIdentity;
+            if (externalIdentity == null) throw new InvalidOperationException($"{nameof(externalIdentity)}==null");
+            if (externalIdentity.IsAuthenticated == false) throw new InvalidOperationException($"{nameof(externalIdentity)}==null");
 
-            // Login
+            // User
+            var authenticationType = externalIdentity.AuthenticationType;
+            var externalId = externalIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var externalName = externalIdentity.Name;
+            var externalMail = externalIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            var accessToken = await this.HttpContext.ExternalGetTokenAsync("access_token");
+            var refreshToken = await this.HttpContext.ExternalGetTokenAsync("refresh_token");
 
+            // AuthenticationType
+            //if (authenticationType == "Google")
+            //{
+            //    // Challenge
+            //    var properties = new AuthenticationProperties();
+            //    {
+            //        properties.RedirectUri = returnUrl;
+            //        properties.SetParameter(GoogleChallengeProperties.ScopeKey, new List<string>
+            //        {
+            //            "openid",
+            //            "profile",
+            //            "email",
+            //            "https://www.googleapis.com/auth/calendar"
+            //        });
+            //    }
+            //    return this.Challenge(properties, authType);
+            //}
 
             // SignIn
-            await this.HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));
+            await this.HttpContext.SignInAsync(new ClaimsPrincipal(externalIdentity));
             await this.HttpContext.ExternalSignOutAsync();
 
             // Redirect

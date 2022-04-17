@@ -19,8 +19,7 @@ namespace SleepZone.Todos.Members.Identity.Hosting
             #endregion
 
             // UserRepository
-            container.RegisterService<UserRepository>();
-            container.RegisterFactory<UserRepository, MemberUserRepositoryFactory>();
+            container.RegisterFactory<UserRepository, MemberUserRepositoryFactory>(this.Configuration);
         }
     }
 }

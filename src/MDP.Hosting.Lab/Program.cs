@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace MDP.Hosting.Lab
 {
@@ -16,13 +17,15 @@ namespace MDP.Hosting.Lab
                 configurationBuilder.AddJsonFile("appsettings.json");
                 configurationBuilder.RegisterModule();
             }
+            var configuration = configurationBuilder.Build();
+            if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
 
             // ContainerBuilder
             var containerBuilder = new ContainerBuilder();
             {
                 // Register
-                containerBuilder.RegisterInstance(configurationBuilder.Build()).As<IConfiguration>();
-                containerBuilder.RegisterModule();
+                containerBuilder.RegisterInstance(configuration).As<IConfiguration>();
+                containerBuilder.RegisterModule(configuration);
             }
 
             // Container

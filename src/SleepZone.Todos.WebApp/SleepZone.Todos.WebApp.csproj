@@ -2,15 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>377223a5-d800-4fdd-8b43-b785cd371fe7</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\SleepZone.Todos.Hosting\SleepZone.Todos.Hosting.csproj" />
+    <ProjectReference Include="..\SleepZone.Todos.Services\SleepZone.Todos.Services.csproj" />
     <ProjectReference Include="..\SleepZone.Todos.WebPlatform\SleepZone.Todos.WebPlatform.csproj" />
     <ProjectReference Include="..\MDP.Module01.Hosting\MDP.Module01.Hosting.csproj" />
     <ProjectReference Include="..\MDP.Module01.Services\MDP.Module01.Services.csproj" />

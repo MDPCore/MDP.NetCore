@@ -19,12 +19,10 @@ namespace SleepZone.Todos.Members.Hosting
             #endregion
 
             // MemberContext
-            container.RegisterService<MemberContext>().SingleInstance();
-            container.RegisterFactory<MemberContext, MemberContextFactory>();
+            container.RegisterFactory<MemberContext, MemberContextFactory>(this.Configuration).SingleInstance();
 
             // MemberRepository
-            container.RegisterService<MemberRepository>();
-            container.RegisterFactory<MemberRepository, MockMemberRepositoryFactory>();
+            container.RegisterFactory<MemberRepository, MockMemberRepositoryFactory>(this.Configuration);
         }
     }
 }

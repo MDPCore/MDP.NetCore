@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,10 @@ namespace MDP.Hosting
 {
     public abstract class Module : Autofac.Module
     {
+        // Properties
+        protected internal IConfiguration Configuration { get; internal set; } = null;
+
+
         // Methods
         protected override void Load(ContainerBuilder container)
         {

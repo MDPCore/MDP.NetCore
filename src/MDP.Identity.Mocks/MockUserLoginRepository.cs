@@ -18,7 +18,7 @@ namespace MDP.Identity.Mocks
 
 
         // Methods
-        public UserLogin FindByLoginType(string loginType, string loginValue)
+        public UserLogin FindByLoginValue(string loginType, string loginValue)
         {
             #region Contracts
 

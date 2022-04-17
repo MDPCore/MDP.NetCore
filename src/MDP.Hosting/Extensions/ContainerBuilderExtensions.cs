@@ -10,7 +10,7 @@ namespace MDP.Hosting
     public static class ContainerBuilderExtensions
     {
         // Methods   
-        public static ContainerBuilder RegisterModule(this ContainerBuilder containerBuilder, string moduleAssemblyFileName = @"*.Hosting.dll")
+        public static ContainerBuilder RegisterModule(this ContainerBuilder containerBuilder, IConfiguration configuration = null, string moduleAssemblyFileName = @"*.Hosting.dll")
         {
             #region Contracts
 
@@ -45,6 +45,10 @@ namespace MDP.Hosting
             {
                 foreach (var module in moduleContainer.Resolve<IEnumerable<MDP.Hosting.Module>>())
                 {
+                    // Register
+                    {
+                        module.Configuration = configuration;
+                    }
                     containerBuilder.RegisterModule(module);
                 }
             }
@@ -53,54 +57,77 @@ namespace MDP.Hosting
             return containerBuilder;
         }
 
-        public static IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle> RegisterService<TService>(this ContainerBuilder containerBuilder)
-               where TService : class
+        public static IList<IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle>> RegisterFactory<TService, TFactory>(this ContainerBuilder containerBuilder, IConfiguration configuration)
+                where TService : class
+                where TFactory : Factory<TService>
         {
             #region Contracts
 
             if (containerBuilder == null) throw new ArgumentException(nameof(containerBuilder));
+            if (configuration == null) throw new ArgumentException(nameof(configuration));
 
             #endregion
 
-            // Register
-            return containerBuilder.Register<TService>((componentContext, parameterList) =>
+            // Variables
+            var registrationBuilderList = new List<IRegistrationBuilder<TService, SimpleActivatorData, SingleRegistrationStyle>>();
+
+            // NamespaceConfigKey
+            var namespaceConfigKey = typeof(TService).Namespace;
+            if (string.IsNullOrEmpty(namespaceConfigKey) == true) throw new InvalidOperationException($"{nameof(namespaceConfigKey)}=null");
+
+            // ServiceConfigKey
+            var serviceConfigKey = typeof(TFactory).Name;
+            if (string.IsNullOrEmpty(serviceConfigKey) == true)
             {
-                // ServiceName
-                var serviceName = parameterList.OfType<ServiceNameParameter>().FirstOrDefault()?.ValueString;
-                if (string.IsNullOrEmpty(serviceName) == true) serviceName = null;
+                throw new InvalidOperationException($"{nameof(serviceConfigKey)}=null");
+            }
+            if (serviceConfigKey.EndsWith("Factory") == true)
+            {
+                serviceConfigKey = serviceConfigKey.Substring(0, serviceConfigKey.Length - "Factory".Length);
+            }
+            if (string.IsNullOrEmpty(serviceConfigKey) == true) throw new InvalidOperationException($"{serviceConfigKey}=null");
 
-                // ServiceFactoryList
-                var serviceFactoryList = componentContext.Resolve<IEnumerable<Factory<TService>>>();
-                if (serviceFactoryList == null) throw new InvalidOperationException($"{nameof(serviceFactoryList)}=null");
+            // NamespaceConfig
+            var namespaceConfig = configuration.GetSection(namespaceConfigKey);
+            if (namespaceConfig == null) return registrationBuilderList;
 
-                // Create
-                foreach (var serviceFactory in serviceFactoryList)
+            // ServiceConfig
+            foreach (var serviceConfig in namespaceConfig.GetChildren())
+            {
+                // RegisterService-Default
+                if (serviceConfig.Key == serviceConfigKey)
                 {
-                    // Service
-                    var service = serviceFactory.Create(componentContext, serviceName);
-                    if (service != null) return service;
+                    registrationBuilderList.Add(containerBuilder.Register((componentContext, parameterList) =>
+                    {
+                        // ServiceFactory
+                        var serviceFactory = componentContext.Resolve<TFactory>();
+                        if (serviceFactory == null) throw new InvalidOperationException($"{nameof(serviceFactory)}=null");
+
+                        // Service
+                        return serviceFactory.Create(componentContext, serviceConfig);
+                    }));
                 }
 
-                // Throw
+                // RegisterService-Named
+                if (serviceConfig.Key.StartsWith(serviceConfigKey) == true)
                 {
-                    // Exception
-                    throw new InvalidOperationException($"Service not exists: serviceType={typeof(TService).FullName}, serviceName={serviceName}");
+                    registrationBuilderList.Add(containerBuilder.Register((componentContext, parameterList) =>
+                    {
+                        // ServiceFactory
+                        var serviceFactory = componentContext.Resolve<TFactory>();
+                        if (serviceFactory == null) throw new InvalidOperationException($"{nameof(serviceFactory)}=null");
+
+                        // Service
+                        return serviceFactory.Create(componentContext, serviceConfig);
+                    }).Named<TService>(serviceConfig.Key));
                 }
-            }).IfNotRegistered(typeof(TService));
-        }
-
-        public static IRegistrationBuilder<TFactory, ReflectionActivatorData, SingleRegistrationStyle> RegisterFactory<TService, TFactory>(this ContainerBuilder containerBuilder)
-            where TService : class
-            where TFactory : Factory<TService>
-        {
-            #region Contracts
-
-            if (containerBuilder == null) throw new ArgumentException(nameof(containerBuilder));
-
-            #endregion
+            }
 
             // RegisterFactory
-            return containerBuilder.RegisterType<TFactory>().As<Factory<TService>>();
+            containerBuilder.RegisterType<TFactory>().As<TFactory>().SingleInstance().IfNotRegistered(typeof(TFactory));
+
+            // Return
+            return registrationBuilderList;
         }
     }
 }

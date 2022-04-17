@@ -19,28 +19,22 @@ namespace MDP.Identity.Hosting
             #endregion
 
             // TodoContext
-            container.RegisterService<IdentityContext>().SingleInstance();
-            container.RegisterFactory<IdentityContext, IdentityContextFactory>();
+            container.RegisterFactory<IdentityContext, IdentityContextFactory>(this.Configuration).SingleInstance(); 
 
             // RoleRepository
-            container.RegisterService<RoleRepository>();
-            container.RegisterFactory<RoleRepository, MockRoleRepositoryFactory>();
+            container.RegisterFactory<RoleRepository, MockRoleRepositoryFactory>(this.Configuration);
 
             // UserRepository
-            container.RegisterService<UserRepository>();
-            container.RegisterFactory<UserRepository, MockUserRepositoryFactory>();
+            container.RegisterFactory<UserRepository, MockUserRepositoryFactory>(this.Configuration);
 
             // UserRoleRepository
-            container.RegisterService<UserRoleRepository>();
-            container.RegisterFactory<UserRoleRepository, MockUserRoleRepositoryFactory>();
+            container.RegisterFactory<UserRoleRepository, MockUserRoleRepositoryFactory>(this.Configuration);
 
             // UserLoginRepository
-            container.RegisterService<UserLoginRepository>();
-            container.RegisterFactory<UserLoginRepository, MockUserLoginRepositoryFactory>();
+            container.RegisterFactory<UserLoginRepository, MockUserLoginRepositoryFactory>(this.Configuration);
 
             // UserTokenRepository
-            container.RegisterService<UserTokenRepository>();
-            container.RegisterFactory<UserTokenRepository, MockUserTokenRepositoryFactory>();
+            container.RegisterFactory<UserTokenRepository, MockUserTokenRepositoryFactory>(this.Configuration);
         }
     }
 }

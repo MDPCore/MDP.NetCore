@@ -20,8 +20,6 @@ namespace MDP.Identity.Hosting
 
             #endregion
 
-            //componentContext.Resolve<List<IdentityService>>()
-
             // Create
             return new IdentityContext
             (
@@ -30,7 +28,7 @@ namespace MDP.Identity.Hosting
                 componentContext.Resolve<UserRoleRepository>(setting.UserRoleRepository),
                 componentContext.Resolve<UserLoginRepository>(setting.UserLoginRepository),
                 componentContext.Resolve<UserTokenRepository>(setting.UserTokenRepository),
-                new List<IdentityService>() { }
+                componentContext.ResolveAll<IdentityService>()
             );
         }
 

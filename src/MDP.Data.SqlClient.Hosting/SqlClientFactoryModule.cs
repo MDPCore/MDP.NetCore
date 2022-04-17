@@ -24,8 +24,7 @@ namespace MDP.Data.SqlClient.Hosting
             #endregion
 
             // SqlClientFactory
-            containerBuilder.RegisterService<SqlClientFactory>().SingleInstance();
-            containerBuilder.RegisterFactory<SqlClientFactory, SqlClientFactoryFactory>();
+            containerBuilder.RegisterFactory<SqlClientFactory, SqlClientFactoryFactory>(this.Configuration).SingleInstance(); ;
         }
     }
 }

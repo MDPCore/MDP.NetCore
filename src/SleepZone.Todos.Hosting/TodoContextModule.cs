@@ -20,18 +20,15 @@ namespace SleepZone.Todos.Hosting
             #endregion
 
             // TodoContext
-            container.RegisterService<TodoContext>().SingleInstance();
-            container.RegisterFactory<TodoContext, TodoContextFactory>();
+            container.RegisterFactory<TodoContext, TodoContextFactory>(this.Configuration).SingleInstance();
 
             // TodoRepository
-            container.RegisterService<TodoRepository>();
-            container.RegisterFactory<TodoRepository, MockTodoRepositoryFactory>();
-            container.RegisterFactory<TodoRepository, SqlTodoRepositoryFactory>();
+            container.RegisterFactory<TodoRepository, MockTodoRepositoryFactory>(this.Configuration);
+            container.RegisterFactory<TodoRepository, SqlTodoRepositoryFactory>(this.Configuration);
 
             // SnapshotRepository
-            container.RegisterService<SnapshotRepository>();
-            container.RegisterFactory<SnapshotRepository, MockSnapshotRepositoryFactory>();
-            container.RegisterFactory<SnapshotRepository, SqlSnapshotRepositoryFactory>();
+            container.RegisterFactory<SnapshotRepository, MockSnapshotRepositoryFactory>(this.Configuration);
+            container.RegisterFactory<SnapshotRepository, SqlSnapshotRepositoryFactory>(this.Configuration);
         }
     }
 }

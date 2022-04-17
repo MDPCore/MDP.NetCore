@@ -13,6 +13,6 @@ namespace MDP.Identity
 
         void Remove(string userId, string loginType);
 
-        UserLogin FindByLoginType(string loginType, string loginValue);
+        UserLogin FindByLoginValue(string loginType, string loginValue);
     }
 }

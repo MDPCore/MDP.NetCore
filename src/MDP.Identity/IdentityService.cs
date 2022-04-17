@@ -47,5 +47,21 @@ namespace MDP.Identity
         protected UserLoginRepository UserLoginRepository { get; private set; }
 
         protected UserTokenRepository UserTokenRepository { get; private set; }
+
+
+        // Methods
+        protected TRepository GetRepository<TRepository>()
+           where TRepository : class
+        {
+            // Get
+            if (this.RoleRepository is TRepository) return this.RoleRepository as TRepository;
+            if (this.UserRepository is TRepository) return this.UserRepository as TRepository;
+            if (this.UserRoleRepository is TRepository) return this.UserRoleRepository as TRepository;
+            if (this.UserLoginRepository is TRepository) return this.UserLoginRepository as TRepository;
+            if (this.UserTokenRepository is TRepository) return this.UserTokenRepository as TRepository;
+
+            // Return
+            return null;
+        }
     }
 }

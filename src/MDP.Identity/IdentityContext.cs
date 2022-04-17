@@ -132,7 +132,7 @@ namespace MDP.Identity
             #endregion
 
             // UserLogin
-            var userLogin = _userLoginRepository.FindByLoginType(loginType, loginValue);
+            var userLogin = _userLoginRepository.FindByLoginValue(loginType, loginValue);
             if (userLogin == null) return null;
 
             // Return
@@ -186,7 +186,7 @@ namespace MDP.Identity
             if (_userRepository.Exists(userToken.UserId) == false) throw new InvalidOperationException($"{nameof(userToken.UserId)} not existed");
 
             // Remove
-            _userTokenRepository.Remove(userToken.UserId, userToken.TokenType);
+            _userTokenRepository.Remove(userToken.UserId, userToken.LoginType, userToken.TokenType);
 
             // Add
             _userTokenRepository.Add(userToken);

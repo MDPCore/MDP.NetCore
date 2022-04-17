@@ -21,8 +21,7 @@ namespace MDP.NetCore.Lab
             #endregion
 
             // WorkService
-            containerBuilder.RegisterService<WorkService>();
-            containerBuilder.RegisterFactory<WorkService, HelloWorkServiceFactory>();
+            containerBuilder.RegisterFactory<WorkService, HelloWorkServiceFactory>(this.Configuration);
         }
     }
 }

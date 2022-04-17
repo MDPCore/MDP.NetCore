@@ -16,24 +16,6 @@ namespace MDP.Messaging.Notifications.Hosting
 {
     public class NotificationContextModule : MDP.Hosting.Module
     {
-        // Fields
-        private readonly IConfiguration _configuration = null;
-
-
-        // Constructors
-        public NotificationContextModule(IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (configuration == null) throw new ArgumentException(nameof(configuration));
-
-            #endregion
-
-            // Default
-            _configuration = configuration;
-        }
-
-
         // Methods
         protected override void ConfigureContainer(ContainerBuilder containerBuilder)
         {
@@ -44,18 +26,15 @@ namespace MDP.Messaging.Notifications.Hosting
             #endregion
 
             // NotificationContext
-            containerBuilder.RegisterService<NotificationContext>().SingleInstance();
-            containerBuilder.RegisterFactory<NotificationContext, NotificationContextFactory>();
+            containerBuilder.RegisterFactory<NotificationContext, NotificationContextFactory>(this.Configuration).SingleInstance();
 
             // RegistrationRepository
-            containerBuilder.RegisterService<RegistrationRepository>();
-            containerBuilder.RegisterFactory<RegistrationRepository, MockRegistrationRepositoryFactory>();
-            containerBuilder.RegisterFactory<RegistrationRepository, SqlRegistrationRepositoryFactory>();
+            containerBuilder.RegisterFactory<RegistrationRepository, MockRegistrationRepositoryFactory>(this.Configuration);
+            containerBuilder.RegisterFactory<RegistrationRepository, SqlRegistrationRepositoryFactory>(this.Configuration);
 
             // NotificationProvider
-            containerBuilder.RegisterService<NotificationProvider>();
-            containerBuilder.RegisterFactory<NotificationProvider, MockNotificationProviderFactory>();
-            containerBuilder.RegisterFactory<NotificationProvider, FirebaseNotificationProviderFactory>();
+            containerBuilder.RegisterFactory<NotificationProvider, MockNotificationProviderFactory>(this.Configuration);
+            containerBuilder.RegisterFactory<NotificationProvider, FirebaseNotificationProviderFactory>(this.Configuration);
         }
     }
 }

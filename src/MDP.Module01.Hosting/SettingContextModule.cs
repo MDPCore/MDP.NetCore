@@ -19,7 +19,7 @@ namespace MDP.Module01.Hosting
             #endregion
 
             // Register
-            container.RegisterType<SettingContext>().As<SettingContext>();
+            container.RegisterType<SettingContext>().As<SettingContext>().SingleInstance();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace MDP.Identity
         // Properties
         public string UserId { get; set; } = null;
 
+        public string LoginType { get; set; } = null;
+
         public string TokenType { get; set; } = null;
 
         public string TokenValue { get; set; } = null;
