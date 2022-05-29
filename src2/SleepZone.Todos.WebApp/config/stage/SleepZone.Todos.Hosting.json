@@ -1,0 +1,18 @@
+{
+  "SleepZone.Todos": {
+
+    // TodoContext
+    "TodoContext": {
+      "TodoRepository": "SqlTodoRepository",
+      "SnapshotRepository": "SqlSnapshotRepository"
+    },
+
+    // TodoRepository
+    "SqlTodoRepository": {},
+    "MockTodoRepository": {},
+
+    // SnapshotRepository
+    "SqlSnapshotRepository": {},
+    "MockSnapshotRepository": {}
+  }
+}

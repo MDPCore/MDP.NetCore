@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.AspNetCore.Authentication.Hosting\MDP.AspNetCore.Authentication.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.AspNetCore.Authentication.GitHub\MDP.AspNetCore.Authentication.GitHub.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <authors>CLK Software Studio</authors>
+    <copyright>Copyright © 2014 CLK Software Studio</copyright>
+    <description>MDP.Net Library</description>
+    <PackageIcon>Package.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Clark159/MDP.Net</PackageProjectUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Logo.png" Pack="true" PackagePath="\Package.png" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\README.md" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,26 @@
+﻿@using MDP.AspNetCore;
+@model ProblemDetails
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <!--Title-->
+    <h2>MDP.AspNetCore.Lab</h2>
+    <hr />
+
+    <!--Message-->
+    <h3>TraceId: @Model.GetTraceId()</h3>    
+    <h3>Instance: @Model.Instance</h3>
+    <h3>Title: @Model.Title</h3>
+    <h3>Status: @Model.Status</h3>
+    <h3>Type: @Model.Type</h3>
+    <h3>Detail: @Model.Detail</h3>
+
+</body>
+</html>

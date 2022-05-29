@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SleepZone.Todos.ConsoleApp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
