@@ -31,7 +31,7 @@ namespace MDP.AspNetCore.Authentication.Google
                 options.AccessType = "offline";
                 options.SaveTokens = true;
 
-                // Register
+                // SignIn
                 options.SignInPath("/SignIn");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             });

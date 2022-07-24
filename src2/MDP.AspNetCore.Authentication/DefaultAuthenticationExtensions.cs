@@ -28,7 +28,7 @@ namespace MDP.AspNetCore.Authentication
 
             // AuthenticationSetting
             if (authenticationSetting == null) authenticationSetting = new DefaultAuthenticationSetting();
-
+          
             // AuthenticationBuilder   
             var authenticationBuilder = services.AddAuthentication(options =>
             {

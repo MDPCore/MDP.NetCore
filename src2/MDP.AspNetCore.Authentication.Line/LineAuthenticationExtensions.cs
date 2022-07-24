@@ -29,7 +29,7 @@ namespace MDP.AspNetCore.Authentication.Line
                 options.ClientId = authenticationSetting.ClientId;
                 options.ClientSecret = authenticationSetting.ClientSecret;
 
-                // Register
+                // SignIn
                 options.SignInPath("/SignIn");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             });

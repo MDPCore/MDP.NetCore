@@ -35,7 +35,7 @@ namespace MDP.AspNetCore.Authentication.Liff
                 options.ClientId = authenticationSetting.ClientId;
                 options.ClientSecret = authenticationSetting.ClientSecret;
 
-                // Register
+                // SignIn
                 options.SignInPath("/SignIn");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             });

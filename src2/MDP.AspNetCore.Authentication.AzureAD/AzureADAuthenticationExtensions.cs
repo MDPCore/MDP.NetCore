@@ -30,8 +30,8 @@ namespace MDP.AspNetCore.Authentication.AzureAD
                 options.TenantId = authenticationSetting.TenantId;
                 options.ClientId = authenticationSetting.ClientId;
                 options.ClientSecret = authenticationSetting.ClientSecret;
-                
-                // Register
+
+                // SignIn
                 options.SignInPath("/SignIn");
                 options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
             });

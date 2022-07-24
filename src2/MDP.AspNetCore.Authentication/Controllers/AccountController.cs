@@ -12,6 +12,39 @@ namespace MDP.AspNetCore.Authentication
 {
     public partial class AccountController : Controller
     {
+        // Fields
+        private readonly IdentityProvider _identityProvider;
+
+
+        // Constructors
+        public AccountController(IdentityProvider? identityProvider = null)
+        {
+            // Default
+            _identityProvider = identityProvider ?? DefaultIdentityProvider.Current;
+        }
+
+
+        // Properties
+        private string? RegisterPath { get { return _identityProvider.RegisterPath; } }
+
+
+        // Methods
+        [NonAction]
+        private ClaimsIdentity SignIn(ClaimsIdentity externalIdentity)
+        {
+            #region Contracts
+
+            if (externalIdentity == null) throw new ArgumentException($"{nameof(externalIdentity)}=null");
+
+            #endregion
+
+            // Return
+            return _identityProvider.SignIn(externalIdentity);
+        }
+    }
+
+    public partial class AccountController : Controller
+    {
         // Methods
         [AllowAnonymous]
         [Route("/Login", Name = "Login")]
@@ -29,7 +62,7 @@ namespace MDP.AspNetCore.Authentication
                 if (scheme.Equals(CookieAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
                 if (scheme.Equals(ExternalCookieAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
                 if (scheme.Equals(SecurityTokenAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
-                
+
                 // Redirect
                 return this.Challenge(new AuthenticationProperties() { RedirectUri = returnUrl }, scheme);
             }
@@ -67,16 +100,21 @@ namespace MDP.AspNetCore.Authentication
             if (externalIdentity == null) throw new InvalidOperationException($"{nameof(externalIdentity)}=null");
             if (externalIdentity.IsAuthenticated == false) throw new InvalidOperationException($"{nameof(externalIdentity)}=null");
 
-            // ExternalParameters
-            //var authenticationType = externalIdentity.AuthenticationType;
-            //var externalId = externalIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //var externalName = externalIdentity.Name;
-            //var externalMail = externalIdentity.FindFirst(ClaimTypes.Email)?.Value;
-            //var accessToken = await this.HttpContext.ExternalGetTokenAsync("access_token");
-            //var refreshToken = await this.HttpContext.ExternalGetTokenAsync("refresh_token");
-
             // Identity
-            var identity = externalIdentity;
+            var identity = this.SignIn(externalIdentity);
+            if (identity == null)
+            {
+                if (string.IsNullOrEmpty(this.RegisterPath) == true)
+                {
+                    // Forbid
+                    return this.Forbid();
+                }
+                else
+                {
+                    // Redirect
+                    return this.Redirect(this.RegisterPath);
+                }
+            }
 
             // SignIn
             await this.HttpContext.ExternalSignOutAsync();
@@ -87,3 +125,11 @@ namespace MDP.AspNetCore.Authentication
         }
     }
 }
+
+// ExternalParameters
+//var authenticationType = externalIdentity.AuthenticationType;
+//var externalId = externalIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+//var externalName = externalIdentity.Name;
+//var externalMail = externalIdentity.FindFirst(ClaimTypes.Email)?.Value;
+//var accessToken = await this.HttpContext.ExternalGetTokenAsync("access_token");
+//var refreshToken = await this.HttpContext.ExternalGetTokenAsync("refresh_token");

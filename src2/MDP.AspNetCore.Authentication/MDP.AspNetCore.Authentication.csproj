@@ -24,7 +24,7 @@
     <PackageProjectUrl>https://github.com/Clark159/MDP.Net</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\Logo.png" Pack="true" PackagePath="\Package.png" />
+    <None Include="..\..\Package.png" Pack="true" PackagePath="\Package.png" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\README.md" />
   </ItemGroup>
 
