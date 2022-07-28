@@ -19,7 +19,7 @@ namespace MDP.AspNetCore
             #endregion
 
             // HookMiddleware
-            hostBuilder.Services.TryAddEnumerable(ServiceDescriptor.Transient<HookMiddleware>(serviceProvider => new HookMiddleware(hookName, configureMiddleware)));
+            hostBuilder.Services.Add(ServiceDescriptor.Transient<HookMiddleware>(serviceProvider => new HookMiddleware(hookName, configureMiddleware)));
 
             // Return
             return hostBuilder;

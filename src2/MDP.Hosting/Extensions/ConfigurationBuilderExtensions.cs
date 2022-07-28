@@ -28,6 +28,7 @@ namespace MDP.Hosting
                     // Default
                     configDirectoryPathList.Add(String.Empty);
                     configDirectoryPathList.Add(moduleConfigDirectoryPath);
+                    configDirectoryPathList.Add(Path.Combine(moduleConfigDirectoryPath, hostEnvironment.EnvironmentName));
 
                     // Environment
                     if (hostEnvironment.IsProduction() == true) configDirectoryPathList.Add(Path.Combine(moduleConfigDirectoryPath, "prod"));

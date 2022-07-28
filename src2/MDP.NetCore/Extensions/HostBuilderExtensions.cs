@@ -109,7 +109,7 @@ namespace MDP.NetCore
                 services.TryAddTransient<TProgram, TProgram>();
 
                 // ProgramService
-                services.TryAddEnumerable(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
+                services.Add(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
             });
         }
 

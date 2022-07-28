@@ -11,7 +11,7 @@ namespace MDP.Hosting.Lab
         public static void Main(string[] args)
         {
             // HostEnvironment
-            var hostEnvironment = new HostingEnvironment { EnvironmentName = Environments.Development };
+            var hostEnvironment = new HostingEnvironment { EnvironmentName = Environments.Staging };
 
             // ConfigurationBuilder
             var configurationBuilder = new ConfigurationBuilder();

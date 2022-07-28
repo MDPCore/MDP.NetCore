@@ -3,7 +3,7 @@
     "MDP.NetCore.Lab": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
+        "DOTNET_ENVIRONMENT": "Staging"
       }
     }
   }
