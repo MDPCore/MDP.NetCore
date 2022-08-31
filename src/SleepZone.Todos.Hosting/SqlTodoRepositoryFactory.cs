@@ -1,4 +1,4 @@
-﻿using CLK.Data.SqlClient;
+﻿using MDP.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using SleepZone.Todos.Accesses;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class SqlTodoRepositoryFactory : Factory<TodoRepository, SqlTodoRepository, SqlTodoRepositoryFactory.Setting>
+    public class SqlTodoRepositoryFactory : ServiceFactory<TodoRepository, SqlTodoRepository, SqlTodoRepositoryFactory.Setting>
     {
         // Methods
         protected override SqlTodoRepository CreateService(IComponentContext componentContext, Setting setting)

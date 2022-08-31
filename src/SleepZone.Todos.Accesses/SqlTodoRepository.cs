@@ -1,5 +1,4 @@
-﻿using CLK.Data.SqlClient;
-using CLK.Data.SqlClient.Dapper;
+﻿using MDP.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;

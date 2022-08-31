@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MDP.Hosting.Lab
+﻿namespace MDP.Hosting.Lab
 {
     public class DecorateWorkService : WorkService
     {
         // Fields
-        private readonly string _message = null;
+        private readonly string _message;
 
-        private readonly WorkService _workService = null;
+        private readonly WorkService _workService;
 
 
         // Constructors
@@ -19,8 +13,8 @@ namespace MDP.Hosting.Lab
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(message) == true) throw new ArgumentException(nameof(message));
-            if (workService == null) throw new ArgumentException(nameof(workService));
+            if (string.IsNullOrEmpty(message) == true) throw new ArgumentException($"{nameof(message)}=null");
+            if (workService == null) throw new ArgumentException($"{nameof(workService)}=null");
 
             #endregion
 

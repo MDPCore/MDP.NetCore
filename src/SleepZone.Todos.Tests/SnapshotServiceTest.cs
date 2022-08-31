@@ -12,6 +12,7 @@ namespace SleepZone.Todos.Tests
         {
             // Arrange
             var todoRepository = new MockTodoRepository();
+            todoRepository.Clear();
             todoRepository.Add(new Todo() { TodoId = "TodoId-001", Name = "Name-001", IsComplete = true });
             todoRepository.Add(new Todo() { TodoId = "TodoId-002", Name = "Name-002", IsComplete = true });
             todoRepository.Add(new Todo() { TodoId = "TodoId-003", Name = "Name-003", IsComplete = false });
@@ -35,6 +36,7 @@ namespace SleepZone.Todos.Tests
         {
             // Arrange
             var todoRepository = new MockTodoRepository();
+            todoRepository.Clear();
             todoRepository.Add(new Todo() { TodoId = "TodoId-001", Name = "Name-001", IsComplete = false });
             todoRepository.Add(new Todo() { TodoId = "TodoId-002", Name = "Name-002", IsComplete = false });
             todoRepository.Add(new Todo() { TodoId = "TodoId-003", Name = "Name-003", IsComplete = false });
@@ -58,6 +60,7 @@ namespace SleepZone.Todos.Tests
         {
             // Arrange
             var todoRepository = new MockTodoRepository();
+            todoRepository.Clear();
 
             var snapshotRepository = new MockSnapshotRepository();
 

@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace MDP.Hosting.Lab
 {
@@ -10,12 +10,14 @@ namespace MDP.Hosting.Lab
         // Methods
         public static void Main(string[] args)
         {
+            // HostEnvironment
+            var hostEnvironment = new HostingEnvironment { EnvironmentName = Environments.Staging };
+
             // ConfigurationBuilder
             var configurationBuilder = new ConfigurationBuilder();
             {
                 configurationBuilder.SetBasePath(CLK.IO.Directory.GetEntryDirectory());
-                configurationBuilder.AddJsonFile("appsettings.json");
-                configurationBuilder.RegisterModule();
+                configurationBuilder.RegisterModule(hostEnvironment);
             }
             var configuration = configurationBuilder.Build();
             if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
@@ -24,6 +26,7 @@ namespace MDP.Hosting.Lab
             var containerBuilder = new ContainerBuilder();
             {
                 // Register
+                containerBuilder.RegisterInstance(hostEnvironment).As<IHostEnvironment>();
                 containerBuilder.RegisterInstance(configuration).As<IConfiguration>();
                 containerBuilder.RegisterModule(configuration);
             }
@@ -50,7 +53,7 @@ namespace MDP.Hosting.Lab
                 // ResolveE
                 var workServiceE = container.Resolve<WorkService>("DecorateWorkService[BBB]");
                 if (workServiceE == null) throw new InvalidOperationException($"{nameof(workServiceE)}=null");
-                
+
                 // ResolveF
                 var workServiceF = container.Resolve<WorkService>("DecorateWorkService[CCC]");
                 if (workServiceF == null) throw new InvalidOperationException($"{nameof(workServiceF)}=null");

@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CLK.Reflection
+﻿namespace CLK.Reflection
 {
     public static class Assembly
     {
         // Methods
-        public static List<System.Reflection.Assembly> GetAllAssembly(string fileName, string searchPath = null)
+        public static List<System.Reflection.Assembly> GetAllAssembly(string fileName, string? searchPath = null)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException();
+            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException($"{nameof(fileName)}=null");
 
             #endregion
 

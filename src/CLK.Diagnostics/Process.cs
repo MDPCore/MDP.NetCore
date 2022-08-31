@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Text;
 
 namespace CLK.Diagnostics
@@ -9,14 +6,14 @@ namespace CLK.Diagnostics
     public static class Process
     {
         // Methods
-        public static string Execute(string fileName, string arguments = null)
+        public static string Execute(string fileName, string? arguments = null)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException();
+            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException($"{nameof(fileName)}=null");
 
             #endregion
-            
+
             // Result
             var syncRoot = new object();
             var resultBuilder = new StringBuilder();
@@ -26,8 +23,8 @@ namespace CLK.Diagnostics
             {
                 #region Contracts
 
-                if (sender == null) throw new ArgumentException();
-                if (e == null) throw new ArgumentException();
+                if (sender == null) throw new ArgumentException($"{nameof(sender)}=null");
+                if (e == null) throw new ArgumentException($"{nameof(e)}=null");
 
                 #endregion
 
@@ -42,7 +39,7 @@ namespace CLK.Diagnostics
                     resultBuilder.AppendLine(e.Data);
                 }
             };
-            
+
             // Process
             using (var process = new System.Diagnostics.Process())
             {

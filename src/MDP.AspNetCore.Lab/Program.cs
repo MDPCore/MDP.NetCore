@@ -1,7 +1,3 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System;
-
 namespace MDP.AspNetCore.Lab
 {
     public class Program
@@ -10,7 +6,7 @@ namespace MDP.AspNetCore.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.AspNetCore.Host.CreateHostBuilder<Startup>(args).Build().Run();
+            MDP.AspNetCore.Host.Create(args).Run();
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CLK.IO
+﻿namespace CLK.IO
 {
     public static class Directory
     {
@@ -11,7 +6,7 @@ namespace CLK.IO
         public static string GetEntryDirectory()
         {
             // EntryAssembly
-            System.Reflection.Assembly entryAssembly = null;
+            System.Reflection.Assembly? entryAssembly = null;
             if (entryAssembly == null) entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
             if (entryAssembly == null) entryAssembly = System.Reflection.Assembly.GetAssembly(typeof(Directory));
             if (entryAssembly == null) throw new InvalidOperationException("entryAssembly=null");

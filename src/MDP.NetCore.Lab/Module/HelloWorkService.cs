@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MDP.NetCore.Lab
+﻿namespace MDP.NetCore.Lab
 {
     public class HelloWorkService : WorkService
     {
         // Fields
-        private readonly string _message = null;
+        private readonly string _message;
 
 
         // Constructors
@@ -26,13 +20,7 @@ namespace MDP.NetCore.Lab
         }
 
 
-        // Methods
-        public void Execute()
-        {
-            // Display
-            Console.WriteLine(_message);
-        }
-
+        // Methods      
         public string GetValue()
         {
             // Return

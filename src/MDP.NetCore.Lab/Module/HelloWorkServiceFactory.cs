@@ -1,27 +1,24 @@
 ﻿using Autofac;
 using MDP.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MDP.NetCore.Lab
 {
-    public class HelloWorkServiceFactory : Factory<WorkService, HelloWorkService, HelloWorkServiceFactory.Setting>
+    public class HelloWorkServiceFactory : ServiceFactory<WorkService, HelloWorkService, HelloWorkServiceFactory.Setting>
     {
         // Methods
         protected override HelloWorkService CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
-            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (setting == null) throw new ArgumentException(nameof(setting));
+            if (componentContext == null) throw new ArgumentException($"{nameof(componentContext)}=null");
+            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
 
             #endregion
 
             // Create
-            return new HelloWorkService(setting.Message);
+            return new HelloWorkService(
+                setting.Message
+            );
         }
 
 
@@ -29,7 +26,7 @@ namespace MDP.NetCore.Lab
         public class Setting
         {
             // Properties
-            public string Message { get; set; }
+            public string Message { get; set; } = string.Empty;
         }
     }
 }

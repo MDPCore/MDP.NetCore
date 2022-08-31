@@ -1,18 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MDP.AspNetCore;
-using System.Data;
-using Microsoft.Extensions.Logging;
 
 namespace MDP.AspNetCore.Lab
 {
     public class HomeController : Controller
     {
         // Fields
-        private WorkService _workService = null;
+        private readonly WorkService _workService;
 
 
         // Constructors
@@ -20,17 +13,17 @@ namespace MDP.AspNetCore.Lab
         {
             #region Contracts
 
-            if (workService == null) throw new ArgumentException(nameof(workService));
+            if (workService == null) throw new ArgumentException($"{nameof(workService)}=null");
 
             #endregion
 
             // Default
-            _workService = workService; 
+            _workService = workService;
         }
 
 
         // Methods
-        public ActionResult<string> Index()
+        public ActionResult Index()
         {
             // Message
             var message = _workService.GetValue();
@@ -41,6 +34,18 @@ namespace MDP.AspNetCore.Lab
 
             // Return
             return View();
+        }
+
+        public string Echo(string value)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(value) == true) throw new ArgumentException($"{nameof(value)}=null");
+
+            #endregion
+
+            // Return
+            return value;
         }
     }
 }

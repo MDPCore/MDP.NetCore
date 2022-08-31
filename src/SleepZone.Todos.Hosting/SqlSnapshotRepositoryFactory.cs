@@ -1,4 +1,4 @@
-﻿using CLK.Data.SqlClient;
+﻿using MDP.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using SleepZone.Todos.Accesses;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class SqlSnapshotRepositoryFactory : Factory<SnapshotRepository, SqlSnapshotRepository, SqlSnapshotRepositoryFactory.Setting>
+    public class SqlSnapshotRepositoryFactory : ServiceFactory<SnapshotRepository, SqlSnapshotRepository, SqlSnapshotRepositoryFactory.Setting>
     {
         // Methods
         protected override SqlSnapshotRepository CreateService(IComponentContext componentContext, Setting setting)

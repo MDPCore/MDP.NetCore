@@ -9,7 +9,7 @@ using SleepZone.Todos.Mocks;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class MockSnapshotRepositoryFactory : Factory<SnapshotRepository, MockSnapshotRepository, MockSnapshotRepositoryFactory.Setting>
+    public class MockSnapshotRepositoryFactory : ServiceFactory<SnapshotRepository, MockSnapshotRepository, MockSnapshotRepositoryFactory.Setting>
     {
         // Methods
         protected override MockSnapshotRepository CreateService(IComponentContext componentContext, Setting setting)

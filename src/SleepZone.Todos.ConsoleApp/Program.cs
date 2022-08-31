@@ -1,7 +1,5 @@
-﻿using Autofac;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Linq;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace SleepZone.Todos.ConsoleApp
 {
@@ -27,7 +25,7 @@ namespace SleepZone.Todos.ConsoleApp
         public static void Main(string[] args)
         {
             // Host
-            SleepZone.Todos.ConsolePlatform.Host.Run<Program>(args);
+            MDP.NetCore.Host.Create<Program>(args).Run();
         }
     }
 }

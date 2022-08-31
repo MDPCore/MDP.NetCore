@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MDP.Hosting.Lab
+﻿namespace MDP.Hosting.Lab
 {
     public class HelloWorkService : WorkService
     {
         // Fields
-        private readonly string _message = null;
+        private readonly string _message;
 
 
         // Constructors

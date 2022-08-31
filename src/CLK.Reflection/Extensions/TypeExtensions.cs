@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 
 namespace CLK.Reflection
 {
@@ -34,7 +29,7 @@ namespace CLK.Reflection
             return constructorInfo;
         }
 
-        public static MethodInfo FindMethod(this Type instanceType, string methodName)
+        public static MethodInfo? FindMethod(this Type instanceType, string methodName)
         {
             #region Contracts
 
@@ -51,7 +46,7 @@ namespace CLK.Reflection
             // MethodInfo
             var methodInfo = methodInfoList.First();
             if (methodInfo == null) throw new InvalidOperationException($"{nameof(methodInfo)}=null");
-           
+
             // Return
             return methodInfo;
         }

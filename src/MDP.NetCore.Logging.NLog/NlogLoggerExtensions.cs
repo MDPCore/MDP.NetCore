@@ -1,44 +1,16 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging.Configuration;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using NLog.Extensions.Logging;
 using NLogLib = NLog;
-using System.IO;
 
 namespace MDP.NetCore.Logging.NLog
-{ 
+{
     public static class NLogLoggerExtensions
     {
         // Methods
-        public static IHostBuilder AddNLogLogger(this IHostBuilder hostBuilder, Action<NLogLoggerOptions> configureOptions = null)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
-
-            #endregion
-
-            // Services
-            hostBuilder.ConfigureServices((context, services) =>
-            {
-                // Logger
-                services.AddNLogLogger(configureOptions);
-            });
-
-            // Return
-            return hostBuilder;
-        }
-
-        public static IServiceCollection AddNLogLogger(this IServiceCollection services, Action<NLogLoggerOptions> configureOptions = null)
+        public static IServiceCollection AddNLogLogger(this IServiceCollection services, NLogLoggerSetting? loggerSetting = null)
         {
             #region Contracts
 
@@ -47,45 +19,32 @@ namespace MDP.NetCore.Logging.NLog
             #endregion
 
             // Logger
-            services.AddLogging(builder =>
+            services.AddLogging(loggingBuilder =>
             {
                 // Configuration
-                builder.AddConfiguration();
+                loggingBuilder.AddConfiguration();
 
-                // Provider
-                builder.AddNLog(serviceProvider => CreateLogFactory(serviceProvider));
+                // NLog
+                loggingBuilder.AddNLog(serviceProvider => CreateLogFactory(services, loggerSetting));
             });
-
-            // Options
-            services.TryAddSingleton<IConfigureOptions<NLogLoggerOptions>>(serviceProvider =>
-            {
-                // Configuration
-                var configuration = serviceProvider.GetRequiredService<ILoggerProviderConfiguration<NLogLoggerProvider>>()?.Configuration;
-                if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
-
-                // Configure
-                return new NamedConfigureFromConfigurationOptions<NLogLoggerOptions>(Options.DefaultName, configuration);
-            });
-            if (configureOptions != null) services.Configure(configureOptions);
 
             // Return
             return services;
         }
 
-        private static NLogLib.LogFactory CreateLogFactory(IServiceProvider serviceProvider)
+        private static NLogLib.LogFactory CreateLogFactory(IServiceCollection services, NLogLoggerSetting? loggerSetting = null)
         {
             #region Contracts
 
-            if (serviceProvider == null) throw new ArgumentException(nameof(serviceProvider));
+            if (services == null) throw new ArgumentException($"{nameof(services)}=null");
 
             #endregion
 
-            // Options
-            var options = serviceProvider.GetRequiredService<IOptions<NLogLoggerOptions>>()?.Value;
-            if (options == null) throw new InvalidOperationException($"{nameof(options)}=null");
+            // LoggerSetting
+            if (loggerSetting == null) loggerSetting = new NLogLoggerSetting();
 
             // ConfigFileName
-            var configFileName = options.ConfigFileName;
+            var configFileName = loggerSetting.ConfigFileName;
             if (string.IsNullOrEmpty(configFileName) == true) throw new InvalidOperationException($"{nameof(configFileName)}=null");
 
             // ConfigFile
@@ -93,9 +52,15 @@ namespace MDP.NetCore.Logging.NLog
             if (configFile == null) throw new InvalidOperationException($"{configFileName} not found.");
 
             // Properties
-            var properties = options.Properties;
+            var properties = loggerSetting.Properties;
             if (properties == null) throw new InvalidOperationException($"{nameof(properties)}=null");
-                      
+
+            // Properties-Default
+            {
+                // ApplicationName
+                if (properties.ContainsKey("ApplicationName") == false) properties["ApplicationName"] = System.Reflection.Assembly.GetEntryAssembly()!.GetName().Name!;
+            }
+
             // GlobalDiagnosticsContext
             foreach (var propertyPair in properties)
             {

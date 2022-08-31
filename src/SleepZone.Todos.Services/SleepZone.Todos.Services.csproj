@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-    <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>    
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MDP.AspNetCore\MDP.AspNetCore.csproj" />
     <ProjectReference Include="..\SleepZone.Todos\SleepZone.Todos.csproj" />
-  </ItemGroup>  
-  
+  </ItemGroup>
 
 </Project>

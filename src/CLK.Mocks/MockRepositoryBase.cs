@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CLK.Mocks
+﻿namespace CLK.Mocks
 {
     public abstract class MockRepositoryBase<TEntity, TEntityId>
         where TEntity : class
@@ -13,7 +7,7 @@ namespace CLK.Mocks
         // Fields
         private readonly List<TEntity> _entityList = new List<TEntity>();
 
-        private readonly Func<TEntity, TEntityId> _getEntityIdDelegate = null;
+        private readonly Func<TEntity, TEntityId> _getEntityIdDelegate;
 
 
         // Constructors
@@ -86,8 +80,13 @@ namespace CLK.Mocks
             _entityList.Remove(storeEntity);
         }
 
+        public void Clear()
+        {
+            // Clear
+            _entityList.Clear();
+        }
 
-        protected TEntity FindById(TEntityId entityId)
+        protected TEntity? FindById(TEntityId entityId)
         {
             #region Contracts
 

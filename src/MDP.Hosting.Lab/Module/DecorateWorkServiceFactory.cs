@@ -1,21 +1,16 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MDP.Hosting.Lab
 {
-    public class DecorateWorkServiceFactory : Factory<WorkService, DecorateWorkService, DecorateWorkServiceFactory.Setting>
+    public class DecorateWorkServiceFactory : ServiceFactory<WorkService, DecorateWorkService, DecorateWorkServiceFactory.Setting>
     {
         // Methods
         protected override DecorateWorkService CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
-            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (setting == null) throw new ArgumentException(nameof(setting));
+            if (componentContext == null) throw new ArgumentException($"{nameof(componentContext)}=null");
+            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
 
             #endregion
 
@@ -40,9 +35,9 @@ namespace MDP.Hosting.Lab
         public class Setting
         {
             // Properties
-            public string Message { get; set; } = null;
+            public string Message { get; set; } = string.Empty;
 
-            public string WorkService { get; set; } = null;
+            public string WorkService { get; set; } = string.Empty;
         }
     }
 }

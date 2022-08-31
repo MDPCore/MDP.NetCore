@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using CLK.Data.SqlClient;
+using MDP.Data.SqlClient;
 using MDP.Hosting;
 using System;
 using System.Collections.Generic;
@@ -9,15 +9,23 @@ using System.Threading.Tasks;
 
 namespace MDP.Data.SqlClient.Hosting
 {
-    public class SqlClientFactoryFactory : Factory<SqlClientFactory, SqlClientFactory, SqlClientFactoryFactory.Setting>
+    public class SqlClientFactoryFactory : ServiceFactory<SqlClientFactory, SqlClientFactory, SqlClientFactoryFactory.Setting>
     {
+        // Constructors
+        public SqlClientFactoryFactory() 
+        {
+            // Default
+            this.ServiceSingleton = true;
+        }
+
+
         // Methods
         protected override SqlClientFactory CreateService(IComponentContext componentContext, Setting setting)
         {
             #region Contracts
 
-            if (componentContext == null) throw new ArgumentException(nameof(componentContext));
-            if (setting == null) throw new ArgumentException(nameof(setting));
+            if (componentContext == null) throw new ArgumentException($"{nameof(componentContext)}=null");
+            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
 
             #endregion
 
@@ -33,7 +41,7 @@ namespace MDP.Data.SqlClient.Hosting
         public class Setting
         {
             // Properties
-            public Dictionary<string, string> ConnectionStrings { get; set; }
+            public Dictionary<string, string> ConnectionStrings { get; set; } = new Dictionary<string, string>();
         }
     }
 }

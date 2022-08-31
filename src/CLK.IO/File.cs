@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CLK.IO
+﻿namespace CLK.IO
 {
     public static class File
     {
         // Methods
-        public static FileInfo GetFile(string fileName, string searchPath = null)
+        public static FileInfo? GetFile(string fileName, string? searchPath = null)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException();
+            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException($"{nameof(fileName)}=null");
 
             #endregion
 
@@ -22,11 +15,11 @@ namespace CLK.IO
             return GetAllFile(fileName, searchPath).FirstOrDefault();
         }
 
-        public static List<FileInfo> GetAllFile(string fileName, string searchPath = null)
+        public static List<FileInfo> GetAllFile(string fileName, string? searchPath = null)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException();
+            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException($"{nameof(fileName)}=null");
 
             #endregion
 
@@ -52,20 +45,25 @@ namespace CLK.IO
             // Search
             foreach (var searchPattern in searchPatternList)
             {
+                // SearchDirectoryPath
+                var searchDirectoryPath = System.IO.Path.GetDirectoryName(Path.Combine(searchPath, searchPattern));
+                if (string.IsNullOrEmpty(searchDirectoryPath) == true) throw new InvalidOperationException($"{nameof(searchDirectoryPath)}=null");
+
                 // SearchDirectory
-                var searchDirectory = new DirectoryInfo(System.IO.Path.GetDirectoryName(Path.Combine(searchPath, searchPattern)));
-                if (searchDirectory == null) throw new InvalidOperationException("searchDirectory=null");
+                var searchDirectory = new DirectoryInfo(searchDirectoryPath);
+                if (searchDirectory == null) throw new InvalidOperationException($"{nameof(searchDirectory)}=null");
+                if (searchDirectory.Exists == false) continue;
 
                 // SearchFileList
-                var searchFileList = searchDirectory.GetFiles(System.IO.Path.GetFileName(Path.Combine(searchPath, searchPattern)), SearchOption.AllDirectories);
+                var searchFileList = searchDirectory.GetFiles(System.IO.Path.GetFileName(Path.Combine(searchPath, searchPattern)), SearchOption.TopDirectoryOnly);
                 if (searchFileList == null) throw new InvalidOperationException();
 
                 // Add
                 foreach (var searchFile in searchFileList)
                 {
-                    if (resultFileDictionary.ContainsKey(searchFile.Name.ToLower()) == false)
+                    if (resultFileDictionary.ContainsKey(searchFile.FullName.ToLower()) == false)
                     {
-                        resultFileDictionary.Add(searchFile.Name.ToLower(), searchFile);
+                        resultFileDictionary.Add(searchFile.FullName.ToLower(), searchFile);
                     }
                 }
             }
@@ -79,16 +77,18 @@ namespace CLK.IO
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(path) == true) throw new ArgumentException();
+            if (string.IsNullOrEmpty(path) == true) throw new ArgumentException($"{nameof(path)}=null");
 
             #endregion
 
-            // RootFile
+            // Require
             if (System.IO.File.Exists(path) == false) return;
-            var rootFile = new FileInfo(path);
 
             // Delete
-            rootFile.IsReadOnly = false;
+            var rootFile = new FileInfo(path)
+            {
+                IsReadOnly = false
+            };
             rootFile.Delete();
         }
     }

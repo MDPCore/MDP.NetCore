@@ -29,8 +29,8 @@ namespace MDP.AspNetCore.Authentication
                 // ReturnUrl
                 var returnUrl = new PathString(signInPath).Add(QueryString.Create(new Dictionary<string, string>()
                 {
-                    { "returnUrl", context.ReturnUri }
-                }));
+                    { "returnUrl", context.ReturnUri! }
+                }!));
                 if (string.IsNullOrEmpty(returnUrl) == true) throw new InvalidOperationException($"{nameof(returnUrl)}=null");
 
                 // Setting

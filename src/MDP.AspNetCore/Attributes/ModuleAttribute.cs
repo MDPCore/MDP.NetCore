@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MDP.AspNetCore
 {
@@ -11,17 +7,17 @@ namespace MDP.AspNetCore
     public class ModuleAttribute : ApiControllerAttribute, IRouteValueProvider, IRouteTemplateProvider
     {
         // Fields
-        private readonly AreaAttribute _areaAttribute = null;
+        private readonly AreaAttribute _areaAttribute;
 
-        private readonly RouteAttribute _routeAttribute = null;
+        private readonly RouteAttribute _routeAttribute;
 
 
         // Constructors
-        public ModuleAttribute(string moduleName, string routeTemplate = @"[area]/[controller]/[action]")
+        public ModuleAttribute(string moduleName, string routeTemplate = @"{area}/{controller=Home}/{action=Index}")
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(moduleName) == true) throw new ArgumentException(nameof(moduleName));
+            if (string.IsNullOrEmpty(moduleName) == true) throw new ArgumentException($"{nameof(moduleName)}=null");
 
             #endregion
 
@@ -41,6 +37,6 @@ namespace MDP.AspNetCore
 
         int? IRouteTemplateProvider.Order => _routeAttribute.Order;
 
-        string IRouteTemplateProvider.Name => _routeAttribute.Name;
+        string IRouteTemplateProvider.Name => _routeAttribute.Name ?? String.Empty;
     }
 }

@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLK.Data.SqlClient.Dapper\CLK.Data.SqlClient.Dapper.csproj" />
-    <ProjectReference Include="..\CLK.Data.SqlClient\CLK.Data.SqlClient.csproj" />
     <ProjectReference Include="..\SleepZone.Todos\SleepZone.Todos.csproj" />
+    <ProjectReference Include="..\MDP.Data.SqlClient\MDP.Data.SqlClient.csproj" />
   </ItemGroup>
 
 </Project>

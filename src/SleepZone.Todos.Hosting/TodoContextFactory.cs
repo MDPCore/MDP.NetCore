@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace SleepZone.Todos.Hosting
 {
-    public class TodoContextFactory : Factory<TodoContext, TodoContext, TodoContextFactory.Setting>
+    public class TodoContextFactory : ServiceFactory<TodoContext, TodoContext, TodoContextFactory.Setting>
     {
+        // Constructors
+        public TodoContextFactory()
+        {
+            // Default
+            this.ServiceSingleton = true;
+        }
+
+
         // Methods
         protected override TodoContext CreateService(IComponentContext componentContext, Setting setting)
         {
@@ -33,9 +41,9 @@ namespace SleepZone.Todos.Hosting
         public class Setting
         {
             // Properties
-            public string TodoRepository { get; set; }
+            public string TodoRepository { get; set; } = String.Empty;
 
-            public string SnapshotRepository { get; set; }
+            public string SnapshotRepository { get; set; } = String.Empty;
         }
     }
 }

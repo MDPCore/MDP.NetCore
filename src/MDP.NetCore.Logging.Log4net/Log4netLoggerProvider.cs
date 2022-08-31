@@ -20,21 +20,14 @@ namespace MDP.NetCore.Logging.Log4net
 
 
         // Constructors
-        public Log4netLoggerProvider(IOptions<Log4netLoggerOptions> options)
+        public Log4netLoggerProvider(string configFileName, Dictionary<string, string> properties)
         {
             #region Contracts
 
-            if (options == null) throw new ArgumentException(nameof(options));
+            if (string.IsNullOrEmpty(configFileName) == true) throw new ArgumentException(nameof(configFileName));
+            if (properties == null) throw new ArgumentException(nameof(properties));
 
             #endregion
-
-            // ConfigFileName
-            var configFileName = options.Value?.ConfigFileName;
-            if (string.IsNullOrEmpty(configFileName) == true) throw new InvalidOperationException($"{nameof(configFileName)}=null");
-
-            // Properties
-            var properties = options.Value?.Properties;
-            if (properties == null) throw new InvalidOperationException($"{nameof(properties)}=null");
 
             // LoggerRepository
             _loggerRepository = this.CreateLoggerRepository(configFileName, properties);
