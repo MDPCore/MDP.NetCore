@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 namespace MDP.AspNetCore
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ModuleAttribute : ApiControllerAttribute, IRouteValueProvider, IRouteTemplateProvider
+    public class ModuleAttribute : Attribute, IRouteValueProvider, IRouteTemplateProvider
     {
         // Fields
         private readonly RouteValueAttribute _areaAttribute;

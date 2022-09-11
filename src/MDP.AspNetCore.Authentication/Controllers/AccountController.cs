@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public partial class AccountController : Controller
     {
         // Fields

@@ -386,12 +386,8 @@ namespace MDP.AspNetCore
                     // Area
                     if (actionDescriptor.RouteValues.ContainsKey("area") == true)
                     {
-                        var tagName = actionDescriptor.RouteValues["area"];
-                        if (string.IsNullOrEmpty(tagName) == true)
-                        {
-                            tagName = actionDescriptor.ControllerTypeInfo.Namespace;
-                        }
-                        return new[] { tagName };
+                        var areaName = actionDescriptor.RouteValues["area"];
+                        if (string.IsNullOrEmpty(areaName) == false) return new[] { areaName };
                     }
 
                     // Non-Area

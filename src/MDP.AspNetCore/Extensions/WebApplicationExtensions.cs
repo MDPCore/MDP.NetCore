@@ -38,6 +38,7 @@ namespace MDP.AspNetCore
             }
 
             // Network 
+            host.UsePathBase();
             host.UseForwardedHeaders();
 
             // Security
@@ -51,8 +52,9 @@ namespace MDP.AspNetCore
             // Routing
             host.UseRouting().UseHook(HookMiddlewareDefaults.RoutingHook);
             {
-                // Cors
+                // Network
                 host.UseCors();
+                host.UsePathDefault();
 
                 // Auth
                 host.UseAuthentication();

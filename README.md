@@ -9,24 +9,31 @@ MDP.Net是以領域驅動設計為核心的.NET Core開發平台，協助開發�
 
 - 開發工具：Visual Studio 2022 
 
-- 方案路徑：src/MDP.Net.sln
+- 方案路徑：程式資料夾=>demo/SleepZone.Todos.sln
 
-- 起始專案：方案總管/01.Application/01.SleepZone.Todos/SleepZone.Todos.WebApp
-
-- 起始網址：https://localhost:44318/SleepZone-Todos/Home/Index
+- 起始專案：方案總管內=>02.Application/SleepZone.Todos.WebApp
 
 - 測試步驟：
+  
+  - 瀏覽器的網址列：輸入「https://localhost:44392/SleepZone-Todos/Home/Index」，會被跳轉至Login頁面進行登入。
+  
+  - Login頁面：點擊「LoginByName」使用Username欄位內容進行登入，跳轉頁面至SleepZone.Todos頁面代表登入成功。
+  
+  - SleepZone.Todos頁面：點擊「AddTodo按鈕」新增工作項目，看到{ "statusCode": 200 }代表工作項目新增成功。
 
-  - 點擊「AddTodo按鈕」新增工作項目。看到{ "statusCode": 200 }代表工作項目新增成功。
+  - SleepZone.Todos頁面：點擊「FindAllTodo按鈕」查詢所有工作項目，看到{ "statusCode": 200 }代表工作項目查詢成功。
 
-  - 點擊「FindAllTodo按鈕」查詢所有工作項目。看到{ "statusCode": 200 }代表工作項目查詢成功。
-
+  - 瀏覽器的網址列：輸入「https://localhost:44392/swagger」，可以看到Swagger頁面並進行操作。
+  
 
 ## 架構設計
 
 ### MDP.Net-軟體架構
 
 ![MDP.Net-軟體架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/doc/MDP.Net-%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B.png)
+
+### MDP.Net-模組架構
+
 
 ### MDP.Net-平台架構
 
@@ -39,12 +46,12 @@ MDP.Net是以領域驅動設計為核心的.NET Core開發平台，協助開發�
 
 ## 版本更新
 
-### MDP.Net 6.0.11
+### MDP.Net 6.0.12
 
 - MDP.AspNetCore：加入Swagger預設參數，讓API顯示在SwaggerUI。
 
 - MDP.IdentityModel.Tokens.Jwt：SecurityTokenFactory加入自訂ExpireMinutes功能。
 
-- MDP.AspNetCore.Authentication.Jwt：加入多個JWT來源驗證功能。
+- MDP.AspNetCore.Authentication.Jwt：加入多個JWT來源驗證功能，提供自訂HeaderName、TokenPrefix設定。
 
-- MDP.AspNetCore.Authentication：加入PolicySchemeSelector，提供依照HttpContex選擇AuthenticationScheme功能
+- MDP.AspNetCore.Authentication：加入PolicySchemeSelector，提供依照HttpContex選擇AuthenticationScheme功能。

@@ -4,15 +4,15 @@ setlocal enabledelayedexpansion
 
 :: ================================================
 :: Version
-set version=6.0.9
+set version=6.0.12
 
 
 :: ================================================
 :: 03.Infrastructure - 01.Kernel
-set project[27]=MDP.Data.SqlClient
-set project[28]=MDP.Data.SqlClient.Hosting
-set project[29]=MDP.IdentityModel.Tokens.Jwt
-set project[30]=MDP.IdentityModel.Tokens.Jwt.Hosting
+set project[29]=MDP.Data.SqlClient
+set project[30]=MDP.Data.SqlClient.Hosting
+set project[31]=MDP.IdentityModel.Tokens.Jwt
+set project[32]=MDP.IdentityModel.Tokens.Jwt.Hosting
 
 :: 03.Infrastructure - 02.Kernel
 set project[9]=MDP.AspNetCore.Authentication
@@ -33,6 +33,8 @@ set project[23]=MDP.NetCore.Logging.Log4net
 set project[24]=MDP.NetCore.Logging.Log4net.Hosting
 set project[25]=MDP.NetCore.Logging.NLog
 set project[26]=MDP.NetCore.Logging.NLog.Hosting
+set project[27]=MDP.AspNetCore.Authentication.Jwt
+set project[28]=MDP.AspNetCore.Authentication.Jwt.Hosting
 
 :: 04.Kernel
 set project[6]=MDP.AspNetCore
