@@ -22,9 +22,15 @@ namespace MDP.IdentityModel.Tokens.Jwt
         {
             #region Contracts
 
-            if (setting == null) throw new ArgumentException(nameof(setting));
+            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
 
             #endregion
+
+            // Require
+            if (string.IsNullOrEmpty(setting.Issuer) == true) throw new ArgumentException($"{nameof(setting.Issuer)}=null");
+            if (string.IsNullOrEmpty(setting.SignKey) == true) throw new ArgumentException($"{nameof(setting.SignKey)}=null");
+            if (string.IsNullOrEmpty(setting.Algorithm) == true) throw new ArgumentException($"{nameof(setting.Algorithm)}=null");
+            if (setting.ExpireMinutes <= 0) throw new ArgumentException($"{nameof(setting.ExpireMinutes)}<=0");
 
             // Default
             _setting = setting;
@@ -33,7 +39,7 @@ namespace MDP.IdentityModel.Tokens.Jwt
 
 
         // Methods
-        public string CreateEncodedJwt(ClaimsIdentity identity)
+        public string CreateEncodedJwt(ClaimsIdentity identity, int? expireMinutes = null)
         {
             #region Contracts
 
@@ -53,10 +59,10 @@ namespace MDP.IdentityModel.Tokens.Jwt
             }
            
             // CreateEncodedJwt
-            return this.CreateEncodedJwt(claimList);
+            return this.CreateEncodedJwt(claimList, expireMinutes);
         }
 
-        public string CreateEncodedJwt(IEnumerable<Claim> claims)
+        public string CreateEncodedJwt(IEnumerable<Claim> claims, int? expireMinutes = null)
         {
             #region Contracts
 
@@ -72,6 +78,12 @@ namespace MDP.IdentityModel.Tokens.Jwt
                 claimList.Add(new Claim(JwtRegisteredClaimNames.Iss, _setting.Issuer));
             }
 
+            // ExpireMinutes
+            if (expireMinutes.HasValue == false)
+            {
+                expireMinutes = _setting.ExpireMinutes;
+            }
+
             // TokenDescriptor
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -81,7 +93,7 @@ namespace MDP.IdentityModel.Tokens.Jwt
                 // Lifetime
                 IssuedAt = DateTime.Now, // 建立時間
                 NotBefore = DateTime.Now, // 在此之前不可用時間
-                Expires = DateTime.Now.AddMinutes(_setting.ExpireMinutes), // 逾期時間
+                Expires = DateTime.Now.AddMinutes(expireMinutes.Value), // 逾期時間
 
                 // Signing
                 SigningCredentials = new SigningCredentials

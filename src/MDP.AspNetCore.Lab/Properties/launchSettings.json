@@ -11,9 +11,9 @@
     "MDP.AspNetCore.Lab": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Home/Index",
+      "launchUrl": "Swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Staging"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:7149;http://localhost:5198",
       "dotnetRunMessages": true

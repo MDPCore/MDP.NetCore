@@ -7,12 +7,12 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication
+namespace MDP.AspNetCore.Authentication.Jwt
 {
-    public class SecurityTokenAuthenticationHandler : JwtSecurityTokenHandler
+    public class SecurityTokenHandler : JwtSecurityTokenHandler
     {
         // Constructors
-        public SecurityTokenAuthenticationHandler() : base()
+        public SecurityTokenHandler() : base()
         {
 
         }

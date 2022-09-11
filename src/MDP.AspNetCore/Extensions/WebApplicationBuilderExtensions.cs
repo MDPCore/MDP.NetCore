@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -369,9 +370,34 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // Swagger
-            hostBuilder.Services.AddSwaggerGen();
+            // ApiExplorer
             hostBuilder.Services.AddEndpointsApiExplorer();
+
+            // Swagger
+            hostBuilder.Services.AddSwaggerGen(setupAction =>
+            {
+                // TagAction
+                setupAction.TagActionsBy(apiDescription =>
+                {
+                    // ActionDescriptor
+                    var actionDescriptor = apiDescription.ActionDescriptor as ControllerActionDescriptor;
+                    if (actionDescriptor == null) return new[] { "Unknown" };
+
+                    // Area
+                    if (actionDescriptor.RouteValues.ContainsKey("area") == true)
+                    {
+                        var tagName = actionDescriptor.RouteValues["area"];
+                        if (string.IsNullOrEmpty(tagName) == true)
+                        {
+                            tagName = actionDescriptor.ControllerTypeInfo.Namespace;
+                        }
+                        return new[] { tagName };
+                    }
+
+                    // Non-Area
+                    return new[] { actionDescriptor.ControllerName };
+                });
+            });
         }
 
 
@@ -383,7 +409,7 @@ namespace MDP.AspNetCore
             {
                 #region Contracts
 
-                if (context == null) throw new ArgumentException(nameof(context));
+                if (context == null) throw new ArgumentException($"{nameof(context)}=null");
 
                 #endregion
 
@@ -407,7 +433,7 @@ namespace MDP.AspNetCore
             {
                 #region Contracts
 
-                if (context == null) throw new ArgumentException(nameof(context));
+                if (context == null) throw new ArgumentException($"{nameof(context)}=null");
 
                 #endregion
 

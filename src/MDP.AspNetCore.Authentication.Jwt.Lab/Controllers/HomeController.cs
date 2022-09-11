@@ -7,8 +7,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using MDP.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
+using MDP.IdentityModel.Tokens.Jwt;
 
-namespace MDP.IdentityModel.Tokens.Jwt.Lab
+namespace MDP.AspNetCore.Authentication.Jwt.Lab
 {
     // Base
     public partial class HomeController : Controller
@@ -32,37 +33,56 @@ namespace MDP.IdentityModel.Tokens.Jwt.Lab
 
 
         // Methods
-        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
+    }
 
+    // GetToken
+    public partial class HomeController : Controller
+    {
+        // Methods
         [AllowAnonymous]
-        public async Task<ActionResult> LoginByName(string username, string? returnUrl = null)
+        public ActionResult<GetTokenResultModel> GetToken([FromBody] GetTokenActionModel actionModel)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(username) == true) throw new ArgumentException(nameof(username));
+            if (actionModel == null) throw new ArgumentException(nameof(actionModel));
 
             #endregion
-
-            // Require
-            returnUrl = returnUrl ?? this.Url.Content("~/");
 
             // ClaimsIdentity
             var claimsIdentity = new ClaimsIdentity(new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Email, username + "@hotmail.com"),
+                new Claim(ClaimTypes.Name, actionModel.Username),
+                new Claim(ClaimTypes.Email, actionModel.Username + "@hotmail.com"),
             }, "NameAuth");
 
-            // SignIn
-            await this.HttpContext.ExternalSignInAsync(new ClaimsPrincipal(claimsIdentity));
+            // TokenString
+            var tokenString = _tokenFactory.CreateEncodedJwt(claimsIdentity);
+            if (string.IsNullOrEmpty(tokenString) == true) throw new InvalidOperationException($"{nameof(tokenString)}=null");
 
             // Return
-            return this.RedirectToRoute("SignIn", new { returnUrl = returnUrl });
+            return (new GetTokenResultModel()
+            {
+                Token = tokenString
+            });
+        }
+
+
+        // Class
+        public class GetTokenActionModel
+        {
+            // Properties
+            public string Username { get; set; } = string.Empty;
+        }
+
+        public class GetTokenResultModel
+        {
+            // Properties
+            public string? Token { get; set; } = string.Empty;
         }
     }
 
@@ -119,48 +139,5 @@ namespace MDP.IdentityModel.Tokens.Jwt.Lab
 
             public string UserName { get; set; } = string.Empty;
         }
-    }
-
-    // GetToken
-    public partial class HomeController : Controller
-    {
-        // Methods
-        [Authorize]
-        public ActionResult<GetTokenResultModel> GetToken([FromBody] GetTokenActionModel actionModel)
-        {
-            #region Contracts
-
-            if (actionModel == null) throw new ArgumentException(nameof(actionModel));
-
-            #endregion
-
-            // ClaimsIdentity
-            var claimsIdentity = this.User.Identity as ClaimsIdentity;
-            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}=null");
-
-            // TokenString
-            var tokenString = _tokenFactory.CreateEncodedJwt(claimsIdentity);
-            if (string.IsNullOrEmpty(tokenString) == true) throw new InvalidOperationException($"{nameof(tokenString)}=null");
-
-            // Return
-            return (new GetTokenResultModel()
-            {
-                Token = tokenString
-            });
-        }
-
-
-        // Class
-        public class GetTokenActionModel
-        {
-            // Properties
-
-        }
-
-        public class GetTokenResultModel
-        {
-            // Properties
-            public string? Token { get; set; } = string.Empty;
-        }
-    }
+    }    
 }

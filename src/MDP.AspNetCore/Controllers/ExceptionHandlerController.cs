@@ -9,6 +9,7 @@ using System.Diagnostics;
 
 namespace MDP.AspNetCore
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ExceptionHandlerController : Controller
     {
         // Fields

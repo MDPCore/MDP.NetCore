@@ -11,7 +11,7 @@
     "SleepZone.Todos.WebApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "SleepZone-Todos",
+      "launchUrl": "Swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

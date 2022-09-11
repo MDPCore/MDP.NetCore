@@ -2,6 +2,7 @@
 
 namespace MDP.AspNetCore.Lab
 {
+    [MDP.AspNetCore.Module]
     public class HomeController : Controller
     {
         // Fields

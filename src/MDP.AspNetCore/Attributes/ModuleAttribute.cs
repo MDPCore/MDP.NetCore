@@ -3,27 +3,44 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace MDP.AspNetCore
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ModuleAttribute : ApiControllerAttribute, IRouteValueProvider, IRouteTemplateProvider
     {
         // Fields
-        private readonly AreaAttribute _areaAttribute;
+        private readonly RouteValueAttribute _areaAttribute;
 
         private readonly RouteAttribute _routeAttribute;
 
 
         // Constructors
-        public ModuleAttribute(string moduleName, string routeTemplate = @"{area}/{controller=Home}/{action=Index}")
+        public ModuleAttribute(string? moduleName = null)
         {
-            #region Contracts
+            // AreaAttribute
+            if (string.IsNullOrEmpty(moduleName) == false)
+            {
+                // Area
+                _areaAttribute = new AreaAttribute(moduleName);                
+            }
+            else
+            {
+                // Non-Area
+                _areaAttribute = new NonAreaAttribute();
+            }
 
-            if (string.IsNullOrEmpty(moduleName) == true) throw new ArgumentException($"{nameof(moduleName)}=null");
-
-            #endregion
-
-            // Default
-            _areaAttribute = new AreaAttribute(moduleName);
+            // RouteAttribute
+            string routeTemplate = string.Empty;
+            if (string.IsNullOrEmpty(moduleName) == false)
+            {
+                // Area
+                routeTemplate = @"[area]/[controller]/[action]";
+            }
+            else
+            {
+                // Non-Area
+                routeTemplate = @"[controller]/[action]";
+            }
             _routeAttribute = new RouteAttribute(routeTemplate);
+            _routeAttribute.Name = routeTemplate;
         }
 
 
@@ -38,5 +55,13 @@ namespace MDP.AspNetCore
         int? IRouteTemplateProvider.Order => _routeAttribute.Order;
 
         string IRouteTemplateProvider.Name => _routeAttribute.Name ?? String.Empty;
+
+
+        // Class
+        [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+        private class NonAreaAttribute : RouteValueAttribute
+        {
+            public NonAreaAttribute() : base("non-area", "non-area") { }
+        }
     }
 }

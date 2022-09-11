@@ -86,49 +86,55 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.IdentityModel.Tokens.Jw
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.IdentityModel.Tokens.Jwt.Hosting", "MDP.IdentityModel.Tokens.Jwt.Hosting\MDP.IdentityModel.Tokens.Jwt.Hosting.csproj", "{D7EAC4D0-48C5-4AA6-AF3B-57A23CC34F6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.IdentityModel.Tokens.Jwt.Lab", "MDP.IdentityModel.Tokens.Jwt.Lab\MDP.IdentityModel.Tokens.Jwt.Lab.csproj", "{FF70DC9E-BA63-44BA-A865-68C890303EEF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Data.SqlClient", "MDP.Data.SqlClient\MDP.Data.SqlClient.csproj", "{F4287AFC-7BE9-4F16-9F08-94C1A8180AC2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Data.SqlClient.Hosting", "MDP.Data.SqlClient.Hosting\MDP.Data.SqlClient.Hosting.csproj", "{403A21D0-DE48-4825-95F5-2117EE6F7D81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Data.SqlClient.Lab", "MDP.Data.SqlClient.Lab\MDP.Data.SqlClient.Lab.csproj", "{DD839BD8-C1C0-497B-BED9-8CE37A266A9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Google", "MDP.AspNetCore.Authentication.Google\MDP.AspNetCore.Authentication.Google.csproj", "{FD71F552-F454-4336-8375-00BC9BC053B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Google", "MDP.AspNetCore.Authentication.Google\MDP.AspNetCore.Authentication.Google.csproj", "{FD71F552-F454-4336-8375-00BC9BC053B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Google.Hosting", "MDP.AspNetCore.Authentication.Google.Hosting\MDP.AspNetCore.Authentication.Google.Hosting.csproj", "{0302A3E5-48FE-4645-A12B-D955C67306F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Google.Hosting", "MDP.AspNetCore.Authentication.Google.Hosting\MDP.AspNetCore.Authentication.Google.Hosting.csproj", "{0302A3E5-48FE-4645-A12B-D955C67306F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Google.Lab", "MDP.AspNetCore.Authentication.Google.Lab\MDP.AspNetCore.Authentication.Google.Lab.csproj", "{1157B44F-267D-43A6-9286-9E6D794EDE1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Google.Lab", "MDP.AspNetCore.Authentication.Google.Lab\MDP.AspNetCore.Authentication.Google.Lab.csproj", "{1157B44F-267D-43A6-9286-9E6D794EDE1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Facebook", "MDP.AspNetCore.Authentication.Facebook\MDP.AspNetCore.Authentication.Facebook.csproj", "{9A62CE08-B539-485D-88AA-9E708AB2ED4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Facebook", "MDP.AspNetCore.Authentication.Facebook\MDP.AspNetCore.Authentication.Facebook.csproj", "{9A62CE08-B539-485D-88AA-9E708AB2ED4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Facebook.Hosting", "MDP.AspNetCore.Authentication.Facebook.Hosting\MDP.AspNetCore.Authentication.Facebook.Hosting.csproj", "{C36BDDBE-3B91-4FF0-B144-B67D0266BCF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Facebook.Hosting", "MDP.AspNetCore.Authentication.Facebook.Hosting\MDP.AspNetCore.Authentication.Facebook.Hosting.csproj", "{C36BDDBE-3B91-4FF0-B144-B67D0266BCF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Facebook.Lab", "MDP.AspNetCore.Authentication.Facebook.Lab\MDP.AspNetCore.Authentication.Facebook.Lab.csproj", "{204B6A27-7D02-4413-A383-8C0A5148063D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Facebook.Lab", "MDP.AspNetCore.Authentication.Facebook.Lab\MDP.AspNetCore.Authentication.Facebook.Lab.csproj", "{204B6A27-7D02-4413-A383-8C0A5148063D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.GitHub", "MDP.AspNetCore.Authentication.GitHub\MDP.AspNetCore.Authentication.GitHub.csproj", "{AE7577BD-C3F8-4E9F-A878-B157CADBBBD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.GitHub", "MDP.AspNetCore.Authentication.GitHub\MDP.AspNetCore.Authentication.GitHub.csproj", "{AE7577BD-C3F8-4E9F-A878-B157CADBBBD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.GitHub.Hosting", "MDP.AspNetCore.Authentication.GitHub.Hosting\MDP.AspNetCore.Authentication.GitHub.Hosting.csproj", "{B034A0B3-6B09-4B4D-B548-7D1CBA8D9F6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.GitHub.Hosting", "MDP.AspNetCore.Authentication.GitHub.Hosting\MDP.AspNetCore.Authentication.GitHub.Hosting.csproj", "{B034A0B3-6B09-4B4D-B548-7D1CBA8D9F6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.GitHub.Lab", "MDP.AspNetCore.Authentication.GitHub.Lab\MDP.AspNetCore.Authentication.GitHub.Lab.csproj", "{5739CDEC-88A6-4439-96D6-C12A1A0F810D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.GitHub.Lab", "MDP.AspNetCore.Authentication.GitHub.Lab\MDP.AspNetCore.Authentication.GitHub.Lab.csproj", "{5739CDEC-88A6-4439-96D6-C12A1A0F810D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.AzureAD", "MDP.AspNetCore.Authentication.AzureAD\MDP.AspNetCore.Authentication.AzureAD.csproj", "{2A50ECD2-1A51-472B-AFF1-2C7B05256B37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.AzureAD", "MDP.AspNetCore.Authentication.AzureAD\MDP.AspNetCore.Authentication.AzureAD.csproj", "{2A50ECD2-1A51-472B-AFF1-2C7B05256B37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.AzureAD.Hosting", "MDP.AspNetCore.Authentication.AzureAD.Hosting\MDP.AspNetCore.Authentication.AzureAD.Hosting.csproj", "{89447DC6-E2E6-417D-B3B9-CAA04243F0EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.AzureAD.Hosting", "MDP.AspNetCore.Authentication.AzureAD.Hosting\MDP.AspNetCore.Authentication.AzureAD.Hosting.csproj", "{89447DC6-E2E6-417D-B3B9-CAA04243F0EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.AzureAD.Lab", "MDP.AspNetCore.Authentication.AzureAD.Lab\MDP.AspNetCore.Authentication.AzureAD.Lab.csproj", "{90D64E04-30EE-4DE0-89DD-5FBAB1ABA98D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.AzureAD.Lab", "MDP.AspNetCore.Authentication.AzureAD.Lab\MDP.AspNetCore.Authentication.AzureAD.Lab.csproj", "{90D64E04-30EE-4DE0-89DD-5FBAB1ABA98D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Line", "MDP.AspNetCore.Authentication.Line\MDP.AspNetCore.Authentication.Line.csproj", "{B7D8E1C8-C3E5-4C1B-8C71-7C95CB6DFC2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Line", "MDP.AspNetCore.Authentication.Line\MDP.AspNetCore.Authentication.Line.csproj", "{B7D8E1C8-C3E5-4C1B-8C71-7C95CB6DFC2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Line.Hosting", "MDP.AspNetCore.Authentication.Line.Hosting\MDP.AspNetCore.Authentication.Line.Hosting.csproj", "{614016C8-3090-4B04-98C1-700DB7AE1949}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Line.Hosting", "MDP.AspNetCore.Authentication.Line.Hosting\MDP.AspNetCore.Authentication.Line.Hosting.csproj", "{614016C8-3090-4B04-98C1-700DB7AE1949}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Line.Lab", "MDP.AspNetCore.Authentication.Line.Lab\MDP.AspNetCore.Authentication.Line.Lab.csproj", "{AAB0738D-555E-415D-B782-1E6BF856F9CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Line.Lab", "MDP.AspNetCore.Authentication.Line.Lab\MDP.AspNetCore.Authentication.Line.Lab.csproj", "{AAB0738D-555E-415D-B782-1E6BF856F9CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Liff", "MDP.AspNetCore.Authentication.Liff\MDP.AspNetCore.Authentication.Liff.csproj", "{2E9AC22F-7D53-4F7B-84CC-3767D8415AF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Liff", "MDP.AspNetCore.Authentication.Liff\MDP.AspNetCore.Authentication.Liff.csproj", "{2E9AC22F-7D53-4F7B-84CC-3767D8415AF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Liff.Hosting", "MDP.AspNetCore.Authentication.Liff.Hosting\MDP.AspNetCore.Authentication.Liff.Hosting.csproj", "{1F5F4AD8-E1E7-442B-B22C-058EEEE5D346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Liff.Hosting", "MDP.AspNetCore.Authentication.Liff.Hosting\MDP.AspNetCore.Authentication.Liff.Hosting.csproj", "{1F5F4AD8-E1E7-442B-B22C-058EEEE5D346}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Liff.Lab", "MDP.AspNetCore.Authentication.Liff.Lab\MDP.AspNetCore.Authentication.Liff.Lab.csproj", "{42E52F27-29F3-4921-A051-D10E879E3EEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Liff.Lab", "MDP.AspNetCore.Authentication.Liff.Lab\MDP.AspNetCore.Authentication.Liff.Lab.csproj", "{42E52F27-29F3-4921-A051-D10E879E3EEC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Jwt", "MDP.AspNetCore.Authentication.Jwt\MDP.AspNetCore.Authentication.Jwt.csproj", "{03652D20-4239-4CCE-8A72-F78DD38AC02B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authentication.Jwt.Hosting", "MDP.AspNetCore.Authentication.Jwt.Hosting\MDP.AspNetCore.Authentication.Jwt.Hosting.csproj", "{8AEF3E5B-21A2-45A1-A87B-D01CC1F8A091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Jwt.Lab", "MDP.AspNetCore.Authentication.Jwt.Lab\MDP.AspNetCore.Authentication.Jwt.Lab.csproj", "{F9AEDEC7-8FC8-4CAE-8691-239F66CD2CE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.IdentityModel.Tokens.Jwt.Lab", "MDP.IdentityModel.Tokens.Jwt.Lab\MDP.IdentityModel.Tokens.Jwt.Lab.csproj", "{76E13F6B-494A-47EB-9964-25DF37AAEE1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -260,10 +266,6 @@ Global
 		{D7EAC4D0-48C5-4AA6-AF3B-57A23CC34F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7EAC4D0-48C5-4AA6-AF3B-57A23CC34F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7EAC4D0-48C5-4AA6-AF3B-57A23CC34F6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF70DC9E-BA63-44BA-A865-68C890303EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF70DC9E-BA63-44BA-A865-68C890303EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF70DC9E-BA63-44BA-A865-68C890303EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF70DC9E-BA63-44BA-A865-68C890303EEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F4287AFC-7BE9-4F16-9F08-94C1A8180AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F4287AFC-7BE9-4F16-9F08-94C1A8180AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4287AFC-7BE9-4F16-9F08-94C1A8180AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -348,6 +350,22 @@ Global
 		{42E52F27-29F3-4921-A051-D10E879E3EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42E52F27-29F3-4921-A051-D10E879E3EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42E52F27-29F3-4921-A051-D10E879E3EEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03652D20-4239-4CCE-8A72-F78DD38AC02B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03652D20-4239-4CCE-8A72-F78DD38AC02B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03652D20-4239-4CCE-8A72-F78DD38AC02B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03652D20-4239-4CCE-8A72-F78DD38AC02B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AEF3E5B-21A2-45A1-A87B-D01CC1F8A091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AEF3E5B-21A2-45A1-A87B-D01CC1F8A091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AEF3E5B-21A2-45A1-A87B-D01CC1F8A091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AEF3E5B-21A2-45A1-A87B-D01CC1F8A091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9AEDEC7-8FC8-4CAE-8691-239F66CD2CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9AEDEC7-8FC8-4CAE-8691-239F66CD2CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9AEDEC7-8FC8-4CAE-8691-239F66CD2CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9AEDEC7-8FC8-4CAE-8691-239F66CD2CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76E13F6B-494A-47EB-9964-25DF37AAEE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76E13F6B-494A-47EB-9964-25DF37AAEE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76E13F6B-494A-47EB-9964-25DF37AAEE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76E13F6B-494A-47EB-9964-25DF37AAEE1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -387,7 +405,6 @@ Global
 		{25BB6A1B-3A5C-4CD5-8B65-A795586D3D36} = {ED0A5887-A958-4014-8949-2299DB2924F8}
 		{61B51FF0-5E01-4120-BF5D-47C2034D1232} = {9FF99E80-3EBF-4B5F-8207-BAD4FCADB073}
 		{D7EAC4D0-48C5-4AA6-AF3B-57A23CC34F6D} = {9FF99E80-3EBF-4B5F-8207-BAD4FCADB073}
-		{FF70DC9E-BA63-44BA-A865-68C890303EEF} = {9FF99E80-3EBF-4B5F-8207-BAD4FCADB073}
 		{F4287AFC-7BE9-4F16-9F08-94C1A8180AC2} = {9FF99E80-3EBF-4B5F-8207-BAD4FCADB073}
 		{403A21D0-DE48-4825-95F5-2117EE6F7D81} = {9FF99E80-3EBF-4B5F-8207-BAD4FCADB073}
 		{DD839BD8-C1C0-497B-BED9-8CE37A266A9D} = {9FF99E80-3EBF-4B5F-8207-BAD4FCADB073}
@@ -409,6 +426,10 @@ Global
 		{2E9AC22F-7D53-4F7B-84CC-3767D8415AF3} = {ED0A5887-A958-4014-8949-2299DB2924F8}
 		{1F5F4AD8-E1E7-442B-B22C-058EEEE5D346} = {ED0A5887-A958-4014-8949-2299DB2924F8}
 		{42E52F27-29F3-4921-A051-D10E879E3EEC} = {ED0A5887-A958-4014-8949-2299DB2924F8}
+		{03652D20-4239-4CCE-8A72-F78DD38AC02B} = {ED0A5887-A958-4014-8949-2299DB2924F8}
+		{8AEF3E5B-21A2-45A1-A87B-D01CC1F8A091} = {ED0A5887-A958-4014-8949-2299DB2924F8}
+		{F9AEDEC7-8FC8-4CAE-8691-239F66CD2CE2} = {ED0A5887-A958-4014-8949-2299DB2924F8}
+		{76E13F6B-494A-47EB-9964-25DF37AAEE1F} = {9FF99E80-3EBF-4B5F-8207-BAD4FCADB073}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4AC5020-4E52-449F-9931-C7F2C2808419}

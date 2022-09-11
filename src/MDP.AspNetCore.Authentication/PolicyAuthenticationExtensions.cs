@@ -35,80 +35,34 @@ namespace MDP.AspNetCore.Authentication
 
             // AuthenticationSetting
             if (authenticationSetting == null) authenticationSetting = new PolicyAuthenticationSetting();
+            if (string.IsNullOrEmpty(authenticationSetting.DefaultScheme) == true) throw new InvalidOperationException($"{nameof(authenticationSetting.DefaultScheme)}=null");
 
             // PolicyScheme
-            var distributePolicyScheme = authenticationScheme;
-            var authenticatePolicyScheme = authenticationScheme + PolicyAuthenticationDefaults.AuthenticatePolicyScheme;
-            var challengePolicyScheme = authenticationScheme + PolicyAuthenticationDefaults.ChallengePolicyScheme;
-            var forbidPolicyScheme = authenticationScheme + PolicyAuthenticationDefaults.ForbidPolicyScheme;
-            var signInPolicyScheme = authenticationScheme + PolicyAuthenticationDefaults.SignInPolicyScheme;
-            var signOutPolicyScheme = authenticationScheme + PolicyAuthenticationDefaults.SignOutPolicyScheme;
-
-            // DistributePolicyScheme
-            builder.AddPolicyScheme(distributePolicyScheme, null, authenticationOptions =>
+            builder.AddPolicyScheme(authenticationScheme, null, authenticationOptions =>
             {
-                // Require
-                if (string.IsNullOrEmpty(authenticationSetting.DefaultScheme) == true) throw new InvalidOperationException($"{nameof(authenticationSetting.DefaultScheme)}=null");
-
-                // DefaultScheme
+                // ForwardDefault
                 authenticationOptions.ForwardDefault = authenticationSetting.DefaultScheme;
-               
-                // ForwardScheme
-                if (authenticationSetting.AuthenticatePolicy != null) authenticationOptions.ForwardAuthenticate = authenticatePolicyScheme;
-                if (authenticationSetting.ChallengePolicy != null) authenticationOptions.ForwardChallenge = challengePolicyScheme;
-                if (authenticationSetting.ForbidPolicy != null) authenticationOptions.ForwardForbid = forbidPolicyScheme;
-                if (authenticationSetting.SignInPolicy != null) authenticationOptions.ForwardSignIn = signInPolicyScheme;
-                if (authenticationSetting.SignOutPolicy != null) authenticationOptions.ForwardSignOut = signOutPolicyScheme;
-            });
 
-            // AuthenticatePolicyScheme
-            builder.AddPolicyScheme(authenticatePolicyScheme, null, authenticationOptions =>
-            {
-                // AuthenticatePolicy
-                if (authenticationSetting.AuthenticatePolicy != null)
+                // ForwardDefaultSelector
+                authenticationOptions.ForwardDefaultSelector = context =>
                 {
-                    authenticationOptions.ForwardDefaultSelector = context => authenticationSetting.AuthenticatePolicy(context);
-                }
-            });
+                    // PolicySchemeSelectorList
+                    var policySchemeSelectorList = context.RequestServices.GetRequiredService<IList<PolicySchemeSelector>>();
+                    if (policySchemeSelectorList == null) throw new InvalidOperationException($"{nameof(policySchemeSelectorList)}=null");
 
-            // ChallengePolicyScheme
-            builder.AddPolicyScheme(challengePolicyScheme, null, authenticationOptions =>
-            {
-                // ChallengePolicy
-                if (authenticationSetting.ChallengePolicy != null)
-                {
-                    authenticationOptions.ForwardDefaultSelector = context => authenticationSetting.ChallengePolicy(context);
-                }
-            });
+                    // PolicySchemeSelector
+                    foreach (var policySchemeSelector in policySchemeSelectorList)
+                    {
+                        // Check
+                        if (policySchemeSelector.Check(context) == false) continue;
 
-            // ForbidPolicyScheme
-            builder.AddPolicyScheme(forbidPolicyScheme, null, authenticationOptions =>
-            {
-                // ForbidPolicy        
-                if (authenticationSetting.ForbidPolicy != null)
-                {
-                    authenticationOptions.ForwardDefaultSelector = context => authenticationSetting.ForbidPolicy(context);
-                }
-            });
+                        // Apply
+                        return policySchemeSelector.AuthenticationScheme;
+                    }
 
-            // SignInPolicyScheme
-            builder.AddPolicyScheme(signInPolicyScheme, null, authenticationOptions =>
-            {
-                // SignInPolicy        
-                if (authenticationSetting.SignInPolicy != null)
-                {
-                    authenticationOptions.ForwardDefaultSelector = context => authenticationSetting.SignInPolicy(context);
-                }
-            });
-
-            // SignOutPolicyScheme
-            builder.AddPolicyScheme(signOutPolicyScheme, null, authenticationOptions =>
-            {
-                // SignOutPolicy        
-                if (authenticationSetting.SignOutPolicy != null)
-                {
-                    authenticationOptions.ForwardDefaultSelector = context => authenticationSetting.SignOutPolicy(context);
-                }
+                    // DefaultScheme
+                    return authenticationSetting.DefaultScheme;
+                };
             });
 
             // Return

@@ -10,18 +10,4 @@ namespace MDP.AspNetCore.Authentication
         // Properties
         public const string AuthenticationScheme = "Policies";
     }
-
-    public partial class PolicyAuthenticationDefaults
-    {
-        // Properties
-        internal const string AuthenticatePolicyScheme = ".AuthenticatePolicy";
-
-        internal const string ChallengePolicyScheme = ".ChallengePolicy";
-
-        internal const string ForbidPolicyScheme = ".ForbidPolicy";
-
-        internal const string SignInPolicyScheme = ".SignInPolicy";
-
-        internal const string SignOutPolicyScheme = ".SignOutPolicy";
-    }
 }

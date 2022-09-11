@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication
+namespace MDP.AspNetCore.Authentication.Jwt
 {
     public class SecurityTokenClaimTypes
     {

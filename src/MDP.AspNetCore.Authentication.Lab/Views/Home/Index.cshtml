@@ -15,6 +15,35 @@
 
     <!-- meta -->
     <meta charset="utf-8" />
+
+    <!-- script -->
+    <script src="~/mdp.web.js"></script>
+    <script language="javascript">
+        window.onload = function () {
+
+            // GetUserByCookie
+            document.getElementById("getUserByCookie.button").addEventListener("click", event => {
+
+                // Variables
+
+                // ActionModel
+                var actionModel = {};
+
+                // Post
+                postRequst("/Home/GetUser", actionModel)
+
+                    // Success
+                    .then(function (response) {
+                        document.getElementById("getUserByCookie.result").innerText = JSON.stringify(response, null, 2);
+                    })
+
+                    // Error
+                    .catch(function (error) {
+                        document.getElementById("getUserByCookie.result").innerText = JSON.stringify(error, null, 2);
+                    });
+            });
+        };
+    </script>
 </head>
 <body>
 
@@ -35,6 +64,11 @@
         <button asp-route="Logout">Logout</button><br />
         <br />
     </form>
+    <hr />
+
+    <!--GetUserByCookie-->
+    <input id="getUserByCookie.button" type="button" value="GetUserByCookie" /><br />
+    <div id="getUserByCookie.result"></div><br />
     <hr />
 
 </body>

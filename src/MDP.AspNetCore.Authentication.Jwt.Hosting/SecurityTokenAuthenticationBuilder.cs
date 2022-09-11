@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.Hosting
+namespace MDP.AspNetCore.Authentication.Jwt.Hosting
 {
     public class SecurityTokenAuthenticationBuilder : MDP.AspNetCore.ServiceBuilder<SecurityTokenAuthenticationSetting>
     {
@@ -16,7 +16,7 @@ namespace MDP.AspNetCore.Authentication.Hosting
         {
             // Default
             this.ServiceNamespace = "Authentication";
-            this.ServiceName = "JwtBearer";
+            this.ServiceName = "Jwt";
         }
 
 
@@ -30,8 +30,8 @@ namespace MDP.AspNetCore.Authentication.Hosting
 
             #endregion
 
-            // AddJwtBearer
-            hostBuilder.Services.AddJwtBearer(authenticationSetting);
+            // AddJwt
+            hostBuilder.Services.AddJwt(authenticationSetting);
         }
     }
 }

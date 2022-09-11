@@ -33,7 +33,8 @@ namespace MDP.AspNetCore
             if (host.Environment.IsDevelopment() == true)
             {
                 host.UseSwagger();
-                host.UseSwaggerUI();
+                host.UseSwaggerUI(options => { options.DefaultModelsExpandDepth(-1); });
+                host.UseSwaggerDefaults();
             }
 
             // Network 

@@ -8,13 +8,19 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication
+namespace MDP.AspNetCore.Authentication.Jwt
 {
     public class SecurityTokenAuthenticationSetting
     {
         // Properties
-        public string? Issuer { get; set; } = null;
+        public string Scheme { get; set; } = "JwtBearer";
 
-        public string? SignKey { get; set; } = null;
+        public string Header { get; set; } = "Authorization";
+
+        public string? Prefix { get; set; } = "Bearer ";
+
+        public string? Issuer { get; set; } = String.Empty;
+
+        public string SignKey { get; set; } = String.Empty;
     }
 }

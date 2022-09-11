@@ -40,17 +40,7 @@ namespace MDP.AspNetCore.Authentication
             authenticationBuilder.AddPolicy(new PolicyAuthenticationSetting()
             {
                 // DefaultScheme
-                DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-
-                // AuthenticatePolicy
-                AuthenticatePolicy = context =>
-                {
-                    // SecurityToken
-                    if (context.HasJwtBearer() == true) return SecurityTokenAuthenticationDefaults.AuthenticationScheme;
-
-                    // DefaultScheme
-                    return CookieAuthenticationDefaults.AuthenticationScheme;
-                }
+                DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme
             });
 
             // Cookie

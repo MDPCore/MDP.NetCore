@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace MDP.AspNetCore.Authentication.Lab
 {
-    public class HomeController : Controller
+    public partial class HomeController : Controller
     {
         // Methods
         [Authorize]
@@ -43,6 +43,61 @@ namespace MDP.AspNetCore.Authentication.Lab
 
             // Return
             return this.RedirectToRoute("SignIn", new { returnUrl = returnUrl });
+        }
+    }
+
+    // GetUser
+    public partial class HomeController : Controller
+    {
+        // Methods
+        [Authorize]
+        public ActionResult<GetUserResultModel> GetUser([FromBody] GetUserActionModel actionModel)
+        {
+            #region Contracts
+
+            if (actionModel == null) throw new ArgumentException(nameof(actionModel));
+
+            #endregion
+
+            // ClaimsIdentity
+            var claimsIdentity = this.User.Identity as ClaimsIdentity;
+            if (claimsIdentity == null) throw new InvalidOperationException($"{nameof(claimsIdentity)}=null");
+
+            // UserModel
+            var user = new UserModel();
+            user.AuthenticationType = claimsIdentity.AuthenticationType!;
+            user.UserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+            user.UserName = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value!;
+
+            // Return
+            return (new GetUserResultModel()
+            {
+                User = user
+            });
+        }
+
+
+        // Class
+        public class GetUserActionModel
+        {
+            // Properties
+
+        }
+
+        public class GetUserResultModel
+        {
+            // Properties
+            public UserModel? User { get; set; }
+        }
+
+        public class UserModel
+        {
+            // Properties
+            public string AuthenticationType { get; set; } = string.Empty;
+
+            public string UserId { get; set; } = string.Empty;
+
+            public string UserName { get; set; } = string.Empty;
         }
     }
 }
