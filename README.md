@@ -32,12 +32,13 @@ MDP.Net是以領域驅動設計為核心的.NET Core開發平台，協助開發�
 
 ![MDP.Net-軟體架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/doc/MDP.Net-%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B.png)
 
-### MDP.Net-模組架構
+### MDP.Net-分層架構
 
+![MDP.Net-分層架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/doc/MDP.Net-%E5%88%86%E5%B1%A4%E6%9E%B6%E6%A7%8B.png)
 
 ### MDP.Net-平台架構
 
-![MDP.Net-平台架構](https://github.com/Clark159/MDP.Net/raw/master/doc/MDP.Net-%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%A7%8B.png)
+![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/doc/MDP.Net-%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%A7%8B.png)
 
 ### MDP.Net-需求分析
 
@@ -46,7 +47,7 @@ MDP.Net是以領域驅動設計為核心的.NET Core開發平台，協助開發�
 
 ## 版本更新
 
-### MDP.Net 6.0.12
+### MDP.Net 6.0.11(開發中)
 
 - MDP.AspNetCore：加入Swagger預設參數，讓API顯示在SwaggerUI。
 
