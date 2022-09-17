@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ namespace MDP.IdentityModel.Tokens.Jwt
         private readonly SecurityTokenSetting _setting;
 
         private readonly JwtSecurityTokenHandler _tokenHandler;
+
+        private readonly SigningCredentials _signingCredentials;
 
 
         // Constructors
@@ -34,7 +37,13 @@ namespace MDP.IdentityModel.Tokens.Jwt
 
             // Default
             _setting = setting;
+
+            // JwtSecurityTokenHandler
             _tokenHandler = new JwtSecurityTokenHandler();
+
+            // SigningCredentials
+            _signingCredentials = this.CreareSigningCredentials(_setting.SignKey, _setting.Algorithm);
+            if (_signingCredentials == null) throw new ArgumentException($"{nameof(_signingCredentials)}=null");
         }
 
 
@@ -96,11 +105,7 @@ namespace MDP.IdentityModel.Tokens.Jwt
                 Expires = DateTime.Now.AddMinutes(expireMinutes.Value), // 逾期時間
 
                 // Signing
-                SigningCredentials = new SigningCredentials
-                (
-                    key: new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_setting.SignKey)),
-                    algorithm: _setting.Algorithm
-                ),
+                SigningCredentials = _signingCredentials
             };
 
             // TokenString
@@ -109,6 +114,63 @@ namespace MDP.IdentityModel.Tokens.Jwt
 
             // Return
             return tokenString;
+        }
+
+
+        private SigningCredentials CreareSigningCredentials(string signKey, string algorithm)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(signKey) == true) throw new ArgumentException($"{nameof(signKey)}=null");
+            if (string.IsNullOrEmpty(algorithm) == true) throw new ArgumentException($"{nameof(algorithm)}=null");
+
+            #endregion
+
+            // SecurityKey
+            var securityKey = this.CreateSecurityKey(signKey);
+            if (securityKey == null) throw new ArgumentException($"{nameof(signKey)}=null");
+
+            // SymmetricSecurityKey
+            var signingCredentials = new SigningCredentials
+            (
+                key: securityKey,
+                algorithm: algorithm
+            );
+
+            // Return
+            return signingCredentials;
+        }
+
+        private SecurityKey CreateSecurityKey(string signKey)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(signKey) == true) throw new ArgumentException($"{nameof(signKey)}=null");
+
+            #endregion
+
+            // RSA
+            if (signKey.StartsWith("RSA ", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                // SignKey
+                signKey = signKey.Substring("RSA ".Length).Trim();
+                if (string.IsNullOrEmpty(signKey) == false) signKey = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(signKey));
+                if (string.IsNullOrEmpty(signKey) == true) throw new InvalidOperationException($"{nameof(signKey)}=null");
+
+                // RsaKey
+                var rsa = RSA.Create();
+                {
+                    // Create
+                    rsa.ImportFromPem(signKey);
+                    var rsaKey = new RsaSecurityKey(rsa);
+
+                    // Return
+                    return rsaKey;
+                }
+            }
+
+            // Symmetric
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signKey));
         }
     }
 }

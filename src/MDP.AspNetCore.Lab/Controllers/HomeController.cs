@@ -37,6 +37,11 @@ namespace MDP.AspNetCore.Lab
             return View();
         }
 
+        /// <summary>
+        /// 測試API
+        /// </summary>
+        /// <param name="value">測試輸入</param>
+        /// <returns>測試輸出</returns>
         public string Echo(string value)
         {
             #region Contracts

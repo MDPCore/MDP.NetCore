@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
@@ -376,6 +377,21 @@ namespace MDP.AspNetCore
             // Swagger
             hostBuilder.Services.AddSwaggerGen(setupAction =>
             {
+                // IncludeXmlComments
+                {
+                    // CommentFileName
+                    var commentFileName = Assembly.GetEntryAssembly()?.GetName().Name + ".xml";
+                    if (string.IsNullOrEmpty(commentFileName) == true) throw new InvalidOperationException($"{nameof(commentFileName)}=null");
+
+                    // CommentFileName
+                    var commentFileList = CLK.IO.File.GetAllFile(commentFileName);
+                    if (commentFileList == null) throw new InvalidOperationException($"{nameof(commentFileList)}=null");
+
+                    // Include
+                    var commentFile = commentFileList.FirstOrDefault();
+                    if(commentFile!=null) setupAction.IncludeXmlComments(commentFile.FullName);
+                }                
+
                 // TagAction
                 setupAction.TagActionsBy(apiDescription =>
                 {

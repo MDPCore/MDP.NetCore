@@ -47,9 +47,20 @@ MDP.Net是以領域驅動設計為核心的.NET Core開發平台，協助開發�
 
 ## 版本更新
 
-### MDP.Net 6.0.11(開發中)
+### MDP.Net 6.0.13
 
-- MDP.AspNetCore：加入Swagger預設參數，讓API顯示在SwaggerUI。
+- MDP.AspNetCore.WebApp：WebApp專案設定加入GenerateDocumentationFile，讓系統產生API說明檔。
+
+- MDP.AspNetCore：加入Swagger預設參數，讓SwaggerUI顯示API說明檔。
+
+- MDP.IdentityModel.Tokens.Jwt：加入RSA非對稱金鑰支援。
+
+- MDP.AspNetCore.Authentication.Jwt：加入RSA非對稱金鑰支援。
+
+
+### MDP.Net 6.0.12
+
+- MDP.AspNetCore：加入Swagger預設參數，讓SwaggerUI顯示API。
 
 - MDP.IdentityModel.Tokens.Jwt：SecurityTokenFactory加入自訂ExpireMinutes功能。
 

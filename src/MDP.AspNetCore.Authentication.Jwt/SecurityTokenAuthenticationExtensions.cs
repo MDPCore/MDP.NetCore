@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace MDP.AspNetCore.Authentication.Jwt
 {
@@ -100,7 +101,7 @@ namespace MDP.AspNetCore.Authentication.Jwt
                 if (string.IsNullOrEmpty(authenticationSetting.SignKey) == false)
                 {
                     authenticationOptions.TokenValidationParameters.ValidateIssuerSigningKey = true;
-                    authenticationOptions.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSetting.SignKey));
+                    authenticationOptions.TokenValidationParameters.IssuerSigningKey = CreateSecurityKey(authenticationSetting.SignKey);
                 }
                 else
                 {
@@ -151,6 +152,38 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
             // Return
             return authenticationBuilder;
+        }
+
+        private static SecurityKey CreateSecurityKey(string signKey)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(signKey) == true) throw new ArgumentException($"{nameof(signKey)}=null");
+
+            #endregion
+
+            // RSA
+            if (signKey.StartsWith("RSA ", StringComparison.OrdinalIgnoreCase) == true)
+            {
+                // SignKey
+                signKey = signKey.Substring("RSA ".Length).Trim();
+                if (string.IsNullOrEmpty(signKey) == false) signKey = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(signKey));
+                if (string.IsNullOrEmpty(signKey) == true) throw new InvalidOperationException($"{nameof(signKey)}=null");
+
+                // RsaKey
+                var rsa = RSA.Create();
+                {
+                    // Create
+                    rsa.ImportFromPem(signKey);
+                    var rsaKey = new RsaSecurityKey(rsa);
+
+                    // Return
+                    return rsaKey;
+                }
+            }
+
+            // Symmetric
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signKey));
         }
     }
 }
