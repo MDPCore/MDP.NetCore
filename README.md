@@ -1,6 +1,6 @@
 # MDP.Net 
 
-MDP.Net是以領域驅動設計為核心的.NET Core開發平台，協助開發人員快速建立Web APP、Console APP。
+MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Console App。
 
 
 ## 範例展示
