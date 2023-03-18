@@ -92,7 +92,7 @@
     <!-- script -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-        window.onload = function () {
+        (function () {
 
             // Options
             var liffId = "@ViewBag.liffId";       
@@ -129,7 +129,7 @@
                 document.querySelector(".message").classList.remove("hidden");
                 document.querySelector(".message div").textContent = ex;
             });
-        };
+        })();
     </script>
 </body>
 </html>
