@@ -47,7 +47,7 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 ## 版本更新
 
-### MDP.Net 6.0.14
+### MDP.Net 6.0.15
 
 - MDP.AspNetCore.Authentication.Liff：調整Liff登入效能、調整Liff登入頁面提示文字。
 
