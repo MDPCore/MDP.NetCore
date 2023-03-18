@@ -79,13 +79,13 @@
 
     <!-- loader -->
     <div class="loader">
-        <h2>系統登入中...</h2>
+        <h2>系統啟動中</h2>
         <div></div>
     </div>
 
     <!-- message -->
     <div class="message hidden">
-        <h2>登入異常，請聯絡系統管理員</h2>
+        <h2>系統啟動異常，請聯絡系統管理員</h2>
         <div></div>
     </div>
 
@@ -107,7 +107,7 @@
             .then(() => {
 
                 // loader
-                document.querySelector(".loader h2").textContent = "身分驗證中...";
+                document.querySelector(".loader h2").textContent = "身分確認中";
 
                 // require
                 if (liff.isInClient() == false) { window.location = returnUrl; return; }
