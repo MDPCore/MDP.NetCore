@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 
 :: ================================================
 :: Version
-set version=6.0.13
+set version=6.0.14
 
 
 :: ================================================
@@ -53,7 +53,7 @@ set project[5]=CLK.Security.Claims
 :: ================================================
 :: Pack
 for /l %%n in (0,1,30) do ( 
-   dotnet pack ../src2/!project[%%n]!/!project[%%n]!.csproj -p:version=%version% -c release -o ./temp
+   dotnet pack ../src/!project[%%n]!/!project[%%n]!.csproj -p:version=%version% -c release -o ./temp
 )
 
 :: Push
