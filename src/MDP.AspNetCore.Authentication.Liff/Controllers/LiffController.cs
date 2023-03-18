@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication.Liff
 {
-    public class AccountController : Controller
+    public class LiffController : Controller
     {
         // Fields
         private readonly IOptionsMonitor<LiffOptions> _optionsMonitor;
 
 
         // Constructors
-        public AccountController(IOptionsMonitor<LiffOptions> optionsMonitor)
+        public LiffController(IOptionsMonitor<LiffOptions> optionsMonitor)
         {
             #region Contracts
 
@@ -34,8 +34,13 @@ namespace MDP.AspNetCore.Authentication.Liff
         // Methods
         [AllowAnonymous]
         [Route("/Login-Liff", Name = "Login-Liff")]
-        public ActionResult LoginLiff(string authenticationScheme = null, string returnUrl = null)
+        public ActionResult Login(string authenticationScheme = null, string returnUrl = null)
         {
+            // ReturnUrl
+            returnUrl = returnUrl ?? this.Url.Content("~/");
+            if (string.IsNullOrEmpty(returnUrl) == true) throw new InvalidOperationException($"{nameof(returnUrl)}=null");
+            if (this.User?.Identity?.IsAuthenticated == true) return this.Redirect(returnUrl);
+
             // AuthenticationScheme
             authenticationScheme = authenticationScheme ?? LiffDefaults.AuthenticationScheme;
             if (string.IsNullOrEmpty(authenticationScheme) == true) throw new InvalidOperationException($"{nameof(authenticationScheme)}=null");
@@ -43,11 +48,7 @@ namespace MDP.AspNetCore.Authentication.Liff
             // AuthenticationOptions
             var authenticationOptions = _optionsMonitor.Get(authenticationScheme);
             if (authenticationOptions == null) throw new InvalidOperationException($"{nameof(authenticationOptions)}=null");
-
-            // ReturnUrl
-            returnUrl = returnUrl ?? this.Url.Content("~/");
-            if (string.IsNullOrEmpty(returnUrl) == true) throw new InvalidOperationException($"{nameof(returnUrl)}=null");
-
+                        
             // ViewBag
             this.ViewBag.LiffId = authenticationOptions.LiffId;
             this.ViewBag.LiffName = authenticationOptions.LiffName;

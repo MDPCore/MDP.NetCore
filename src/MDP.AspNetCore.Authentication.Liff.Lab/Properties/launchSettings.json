@@ -10,8 +10,8 @@
   "profiles": {
     "MDP.AspNetCore.Authentication.Liff.Lab": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "Login-Liff",
+      "launchBrowser": false,
+      "launchUrl": "https://liff.line.me/1656966842-Kr5NRgG8",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
