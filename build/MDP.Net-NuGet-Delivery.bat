@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 
 :: ================================================
 :: Version
-set version=6.0.16-beta.2
+set version=6.0.16
 
 
 :: ================================================
