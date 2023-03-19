@@ -17,8 +17,6 @@ namespace MDP.AspNetCore.Authentication.Liff
             // AuthenticationSetting
             if (authenticationSetting == null) authenticationSetting = new LiffAuthenticationSetting();
             if (string.IsNullOrEmpty(authenticationSetting.LiffId) == true) throw new InvalidOperationException($"{nameof(authenticationSetting.LiffId)}=null");
-            if (string.IsNullOrEmpty(authenticationSetting.LiffName) == true) throw new InvalidOperationException($"{nameof(authenticationSetting.LiffName)}=null");
-            if (string.IsNullOrEmpty(authenticationSetting.LiffColor) == true) throw new InvalidOperationException($"{nameof(authenticationSetting.LiffColor)}=null");
             if (string.IsNullOrEmpty(authenticationSetting.ClientId) == true) throw new InvalidOperationException($"{nameof(authenticationSetting.ClientId)}=null");
             if (string.IsNullOrEmpty(authenticationSetting.ClientSecret) == true) throw new InvalidOperationException($"{nameof(authenticationSetting.ClientSecret)}=null");
 
@@ -30,8 +28,6 @@ namespace MDP.AspNetCore.Authentication.Liff
             {
                 // Options
                 options.LiffId = authenticationSetting.LiffId;
-                options.LiffName = authenticationSetting.LiffName;
-                options.LiffColor = authenticationSetting.LiffColor;
                 options.ClientId = authenticationSetting.ClientId;
                 options.ClientSecret = authenticationSetting.ClientSecret;
 

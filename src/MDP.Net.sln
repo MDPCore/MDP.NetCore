@@ -118,6 +118,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Kernel", "02.Kernel", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Module", "01.Module", "{9BF143B8-5521-4B07-83D0-98A070834422}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.AspNetCore.Authentication.Liff.Services", "MDP.AspNetCore.Authentication.Liff.Services\MDP.AspNetCore.Authentication.Liff.Services.csproj", "{34539F41-8219-4439-9810-538153241A31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -316,6 +318,10 @@ Global
 		{76E13F6B-494A-47EB-9964-25DF37AAEE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76E13F6B-494A-47EB-9964-25DF37AAEE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76E13F6B-494A-47EB-9964-25DF37AAEE1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34539F41-8219-4439-9810-538153241A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34539F41-8219-4439-9810-538153241A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34539F41-8219-4439-9810-538153241A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34539F41-8219-4439-9810-538153241A31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -371,6 +377,7 @@ Global
 		{76E13F6B-494A-47EB-9964-25DF37AAEE1F} = {9BF143B8-5521-4B07-83D0-98A070834422}
 		{6AA8ED3F-F645-43F2-A4EC-539A5020502B} = {D9602C8C-AD40-4212-9BF5-899B93E551AE}
 		{9BF143B8-5521-4B07-83D0-98A070834422} = {D9602C8C-AD40-4212-9BF5-899B93E551AE}
+		{34539F41-8219-4439-9810-538153241A31} = {6AA8ED3F-F645-43F2-A4EC-539A5020502B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4AC5020-4E52-449F-9931-C7F2C2808419}

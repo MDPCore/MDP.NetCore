@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MDP.AspNetCore\MDP.AspNetCore.csproj" />
     <ProjectReference Include="..\MDP.AspNetCore.Authentication.Liff.Hosting\MDP.AspNetCore.Authentication.Liff.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.AspNetCore.Authentication.Liff.Services\MDP.AspNetCore.Authentication.Liff.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

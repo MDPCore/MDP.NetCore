@@ -1,12 +1,13 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-
+    var liffId = @ViewBag.LiffId;
+    var returnUrl = @ViewBag.ReturnUrl;
 }
 <!DOCTYPE html>
 <html>
 <head>
     <!-- title -->
-    <title>@ViewBag.LiffName</title>
+    <title>MDP.Liff.Lab</title>
 
     <!-- meta -->
     <meta charset="utf-8">
@@ -17,7 +18,7 @@
         body {
             margin: 0;
             font-size: 16px;
-            background-color: @ViewBag.LiffColor;
+            background-color: limegreen;
         }
 
         div {
@@ -41,9 +42,9 @@
             width: 120px;
             height: 120px;
             margin: -76px 0 0 -76px;
-            border: 16px solid #f3f3f3;
+            border: 16px solid white;
             border-radius: 50%;
-            border-top: 16px solid #3498db;
+            border-top: 16px solid blue;
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }
@@ -74,7 +75,7 @@
 
     <!-- application -->
     <div class="application">
-        <h1>@ViewBag.LiffName</h1>
+        <h1>MDP.Liff.Lab</h1>
     </div>
 
     <!-- loader -->
@@ -91,35 +92,20 @@
 
     <!-- script -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script>
+    <script src="/mdp.liff.js"></script>
+    <script>        
         (function () {
 
-            // Options
-            var liffId = "@ViewBag.liffId";       
-            var returnUrl = "@ViewBag.ReturnUrl";
+            // Variables
+            var liffId = "@liffId";       
+            var returnUrl = "@returnUrl";
 
             // liff
-            liff.init({
+            mdp.liff.init(
 
-                // liffId
-                liffId: liffId
-            })
-            .then(() => {
-
-                // loader
-                document.querySelector(".loader h2").textContent = "身分確認中";
-
-                // require
-                if (liff.isInClient() == false) { window.location = returnUrl; return; }
-                if (liff.isLoggedIn() == false) { window.location = returnUrl; return; }
-
-                // signin
-                var signinURL = new URL("/signin-liff", window.location.href);
-                signinURL.searchParams.append("returnUrl", returnUrl);
-                signinURL.searchParams.append("access_token", liff.getAccessToken());
-                signinURL.searchParams.append("id_token", liff.getIDToken());
-                window.location = signinURL.href;
-            })
+                liffId, 
+                returnUrl
+            )
             .catch((ex) => {
 
                 // loader

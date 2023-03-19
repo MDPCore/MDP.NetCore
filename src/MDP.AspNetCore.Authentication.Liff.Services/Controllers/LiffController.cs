@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.Liff
+namespace MDP.AspNetCore.Authentication.Liff.Services
 {
     public class LiffController : Controller
     {
@@ -51,12 +51,10 @@ namespace MDP.AspNetCore.Authentication.Liff
                         
             // ViewBag
             this.ViewBag.LiffId = authenticationOptions.LiffId;
-            this.ViewBag.LiffName = authenticationOptions.LiffName;
-            this.ViewBag.LiffColor = authenticationOptions.LiffColor;
             this.ViewBag.ReturnUrl = returnUrl;
 
             // Return
-            return View();
+            return View("Login-Liff");
         }
     }
 }

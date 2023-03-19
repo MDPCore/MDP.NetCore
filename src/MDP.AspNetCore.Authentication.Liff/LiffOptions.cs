@@ -16,9 +16,5 @@ namespace MDP.AspNetCore.Authentication.Liff
 
         // Properties
         public string LiffId { get; set; } = String.Empty;
-
-        public string LiffName { get; set; } = String.Empty;
-
-        public string LiffColor { get; set; } = String.Empty;
     }
 }
