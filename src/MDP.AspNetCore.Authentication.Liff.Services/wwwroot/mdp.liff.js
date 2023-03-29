@@ -4,7 +4,7 @@ var mdp = mdp || {};
 // MDP.Liff
 mdp.liff = {
 
-    // inti
+    // init
     init: function (liffId, returnUrl) {
 
         // liff
@@ -15,15 +15,17 @@ mdp.liff = {
         })
         .then(() => {
 
-            // require
-            if (liff.isInClient() == false) { window.location = returnUrl; return; }
-            if (liff.isLoggedIn() == false) { window.location = returnUrl; return; }
+            // login
+            if (liff.isLoggedIn() == false) { liff.login({ redirectUri: window.location.href }); return; }
+            var accessToken = liff.getAccessToken();
+            var idToken = liff.getIDToken();
+            if (liff.isInClient() == true) { liff.logout(); }
 
             // signin
             var signinURL = new URL("/signin-liff", window.location.href);
             signinURL.searchParams.append("returnUrl", returnUrl);
-            signinURL.searchParams.append("access_token", liff.getAccessToken());
-            signinURL.searchParams.append("id_token", liff.getIDToken());
+            signinURL.searchParams.append("access_token", accessToken);
+            signinURL.searchParams.append("id_token", idToken);            
             window.location = signinURL.href;
         });
     }

@@ -11,11 +11,11 @@
     "MDP.AspNetCore.Authentication.Liff.Lab": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://liff.line.me/1656966842-Kr5NRgG8?AAA=123",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:44392;http://localhost:5233",
+      "applicationUrl": "https://localhost:7239;http://localhost:5233",
       "dotnetRunMessages": true
     },
     "IIS Express": {
