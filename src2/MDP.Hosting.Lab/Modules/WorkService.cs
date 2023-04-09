@@ -1,4 +1,6 @@
-﻿namespace MDP.Hosting.Lab
+﻿using MDP.Registration;
+
+namespace MyLab.Modules
 {
     public interface WorkService
     {

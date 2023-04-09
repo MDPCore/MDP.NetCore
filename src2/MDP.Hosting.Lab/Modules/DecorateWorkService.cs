@@ -1,6 +1,6 @@
 ﻿using MDP.Registration;
 
-namespace MDP.Hosting.Lab
+namespace MyLab.Modules
 {
     [Register<WorkService>()]
     public class DecorateWorkService : WorkService

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CLK.Diagnostics
+namespace CLK.Tracing
 {
     public class TracerActivity : IDisposable
     {

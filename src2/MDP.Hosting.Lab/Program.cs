@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
 using MDP.Configuration;
+using MyLab.Modules;
 
 namespace MDP.Hosting.Lab
 {
