@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MDP.Configuration.Lab": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
