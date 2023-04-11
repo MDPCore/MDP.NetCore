@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MDP.Hosting
 {
-    public abstract class RegisterContext
+    public abstract partial class RegisterContext
     {
         // Fields
         private readonly static object _syncLock = new object();
@@ -21,83 +21,7 @@ namespace MDP.Hosting
 
 
         // Methods
-        protected void RegisterService<T1>(T1 t1)
-        {
-            #region Contracts
-
-            if (t1 == null) throw new ArgumentException($"{nameof(t1)}=null");
-
-            #endregion
-
-            // RegisterFactory
-            this.FindAllRegisterFactory().OfType<RegisterFactory<T1>>().ToList().ForEach(registerFactory => 
-            {
-                // RegisterService
-                registerFactory.RegisterService(t1);
-            });           
-        }
-
-        protected void RegisterService<T1, T2>(T1 t1, T2 t2)
-        {
-            #region Contracts
-
-            if (t1 == null) throw new ArgumentException($"{nameof(t1)}=null");
-            if (t2 == null) throw new ArgumentException($"{nameof(t2)}=null");
-
-            #endregion
-
-            // RegisterFactory
-            this.FindAllRegisterFactory().OfType<RegisterFactory<T1, T2>>().ToList().ForEach(registerFactory =>
-            {
-                // RegisterService
-                registerFactory.RegisterService(t1, t2);
-            });
-        }
-
-        protected void RegisterService<T1, T2, T3>(T1 t1, T2 t2, T3 t3)
-        {
-            #region Contracts
-
-            if (t1 == null) throw new ArgumentException($"{nameof(t1)}=null");
-            if (t2 == null) throw new ArgumentException($"{nameof(t2)}=null");
-            if (t3 == null) throw new ArgumentException($"{nameof(t3)}=null");
-
-            #endregion
-
-            // RegisterFactory
-            this.FindAllRegisterFactory().OfType<RegisterFactory<T1, T2, T3>>().ToList().ForEach(registerFactory =>
-            {
-                // RegisterService
-                registerFactory.RegisterService(t1, t2, t3);
-            });
-        }
-
-
-        protected abstract RegisterFactory? CreateRegisterFactory(Type moduleType);
-
-        private List<RegisterFactory> FindAllRegisterFactory()
-        {
-            // ModuleTypeList
-            var moduleTypeList = this.FindAllModuleType();
-            if (moduleTypeList == null) throw new InvalidOperationException($"{nameof(moduleTypeList)}=null");
-
-            // RegisterFactoryList
-            var registerFactoryList = new List<RegisterFactory>();
-            foreach ( var moduleType in moduleTypeList )
-            {
-                // RegisterFactory
-                var registerFactory = this.CreateRegisterFactory(moduleType);
-                if (registerFactory == null) continue;
-
-                // Add
-                registerFactoryList.Add(registerFactory);
-            }
-
-            // Return
-            return registerFactoryList;
-        }
-
-        private List<Type> FindAllModuleType()
+        protected List<Type> FindAllModuleType()
         {
             // Sync
             lock (_syncLock)
@@ -110,7 +34,7 @@ namespace MDP.Hosting
                 if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
 
                 // ModuleTypeList
-                var moduleTypeList = new List<Type>();              
+                var moduleTypeList = new List<Type>();
                 foreach (var moduleAssembly in moduleAssemblyList)
                 {
                     moduleTypeList.AddRange(moduleAssembly.GetTypes());
@@ -135,7 +59,7 @@ namespace MDP.Hosting
                 // ModuleAssembly
                 var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(@"*.dll");
                 if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-               
+
                 // EntryAssembly
                 var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
                 if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
@@ -147,6 +71,53 @@ namespace MDP.Hosting
                 // Return
                 return _moduleAssemblyList;
             }
+        }
+
+
+        protected IConfigurationSection? FindServiceConfig(IConfiguration configuration, string serviceNamespace, string serviceName)
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+            if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
+            if (string.IsNullOrEmpty(serviceName) == true) throw new ArgumentException($"{nameof(serviceName)}=null");
+
+            #endregion
+
+            // NamespaceConfig
+            var namespaceConfig = configuration.GetSection(serviceNamespace);
+            if (namespaceConfig == null) return null;
+            if (namespaceConfig.Exists() == false) return null;
+
+            // ServiceConfig
+            var serviceConfig = namespaceConfig.GetSection(serviceName);
+            if (serviceConfig == null) return null;
+            if (serviceConfig.Exists() == false) return null;
+
+            // Return
+            return serviceConfig;
+        }
+
+        protected List<IConfigurationSection> FindAllServiceConfig(IConfiguration configuration, string serviceNamespace)
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+            if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
+          
+            #endregion
+
+            // NamespaceConfig
+            var namespaceConfig = configuration.GetSection(serviceNamespace);
+            if (namespaceConfig == null) return new List<IConfigurationSection>();
+            if (namespaceConfig.Exists() == false) return new List<IConfigurationSection>();
+
+            // ServiceConfigList
+            var serviceConfigList = namespaceConfig.GetChildren();
+            if (serviceConfigList == null) throw new InvalidOperationException($"{nameof(serviceConfigList)}=null");
+
+            // Return
+            return serviceConfigList.ToList();
         }
     }
 }

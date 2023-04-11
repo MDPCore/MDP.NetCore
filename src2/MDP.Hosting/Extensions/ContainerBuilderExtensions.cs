@@ -21,11 +21,14 @@ namespace MDP.Hosting
 
             #endregion
 
-            // RegisterContext
-            var registerContext = new AttributeRegisterContext();
+            // ContainerBuilder
             {
-                // RegisterModule
-                registerContext.RegisterModule(containerBuilder, configuration);
+                // RegisterContext
+                using (var registerContext = new AttributeRegisterContext())
+                {
+                    // Module
+                    registerContext.RegisterModule(containerBuilder, configuration);
+                }
             }
 
             // Return

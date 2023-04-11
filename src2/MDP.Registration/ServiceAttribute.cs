@@ -6,18 +6,27 @@ using System.Threading.Tasks;
 
 namespace MDP.Registration
 {
-    public abstract class RegisterAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class)]
+    public abstract class ServiceAttribute : Attribute
     {
-        // Properties
-        public abstract Type ServiceType { get; }
+        // Constructors
+        internal ServiceAttribute()
+        {
 
+        }
+
+
+        // Properties
         public abstract string ServiceNamespace { get; }
 
         public abstract bool ServiceSingleton { get; }
+
+        public abstract Type ServiceType { get; }
     }
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class RegisterAttribute<TService> : RegisterAttribute
+    public sealed class ServiceAttribute<TService> : ServiceAttribute
+        where TService : class
     {
         // Fields
         private string? _serviceNamespace = String.Empty;
@@ -26,23 +35,18 @@ namespace MDP.Registration
 
 
         // Constructors
-        public RegisterAttribute(string? serviceNamespace = null, bool serviceSingleton = false)
+        public ServiceAttribute(string? @namespace = null, bool @singleton = false)
         {
             // Default
-            _serviceNamespace = serviceNamespace;
-            _serviceSingleton = serviceSingleton;
+            _serviceNamespace = @namespace;
+            _serviceSingleton = @singleton;
         }
 
 
         // Properties
-        public override Type ServiceType
-        {
-            get { return typeof(TService); }
-        }
-
         public override string ServiceNamespace
         {
-            get 
+            get
             {
                 // ServiceNamespace
                 var serviceNamespace = _serviceNamespace;
@@ -54,9 +58,8 @@ namespace MDP.Registration
             }
         }
 
-        public override bool ServiceSingleton
-        {
-            get { return _serviceSingleton; }
-        }
+        public override bool ServiceSingleton { get { return _serviceSingleton; } }
+
+        public override Type ServiceType { get { return typeof(TService); } }
     }
 }

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CLK.Tracing
+namespace MDP.Tracing
 {
     public interface ITracer
     {

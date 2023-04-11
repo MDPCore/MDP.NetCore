@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
-using CLK.Tracing;
+using MDP.Tracing;
 using MyLab.Modules;
 
 namespace MDP.NetCore.Lab

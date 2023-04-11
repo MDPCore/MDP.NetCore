@@ -2,7 +2,7 @@
 
 namespace MyLab.Modules
 {
-    [Register<WorkService>()]
+    [Service<WorkService>()]
     public class DecorateWorkService : WorkService
     {
         // Fields

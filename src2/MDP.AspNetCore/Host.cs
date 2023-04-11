@@ -18,7 +18,7 @@ namespace MDP.AspNetCore
             if (hostBuilder == null) throw new InvalidOperationException($"{nameof(hostBuilder)}=null");
 
             // Host
-            var host = hostBuilder.Build();
+            var host = hostBuilder.Build().ConfigureDefault();
             if (host == null) throw new InvalidOperationException($"{nameof(host)}=null");
 
             // Return

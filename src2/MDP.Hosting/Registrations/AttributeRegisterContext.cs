@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Autofac.Builder;
 using MDP.Registration;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,39 +10,22 @@ using System.Threading.Tasks;
 
 namespace MDP.Hosting
 {
-    public class AttributeRegisterFactory : RegisterFactory<ContainerBuilder, IConfiguration>
+    internal class AttributeRegisterContext : RegisterContext, IDisposable
     {
         // Constructors
-        public AttributeRegisterFactory(Type serviceType, Type instanceType, string serviceNamespace, bool serviceSingleton)
+        public AttributeRegisterContext()
         {
-            #region Contracts
 
-            if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
-            if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
-            if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
-           
-            #endregion
+        }
 
-            // Default
-            this.ServiceType = serviceType;
-            this.InstanceType = instanceType;
-            this.ServiceNamespace = serviceNamespace;
-            this.ServiceSingleton = serviceSingleton;
+        public void Dispose()
+        {
+            
         }
 
 
-        // Properties
-        public Type ServiceType { get; private set; }
-
-        public Type InstanceType { get; private set; }
-
-        public string ServiceNamespace { get; private set; }
-
-        public bool ServiceSingleton { get; private set; }
-
-
-        // Methods   
-        public void RegisterService(ContainerBuilder containerBuilder, IConfiguration configuration)
+        // Methods
+        public void RegisterModule(ContainerBuilder containerBuilder, IConfiguration configuration)
         {
             #region Contracts
 
@@ -52,69 +34,70 @@ namespace MDP.Hosting
 
             #endregion
 
-            // NamespaceConfigKey            
-            var namespaceConfigKey = this.ServiceNamespace;
-            if (string.IsNullOrEmpty(namespaceConfigKey) == true) throw new InvalidOperationException($"{nameof(namespaceConfigKey)}=null");
+            // InstanceTypeList
+            var instanceTypeList = this.FindAllModuleType();
+            if (instanceTypeList == null) throw new InvalidOperationException($"{nameof(instanceTypeList)}=null");
 
-            // NamespaceConfig
-            var namespaceConfig = configuration.GetSection(namespaceConfigKey);
-            if (namespaceConfig == null) return;
-            if (namespaceConfig.Exists() == false) return;
-
-            // InstanceConfigKey
-            var instanceConfigKey = this.InstanceType.Name;
-            if (string.IsNullOrEmpty(instanceConfigKey) == true) throw new InvalidOperationException($"{nameof(instanceConfigKey)}=null");
-
-            // InstanceConfigList
-            var instanceConfigList = namespaceConfig.GetChildren();
-            if (instanceConfigList == null) throw new InvalidOperationException($"{nameof(instanceConfigList)}=null");
-
-            // InstanceConfig
-            foreach (var instanceConfig in instanceConfigList)
+            // InstanceType
+            foreach (var instanceType in instanceTypeList)
             {
-                // DefaultInstanceConfig
-                if (string.Equals(instanceConfig.Key, instanceConfigKey, StringComparison.OrdinalIgnoreCase) == true)
+                // ServiceAttribute
+                var serviceAttribute = instanceType.GetCustomAttributes(false).Where(attr => attr.GetType().IsGenericType && attr.GetType().GetGenericTypeDefinition() == typeof(ServiceAttribute<>)).OfType<ServiceAttribute>().FirstOrDefault();
+                if (serviceAttribute == null) continue;
+
+                // InstanceConfigList
+                var instanceConfigList = this.FindAllServiceConfig(configuration, serviceAttribute.ServiceNamespace);
+                if (instanceConfigList == null) throw new InvalidOperationException($"{nameof(instanceConfigList)}=null");
+
+                // InstanceConfig
+                foreach (var instanceConfig in instanceConfigList)
                 {
-                    // RegisterDefault
-                    containerBuilder.Register((componentContext) =>
+                    // DefaultInstanceConfig
+                    if (string.Equals(instanceConfig.Key, instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        return componentContext.ResolveNamed(instanceConfig.Key, this.ServiceType);
-                    })
-                    .As(this.ServiceType);
+                        // RegisterDefault
+                        containerBuilder.Register((componentContext) =>
+                        {
+                            return componentContext.ResolveNamed(instanceConfig.Key, serviceAttribute.ServiceType);
+                        })
+                        .As(serviceAttribute.ServiceType);
 
-                    // RegisterService
-                    this.RegisterService(containerBuilder, instanceConfig);
+                        // RegisterService
+                        this.RegisterService(containerBuilder, instanceType, instanceConfig, serviceAttribute);
 
-                    // Continue
-                    continue;
-                }
+                        // Continue
+                        continue;
+                    }
 
-                // NamedInstanceConfig
-                if (instanceConfig.Key.StartsWith(instanceConfigKey, StringComparison.OrdinalIgnoreCase) == true)
-                {
-                    // RegisterService
-                    this.RegisterService(containerBuilder, instanceConfig);
+                    // NamedInstanceConfig
+                    if (instanceConfig.Key.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
+                    {
+                        // RegisterService
+                        this.RegisterService(containerBuilder, instanceType, instanceConfig, serviceAttribute);
 
-                    // Continue
-                    continue;
+                        // Continue
+                        continue;
+                    }
                 }
             }
         }
 
-        private void RegisterService(ContainerBuilder containerBuilder, IConfigurationSection instanceConfig)
+        private void RegisterService(ContainerBuilder containerBuilder, Type instanceType, IConfigurationSection instanceConfig, ServiceAttribute serviceAttribute)
         {
             #region Contracts
 
             if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
+            if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
             if (instanceConfig == null) throw new ArgumentException($"{nameof(instanceConfig)}=null");
-            
+            if (serviceAttribute == null) throw new ArgumentException($"{nameof(serviceAttribute)}=null");
+
             #endregion
 
             // Register
             var registration = containerBuilder.Register((componentContext) =>
             {
                 // ConstructorInfo
-                var constructorInfo = this.InstanceType.GetConstructors().FirstOrDefault();
+                var constructorInfo = instanceType.GetConstructors().FirstOrDefault();
                 if (constructorInfo == null) throw new InvalidOperationException($"{nameof(constructorInfo)}=null");
 
                 // ParameterList
@@ -134,10 +117,10 @@ namespace MDP.Hosting
             if (registration == null) throw new InvalidOperationException($"{nameof(registration)}=null");
 
             // As
-            registration = registration.Named(instanceConfig.Key, this.ServiceType);
+            registration = registration.Named(instanceConfig.Key, serviceAttribute.ServiceType);
 
             // Singleton
-            if (this.ServiceSingleton == true)
+            if (serviceAttribute.ServiceSingleton == true)
             {
                 registration = registration.SingleInstance();
             }
@@ -184,6 +167,7 @@ namespace MDP.Hosting
             {
                 // Instance
                 var instance = Activator.CreateInstance(parameterInfo.ParameterType);
+                if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
 
                 // Bind
                 instanceConfig.GetSection(parameterInfo.Name).Bind(instance);
