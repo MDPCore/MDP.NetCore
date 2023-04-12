@@ -1,4 +1,6 @@
-﻿namespace CLK.IO
+﻿using System;
+
+namespace CLK.IO
 {
     public static class Directory
     {

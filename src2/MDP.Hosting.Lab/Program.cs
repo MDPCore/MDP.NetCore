@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using MDP.Configuration;
 using MyLab.Modules;
+using System;
 
 namespace MDP.Hosting.Lab
 {

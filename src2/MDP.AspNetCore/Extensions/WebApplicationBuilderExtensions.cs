@@ -18,6 +18,10 @@ using System.Text.Unicode;
 using MDP.NetCore;
 using Microsoft.Extensions.Configuration;
 using Autofac.Core;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MDP.AspNetCore
 {

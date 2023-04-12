@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
+using MDP.Logging;
 using MDP.Tracing;
 using MyLab.Modules;
+using System;
 
 namespace MDP.NetCore.Lab
 {

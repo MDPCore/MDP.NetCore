@@ -19,7 +19,7 @@ namespace MDP.Registration
         // Properties
         public abstract string ServiceNamespace { get; }
 
-        public abstract string ServiceName { get; }
+        public abstract string? ServiceName { get; }
 
         public abstract Type BuilderType { get; }
 
@@ -38,12 +38,11 @@ namespace MDP.Registration
 
 
         // Constructors
-        public FactoryAttribute(string @namespace, string @name)
+        public FactoryAttribute(string @namespace, string? @name = null)
         {
             #region Contracts
 
             if (string.IsNullOrEmpty(@namespace) == true) throw new ArgumentException($"{nameof(@namespace)}=null");
-            if (string.IsNullOrEmpty(@name) == true) throw new ArgumentException($"{nameof(@name)}=null");
 
             #endregion
 
@@ -56,7 +55,7 @@ namespace MDP.Registration
         // Properties
         public override string ServiceNamespace { get { return _serviceNamespace; } }
 
-        public override string ServiceName { get { return _serviceName; } }
+        public override string? ServiceName { get { return _serviceName; } }
 
         public override Type BuilderType { get { return typeof(TBuilder); } }
 

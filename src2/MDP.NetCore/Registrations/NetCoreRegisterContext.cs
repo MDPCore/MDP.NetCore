@@ -49,16 +49,36 @@ namespace MDP.NetCore
                 if (factoryAttribute == null) continue;
                 if (factoryAttribute.BuilderType != typeof(IServiceCollection)) continue;
 
-                // FactoryConfig
-                var factoryConfig = this.FindServiceConfig(configuration, factoryAttribute.ServiceNamespace, factoryAttribute.ServiceName);
-                if (factoryConfig == null) continue;
+                // ServiceName
+                if (string.IsNullOrEmpty(factoryAttribute.ServiceName) == true)
+                {
+                    // FactoryConfig
+                    var factoryConfig = this.FindServiceConfig(configuration, factoryAttribute.ServiceNamespace);
+                    if (factoryConfig == null) continue;
 
-                // RegisterService
-                this.RegisterService(serviceCollection, factoryType, factoryConfig, factoryAttribute);
+                    // ConfigureService
+                    this.ConfigureService(serviceCollection, factoryType, factoryConfig, factoryAttribute);
+                }
+                else
+                {
+                    // FactoryConfigList
+                    var factoryConfigList = this.FindAllServiceConfig(configuration, factoryAttribute.ServiceNamespace);
+                    if (factoryConfigList == null) throw new InvalidOperationException($"{nameof(factoryConfigList)}=null");
+
+                    // FactoryConfig
+                    foreach (var factoryConfig in factoryConfigList)
+                    {
+                        if (factoryConfig.Key.StartsWith(factoryAttribute.ServiceName, StringComparison.OrdinalIgnoreCase) == true)
+                        {
+                            // ConfigureService
+                            this.ConfigureService(serviceCollection, factoryType, factoryConfig, factoryAttribute);
+                        }
+                    }
+                }
             }
         }
 
-        private void RegisterService(IServiceCollection serviceCollection, Type factoryType, IConfigurationSection factoryConfig, FactoryAttribute factoryAttribute)
+        private void ConfigureService(IServiceCollection serviceCollection, Type factoryType, IConfigurationSection factoryConfig, FactoryAttribute factoryAttribute)
         {
             #region Contracts
 
@@ -73,7 +93,7 @@ namespace MDP.NetCore
             if (factoryType.IsAbstract == true) return;
             
             // FactoryMethod
-            var ractoryMethod = factoryType.GetMethod("RegisterService");
+            var ractoryMethod = factoryType.GetMethod("ConfigureService");
             if (ractoryMethod == null) throw new InvalidOperationException($"Factory.RegisterService(IServiceCollection, TSetting) not found.");
 
             // ParameterList
@@ -92,7 +112,7 @@ namespace MDP.NetCore
             var factory = Activator.CreateInstance(factoryType);
             if (factory == null) throw new InvalidOperationException($"{nameof(factory)}=null");
 
-            // RegisterService
+            // ConfigureService
             ractoryMethod.Invoke(factory, new object[] { serviceCollection, factorySetting });
         }
     }

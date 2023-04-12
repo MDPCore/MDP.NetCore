@@ -1,4 +1,9 @@
-﻿namespace CLK.IO
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace CLK.IO
 {
     public static class File
     {
@@ -56,7 +61,7 @@
 
                 // SearchFileList
                 var searchFileList = searchDirectory.GetFiles(System.IO.Path.GetFileName(Path.Combine(searchPath, searchPattern)), SearchOption.TopDirectoryOnly);
-                if (searchFileList == null) throw new InvalidOperationException();
+                if (searchFileList == null) throw new InvalidOperationException($"{nameof(searchFileList)}=null");
 
                 // Add
                 foreach (var searchFile in searchFileList)

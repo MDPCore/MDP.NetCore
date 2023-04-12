@@ -1,6 +1,8 @@
-﻿using MDP.Tracing;
+﻿using MDP.Logging;
+using MDP.Tracing;
 using Microsoft.AspNetCore.Mvc;
 using MyLab.Modules;
+using System;
 
 namespace MDP.AspNetCore.Lab
 {

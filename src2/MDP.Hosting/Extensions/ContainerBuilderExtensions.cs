@@ -3,6 +3,7 @@ using Autofac.Builder;
 using Autofac.Core;
 using MDP.Registration;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Linq;

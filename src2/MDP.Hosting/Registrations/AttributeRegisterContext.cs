@@ -136,6 +136,11 @@ namespace MDP.Hosting
 
             #endregion
 
+            // ParameterConfig
+            var parameterConfig = instanceConfig.GetSection(parameterInfo.Name);
+            if (parameterInfo.HasDefaultValue == true && parameterConfig == null) return parameterInfo.DefaultValue;
+            if (parameterInfo.HasDefaultValue == true && parameterConfig.Exists() == false) return parameterInfo.DefaultValue;
+
             // Primitive
             if (parameterInfo.ParameterType.IsPrimitive == true || parameterInfo.ParameterType == typeof(string))
             {

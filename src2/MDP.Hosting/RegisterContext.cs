@@ -74,20 +74,20 @@ namespace MDP.Hosting
         }
 
 
-        protected IConfigurationSection? FindServiceConfig(IConfiguration configuration, string serviceNamespace, string serviceName)
+        protected IConfigurationSection? FindServiceConfig(IConfiguration configuration, string serviceNamespace, string? serviceName = null)
         {
             #region Contracts
 
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
             if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
-            if (string.IsNullOrEmpty(serviceName) == true) throw new ArgumentException($"{nameof(serviceName)}=null");
-
+           
             #endregion
 
             // NamespaceConfig
             var namespaceConfig = configuration.GetSection(serviceNamespace);
             if (namespaceConfig == null) return null;
             if (namespaceConfig.Exists() == false) return null;
+            if (string.IsNullOrEmpty(serviceName) == true) return namespaceConfig;
 
             // ServiceConfig
             var serviceConfig = namespaceConfig.GetSection(serviceName);

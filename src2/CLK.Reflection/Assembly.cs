@@ -1,4 +1,7 @@
-﻿namespace CLK.Reflection
+﻿using System;
+using System.Collections.Generic;
+
+namespace CLK.Reflection
 {
     public static class Assembly
     {

@@ -49,16 +49,36 @@ namespace MDP.AspNetCore
                 if (factoryAttribute == null) continue;
                 if (factoryAttribute.BuilderType != typeof(WebApplicationBuilder)) continue;
 
-                // FactoryConfig
-                var factoryConfig = this.FindServiceConfig(webApplicationBuilder.Configuration, factoryAttribute.ServiceNamespace, factoryAttribute.ServiceName);
-                if (factoryConfig == null) continue;
+                // ServiceName
+                if (string.IsNullOrEmpty(factoryAttribute.ServiceName) == true)
+                {
+                    // FactoryConfig
+                    var factoryConfig = this.FindServiceConfig(webApplicationBuilder.Configuration, factoryAttribute.ServiceNamespace);
+                    if (factoryConfig == null) continue;
 
-                // RegisterService
-                this.RegisterService(webApplicationBuilder, factoryType, factoryConfig, factoryAttribute);
+                    // ConfigureService
+                    this.ConfigureService(webApplicationBuilder, factoryType, factoryConfig, factoryAttribute);
+                }
+                else
+                {
+                    // FactoryConfigList
+                    var factoryConfigList = this.FindAllServiceConfig(webApplicationBuilder.Configuration, factoryAttribute.ServiceNamespace);
+                    if (factoryConfigList == null) throw new InvalidOperationException($"{nameof(factoryConfigList)}=null");
+
+                    // FactoryConfig
+                    foreach (var factoryConfig in factoryConfigList)
+                    {
+                        if (factoryConfig.Key.StartsWith(factoryAttribute.ServiceName, StringComparison.OrdinalIgnoreCase) == true)
+                        {
+                            // ConfigureService
+                            this.ConfigureService(webApplicationBuilder, factoryType, factoryConfig, factoryAttribute);
+                        }
+                    }
+                }
             }
         }
 
-        private void RegisterService(WebApplicationBuilder webApplicationBuilder, Type factoryType, IConfigurationSection factoryConfig, FactoryAttribute factoryAttribute)
+        private void ConfigureService(WebApplicationBuilder webApplicationBuilder, Type factoryType, IConfigurationSection factoryConfig, FactoryAttribute factoryAttribute)
         {
             #region Contracts
 
@@ -73,7 +93,7 @@ namespace MDP.AspNetCore
             if (factoryType.IsAbstract == true) return;
             
             // FactoryMethod
-            var ractoryMethod = factoryType.GetMethod("RegisterService");
+            var ractoryMethod = factoryType.GetMethod("ConfigureService");
             if (ractoryMethod == null) throw new InvalidOperationException($"Factory.RegisterService(WebApplicationBuilder, TSetting) not found.");
 
             // ParameterList
@@ -92,7 +112,7 @@ namespace MDP.AspNetCore
             var factory = Activator.CreateInstance(factoryType);
             if (factory == null) throw new InvalidOperationException($"{nameof(factory)}=null");
 
-            // RegisterService
+            // ConfigureService
             ractoryMethod.Invoke(factory, new object[] { webApplicationBuilder, factorySetting });
         }
     }

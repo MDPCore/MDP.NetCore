@@ -1,12 +1,13 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using MDP.Hosting;
 using MDP.Configuration;
+using MDP.Hosting;
+using MDP.Logging;
+using MDP.Tracing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using MDP.Tracing;
-using Microsoft.Extensions.Configuration;
+using System;
 
 namespace MDP.NetCore
 {
@@ -40,6 +41,7 @@ namespace MDP.NetCore
             hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
                 // Logger
+                serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
                 // Tracer
                 serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(Tracer<>));
