@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.Jwt
+namespace MDP.AspNetCore.Authentication.Liff
 {
-    [MDP.Registration.Factory<WebApplicationBuilder, SecurityTokenAuthenticationSetting>("Authentication", "Jwt")]
-    public class SecurityTokenAuthenticationFactoryFactory
+    [MDP.Registration.Factory<WebApplicationBuilder, LiffAuthenticationSetting>("Authentication", "Liff")]
+    public class LiffAuthenticationFactoryFactory
     {
         // Methods
-        public void ConfigureService(WebApplicationBuilder webApplicationBuilder, SecurityTokenAuthenticationSetting authenticationSetting)
+        public void ConfigureService(WebApplicationBuilder webApplicationBuilder, LiffAuthenticationSetting authenticationSetting)
         {
             #region Contracts
 
@@ -22,8 +22,8 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
             #endregion
 
-            // AddSecurityTokenAuthentication
-            webApplicationBuilder.Services.AddSecurityTokenAuthentication(authenticationSetting);
+            // AddLiffAuthentication
+            webApplicationBuilder.Services.AddLiffAuthentication(authenticationSetting);
         }
     }
 }

@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore.Authentication.Jwt
+namespace MDP.AspNetCore.Authentication.Facebook
 {
-    [MDP.Registration.Factory<WebApplicationBuilder, SecurityTokenAuthenticationSetting>("Authentication", "Jwt")]
-    public class SecurityTokenAuthenticationFactoryFactory
+    [MDP.Registration.Factory<WebApplicationBuilder, FacebookAuthenticationSetting>("Authentication", "Facebook")]
+    public class FacebookAuthenticationFactoryFactory
     {
         // Methods
-        public void ConfigureService(WebApplicationBuilder webApplicationBuilder, SecurityTokenAuthenticationSetting authenticationSetting)
+        public void ConfigureService(WebApplicationBuilder webApplicationBuilder, FacebookAuthenticationSetting authenticationSetting)
         {
             #region Contracts
 
@@ -22,8 +22,8 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
             #endregion
 
-            // AddSecurityTokenAuthentication
-            webApplicationBuilder.Services.AddSecurityTokenAuthentication(authenticationSetting);
+            // AddFacebookAuthentication
+            webApplicationBuilder.Services.AddFacebookAuthentication(authenticationSetting);
         }
     }
 }

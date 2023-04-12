@@ -18,7 +18,7 @@ namespace MDP.AspNetCore.Authentication.Jwt
     public static class SecurityTokenAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddJwt(this IServiceCollection services, SecurityTokenAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddSecurityTokenAuthentication(this IServiceCollection services, SecurityTokenAuthenticationSetting? authenticationSetting = null)
         {
             #region Contracts
 
