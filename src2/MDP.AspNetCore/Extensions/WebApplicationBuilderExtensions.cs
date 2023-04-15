@@ -129,7 +129,7 @@ namespace MDP.AspNetCore
             return mvcBuilder;
         }            
 
-        private static void AddMvcPart(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"MDP.AspNetCore.dll|*.Services.dll|*.Services.Views.dll")
+        private static void AddMvcPart(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.dll")
         {
             #region Contracts
 
@@ -157,7 +157,7 @@ namespace MDP.AspNetCore
             }
         }
 
-        private static void AddMvcAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"MDP.AspNetCore.dll|*.Services.dll|*.Services.Views.dll")
+        private static void AddMvcAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.dll")
         {
             #region Contracts
 

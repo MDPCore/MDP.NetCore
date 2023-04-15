@@ -3,64 +3,67 @@ setlocal enabledelayedexpansion
 
 
 :: ================================================
-:: Version
-set version=6.0.16-beta.5
+:: Variables
+set version=6.1.0-beta.2
+
+set buildDir=%~dp0
+set srcDir=%~dp0..\src2
+set outputDir=%~dp0packed
+
+set endsMatchFilter[0]=.Lab
+set endsMatchFilterLength=0
 
 
 :: ================================================
-:: 03.Infrastructure - 01.Kernel
-set project[30]=MDP.Data.SqlClient
-set project[31]=MDP.Data.SqlClient.Hosting
-set project[32]=MDP.IdentityModel.Tokens.Jwt
-set project[33]=MDP.IdentityModel.Tokens.Jwt.Hosting
+:: OutputDir
+if not exist %outputDir% mkdir %outputDir%
 
-:: 03.Infrastructure - 02.Kernel
-set project[9]=MDP.AspNetCore.Authentication
-set project[10]=MDP.AspNetCore.Authentication.Hosting
-set project[11]=MDP.AspNetCore.Authentication.AzureAD
-set project[12]=MDP.AspNetCore.Authentication.AzureAD.Hosting
-set project[13]=MDP.AspNetCore.Authentication.Facebook
-set project[14]=MDP.AspNetCore.Authentication.Facebook.Hosting
-set project[15]=MDP.AspNetCore.Authentication.GitHub
-set project[16]=MDP.AspNetCore.Authentication.GitHub.Hosting
-set project[17]=MDP.AspNetCore.Authentication.Google
-set project[18]=MDP.AspNetCore.Authentication.Google.Hosting
-set project[19]=MDP.AspNetCore.Authentication.Liff
-set project[20]=MDP.AspNetCore.Authentication.Liff.Services
-set project[21]=MDP.AspNetCore.Authentication.Liff.Hosting
-set project[22]=MDP.AspNetCore.Authentication.Line
-set project[23]=MDP.AspNetCore.Authentication.Line.Hosting
-set project[24]=MDP.NetCore.Logging.Log4net
-set project[25]=MDP.NetCore.Logging.Log4net.Hosting
-set project[26]=MDP.NetCore.Logging.NLog
-set project[27]=MDP.NetCore.Logging.NLog.Hosting
-set project[28]=MDP.AspNetCore.Authentication.Jwt
-set project[29]=MDP.AspNetCore.Authentication.Jwt.Hosting
-
-:: 04.Kernel
-set project[6]=MDP.AspNetCore
-set project[7]=MDP.Hosting
-set project[8]=MDP.NetCore
-
-:: 05.Framework
-set project[0]=CLK.Core
-set project[1]=CLK.Diagnostics
-set project[2]=CLK.IO
-set project[3]=CLK.Mocks
-set project[4]=CLK.Reflection
-set project[5]=CLK.Security.Claims
-
-
-:: ================================================
 :: Pack
-for /l %%n in (0,1,33) do ( 
-   dotnet pack ../src/!project[%%n]!/!project[%%n]!.csproj -p:version=%version% -c release -o ./temp
+for /r %srcDir% %%f in (*.csproj) do (
+  :: Variables
+  set projectName=%%~nf
+  set packFlag=1
+
+  :: EndsMatchFilter
+  for /l %%i in (0, 1, !endsMatchFilterLength!) do (
+    set filterValue=!endsMatchFilter[%%i]!
+    call :endsMatch isMatched !projectName! !filterValue!
+    if /i !isMatched!==1 set packFlag=0
+  )
+    
+  :: Execute
+  if !packFlag! equ 1 (
+    echo Packing project:%%~nf
+    dotnet pack "%%f" --configuration Release --output "%outputDir%" /p:PackageVersion=%version%
+  )
 )
 
 :: Push
-for /l %%n in (0,1,33) do ( 
-   nuget push ./temp/!project[%%n]!.%version%.nupkg -src https://api.nuget.org/v3/index.json
+for /r %outputDir% %%f in (*.nupkg) do (
+  echo Pushing package:%%~nf
+  nuget push "%%f" -src https://api.nuget.org/v3/index.json
 )
 
 :: Clear
-rmdir /s /q temp
+rmdir /s /q %outputDir%
+
+
+:: ================================================
+:: End
+echo Completed.
+exit /b
+endlocal
+
+
+:: ================================================
+:: Function
+:endsMatch
+set str=%~2
+set ending=%~3
+if not defined str ( set %1=0&exit /b )
+if not defined ending ( set %1=1&exit /b )
+if %str:~-1%==%ending:~-1% (
+    call :endsMatch %1 %str:~0,-1% %ending:~0,-1%
+) else (
+    set %1=0&exit /b
+)

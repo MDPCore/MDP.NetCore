@@ -48,8 +48,14 @@ namespace MDP.Hosting
             }
         }
 
-        private List<Assembly> FindAllModuleAssembly()
+        private List<Assembly> FindAllModuleAssembly(string moduleAssemblyFileName = @"*.dll")
         {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
+
+            #endregion
+
             // Sync
             lock (_syncLock)
             {
@@ -57,7 +63,7 @@ namespace MDP.Hosting
                 if (_moduleAssemblyList != null) return _moduleAssemblyList;
 
                 // ModuleAssembly
-                var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(@"*.dll");
+                var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
                 if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
 
                 // EntryAssembly
