@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MDP.Logging;
+using MDP.Tracing;
+using Microsoft.AspNetCore.Mvc;
+using MyLab.Modules;
+using System;
 
 namespace MDP.AspNetCore.Lab
 {
-    [MDP.AspNetCore.Module]
     public class HomeController : Controller
     {
         // Fields
@@ -10,11 +13,13 @@ namespace MDP.AspNetCore.Lab
 
 
         // Constructors
-        public HomeController(WorkService workService)
+        public HomeController(WorkService workService, ILogger<Program> logger, ITracer<Program> tracer)
         {
             #region Contracts
 
             if (workService == null) throw new ArgumentException($"{nameof(workService)}=null");
+            if (logger == null) throw new ArgumentException($"{nameof(logger)}=null");
+            if (tracer == null) throw new ArgumentException($"{nameof(tracer)}=null");
 
             #endregion
 

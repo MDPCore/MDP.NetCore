@@ -1,19 +1,20 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using CLK.Diagnostics;
+using MDP.Configuration;
 using MDP.Hosting;
+using MDP.Logging;
+using MDP.Tracing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using System.Diagnostics;
-using System.Reflection;
+using System;
 
 namespace MDP.NetCore
 {
-    internal static class HostBuilderExtensions
+    public static class HostBuilderExtensions
     {
-        // Methods
-        public static IHostBuilder ConfigureDefault(this IHostBuilder hostBuilder, Action<IHostBuilder>? configureAction = null)
+        // Methods        
+        public static IHostBuilder ConfigureDefault(this IHostBuilder hostBuilder) 
         {
             #region Contracts
 
@@ -21,25 +22,43 @@ namespace MDP.NetCore
 
             #endregion
 
-            // Service
-            hostBuilder.AddTracer();
-            hostBuilder.AddOptions();
-            hostBuilder.AddHttpClient();
+            // ConfigurationBuilder
+            hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+            {
+                // Module
+                configurationBuilder.RegisterModule(hostContext.HostingEnvironment.EnvironmentName);
+            });
 
-            // Hosting
-            hostBuilder.AddAutofac();
-            hostBuilder.AddModule();
+            // ContainerBuilder
+            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, containerBuilder) =>
+            {
+                // Module
+                containerBuilder.RegisterModule(hostContext.Configuration);
+            });
+            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-            // Action
-            configureAction?.Invoke(hostBuilder);
+            // HostBuilder
+            hostBuilder.ConfigureServices((context, serviceCollection) =>
+            {
+                // Logger
+                serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+                // Tracer
+                serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(Tracer<>));
+
+                // RegisterContext
+                using (var registerContext = new NetCoreRegisterContext())
+                {
+                    // Module
+                    registerContext.RegisterModule(serviceCollection, context.Configuration);
+                }
+            });
 
             // Return
             return hostBuilder;
         }
 
-
-        // Service
-        private static void AddTracer(this IHostBuilder hostBuilder)
+        public static IHostBuilder ConfigureDefault<TProgram>(this IHostBuilder hostBuilder) where TProgram : class
         {
             #region Contracts
 
@@ -47,110 +66,17 @@ namespace MDP.NetCore
 
             #endregion
 
-            // Services
-            hostBuilder.ConfigureServices((context, services) =>
+            // HostBuilder
+            hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
-                // Tracer
-                services.TryAddSingleton(typeof(ITracer<>), typeof(Tracer<>));
-            });
-        }
-
-        private static void AddOptions(this IHostBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Services
-            hostBuilder.ConfigureServices((context, services) =>
-            {
-                // Options
-                services.AddOptions();
-            });
-        }
-
-        private static void AddHttpClient(this IHostBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Services
-            hostBuilder.ConfigureServices((context, services) =>
-            {
-                // HttpClientFactory
-                services.AddHttpClient();
-
-                // Func<HttpClientFactory>
-                services.AddTransient<Func<IHttpClientFactory>>(serviceProvider => () =>
-                {
-                    return serviceProvider.GetService<IHttpClientFactory>()!;
-                });
-            });
-        }
-
-        public static void AddProgramService<TProgram>(this IHostBuilder hostBuilder)
-            where TProgram : class
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Services
-            hostBuilder.ConfigureServices((context, services) =>
-            {
-                // Program
-                services.TryAddTransient<TProgram, TProgram>();
-
                 // ProgramService
-                services.Add(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
-            });
-        }
+                serviceCollection.TryAddTransient<TProgram, TProgram>();
+                serviceCollection.Add(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
+            })
+            .ConfigureDefault();
 
-        // Hosting
-        private static void AddAutofac(this IHostBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Autofac
-            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-        }
-
-        private static void AddModule(this IHostBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Configuration
-            hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-            {
-                configurationBuilder.RegisterModule(hostContext.HostingEnvironment);
-            });
-
-            // Container
-            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, containerBuilder) =>
-            {
-                containerBuilder.RegisterModule(hostContext.Configuration);
-            });
-
-            // Host
-            hostBuilder.ConfigureServices((context, services) =>
-            {
-                MDP.Hosting.ServiceBuilder.RegisterModule(Tuple.Create(context, services), context.Configuration);
-            });
+            // Return
+            return hostBuilder;
         }
     }
 }

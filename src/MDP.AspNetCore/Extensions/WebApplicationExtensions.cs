@@ -1,71 +1,73 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 
 namespace MDP.AspNetCore
 {
     internal static class WebApplicationExtensions
     {
         // Methods
-        public static WebApplication ConfigureDefault(this WebApplication host)
+        public static WebApplication ConfigureDefault(this WebApplication webApplication)
         {
             #region Contracts
 
-            if (host == null) throw new ArgumentException($"{nameof(host)}=null");
+            if (webApplication == null) throw new ArgumentException($"{nameof(webApplication)}=null");
 
             #endregion
 
             // Environment
-            if (host.Environment.IsDevelopment() == false)
+            if (webApplication.Environment.IsDevelopment() == false)
             {
-                host.UseExceptionHandler("/Error");
+                webApplication.UseExceptionHandler("/Error");
             }
             else
             {
-                host.UseWhen(context => context.Request.HasAccept(new List<string>() { "html" }) == false, applicationBuilder =>
+                webApplication.UseWhen(context => context.Request.HasAccept(new List<string>() { "html" }) == false, applicationBuilder =>
                 {
                     applicationBuilder.UseExceptionHandler("/Error");
                 });
             }
-            host.UseHook(HookMiddlewareDefaults.EnteringHook);
+            webApplication.UseHook(HookMiddlewareDefaults.EnteringHook);
 
             // Swagger
-            if (host.Environment.IsDevelopment() == true)
+            if (webApplication.Environment.IsDevelopment() == true)
             {
-                host.UseSwagger();
-                host.UseSwaggerUI(options => { options.DefaultModelsExpandDepth(-1); });
-                host.UseSwaggerDefaults();
+                webApplication.UseSwagger();
+                webApplication.UseSwaggerUI(options => { options.DefaultModelsExpandDepth(-1); });
+                webApplication.UseSwaggerDefaults();
             }
 
             // Network 
-            host.UsePathBase();
-            host.UseForwardedHeaders();
+            webApplication.UsePathBase();
+            webApplication.UseForwardedHeaders();
 
             // Security
-            host.UseHsts();
-            host.UseHttpsRedirection();            
+            webApplication.UseHsts();
+            webApplication.UseHttpsRedirection();            
 
             // StaticFile
-            host.UseDefaultFiles();
-            host.UseStaticFiles();
+            webApplication.UseDefaultFiles();
+            webApplication.UseStaticFiles();
 
             // Routing
-            host.UseRouting().UseHook(HookMiddlewareDefaults.RoutingHook);
+            webApplication.UseRouting().UseHook(HookMiddlewareDefaults.RoutingHook);
             {
                 // Network
-                host.UseCors();
-                host.UsePathDefault();
+                webApplication.UseCors();
+                webApplication.UsePathDefault();
 
                 // Auth
-                host.UseAuthentication();
-                host.UseAuthorization();
+                webApplication.UseAuthentication();
+                webApplication.UseAuthorization();
             }
-            host.MapControllers();
-            host.MapDefaultControllerRoute();
-            host.UseHook(HookMiddlewareDefaults.RoutedHook);
+            webApplication.MapControllers();
+            webApplication.MapDefaultControllerRoute();
+            webApplication.UseHook(HookMiddlewareDefaults.RoutedHook);
 
             // Return
-            return host;
+            return webApplication;
         }
     }
 }

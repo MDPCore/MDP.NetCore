@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.AspNetCore
+namespace Microsoft.AspNetCore.Mvc
 {
     public static class ControllerBaseExtensions
     {

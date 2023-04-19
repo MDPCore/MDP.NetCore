@@ -1,19 +1,21 @@
-﻿using CLK.Diagnostics;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Hosting;
+using MDP.Logging;
+using MDP.Tracing;
+using MyLab.Modules;
+using System;
 
 namespace MDP.NetCore.Lab
 {
     public class Program
     {
         // Methods
-        public static void Run(WorkService workService, ITracer<Program> tracer, ILogger<Program> logger)
+        public static void Run(WorkService workService, ILogger<Program> logger, ITracer<Program> tracer)
         {
             #region Contracts
 
             if (workService == null) throw new ArgumentException($"{nameof(workService)}=null");
-            if (tracer == null) throw new ArgumentException($"{nameof(tracer)}=null");
             if (logger == null) throw new ArgumentException($"{nameof(logger)}=null");
+            if (tracer == null) throw new ArgumentException($"{nameof(tracer)}=null");
 
             #endregion
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MDP.AspNetCore.Authentication
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    public partial class AccountController : Controller
+    public class AccountController : Controller
     {
         // Fields
         private readonly IdentityProvider _identityProvider;
@@ -25,27 +25,6 @@ namespace MDP.AspNetCore.Authentication
         }
 
 
-        // Properties
-        private string? RegisterPath { get { return _identityProvider.RegisterPath; } }
-
-
-        // Methods
-        [NonAction]
-        private ClaimsIdentity SignIn(ClaimsIdentity externalIdentity)
-        {
-            #region Contracts
-
-            if (externalIdentity == null) throw new ArgumentException($"{nameof(externalIdentity)}=null");
-
-            #endregion
-
-            // Return
-            return _identityProvider.SignIn(externalIdentity);
-        }
-    }
-
-    public partial class AccountController : Controller
-    {
         // Methods
         [AllowAnonymous]
         [Route("/Login", Name = "Login")]
@@ -101,18 +80,18 @@ namespace MDP.AspNetCore.Authentication
             if (externalIdentity.IsAuthenticated == false) throw new InvalidOperationException($"{nameof(externalIdentity)}=null");
 
             // Identity
-            var identity = this.SignIn(externalIdentity);
+            var identity = _identityProvider.SignIn(externalIdentity);
             if (identity == null)
             {
-                if (string.IsNullOrEmpty(this.RegisterPath) == true)
+                if (string.IsNullOrEmpty(_identityProvider.RegisterPath) == false)
                 {
-                    // Forbid
-                    return this.Forbid();
+                    // Register
+                    return this.Redirect(_identityProvider.RegisterPath);                    
                 }
                 else
                 {
-                    // Redirect
-                    return this.Redirect(this.RegisterPath);
+                    // Forbid
+                    return this.Forbid();
                 }
             }
 
@@ -125,11 +104,3 @@ namespace MDP.AspNetCore.Authentication
         }
     }
 }
-
-// ExternalParameters
-//var authenticationType = externalIdentity.AuthenticationType;
-//var externalId = externalIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-//var externalName = externalIdentity.Name;
-//var externalMail = externalIdentity.FindFirst(ClaimTypes.Email)?.Value;
-//var accessToken = await this.HttpContext.ExternalGetTokenAsync("access_token");
-//var refreshToken = await this.HttpContext.ExternalGetTokenAsync("refresh_token");

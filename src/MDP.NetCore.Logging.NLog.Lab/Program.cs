@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using MDP.Tracing;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace MDP.NetCore.Logging.NLog.Lab
 {

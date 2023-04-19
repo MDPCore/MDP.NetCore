@@ -1,4 +1,0 @@
-﻿[*.cs]
-
-# IDE0016: 使用 'throw' 運算式
-dotnet_diagnostic.IDE0016.severity = none

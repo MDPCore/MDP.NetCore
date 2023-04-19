@@ -10,41 +10,50 @@ using System.Threading.Tasks;
 
 namespace MDP.IdentityModel.Tokens.Jwt
 {
+    [MDP.Registration.Service<SecurityTokenFactory>(singleton:true)]
     public class SecurityTokenFactory
     {
         // Fields
-        private readonly SecurityTokenSetting _setting;
-
         private readonly JwtSecurityTokenHandler _tokenHandler;
 
         private readonly SigningCredentials _signingCredentials;
 
 
         // Constructors
-        public SecurityTokenFactory(SecurityTokenSetting setting)
+        public SecurityTokenFactory(string issuer, string signKey, string? algorithm = SecurityAlgorithms.HmacSha256Signature, int expireMinutes = 30)
         {
             #region Contracts
 
-            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
+            if (string.IsNullOrEmpty(issuer) == true) throw new ArgumentException($"{nameof(issuer)}=null");
+            if (string.IsNullOrEmpty(signKey) == true) throw new ArgumentException($"{nameof(signKey)}=null");
+            if (string.IsNullOrEmpty(algorithm) == true) throw new ArgumentException($"{nameof(algorithm)}=null");
+            if (expireMinutes <= 0) throw new ArgumentException($"{nameof(expireMinutes)}<=0");
 
             #endregion
 
-            // Require
-            if (string.IsNullOrEmpty(setting.Issuer) == true) throw new ArgumentException($"{nameof(setting.Issuer)}=null");
-            if (string.IsNullOrEmpty(setting.SignKey) == true) throw new ArgumentException($"{nameof(setting.SignKey)}=null");
-            if (string.IsNullOrEmpty(setting.Algorithm) == true) throw new ArgumentException($"{nameof(setting.Algorithm)}=null");
-            if (setting.ExpireMinutes <= 0) throw new ArgumentException($"{nameof(setting.ExpireMinutes)}<=0");
-
             // Default
-            _setting = setting;
+            this.Issuer = issuer;
+            this.SignKey = signKey;
+            this.Algorithm = algorithm;
+            this.ExpireMinutes = expireMinutes;
 
-            // JwtSecurityTokenHandler
+            // TokenHandler
             _tokenHandler = new JwtSecurityTokenHandler();
 
             // SigningCredentials
-            _signingCredentials = this.CreareSigningCredentials(_setting.SignKey, _setting.Algorithm);
+            _signingCredentials = this.CreareSigningCredentials(this.SignKey, this.Algorithm);
             if (_signingCredentials == null) throw new ArgumentException($"{nameof(_signingCredentials)}=null");
         }
+
+
+        // Properties
+        private string Issuer { get; set; } = String.Empty;
+
+        private string SignKey { get; set; } = String.Empty;
+
+        private string Algorithm { get; set; } = SecurityAlgorithms.HmacSha256Signature;
+
+        private int ExpireMinutes { get; set; } = 30;
 
 
         // Methods
@@ -84,13 +93,13 @@ namespace MDP.IdentityModel.Tokens.Jwt
             {
                 // Issuer
                 claimList.RemoveAll(claim => claim.Type == JwtRegisteredClaimNames.Iss);
-                claimList.Add(new Claim(JwtRegisteredClaimNames.Iss, _setting.Issuer));
+                claimList.Add(new Claim(JwtRegisteredClaimNames.Iss, this.Issuer));
             }
 
             // ExpireMinutes
             if (expireMinutes.HasValue == false)
             {
-                expireMinutes = _setting.ExpireMinutes;
+                expireMinutes = this.ExpireMinutes;
             }
 
             // TokenDescriptor

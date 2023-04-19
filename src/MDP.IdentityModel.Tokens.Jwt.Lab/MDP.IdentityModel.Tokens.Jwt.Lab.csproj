@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
-    <ProjectReference Include="..\MDP.IdentityModel.Tokens.Jwt.Hosting\MDP.IdentityModel.Tokens.Jwt.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.IdentityModel.Tokens.Jwt\MDP.IdentityModel.Tokens.Jwt.csproj" />
   </ItemGroup>
 
   <ItemGroup>

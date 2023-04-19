@@ -1,5 +1,6 @@
 ﻿namespace MDP.Data.SqlClient
 {
+    [MDP.Registration.Service<SqlClientFactory>(singleton: true)]
     public class SqlClientFactory
     {
         // Fields

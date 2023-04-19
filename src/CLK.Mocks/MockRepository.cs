@@ -1,4 +1,6 @@
-﻿namespace CLK.Mocks
+﻿using System;
+
+namespace CLK.Mocks
 {
     public abstract class MockRepository<TEntity, TEntityId> : MockRepositoryBase<TEntity, Tuple<TEntityId>> where TEntity : class
     {

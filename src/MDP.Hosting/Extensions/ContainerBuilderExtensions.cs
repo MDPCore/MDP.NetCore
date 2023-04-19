@@ -1,55 +1,34 @@
 ﻿using Autofac;
 using Autofac.Builder;
+using Autofac.Core;
+using MDP.Registration;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.ComponentModel;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace MDP.Hosting
 {
     public static class ContainerBuilderExtensions
     {
         // Methods   
-        public static ContainerBuilder RegisterModule(this ContainerBuilder containerBuilder, IConfiguration configuration, string moduleAssemblyFileName = @"*.dll")
+        public static ContainerBuilder RegisterModule(this ContainerBuilder containerBuilder, IConfiguration configuration)
         {
             #region Contracts
 
             if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-            if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException($"{nameof(moduleAssemblyFileName)}=null");
 
             #endregion
 
-            // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
-            if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-
-            // EntryAssembly
-            var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
-            if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
-            if (moduleAssemblyList.Contains(entryAssembly) == false) moduleAssemblyList.Add(entryAssembly);
-
-            // RegisterAssemblyTypes
-            var moduleContainerBuilder = new ContainerBuilder();
+            // ContainerBuilder
             {
-                // ServiceFactory
-                moduleAssemblyList.ForEach(moduleAssembly =>
+                // RegisterContext
+                using (var registerContext = new AttributeRegisterContext())
                 {
-                    moduleContainerBuilder
-                        .RegisterAssemblyTypes(moduleAssembly)
-                        .Where(assemblyType => typeof(ServiceFactoryCore).IsAssignableFrom(assemblyType))
-                        .As<ServiceFactoryCore>();
-                });
-            }
-
-            // RegisterModule
-            using (var moduleContainer = moduleContainerBuilder.Build())
-            {
-                // ServiceFactory
-                foreach (var serviceFactory in moduleContainer.Resolve<IEnumerable<ServiceFactoryCore>>())
-                {
-                    // Initialize
-                    serviceFactory.Initialize(configuration);
-
-                    // Register
-                    containerBuilder.RegisterModule(serviceFactory);
+                    // Module
+                    registerContext.RegisterModule(containerBuilder, configuration);
                 }
             }
 

@@ -5,17 +5,17 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 ## 範例展示
 
-### Todos-工作管理
+### SleepZone.Todos
 
 - 開發工具：Visual Studio 2022 
 
-- 方案路徑：程式資料夾=>demo/SleepZone.Todos.sln
+- 方案路徑：Repo資料夾=>examples/00.SleepZone.Todos/SleepZone.Todos.sln
 
-- 起始專案：方案總管內=>02.Application/SleepZone.Todos.WebApp
+- 起始專案：方案總管內=>01.Application/SleepZone.Todos.WebApp
 
 - 測試步驟：
   
-  - 瀏覽器的網址列：輸入「https://localhost:44392/SleepZone-Todos/Home/Index」，會被跳轉至Login頁面進行登入。
+  - 瀏覽器的網址列：輸入「https://localhost:44392/Home/Index」，會被跳轉至Login頁面進行登入。
   
   - Login頁面：點擊「LoginByName」使用Username欄位內容進行登入，跳轉頁面至SleepZone.Todos頁面代表登入成功。
   
@@ -46,6 +46,11 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 
 ## 版本更新
+
+### MDP.Net 6.1.0
+
+- MDP.Registration：加入此模組，提供Attribute註冊功能，用以移除所有.Hosting註冊用專案。
+
 
 ### MDP.Net 6.0.16
 

@@ -1,7 +1,8 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
+using MDP.Configuration;
+using MyLab.Modules;
+using System;
 
 namespace MDP.Hosting.Lab
 {
@@ -10,14 +11,14 @@ namespace MDP.Hosting.Lab
         // Methods
         public static void Main(string[] args)
         {
-            // HostEnvironment
-            var hostEnvironment = new HostingEnvironment { EnvironmentName = Environments.Staging };
+            // EnvironmentName
+            var environmentName = "Production";
 
             // ConfigurationBuilder
             var configurationBuilder = new ConfigurationBuilder();
             {
-                configurationBuilder.SetBasePath(CLK.IO.Directory.GetEntryDirectory());
-                configurationBuilder.RegisterModule(hostEnvironment);
+                // Register
+                configurationBuilder.RegisterModule(environmentName);
             }
             var configuration = configurationBuilder.Build();
             if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
@@ -26,9 +27,8 @@ namespace MDP.Hosting.Lab
             var containerBuilder = new ContainerBuilder();
             {
                 // Register
-                containerBuilder.RegisterInstance(hostEnvironment).As<IHostEnvironment>();
-                containerBuilder.RegisterInstance(configuration).As<IConfiguration>();
                 containerBuilder.RegisterModule(configuration);
+                containerBuilder.RegisterInstance(configuration).As<IConfiguration>();
             }
 
             // Container

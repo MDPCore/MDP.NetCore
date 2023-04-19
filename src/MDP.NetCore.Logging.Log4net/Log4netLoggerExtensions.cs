@@ -1,15 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace MDP.NetCore.Logging.Log4net
 {
@@ -27,9 +18,6 @@ namespace MDP.NetCore.Logging.Log4net
             // Logger
             services.AddLogging(builder =>
             {
-                // Configuration
-                builder.AddConfiguration();
-
                 // Log4net
                 builder.Services.AddSingleton<ILoggerProvider>(CreateLoggerProvider(services, loggerSetting));
             });

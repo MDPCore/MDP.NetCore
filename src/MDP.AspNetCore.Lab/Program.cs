@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Hosting;
+
 namespace MDP.AspNetCore.Lab
 {
     public class Program

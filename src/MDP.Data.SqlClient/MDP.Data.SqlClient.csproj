@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -12,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
     <ProjectReference Include="..\CLK.Core\CLK.Core.csproj" />
   </ItemGroup>
 

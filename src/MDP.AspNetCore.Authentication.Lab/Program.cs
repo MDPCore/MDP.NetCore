@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Hosting;
+
 namespace MDP.AspNetCore.Authentication.Lab
 {
     public class Program

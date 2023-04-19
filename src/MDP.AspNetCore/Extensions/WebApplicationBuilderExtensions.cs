@@ -1,8 +1,4 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using CLK.Diagnostics;
-using MDP.Hosting;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -10,194 +6,75 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using MDP.NetCore;
+using Microsoft.Extensions.Configuration;
+using Autofac.Core;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MDP.AspNetCore
 {
-    internal static class WebApplicationBuilderExtensions
+    public static class WebApplicationBuilderExtensions
     {
         // Methods
-        public static WebApplicationBuilder ConfigureDefault(this WebApplicationBuilder hostBuilder, Action<WebApplicationBuilder>? configureAction = null)
+        public static WebApplicationBuilder ConfigureDefault(this WebApplicationBuilder webApplicationBuilder)
         {
             #region Contracts
 
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
+            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
 
             #endregion
 
-            // Service
-            hostBuilder.AddTracer();
-            hostBuilder.AddOptions();
-            hostBuilder.AddHttpClient();
-
-            // Hosting
-            hostBuilder.AddAutofac();
-            hostBuilder.AddModule();
-
-            // AspNetCore
-            hostBuilder.AddMvc();
-            hostBuilder.AddSwagger();
-
-            // Action
-            configureAction?.Invoke(hostBuilder);
-
-            // Return
-            return hostBuilder;
-        }
-
-
-        // Service
-        private static void AddTracer(this WebApplicationBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Services
-            hostBuilder.Host.ConfigureServices((context, services) =>
+            // HostBuilder
+            var hostBuilder = webApplicationBuilder.Host;
             {
-                // Tracer
-                services.TryAddSingleton(typeof(ITracer<>), typeof(Tracer<>));
-            });
-        }
+                hostBuilder.ConfigureDefault();
+            }
 
-        private static void AddOptions(this WebApplicationBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Services
-            hostBuilder.Host.ConfigureServices((context, services) =>
-            {
-                // Options
-                services.AddOptions();
-            });
-        }
-
-        private static void AddHttpClient(this WebApplicationBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Services
-            hostBuilder.Host.ConfigureServices((context, services) =>
-            {
-                // HttpClientFactory
-                services.AddHttpClient();
-
-                // Func<HttpClientFactory>
-                services.AddTransient<Func<IHttpClientFactory>>(serviceProvider => () =>
-                {
-                    return serviceProvider.GetService<IHttpClientFactory>()!;
-                });
-            });
-        }
-
-        public static void AddProgramService<TProgram>(this WebApplicationBuilder hostBuilder)
-            where TProgram : class
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Services
-            hostBuilder.Host.ConfigureServices((context, services) =>
-            {
-                // Program
-                services.TryAddTransient<TProgram, TProgram>();
-
-                // ProgramService
-                services.Add(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
-            });
-        }
-
-        // Hosting
-        private static void AddAutofac(this WebApplicationBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Autofac
-            hostBuilder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-        }
-
-        private static void AddModule(this WebApplicationBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // Configuration
-            hostBuilder.Host.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-            {
-                configurationBuilder.RegisterModule(hostContext.HostingEnvironment);
-            });
-
-            // Container
-            hostBuilder.Host.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, containerBuilder) =>
-            {
-                containerBuilder.RegisterModule(hostContext.Configuration);
-            });
-
-            // Host
-            hostBuilder.Host.ConfigureServices((context, services) =>
-            {
-                MDP.Hosting.ServiceBuilder.RegisterModule(Tuple.Create(context, services), context.Configuration);
-            });
-            MDP.Hosting.ServiceBuilder.RegisterModule(hostBuilder, hostBuilder.Configuration);
-        }
-
-        // AspNetCore
-        private static void AddMvc(this WebApplicationBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
-
-            #endregion
-
-            // HttpContext
-            hostBuilder.Services.AddHttpContextAccessor();
-
-            // Logger
-            hostBuilder.Services.AddLogging(builder =>
-            {
-                // Filter
-                builder.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
-            });
-
-            // Mvc
-            var mvcBuilder = hostBuilder.Services.AddMvc();
+            // MvcBuilder
+            var mvcBuilder = webApplicationBuilder.Services.AddMvc().ConfigureDefault();
             {
                 mvcBuilder.AddMvcPart();
                 mvcBuilder.AddMvcAsset();
+                mvcBuilder.AddMvcCors(webApplicationBuilder.Configuration);
+                mvcBuilder.AddMvcSwagger(webApplicationBuilder.Configuration);
+                mvcBuilder.AddMvcForwardedHeaders(webApplicationBuilder.Configuration);
             }
+
+            // WebApplicationBuilder
+            {
+                // RegisterContext
+                using (var registerContext = new AspNetCoreRegisterContext())
+                {
+                    // Module
+                    registerContext.RegisterModule(webApplicationBuilder);
+                }
+            }
+
+            // Return
+            return webApplicationBuilder;
+        }
+
+
+        // MvcBuilder
+        private static IMvcBuilder ConfigureDefault(this IMvcBuilder mvcBuilder)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
+
+            #endregion
 
             // MvcOptions
             mvcBuilder.AddMvcOptions((options) =>
@@ -225,6 +102,15 @@ namespace MDP.AspNetCore
                 options.AreaViewLocationFormats.Add("/Views/{2}/{0}.cshtml");
             });
 
+            // HttpContext
+            mvcBuilder.Services.AddHttpContextAccessor();
+
+            // HtmlEncoder
+            mvcBuilder.Services.AddSingleton<HtmlEncoder>
+            (
+                HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+            );
+
             // JsonOptions
             mvcBuilder.AddJsonOptions(options =>
             {
@@ -232,39 +118,22 @@ namespace MDP.AspNetCore
                 options.JsonSerializerOptions.Converters.Add(new DateTimeISO8601Converter());
             });
 
-            // HtmlEncoder
-            hostBuilder.Services.AddSingleton<HtmlEncoder>
-            (
-                HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
-            );
-
-            // Cors
-            hostBuilder.Services.AddCors(option =>
+            // LoggerOptions
+            mvcBuilder.Services.AddLogging(builder =>
             {
-                option.AddDefaultPolicy(corsBuilder =>
-                {
-                    corsBuilder.AllowAnyOrigin();
-                    corsBuilder.AllowAnyHeader();
-                    corsBuilder.AllowAnyMethod();
-                });
+                // Filter
+                builder.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
             });
-            hostBuilder.Services.Configure<CorsOptions>(hostBuilder.Configuration.GetSection("Http:Cors"));
 
-            // ForwardedHeaders
-            hostBuilder.Services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.All;
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
-            });
-            hostBuilder.Services.Configure<ForwardedHeadersOptions>(hostBuilder.Configuration.GetSection("Http:ForwardedHeaders"));
-        }
+            // Return
+            return mvcBuilder;
+        }            
 
-        private static void AddMvcPart(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"MDP.AspNetCore.dll|*.Services.dll|*.Services.Views.dll")
+        private static void AddMvcPart(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.dll")
         {
             #region Contracts
 
-            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
             if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
 
             #endregion
@@ -288,11 +157,11 @@ namespace MDP.AspNetCore
             }
         }
 
-        private static void AddMvcAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"MDP.AspNetCore.dll|*.Services.dll|*.Services.Views.dll")
+        private static void AddMvcAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.dll")
         {
             #region Contracts
 
-            if (mvcBuilder == null) throw new ArgumentException(nameof(mvcBuilder));
+            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
             if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
 
             #endregion
@@ -363,19 +232,42 @@ namespace MDP.AspNetCore
             });
         }
 
-        private static void AddSwagger(this WebApplicationBuilder hostBuilder)
+        private static void AddMvcCors(this IMvcBuilder mvcBuilder, IConfiguration configuration)
         {
             #region Contracts
 
-            if (hostBuilder == null) throw new ArgumentException(nameof(hostBuilder));
+            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+
+            #endregion
+
+            // Cors
+            mvcBuilder.Services.AddCors(option =>
+            {
+                option.AddDefaultPolicy(corsBuilder =>
+                {
+                    corsBuilder.AllowAnyOrigin();
+                    corsBuilder.AllowAnyHeader();
+                    corsBuilder.AllowAnyMethod();
+                });
+            });
+            mvcBuilder.Services.Configure<CorsOptions>(configuration.GetSection("Http:Cors"));
+        }
+
+        private static void AddMvcSwagger(this IMvcBuilder mvcBuilder, IConfiguration configuration)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
 
             #endregion
 
             // ApiExplorer
-            hostBuilder.Services.AddEndpointsApiExplorer();
+            mvcBuilder.Services.AddEndpointsApiExplorer();
 
             // Swagger
-            hostBuilder.Services.AddSwaggerGen(setupAction =>
+            mvcBuilder.Services.AddSwaggerGen(setupAction =>
             {
                 // IncludeXmlComments
                 {
@@ -389,8 +281,8 @@ namespace MDP.AspNetCore
 
                     // Include
                     var commentFile = commentFileList.FirstOrDefault();
-                    if(commentFile!=null) setupAction.IncludeXmlComments(commentFile.FullName);
-                }                
+                    if (commentFile != null) setupAction.IncludeXmlComments(commentFile.FullName);
+                }
 
                 // TagAction
                 setupAction.TagActionsBy(apiDescription =>
@@ -410,6 +302,25 @@ namespace MDP.AspNetCore
                     return new[] { actionDescriptor.ControllerName };
                 });
             });
+        }
+
+        private static void AddMvcForwardedHeaders(this IMvcBuilder mvcBuilder, IConfiguration configuration)
+        {
+            #region Contracts
+
+            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+
+            #endregion
+
+            // ForwardedHeaders
+            mvcBuilder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.All;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+            mvcBuilder.Services.Configure<ForwardedHeadersOptions>(configuration.GetSection("Http:ForwardedHeaders"));
         }
 
 

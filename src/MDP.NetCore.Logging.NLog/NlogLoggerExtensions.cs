@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
 using NLog.Extensions.Logging;
+using System;
 using NLogLib = NLog;
 
 namespace MDP.NetCore.Logging.NLog
@@ -21,9 +20,6 @@ namespace MDP.NetCore.Logging.NLog
             // Logger
             services.AddLogging(loggingBuilder =>
             {
-                // Configuration
-                loggingBuilder.AddConfiguration();
-
                 // NLog
                 loggingBuilder.AddNLog(serviceProvider => CreateLogFactory(services, loggerSetting));
             });

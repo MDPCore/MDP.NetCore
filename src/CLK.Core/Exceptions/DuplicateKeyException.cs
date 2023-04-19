@@ -1,4 +1,6 @@
-﻿namespace CLK
+﻿using System;
+
+namespace CLK
 {
     public class DuplicateKeyException : Exception
     {

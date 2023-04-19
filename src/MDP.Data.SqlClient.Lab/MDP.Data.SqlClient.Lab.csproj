@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
-    <ProjectReference Include="..\MDP.Data.SqlClient.Hosting\MDP.Data.SqlClient.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.Data.SqlClient\MDP.Data.SqlClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>

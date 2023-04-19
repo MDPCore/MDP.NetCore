@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace MDP.NetCore.Logging.Log4net.Lab
 {

@@ -2,21 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CLK.Reflection\CLK.Reflection.csproj" />
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
+    <ProjectReference Include="..\MDP.Configuration\MDP.Configuration.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

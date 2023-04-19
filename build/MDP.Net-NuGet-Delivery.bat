@@ -4,10 +4,10 @@ setlocal enabledelayedexpansion
 
 :: ================================================
 :: Variables
-set version=6.1.0-beta.4
+set version=6.1.0
 
 set buildDir=%~dp0
-set srcDir=%~dp0..\src2
+set srcDir=%~dp0..\src
 set outputDir=%~dp0packed
 
 set endsMatchFilter[0]=.Lab
