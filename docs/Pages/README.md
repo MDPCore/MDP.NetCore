@@ -9,23 +9,20 @@ permalink: /
 
 MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Console App。
 
-## 說明文件
-
-- [clark159.github.io/MDP.Net](https://clark159.github.io/MDP.Net/)
-
 ## 範例展示
 
 ### SleepZone.Todos
 
-- 開發工具：Visual Studio 2022 
-
-- 方案路徑：Repo資料夾=>examples/00.SleepZone.Todos/SleepZone.Todos.sln
-
-- 起始專案：方案總管內=>01.Application/SleepZone.Todos.WebApp
+- 範例檔案：
+  - [https://github.com/Clark159/MDP.Net/tree/master/demo/00.SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/00.SleepZone.Todos)
 
 - 操作步驟：
+
+  - 使用Visual Studio 2022開啟方案：SleepZone.Todos.sln
   
-  - 瀏覽器的網址列：輸入「[https://localhost:44392/Home/Index](https://localhost:44392/Home/Index)」，進入SleepZone.Todos頁面。
+  - 設定起始專案為：01.Application/SleepZone.Todos.WebApp
+  
+  - 按下F5執行專案後，於瀏覽器的網址列：輸入「[https://localhost:44392/Home/Index](https://localhost:44392/Home/Index)」，進入SleepZone.Todos頁面。
   
   - SleepZone.Todos頁面：點擊「AddTodo按鈕」新增工作項目，看到{ "statusCode": 200 }代表工作項目新增成功。
 
