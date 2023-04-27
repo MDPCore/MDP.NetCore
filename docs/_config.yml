@@ -8,3 +8,4 @@ aux_links:
   "MDP.Net on GitHub":
     - "//github.com/Clark159/MDP.Net"
 search_enabled: false
+favicon_ico: "/Pages/favicon.ico"
