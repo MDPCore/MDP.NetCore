@@ -9,6 +9,9 @@ permalink: /
 
 MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Console App。
 
+## 說明文件
+
+- [clark159.github.io/MDP.Net](https://clark159.github.io/MDP.Net/)
 
 ## 範例展示
 
@@ -20,7 +23,7 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 - 起始專案：方案總管內=>01.Application/SleepZone.Todos.WebApp
 
-- 測試步驟：
+- 操作步驟：
   
   - 瀏覽器的網址列：輸入「[https://localhost:44392/Home/Index](https://localhost:44392/Home/Index)」，進入SleepZone.Todos頁面。
   

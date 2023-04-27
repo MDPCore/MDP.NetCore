@@ -7,7 +7,7 @@ nav_order: 1
 
 # 建立MvcPage專案
 
-在這個快速開始文件中，我們將教您如何使用MDP.Net建立MvcPage專案，請按照以下步驟操作。
+在這個快速開始文件中，將示範如何使用MDP.Net建立MvcPage專案。
 
 ## 操作步驟
 
@@ -102,7 +102,7 @@ namespace WebApplication1
 </html>
 ```
 
-完成以上操作後，您已經成功建立了第一個MvcPage。按F5執行專案，您將在瀏覽器中看到"Hello World"的訊息。
+完成以上操作後，建立了一個使用MDP.Net的MvcPage專案。按F5執行專案，可以在瀏覽器中看到"Hello World"的訊息。
 
 ## 範例檔案
 
