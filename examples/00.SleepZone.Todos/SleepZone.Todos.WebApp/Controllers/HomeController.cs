@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SleepZone.Todos.WebApp.Controllers
+namespace SleepZone.Todos.WebApp
 {
     public class HomeController : Controller
     {
