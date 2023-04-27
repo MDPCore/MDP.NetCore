@@ -4,4 +4,7 @@ title: MDP.Net
 
 # theme
 remote_theme: pmarsceill/just-the-docs
+aux_links:
+  "MDP.Net on GitHub":
+    - "//github.com/Clark159/MDP.Net"
 search_enabled: false
