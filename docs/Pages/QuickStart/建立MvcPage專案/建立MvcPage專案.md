@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 建立第一個MvcPage
+title: 建立MvcPage專案
 parent: 快速開始(QuickStart)
 nav_order: 1
 ---
 
-# 建立第一個MvcPage
+# 建立MvcPage專案
 
-在這個快速開始文件中，我們將教您如何使用MDP.Net建立您的第一個MvcPage。請按照以下步驟操作：
+在這個快速開始文件中，我們將教您如何使用MDP.Net建立MvcPage專案，請按照以下步驟操作。
 
 ## 操作步驟
 
@@ -106,4 +106,4 @@ namespace WebApplication1
 
 ## 範例檔案
 
-範例檔案：[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立第一個MvcPage](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立第一個MvcPage)
+範例檔案：[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立MvcPage專案](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立MvcPage專案)
