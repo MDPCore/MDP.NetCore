@@ -15,7 +15,7 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 - 測試步驟：
   
-  - 瀏覽器的網址列：輸入「https://localhost:44392/Home/Index」，進入SleepZone.Todos頁面。
+  - 瀏覽器的網址列：輸入「[https://localhost:44392/Home/Index](https://localhost:44392/Home/Index)」，進入SleepZone.Todos頁面。
   
   - SleepZone.Todos頁面：點擊「AddTodo按鈕」新增工作項目，看到{ "statusCode": 200 }代表工作項目新增成功。
 
