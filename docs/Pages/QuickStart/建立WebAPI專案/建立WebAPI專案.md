@@ -1,13 +1,13 @@
 ---
 layout: default
-title: 建立MvcPage專案
+title: 建立WebAPI專案
 parent: 快速開始(QuickStart)
 nav_order: 1
 ---
 
-# 建立MvcPage專案
+# 建立WebAPI專案
 
-在這個快速開始文件中將示範，如何建立使用MDP.Net的MvcPage專案，請按照以下步驟操作。
+在這個快速開始文件中將示範，如何建立使用MDP.Net的WebAPI專案，請按照以下步驟操作。
 
 ## 操作步驟
 
@@ -72,38 +72,16 @@ namespace WebApplication1
     public class HomeController : Controller
     {
         // Methods
-        public ActionResult Index()
+        public ActionResult<object> Index()
         {
-            return View();
+            return new { message= "Hello World" };
         }
     }
 }
 ```
 
-### 6. 新增Index.cshtml
-
-在專案裡新增Views\Home資料夾，並加入Index.cshtml：
-
-```html
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-
-    <!--Title-->
-    <h2>Hello World</h2>
-    <hr />
-
-</body>
-</html>
-```
-
-完成以上操作步驟後，就已成功建立使用MDP.Net的MvcPage專案。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World"的訊息。
+完成以上操作步驟後，就已成功建立使用MDP.Net的WebAPI專案。按F5執行專案，使用Postman呼叫API：/Home/Index，可以在結果視窗中看到{"message":"Hello World"}的訊息。
 
 ## 範例檔案
 
-範例檔案：[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立MvcPage專案](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立MvcPage專案)
+範例檔案：[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立WebAPI專案](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立WebAPI專案)
