@@ -58,7 +58,7 @@ namespace ConsoleApp1
 }
 ```
 
-### 4. 修改appsettings.json
+### 4. 加入appsettings.json
 
 在專案裡加入appsettings.json，並設置為永遠複製到輸出目錄：
 

@@ -87,7 +87,7 @@ namespace WebApplication1
 
 ### 4. 修改appsettings.json
 
-在專案裡修改appsettings.json，並移除appsettings.Development.json：
+在專案裡修改appsettings.json：
 
 ```json
 {
