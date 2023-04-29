@@ -88,4 +88,4 @@ namespace WebApplication1
 
 ## 範例檔案
 
-範例檔案：[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立WebAPI專案](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立WebAPI專案)
+[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立WebAPI專案](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/建立WebAPI專案)

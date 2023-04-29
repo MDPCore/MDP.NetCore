@@ -106,4 +106,4 @@ namespace ConsoleApp1
 
 ## 範例檔案
 
-範例檔案：[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(Console專案)](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(Console專案))
+[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(Console專案)](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(Console專案))
