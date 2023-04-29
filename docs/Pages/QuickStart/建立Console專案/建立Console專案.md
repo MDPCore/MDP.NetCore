@@ -13,7 +13,13 @@ nav_order: 3
 
 ### 1. 建立新專案
 
-開啟Visual Studio，選擇使用範本「主控台應用程式」，建立新的專案「ConsoleApp1」。
+- 開啟Visual Studio，選擇使用範本「主控台應用程式」，建立新的專案「ConsoleApp1」。
+
+- 修改ConsoleApp1.csproj，開啟C# 11.0語言版本
+
+```
+<LangVersion>11.0</LangVersion>
+```
 
 ### 2. 新增NuGet套件
 
