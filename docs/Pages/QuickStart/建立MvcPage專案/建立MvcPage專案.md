@@ -7,7 +7,7 @@ nav_order: 1
 
 # 建立MvcPage專案
 
-在這個快速開始文件中將示範，如何建立使用MDP.Net的MvcPage專案，請按照以下步驟操作。
+在這個文件中將示範，如何建立使用MDP.Net的MvcPage專案。
 
 ## 操作步驟
 
@@ -25,7 +25,7 @@ MDP.AspNetCore
 
 ### 3. 修改Program.cs
 
-在專案裡改寫Program.cs為下列程式碼：
+在專案裡修改Program.cs為下列程式碼：
 
 ```csharp
 using Microsoft.Extensions.Hosting;
@@ -46,7 +46,7 @@ namespace WebApplication1
 
 ### 4. 修改appsettings.json
 
-在專案裡改寫appsettings.json，並移除appsettings.Development.json：
+在專案裡修改appsettings.json，並移除appsettings.Development.json：
 
 ```json
 {
