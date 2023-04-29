@@ -13,7 +13,11 @@ nav_order: 1
 
 ### 1. 建立新專案
 
-開啟Visual Studio，選擇使用範本「空的ASP.NET Core」，建立新的專案「WebApplication1」。
+開啟Visual Studio，選擇使用範本「空的ASP.NET Core」，建立新的專案「WebApplication1」。並且修改WebApplication1.csproj，開啟C# 11.0語言版本。
+
+```
+<LangVersion>11.0</LangVersion>
+```
 
 ### 2. 新增NuGet套件
 
