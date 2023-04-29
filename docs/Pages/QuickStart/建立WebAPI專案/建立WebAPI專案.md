@@ -2,7 +2,7 @@
 layout: default
 title: 建立WebAPI專案
 parent: 快速開始(QuickStart)
-nav_order: 1
+nav_order: 2
 ---
 
 # 建立WebAPI專案
@@ -46,7 +46,7 @@ namespace WebApplication1
 
 ### 4. 修改appsettings.json
 
-在專案裡改寫appsettings.json為下列內容，並移除appsettings.Development.json：
+在專案裡改寫appsettings.json，並移除appsettings.Development.json：
 
 ```json
 {
