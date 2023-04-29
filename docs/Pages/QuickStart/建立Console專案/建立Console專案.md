@@ -7,7 +7,7 @@ nav_order: 3
 
 # 建立Console專案
 
-在這個文件中示範，如何建立使用MDP.Net的Console專案。
+本篇文件介紹，如何建立使用MDP.Net的Console專案。
 
 ## 操作步驟
 

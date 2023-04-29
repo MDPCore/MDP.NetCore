@@ -7,7 +7,7 @@ nav_order: 2
 
 # 建立WebAPI專案
 
-在這個文件中示範，如何建立使用MDP.Net的WebAPI專案。
+本篇文件介紹，如何建立使用MDP.Net的WebAPI專案。
 
 ## 操作步驟
 

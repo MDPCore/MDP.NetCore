@@ -7,7 +7,7 @@ nav_order: 4
 
 # 使用Service注入(WebAPI專案)
 
-在這個文件中示範，在WebAPI專案中使用Service注入。
+本篇文件介紹，如何在WebAPI專案中使用Service注入。
 
 ## 操作步驟
 

@@ -7,7 +7,7 @@ nav_order: 5
 
 # 使用Service注入(Console專案)
 
-在這個文件中示範，在Console專案中使用Service注入。
+本篇文件介紹，如何在Console專案中使用Service注入。
 
 ## 操作步驟
 
