@@ -55,6 +55,12 @@ namespace MDP.Configuration
 
                 // ConfigDirectoryPath
                 {
+                    // appsettings.json
+                    if (System.IO.File.Exists(Path.Combine(configDirectoryPath, "appsettings.json")) == true)
+                    {
+                        configFilePathList.Add(Path.Combine(configDirectoryPath, "appsettings.json"));
+                    }
+
                     // *.{environmentName}.json
                     configFilePathList.AddRange(SearchAllFilePath(configDirectoryPath).Where(file => file.EndsWith($"{environmentName}.json", StringComparison.OrdinalIgnoreCase)));
                 }

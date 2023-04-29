@@ -106,6 +106,8 @@ namespace WebApplication1
 </html>
 ```
 
+### 7. 執行專案
+
 完成以上操作步驟後，就已成功建立使用MDP.Net的MvcPage專案。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World"的訊息。
 
 ## 範例檔案

@@ -2,7 +2,7 @@
 layout: default
 title: 使用Service注入(Console專案)
 parent: 快速開始(QuickStart)
-nav_order: 5
+nav_order: 6
 ---
 
 # 使用Service注入(Console專案)
@@ -101,6 +101,8 @@ namespace ConsoleApp1
   }
 }
 ```
+
+### 5. 執行專案
 
 完成以上操作步驟後，就已成功在Console專案中使用Service注入。按F5執行專案，可以在執行視窗中看到"Hello World"的訊息。
 
