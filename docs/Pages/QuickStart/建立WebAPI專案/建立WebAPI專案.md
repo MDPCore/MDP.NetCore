@@ -74,7 +74,11 @@ namespace WebApplication1
         // Methods
         public ActionResult<object> Index()
         {
-            return new { message= "Hello World" };
+            // Message
+            var message = "Hello World";
+
+            // Return
+            return new { message = message };
         }
     }
 }

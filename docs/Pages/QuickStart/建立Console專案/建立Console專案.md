@@ -25,9 +25,10 @@ MDP.NetCore
 
 ### 3. 修改Program.cs
 
-在專案裡修改Program.cs為下列程式碼：
+在專案裡修改Program.cs：
 
 ```csharp
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace ConsoleApp1
@@ -35,10 +36,13 @@ namespace ConsoleApp1
     public class Program
     {
         // Methods
-        public static void Run()
-        {  
+        public static void Run(DemoService demoService)
+        {
+            // Message
+            var message = demoService.GetMessage();
+
             // Display
-            Console.WriteLine("Hello World");
+            Console.WriteLine(message);
         }
 
         public static void Main(string[] args)

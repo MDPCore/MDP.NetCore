@@ -74,6 +74,10 @@ namespace WebApplication1
         // Methods
         public ActionResult Index()
         {
+            // Message
+            this.ViewBag.Message = "Hello World";
+
+            // Return
             return View();
         }
     }
@@ -95,7 +99,7 @@ namespace WebApplication1
 <body>
 
     <!--Title-->
-    <h2>Hello World</h2>
+    <h2>@ViewBag.Message</h2>
     <hr />
 
 </body>

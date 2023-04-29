@@ -5,14 +5,14 @@ namespace WebApplication1
     public class HomeController : Controller
     {
         // Fields
-        private readonly MessageService _messageService;
+        private readonly DemoService _demoService;
 
 
         // Constructors
-        public HomeController(MessageService messageService)
+        public HomeController(DemoService demoService)
         {
             // Default
-            _messageService = messageService;
+            _demoService = demoService;
         }
 
 
@@ -20,10 +20,10 @@ namespace WebApplication1
         public ActionResult<object> Index()
         {
             // Message
-            var message = _messageService.GetValue();
+            var message = _demoService.GetMessage();
 
             // Return
-            return new { message= message };
+            return new { message = message };
         }
     }
 }

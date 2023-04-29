@@ -7,6 +7,10 @@ namespace WebApplication1
         // Methods
         public ActionResult Index()
         {
+            // Message
+            this.ViewBag.Message = "Hello World";
+
+            // Return
             return View();
         }
     }

@@ -1,16 +1,16 @@
 ﻿using MDP.Registration;
 
-namespace WebApplication1
+namespace ConsoleApp1
 {
-    [Service<MessageService>()]
-    public class MessageService
+    [Service<DemoService>()]
+    public class DemoService
     {
         // Fields
         private readonly string _message;
 
 
         // Constructors
-        public MessageService(string message)
+        public DemoService(string message)
         {
             // Default
             _message = message;
@@ -18,7 +18,7 @@ namespace WebApplication1
 
 
         // Methods
-        public string GetValue()
+        public string GetMessage()
         {
             // Return
             return _message;

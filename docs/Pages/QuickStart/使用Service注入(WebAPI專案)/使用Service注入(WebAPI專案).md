@@ -13,26 +13,26 @@ nav_order: 4
 
 ### 1. 建立新專案
 
-依照「[建立WebAPI專案](../建立WebAPI專案/建立WebAPI專案.html)」示範的操作步驟，建立新的專案「WebApplication1」。
+依照「[建立WebAPI專案](../建立WebAPI專案/建立WebAPI專案.html)」的操作步驟，建立新的WebAPI專案「WebApplication1」。
 
-### 2. 新增MessageService
+### 2. 新增DemoService
 
-在專案裡新增Modules資料夾，並加入MessageService.cs：
+在專案裡新增Modules資料夾，並加入DemoService.cs：
 
 ```csharp
 using MDP.Registration;
 
 namespace WebApplication1
 {
-    [Service<MessageService>()]
-    public class MessageService
+    [Service<DemoService>()]
+    public class DemoService
     {
         // Fields
         private readonly string _message;
 
 
         // Constructors
-        public MessageService(string message)
+        public DemoService(string message)
         {
             // Default
             _message = message;
@@ -40,7 +40,7 @@ namespace WebApplication1
 
 
         // Methods
-        public string GetValue()
+        public string GetMessage()
         {
             // Return
             return _message;
@@ -61,14 +61,14 @@ namespace WebApplication1
     public class HomeController : Controller
     {
         // Fields
-        private readonly MessageService _messageService;
+        private readonly DemoService _demoService;
 
 
         // Constructors
-        public HomeController(MessageService messageService)
+        public HomeController(DemoService demoService)
         {
             // Default
-            _messageService = messageService;
+            _demoService = demoService;
         }
 
 
@@ -76,10 +76,10 @@ namespace WebApplication1
         public ActionResult<object> Index()
         {
             // Message
-            var message = _messageService.GetValue();
+            var message = _demoService.GetMessage();
 
             // Return
-            return new { message= message };
+            return new { message = message };
         }
     }
 }
@@ -100,7 +100,7 @@ namespace WebApplication1
   },
 
   "WebApplication1": {
-    "MessageService": {
+    "DemoService": {
       "Message": "Hello World"
     }
   }
