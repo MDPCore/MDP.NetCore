@@ -36,10 +36,10 @@ namespace ConsoleApp1
     public class Program
     {
         // Methods
-        public static void Run(DemoService demoService)
+        public static void Run()
         {
             // Message
-            var message = demoService.GetMessage();
+            var message = "Hello World";
 
             // Display
             Console.WriteLine(message);
