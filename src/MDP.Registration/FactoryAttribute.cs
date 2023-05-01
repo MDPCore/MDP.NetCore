@@ -34,7 +34,7 @@ namespace MDP.Registration
         // Fields
         private string _serviceNamespace = String.Empty;
 
-        private string _serviceName = String.Empty;
+        private string? _serviceName = String.Empty;
 
 
         // Constructors

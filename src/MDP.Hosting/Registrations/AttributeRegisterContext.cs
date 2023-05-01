@@ -46,37 +46,29 @@ namespace MDP.Hosting
                 if (serviceAttribute == null) continue;
 
                 // InstanceConfigList
-                var instanceConfigList = this.FindAllServiceConfig(configuration, serviceAttribute.ServiceNamespace);
-                if (instanceConfigList == null) throw new InvalidOperationException($"{nameof(instanceConfigList)}=null");
+                var instanceConfigList = new List<IConfigurationSection>();
+                instanceConfigList.AddRange(this.FindAllServiceConfig(configuration, instanceType.Namespace!));
+                instanceConfigList.AddRange(this.FindAllServiceConfig(configuration, serviceAttribute.ServiceType.Namespace!));
 
                 // InstanceConfig
                 foreach (var instanceConfig in instanceConfigList)
                 {
-                    // DefaultInstanceConfig
+                    // RegisterDefault
                     if (string.Equals(instanceConfig.Key, instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        // RegisterDefault
+                        // Register
                         containerBuilder.Register((componentContext) =>
                         {
                             return componentContext.ResolveNamed(instanceConfig.Key, serviceAttribute.ServiceType);
                         })
                         .As(serviceAttribute.ServiceType);
-
-                        // RegisterService
-                        this.RegisterService(containerBuilder, instanceType, instanceConfig, serviceAttribute);
-
-                        // Continue
-                        continue;
                     }
 
-                    // NamedInstanceConfig
+                    // RegisterNamed
                     if (instanceConfig.Key.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        // RegisterService
+                        // Register
                         this.RegisterService(containerBuilder, instanceType, instanceConfig, serviceAttribute);
-
-                        // Continue
-                        continue;
                     }
                 }
             }
