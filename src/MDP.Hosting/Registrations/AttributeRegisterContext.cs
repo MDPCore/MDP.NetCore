@@ -53,13 +53,17 @@ namespace MDP.Hosting
                 // InstanceConfig
                 foreach (var instanceConfig in instanceConfigList)
                 {
+                    // InstanceName
+                    var instanceName = $"{instanceType.Namespace!}.{instanceConfig.Key}";
+                    if(string.IsNullOrEmpty(instanceName)==true) throw new InvalidOperationException($"{nameof(instanceName)}=null");
+
                     // RegisterDefault
                     if (string.Equals(instanceConfig.Key, instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        // Register
+                        // Default
                         containerBuilder.Register((componentContext) =>
                         {
-                            return componentContext.ResolveNamed(instanceConfig.Key, serviceAttribute.ServiceType);
+                            return componentContext.ResolveNamed(instanceName, serviceAttribute.ServiceType);
                         })
                         .As(serviceAttribute.ServiceType);
                     }
@@ -67,55 +71,63 @@ namespace MDP.Hosting
                     // RegisterNamed
                     if (instanceConfig.Key.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
                     {
-                        // Register
-                        this.RegisterService(containerBuilder, instanceType, instanceConfig, serviceAttribute);
+                        // ClassName
+                        containerBuilder.Register((componentContext) =>
+                        {
+                            return componentContext.ResolveNamed(instanceName, serviceAttribute.ServiceType);
+                        })
+                        .Named(instanceConfig.Key, serviceAttribute.ServiceType);
+
+                        // InstanceName
+                        var registration = containerBuilder.Register((componentContext) =>
+                        {
+                            // Instance
+                            var instance = this.CreateInstance(instanceType, instanceConfig, componentContext);
+                            if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
+
+                            // Return
+                            return instance;
+                        })
+                        .Named(instanceName, serviceAttribute.ServiceType);
+                        {
+                            // Singleton
+                            if (serviceAttribute.ServiceSingleton == true)
+                            {
+                                registration = registration.SingleInstance();
+                            }
+                        }
                     }
                 }
             }
         }
 
-        private void RegisterService(ContainerBuilder containerBuilder, Type instanceType, IConfigurationSection instanceConfig, ServiceAttribute serviceAttribute)
+        private object? CreateInstance(Type instanceType, IConfigurationSection instanceConfig, IComponentContext componentContext)
         {
             #region Contracts
 
-            if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
             if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
             if (instanceConfig == null) throw new ArgumentException($"{nameof(instanceConfig)}=null");
-            if (serviceAttribute == null) throw new ArgumentException($"{nameof(serviceAttribute)}=null");
+            if (componentContext == null) throw new ArgumentException($"{nameof(componentContext)}=null");
 
             #endregion
 
-            // Register
-            var registration = containerBuilder.Register((componentContext) =>
+            // ConstructorInfo
+            var constructorInfo = instanceType.GetConstructors().FirstOrDefault();
+            if (constructorInfo == null) throw new InvalidOperationException($"{nameof(constructorInfo)}=null");
+
+            // ParameterList
+            var parameterList = new List<object?>();
+            foreach (var parameterInfo in constructorInfo.GetParameters())
             {
-                // ConstructorInfo
-                var constructorInfo = instanceType.GetConstructors().FirstOrDefault();
-                if (constructorInfo == null) throw new InvalidOperationException($"{nameof(constructorInfo)}=null");
-
-                // ParameterList
-                var parameterList = new List<object?>();
-                foreach (var parameterInfo in constructorInfo.GetParameters())
-                {
-                    parameterList.Add(this.CreateParameter(parameterInfo, instanceConfig, componentContext));
-                }
-
-                // Instance
-                var instance = constructorInfo.Invoke(parameterList.ToArray());
-                if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
-
-                // Return
-                return instance;
-            });
-            if (registration == null) throw new InvalidOperationException($"{nameof(registration)}=null");
-
-            // As
-            registration = registration.Named(instanceConfig.Key, serviceAttribute.ServiceType);
-
-            // Singleton
-            if (serviceAttribute.ServiceSingleton == true)
-            {
-                registration = registration.SingleInstance();
+                parameterList.Add(this.CreateParameter(parameterInfo, instanceConfig, componentContext));
             }
+
+            // Instance
+            var instance = constructorInfo.Invoke(parameterList.ToArray());
+            if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
+
+            // Return
+            return instance;
         }
 
         private object? CreateParameter(ParameterInfo parameterInfo, IConfigurationSection instanceConfig, IComponentContext componentContext)
