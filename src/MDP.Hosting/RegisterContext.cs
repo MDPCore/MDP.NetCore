@@ -12,75 +12,8 @@ namespace MDP.Hosting
 {
     public abstract partial class RegisterContext
     {
-        // Fields
-        private readonly static object _syncLock = new object();
-
-        private static List<Assembly>? _moduleAssemblyList = null;
-
-        private static List<Type>? _moduleTypeList = null;
-
-
         // Methods
-        protected List<Type> FindAllModuleType()
-        {
-            // Sync
-            lock (_syncLock)
-            {
-                // Require
-                if (_moduleTypeList != null) return _moduleTypeList;
-
-                // ModuleAssemblyList
-                var moduleAssemblyList = this.FindAllModuleAssembly();
-                if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-
-                // ModuleTypeList
-                var moduleTypeList = new List<Type>();
-                foreach (var moduleAssembly in moduleAssemblyList)
-                {
-                    moduleTypeList.AddRange(moduleAssembly.GetTypes());
-                }
-
-                // Attach
-                _moduleTypeList = moduleTypeList;
-
-                // Return
-                return _moduleTypeList;
-            }
-        }
-
-        private List<Assembly> FindAllModuleAssembly(string moduleAssemblyFileName = @"*.dll")
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
-
-            #endregion
-
-            // Sync
-            lock (_syncLock)
-            {
-                // Require
-                if (_moduleAssemblyList != null) return _moduleAssemblyList;
-
-                // ModuleAssembly
-                var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
-                if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-
-                // EntryAssembly
-                var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
-                if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
-                if (moduleAssemblyList.Contains(entryAssembly) == false) moduleAssemblyList.Add(entryAssembly);
-
-                // Attach
-                _moduleAssemblyList = moduleAssemblyList;
-
-                // Return
-                return _moduleAssemblyList;
-            }
-        }
-
-
-        protected IConfigurationSection? FindServiceConfig(IConfiguration configuration, string serviceNamespace, string? serviceName = null)
+        protected IConfigurationSection? FindServiceConfig(IConfiguration configuration, string serviceNamespace)
         {
             #region Contracts
 
@@ -93,7 +26,25 @@ namespace MDP.Hosting
             var namespaceConfig = configuration.GetSection(serviceNamespace);
             if (namespaceConfig == null) return null;
             if (namespaceConfig.Exists() == false) return null;
-            if (string.IsNullOrEmpty(serviceName) == true) return namespaceConfig;
+
+            // Return
+            return namespaceConfig;
+        }
+
+        protected IConfigurationSection? FindServiceConfig(IConfiguration configuration, string serviceNamespace, string serviceName)
+        {
+            #region Contracts
+
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+            if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
+            if (string.IsNullOrEmpty(serviceName) == true) throw new ArgumentException($"{nameof(serviceName)}=null");
+
+            #endregion
+
+            // NamespaceConfig
+            var namespaceConfig = configuration.GetSection(serviceNamespace);
+            if (namespaceConfig == null) return null;
+            if (namespaceConfig.Exists() == false) return null;
 
             // ServiceConfig
             var serviceConfig = namespaceConfig.GetSection(serviceName);

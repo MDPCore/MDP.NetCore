@@ -129,17 +129,16 @@ namespace MDP.AspNetCore
             return mvcBuilder;
         }            
 
-        private static void AddMvcPart(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.dll")
+        private static void AddMvcPart(this IMvcBuilder mvcBuilder)
         {
             #region Contracts
 
             if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-            if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
-
+           
             #endregion
 
             // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
+            var moduleAssemblyList = CLK.Reflection.Assembly.FindAllAssembly();
             if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
 
             // RegisteredAssembly
@@ -147,27 +146,33 @@ namespace MDP.AspNetCore
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
 
-            // ApplicationPart
+            // PartAssembly
+            var partAssemblyList = new List<Assembly>();
             foreach (var moduleAssembly in moduleAssemblyList)
             {
                 if (registeredAssemblyList.Contains(moduleAssembly) == false)
                 {
-                    mvcBuilder.AddApplicationPart(moduleAssembly);
+                    partAssemblyList.Add(moduleAssembly);
                 }
+            }
+
+            // ApplicationPart
+            foreach (var partAssembly in partAssemblyList)
+            {
+                mvcBuilder.AddApplicationPart(partAssembly);
             }
         }
 
-        private static void AddMvcAsset(this IMvcBuilder mvcBuilder, string moduleAssemblyFileName = @"*.dll")
+        private static void AddMvcAsset(this IMvcBuilder mvcBuilder)
         {
             #region Contracts
 
             if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-            if (string.IsNullOrEmpty(moduleAssemblyFileName) == true) throw new ArgumentException(nameof(moduleAssemblyFileName));
-
+         
             #endregion
 
             // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.GetAllAssembly(moduleAssemblyFileName);
+            var moduleAssemblyList = CLK.Reflection.Assembly.FindAllAssembly();
             if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
 
             // RegisteredAssembly
@@ -176,7 +181,7 @@ namespace MDP.AspNetCore
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
 
             // AssetAssembly
-            var assetAssemblyList = new List<Assembly>();
+            var assetAssemblyList = new List<Assembly>();            
             foreach (var registeredAssembly in registeredAssemblyList)
             {
                 if (assetAssemblyList.Contains(registeredAssembly) == false)
@@ -186,11 +191,10 @@ namespace MDP.AspNetCore
             }
             foreach (var moduleAssembly in moduleAssemblyList)
             {
-                if (assetAssemblyList.Contains(moduleAssembly) == true)
+                if (assetAssemblyList.Contains(moduleAssembly) == false)
                 {
-                    assetAssemblyList.Remove(moduleAssembly);
+                    assetAssemblyList.Add(moduleAssembly);
                 }
-                assetAssemblyList.Add(moduleAssembly);
             }
 
             // FileProviderList

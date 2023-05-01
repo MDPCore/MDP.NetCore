@@ -35,7 +35,7 @@ namespace MDP.Hosting
             #endregion
 
             // InstanceTypeList
-            var instanceTypeList = this.FindAllModuleType();
+            var instanceTypeList = CLK.Reflection.Type.FindAllType();
             if (instanceTypeList == null) throw new InvalidOperationException($"{nameof(instanceTypeList)}=null");
 
             // InstanceType

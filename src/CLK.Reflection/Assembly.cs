@@ -1,39 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace CLK.Reflection
 {
     public static class Assembly
     {
+        // Fields
+        private readonly static object _syncLock = new object();
+
+        private static ReadOnlyCollection<System.Reflection.Assembly>? _assemblyList = null;
+
+
         // Methods
-        public static List<System.Reflection.Assembly> GetAllAssembly(string fileName, string? searchPath = null)
+        public static IList<System.Reflection.Assembly> FindAllAssembly()
         {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(fileName) == true) throw new ArgumentException($"{nameof(fileName)}=null");
-
-            #endregion
-
-            // Result
-            var assemblyList = new List<System.Reflection.Assembly>();
-
-            // AssemblyFileList
-            var assemblyFileList = CLK.IO.File.GetAllFile(fileName, searchPath);
-            if (assemblyFileList == null) throw new InvalidOperationException($"{nameof(assemblyFileList)}=null");
-
-            // AssemblyList 
-            foreach (var moduleAssemblyFile in assemblyFileList)
+            // Sync
+            lock (_syncLock)
             {
-                // Assembly
-                var assembly = System.Reflection.Assembly.LoadFrom(moduleAssemblyFile.FullName);
-                if (assembly == null) throw new InvalidOperationException($"{nameof(assembly)}=null");
+                // Require
+                if (_assemblyList != null) return _assemblyList;
 
-                // Add
-                assemblyList.Add(assembly);
-            }
+                // AssemblyFileList
+                var assemblyFileList = CLK.IO.File.GetAllFile("*.dll");
+                if (assemblyFileList == null) throw new InvalidOperationException($"{nameof(assemblyFileList)}=null");
 
-            // Return
-            return assemblyList;
+                // AssemblyList 
+                var assemblyList = new List<System.Reflection.Assembly>();
+                foreach (var assemblyFile in assemblyFileList)
+                {
+                    // Assembly
+                    var assembly = System.Reflection.Assembly.LoadFrom(assemblyFile.FullName);
+                    if (assembly == null) throw new InvalidOperationException($"{nameof(assembly)}=null");
+
+                    // Add
+                    assemblyList.Add(assembly);
+                }
+
+                // EntryAssembly
+                var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
+                if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
+                if (assemblyList.Contains(entryAssembly) == false) assemblyList.Add(entryAssembly);
+
+                // Attach
+                _assemblyList = assemblyList.AsReadOnly();
+
+                // Return
+                return _assemblyList;
+            }           
         }
     }
 }

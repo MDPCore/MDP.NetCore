@@ -7,21 +7,21 @@ namespace CLK.Reflection
     public static class TypeExtensions
     {
         // Methods
-        public static ConstructorInfo FindConstructor(this Type instanceType)
+        public static ConstructorInfo FindConstructor(this System.Type type)
         {
             #region Contracts
 
-            if (instanceType == null) throw new ArgumentException(nameof(instanceType));
+            if (type == null) throw new ArgumentException(nameof(type));
 
             #endregion
 
             // Require
-            if (instanceType.IsAbstract == true) throw new InvalidOperationException($"The '{instanceType.FullName}' is abstract.");
+            if (type.IsAbstract == true) throw new InvalidOperationException($"The '{type.FullName}' is abstract.");
 
             // ConstructorInfoList
-            var constructorInfoList = instanceType.GetConstructors().ToList();
-            if (constructorInfoList.Count == 0) throw new InvalidOperationException($"Not having constructor in the type '{instanceType.FullName}' is not supported.");
-            if (constructorInfoList.Count >= 2) throw new InvalidOperationException($"Having multiple constructor in the type '{instanceType.FullName}' is not supported.");
+            var constructorInfoList = type.GetConstructors().ToList();
+            if (constructorInfoList.Count == 0) throw new InvalidOperationException($"Not having constructor in the type '{type.FullName}' is not supported.");
+            if (constructorInfoList.Count >= 2) throw new InvalidOperationException($"Having multiple constructor in the type '{type.FullName}' is not supported.");
 
             // ConstructorInfo
             var constructorInfo = constructorInfoList.First();
@@ -31,19 +31,19 @@ namespace CLK.Reflection
             return constructorInfo;
         }
 
-        public static MethodInfo? FindMethod(this Type instanceType, string methodName)
+        public static MethodInfo? FindMethod(this System.Type type, string methodName)
         {
             #region Contracts
 
-            if (instanceType == null) throw new ArgumentException(nameof(instanceType));
+            if (type == null) throw new ArgumentException(nameof(type));
             if (string.IsNullOrEmpty(methodName) == true) throw new ArgumentException(nameof(methodName));
 
             #endregion
 
             // MethodInfoList
-            var methodInfoList = instanceType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).Where(method => method.Name.Equals(methodName, StringComparison.OrdinalIgnoreCase)).ToList();
+            var methodInfoList = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static).Where(method => method.Name.Equals(methodName, StringComparison.OrdinalIgnoreCase)).ToList();
             if (methodInfoList.Count == 0) return null;
-            if (methodInfoList.Count >= 2) throw new InvalidOperationException($"Having multiple overloads of method '{methodName}' in the type '{instanceType.FullName}' is not supported.");
+            if (methodInfoList.Count >= 2) throw new InvalidOperationException($"Having multiple overloads of method '{methodName}' in the type '{type.FullName}' is not supported.");
 
             // MethodInfo
             var methodInfo = methodInfoList.First();

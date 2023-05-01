@@ -38,7 +38,7 @@ namespace MDP.AspNetCore
             #endregion
 
             // FactoryTypeList
-            var factoryTypeList = this.FindAllModuleType();
+            var factoryTypeList = CLK.Reflection.Type.FindAllType();
             if (factoryTypeList == null) throw new InvalidOperationException($"{nameof(factoryTypeList)}=null");
 
             // FactoryType
