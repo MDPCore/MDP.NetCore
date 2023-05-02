@@ -7,7 +7,7 @@ nav_order: 2
 
 # 服務註冊(ServiceAttribute)
 
-在MDP.Net核心模組中，「服務註冊模組」提供ServiceAttribute進行服務註冊。依照下列的類別宣告內容及設定檔內容，就可以在系統裡註冊Type(FixedDemoService)，為Service(DemoService)的Instance。
+在MDP.Net核心模組中，「服務註冊模組」提供ServiceAttribute進行服務註冊。依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(FixedDemoService)為Service(DemoService)的Instance。
 
 ```csharp
 using MDP.Registration;
@@ -28,14 +28,14 @@ namespace WebApplication1
     "FixedDemoService": {
       "Message": "Hello World 123"
     },
-	"FixedDemoService[A]": {
+    "FixedDemoService[A]": {
       "Message": "Hello World AAA"
     }
   }
 }
 ```
 
-預設「服務註冊模組」參考Configuration設定檔內容，依照下列規則註冊Type為Service的Instance：
+預設「服務註冊模組」參考Configuration參數設定，依照下列規則註冊Type為Service的Instance：
 
 ```
 1. 註冊Type為Service的具名Instance：Named={Type.Namespace}.{Type.ClassNameType.ClassName}[*]
@@ -57,7 +57,7 @@ namespace WebApplication1
 
 ### 2. 新增DemoService
 
-在專案裡新增Modules資料夾，並加入DemoService.cs：
+在專案裡新增Modules資料夾，並加入DemoService.cs。
 
 ```csharp
 using MDP.Registration;
@@ -75,7 +75,7 @@ namespace WebApplication1
 
 ### 3. 新增FixedDemoService
 
-在專案裡的Modules資料夾，加入FixedDemoService.cs：
+在專案裡的Modules資料夾，加入FixedDemoService.cs，註冊FixedDemoService為DemoService的Instance。
 
 ```csharp
 using MDP.Registration;
@@ -109,7 +109,7 @@ namespace WebApplication1
 
 ### 4. 修改HomeController
 
-在專案裡修改HomeController.cs：
+在專案裡修改HomeController.cs，注入DemoService的預設Instance。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -145,7 +145,7 @@ namespace WebApplication1
 
 ### 5. 修改appsettings.json
 
-在專案裡修改appsettings.json：
+在專案裡修改appsettings.json，加入FixedDemoService的註冊參數設定。
 
 ```json
 {
@@ -167,7 +167,7 @@ namespace WebApplication1
 
 ### 6. 執行專案
 
-完成以上操作步驟後，就已成功在MvcPage專案中使用服務註冊(ServiceAttribute)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World"的訊息。
+完成以上操作步驟後，就已成功在MvcPage專案中使用服務註冊(ServiceAttribute)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World"的訊息，這個由FixedDemoService所提供的訊息內容。
 
 ## 範例檔案
 

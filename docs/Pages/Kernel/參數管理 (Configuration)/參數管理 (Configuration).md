@@ -26,7 +26,7 @@ nav_order: 1
 
 ### 2. 新增DemoService
 
-在專案裡新增Modules資料夾，並加入DemoService.cs：
+在專案裡新增Modules資料夾，並加入DemoService.cs。註冊DemoService為自己的Instance，且接收從Configuration參數設定注入的message。
 
 ```csharp
 using MDP.Registration;
@@ -60,7 +60,7 @@ namespace WebApplication1
 
 ### 3. 修改HomeController
 
-在專案裡修改HomeController.cs：
+在專案裡修改HomeController.cs，注入DemoService的預設Instance。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -96,7 +96,7 @@ namespace WebApplication1
 
 ### 4. 修改appsettings.json
 
-在專案裡修改appsettings.json：
+在專案裡修改appsettings.json。
 
 ```json
 {
@@ -110,7 +110,7 @@ namespace WebApplication1
 }
 ```
 
-在專案裡新增config\Development資料夾，並加入appsettings.json：
+在專案裡新增config\Development資料夾，並加入appsettings.json。
 
 ```json
 {
@@ -122,7 +122,7 @@ namespace WebApplication1
 }
 ```
 
-在專案裡新增config\Staging資料夾，並加入appsettings.json：
+在專案裡新增config\Staging資料夾，並加入appsettings.json。
 
 ```json
 {
@@ -134,7 +134,7 @@ namespace WebApplication1
 }
 ```
 
-在專案裡新增config\Production資料夾，並加入appsettings.json：
+在專案裡新增config\Production資料夾，並加入appsettings.json。
 
 ```json
 {
@@ -148,19 +148,19 @@ namespace WebApplication1
 
 ### 5. 執行專案
 
-修改Properties\launchSettings.json內容，設定執行環境為"Development"。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World 1 - Development"，這個來自config\Development\appsettings.json設定檔的訊息。
+修改Properties\launchSettings.json，並設定執行環境為"Development"。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World 1 - Development"，這個來自config\Development\appsettings.json設定檔的訊息。
 
 ```
 "ASPNETCORE_ENVIRONMENT": "Development"
 ```
 
-修改Properties\launchSettings.json內容，設定執行環境為"Staging"。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World 2 - Staging"，這個來自config\Staging\appsettings.json設定檔的訊息。
+修改Properties\launchSettings.json，並設定執行環境為"Staging"。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World 2 - Staging"，這個來自config\Staging\appsettings.json設定檔的訊息。
 
 ```
 "ASPNETCORE_ENVIRONMENT": "Staging"
 ```
 
-修改Properties\launchSettings.json內容，設定執行環境為"Production"。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World 3 - Production"，這個來自config\Production\appsettings.json設定檔的訊息。
+修改Properties\launchSettings.json，並設定執行環境為"Production"。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World 3 - Production"，這個來自config\Production\appsettings.json設定檔的訊息。
 
 ```
 "ASPNETCORE_ENVIRONMENT": "Production"

@@ -17,7 +17,7 @@ nav_order: 6
 
 ### 2. 新增DemoService
 
-在專案裡新增Modules資料夾，並加入DemoService.cs：
+在專案裡新增Modules資料夾，並加入DemoService.cs。
 
 ```csharp
 using MDP.Registration;
@@ -51,7 +51,7 @@ namespace ConsoleApp1
 
 ### 3. 修改Program.cs
 
-在專案裡修改Program.cs：
+在專案裡修改Program.cs。
 
 ```csharp
 using Microsoft.Extensions.Hosting;
@@ -82,7 +82,7 @@ namespace ConsoleApp1
 
 ### 4. 修改appsettings.json
 
-在專案裡修改appsettings.json：
+在專案裡修改appsettings.json。
 
 ```json
 {

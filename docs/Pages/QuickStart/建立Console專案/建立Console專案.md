@@ -21,7 +21,7 @@ nav_order: 3
 
 ### 2. 新增NuGet套件
 
-在專案裡使用NuGet套件管理員，新增下列NuGet套件：
+在專案裡使用NuGet套件管理員，新增下列NuGet套件。
 
 ```
 MDP.NetCore
@@ -29,7 +29,7 @@ MDP.NetCore
 
 ### 3. 修改Program.cs
 
-在專案裡修改Program.cs：
+在專案裡修改Program.cs。
 
 ```csharp
 using Microsoft.Extensions.Hosting;
@@ -60,7 +60,7 @@ namespace ConsoleApp1
 
 ### 4. 加入appsettings.json
 
-在專案裡加入appsettings.json，並設置為永遠複製到輸出目錄：
+在專案裡加入appsettings.json，並設置為永遠複製到輸出目錄。
 
 ```json
 {

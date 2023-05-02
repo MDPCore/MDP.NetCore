@@ -17,7 +17,7 @@ nav_order: 5
 
 ### 2. 新增DemoService
 
-在專案裡新增Modules資料夾，並加入DemoService.cs：
+在專案裡新增Modules資料夾，並加入DemoService.cs。
 
 ```csharp
 using MDP.Registration;
@@ -51,7 +51,7 @@ namespace WebApplication1
 
 ### 3. 修改HomeController
 
-在專案裡修改HomeController.cs：
+在專案裡修改HomeController.cs。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -87,7 +87,7 @@ namespace WebApplication1
 
 ### 4. 修改appsettings.json
 
-在專案裡修改appsettings.json：
+在專案裡修改appsettings.json。
 
 ```json
 {

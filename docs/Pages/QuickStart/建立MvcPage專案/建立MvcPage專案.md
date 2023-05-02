@@ -21,7 +21,7 @@ nav_order: 1
 
 ### 2. 新增NuGet套件
 
-在專案裡使用NuGet套件管理員，新增下列NuGet套件：
+在專案裡使用NuGet套件管理員，新增下列NuGet套件。
 
 ```
 MDP.AspNetCore
@@ -29,7 +29,7 @@ MDP.AspNetCore
 
 ### 3. 修改Program.cs
 
-在專案裡修改Program.cs為下列程式碼：
+在專案裡修改Program.cs為下列程式碼。
 
 ```csharp
 using Microsoft.Extensions.Hosting;
@@ -50,7 +50,7 @@ namespace WebApplication1
 
 ### 4. 修改appsettings.json
 
-在專案裡修改appsettings.json，並移除appsettings.Development.json：
+在專案裡修改appsettings.json，並移除appsettings.Development.json。
 
 ```json
 {
@@ -66,7 +66,7 @@ namespace WebApplication1
 
 ### 5. 新增HomeController
 
-在專案裡新增Controllers資料夾，並加入HomeController.cs：
+在專案裡新增Controllers資料夾，並加入HomeController.cs。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -90,7 +90,7 @@ namespace WebApplication1
 
 ### 6. 新增Index.cshtml
 
-在專案裡新增Views\Home資料夾，並加入Index.cshtml：
+在專案裡新增Views\Home資料夾，並加入Index.cshtml。
 
 ```html
 <!DOCTYPE html>
