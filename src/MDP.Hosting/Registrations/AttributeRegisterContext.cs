@@ -162,7 +162,15 @@ namespace MDP.Hosting
                 var instanceName = instanceConfig.GetValue<string>(parameterInfo.Name);
 
                 // Instance
-                if (string.IsNullOrEmpty(instanceName) == false)
+                if (string.IsNullOrEmpty(instanceName) == true)
+                {
+                    if (componentContext.TryResolve(parameterInfo.ParameterType, out var instance) == true)
+                    {
+                        // Return
+                        return instance;
+                    }
+                }
+                else
                 {
                     if (componentContext.TryResolveNamed(instanceName, parameterInfo.ParameterType, out var instance) == true)
                     {

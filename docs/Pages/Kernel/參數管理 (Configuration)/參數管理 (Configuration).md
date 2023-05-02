@@ -7,16 +7,16 @@ nav_order: 1
 
 # 參數管理(Configuration)
 
-在MDP.Net的核心模組中，「參數管理模組」預設參考環境變數所設定的environmentName，依序載入下列Configuration設定檔：
+在MDP.Net核心模組中，「參數管理模組」預設參考執行環境(Environment)，依序載入下列Configuration設定檔：
 
 - <EntryDir>\appsettings.json
-- <EntryDir>\*.{environmentName}.json
+- <EntryDir>\*.{Environment}.json
 - <EntryDir>\config\appsettings.json
-- <EntryDir>\config\*.{environmentName}.json
-- <EntryDir>\config\{environmentName}\*.json
-- {environmentName}：Development\Staging\Production
+- <EntryDir>\config\*.{Environment}.json
+- <EntryDir>\config\{Environment}\*.json
+- {Environment}：Development\Staging\Production
 
-本篇文件介紹，如何使用MDP.Net的參數管理(Configuration)，依照環境變數進行參數設定切換。
+本篇文件介紹，如何使用MDP.Net的參數管理(Configuration)，依照執行環境進行參數設定切換。
 
 ## 操作步驟
 

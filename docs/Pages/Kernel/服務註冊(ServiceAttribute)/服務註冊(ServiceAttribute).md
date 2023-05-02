@@ -7,7 +7,7 @@ nav_order: 2
 
 # 服務註冊(ServiceAttribute)
 
-在MDP.Net的核心模組中，「服務註冊模組」提供ServiceAttribute進行服務註冊。依照下列的類別宣告內容，就可以在系統裡將Type(FixedDemoService)，宣告為Service(DemoService)。
+在MDP.Net核心模組中，「服務註冊模組」提供ServiceAttribute進行服務註冊。依照下列的類別宣告內容及設定檔內容，就可以在系統裡註冊Type(FixedDemoService)，為Service(DemoService)的Instance。
 
 ```csharp
 using MDP.Registration;
@@ -22,19 +22,32 @@ namespace WebApplication1
 }
 ```
 
-完成類別宣告之後，還需要在Configuration裡進行實例註冊。依照下列的參數設定內容，就可以在系統裡註冊一個Instance(FixedDemoService)，提供給服務注入模組使用。
-
 ```json
 {
   "WebApplication1": {
     "FixedDemoService": {
-      "Message": "Hello World"
+      "Message": "Hello World 123"
+    },
+	"FixedDemoService[A]": {
+      "Message": "Hello World AAA"
     }
   }
 }
 ```
 
-本篇文件介紹，如何使用MDP.Net的服務註冊(ServiceAttribute)進行服務註冊。
+預設「服務註冊模組」參考Configuration設定檔內容，依照下列規則註冊Type為Service的Instance：
+
+```
+1. 註冊Type為Service的具名Instance：Named={Type.Namespace}.{Type.ClassNameType.ClassName}[*]
+2. 註冊Type為Service的具名Instance：Named={Type.ClassName}[*]
+3. 註冊Type為Service的預設Instance
+4. 上述2、3，最終都是回傳1的具名Instance
+5. 具有[*]別名的Type，不會註冊3的預設Instance
+6. 範例[*]別名的Type："FixedDemoService[A]"、"FixedDemoService[1]"
+7. Configuration裡Namespace的每個Type，都會依照上列步驟註冊Type為Service的Instance。
+```
+
+本篇文件介紹，如何使用MDP.Net核心模組中，「服務註冊模組」所提供的ServiceAttribute進行服務註冊。
 
 ## 操作步驟
 
