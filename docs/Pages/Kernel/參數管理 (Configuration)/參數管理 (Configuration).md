@@ -7,7 +7,7 @@ nav_order: 1
 
 # 參數管理(Configuration)
 
-在MDP.Net核心模組中，「參數管理模組」預設參考執行環境(Environment)，依序載入下列Configuration設定檔：
+在MDP.Net核心模組中的「參數管理模組」，參考執行環境(Environment)，依序載入下列Configuration設定檔：
 
 - <EntryDir>\appsettings.json
 - <EntryDir>\*.{Environment}.json
@@ -16,7 +16,7 @@ nav_order: 1
 - <EntryDir>\config\{Environment}\*.json
 - {Environment}：Development\Staging\Production
 
-本篇文件介紹，如何使用MDP.Net的參數管理(Configuration)，依照執行環境進行參數設定切換。
+本篇文件介紹，如何使用MDP.Net核心模組中的「參數管理模組」，依照執行環境進行參數設定切換。
 
 ## 操作步驟
 
@@ -60,7 +60,7 @@ namespace WebApplication1
 
 ### 3. 修改HomeController
 
-在專案裡修改HomeController.cs，注入DemoService的預設Instance。
+在專案裡修改HomeController.cs，注入DemoService的TypedInstance。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;

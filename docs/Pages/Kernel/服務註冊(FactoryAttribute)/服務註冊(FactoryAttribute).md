@@ -40,7 +40,7 @@ namespace WebApplication1
 }
 ```
 
-預設「服務註冊模組」提供的FactoryAttribute，參考Configuration參數設定，依照下列規則啟動服務註冊：
+「服務註冊模組」提供的FactoryAttribute，參考Configuration參數設定，依照下列規則啟動服務註冊：
 
 ```
 1. 取得標註FactoryAttribute的FactoryClass。
