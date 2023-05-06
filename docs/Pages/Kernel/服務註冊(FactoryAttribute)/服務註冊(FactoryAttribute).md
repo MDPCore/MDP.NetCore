@@ -86,13 +86,6 @@ namespace WebApplication1
         // Methods
         public void ConfigureService(WebApplicationBuilder webApplicationBuilder, Setting setting)
         {
-            #region Contracts
-
-            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
-            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
-
-            #endregion
-
             // UseSerilog
             webApplicationBuilder.Host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
             {

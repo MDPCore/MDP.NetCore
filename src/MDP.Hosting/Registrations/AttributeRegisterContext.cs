@@ -112,7 +112,7 @@ namespace MDP.Hosting
             #endregion
 
             // ConstructorInfo
-            var constructorInfo = instanceType.GetConstructors().FirstOrDefault();
+            var constructorInfo = instanceType.GetConstructors().MaxBy(o=>o.GetParameters().Length);
             if (constructorInfo == null) throw new InvalidOperationException($"{nameof(constructorInfo)}=null");
 
             // ParameterList

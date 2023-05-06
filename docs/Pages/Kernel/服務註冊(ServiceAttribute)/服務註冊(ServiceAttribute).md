@@ -38,11 +38,11 @@ namespace WebApplication1
 預設「服務註冊模組」提供的ServiceAttribute，參考Configuration參數設定，依照下列規則註冊Type為Service的Instance：
 
 ```
-1. 註冊Type為Service的具名Instance：Named={Type.Namespace}.{Type.ClassNameType.ClassName}[*]
-2. 註冊Type為Service的具名Instance：Named={Type.ClassName}[*]
-3. 註冊Type為Service的預設Instance
-4. 上述2、3，最終都是回傳1的具名Instance
-5. 具有[*]別名的Type，不會註冊3的預設Instance
+1. 註冊Type為Service的NamedInstance：Named={Type.Namespace}.{Type.ClassNameType.ClassName}[*]
+2. 註冊Type為Service的NamedInstance：Named={Type.ClassName}[*]
+3. 註冊Type為Service的TypedInstance：Typed={Type}
+4. 上述2、3，最終都是回傳1的NamedInstance
+5. 具有[*]別名的Type，不會註冊3的TypedInstance
 6. 範例[*]別名的Type："FixedDemoService[A]"、"FixedDemoService[1]"
 7. Configuration裡Namespace的每個Type，都會依照上列步驟註冊Type為Service的Instance。
 ```
