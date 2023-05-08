@@ -29,14 +29,6 @@ namespace MDP.AspNetCore
             }
             host.UseHook(HookMiddlewareDefaults.EnteringHook);
 
-            // Swagger
-            if (host.Environment.IsDevelopment() == true)
-            {
-                host.UseSwagger();
-                host.UseSwaggerUI(options => { options.DefaultModelsExpandDepth(-1); });
-                host.UseSwaggerDefaults();
-            }
-
             // Network 
             host.UsePathBase();
             host.UseForwardedHeaders();
