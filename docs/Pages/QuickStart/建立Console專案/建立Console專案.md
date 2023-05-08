@@ -76,7 +76,7 @@ namespace ConsoleApp1
 
 ### 5. 執行專案
 
-完成以上操作步驟後，就已成功建立使用MDP.Net的Console專案。按F5執行專案，可以在執行視窗中看到"Hello World"的訊息。
+完成以上操作步驟後，就已成功建立使用MDP.Net的Console專案。按F5執行專案，可以在執行視窗看到"Hello World"的訊息。
 
 ## 範例檔案
 

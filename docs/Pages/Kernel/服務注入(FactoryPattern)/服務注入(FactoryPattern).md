@@ -7,9 +7,9 @@ nav_order: 4
 
 # 服務注入(FactoryPattern)
 
-在MDP.Net核心模組中，「服務注入模組」參考Configuration參數設定、及系統內註冊的服務，依照下列規則進行服務注入：
+在MDP.Net核心模組中，「服務注入模組」參考Configuration參數設定及系統內註冊的服務，依照下列規則進行服務注入：
 
-- 注入至「使用ServiceAttribute註冊的Type」的建構子。
+- 注入至「ServiceAttribute註冊的Type」的建構子。
 ```
 1. 使用Type裡參數(Parameter)數量最多的建構子，進行服務注入。
 2. 建構子的參數類型(Parameter.Type)為基本數據，使用參數名稱(Parameter.Name)取得Configuration參數內容，轉型Configuration參數內容為基本數據後注入。
@@ -36,12 +36,12 @@ nav_order: 4
 
 在專案裡新增Modules資料夾，並加入DemoContext.cs、DemoService.cs、DemoSetting.cs。
 
-- DemoContext：使用ServiceAttribute註冊自己Type的Instance，由建構子接受下列的服務注入。
-  - DemoService demoServiceByTyped：注入Type為DemoService的TypedInstance。
-  - DemoService demoServiceByNamed：注入Name為DemoService的NamedInstance。
-  - DemoService demoServiceByNamed001：注入Name為DemoService[001]的NamedInstance。
-  - DemoSetting demoSetting：注入反射生成後，綁定(Bind)Configuration參數內容的Instance。
-  - string message：轉型Configuration參數內容為基本數據後注入。
+DemoContext：使用ServiceAttribute註冊自己Type的Instance，由建構子接受下列的服務注入。
+- DemoService demoServiceByTyped：注入Type為DemoService的TypedInstance。
+- DemoService demoServiceByNamed：注入Name為DemoService的NamedInstance。
+- DemoService demoServiceByNamed001：注入Name為DemoService[001]的NamedInstance。
+- DemoSetting demoSetting：注入反射生成後，綁定(Bind)Configuration參數內容的Instance。
+- string message：轉型Configuration參數內容為基本數據後注入。
 
 ```csharp
 using MDP.Registration;
@@ -109,8 +109,8 @@ namespace WebApplication1
 }
 ```
 
-- DemoService：使用ServiceAttribute註冊自己Type的Instance，由建構子接受下列的服務注入。
-  - string message：轉型Configuration參數內容為基本數據後注入。
+DemoService：使用ServiceAttribute註冊自己Type的Instance，由建構子接受下列的服務注入。
+- string message：轉型Configuration參數內容為基本數據後注入。
     
 ```csharp
 using MDP.Registration;
@@ -142,7 +142,7 @@ namespace WebApplication1
 }
 ```
 
-- DemoSetting：做為服務注入Context時，綁定(Bind)Configuration參數內容的Instance。
+DemoSetting：做為服務注入Context時，綁定(Bind)Configuration參數內容的Instance。
 
 ```csharp
 namespace WebApplication1
@@ -253,7 +253,7 @@ namespace WebApplication1
 
 ### 6. 執行專案
 
-完成以上操作步驟後，就已成功在MvcPage專案中使用服務注入(FactoryPattern)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到下列由DemoContext所提供的訊息內容。
+完成以上操作步驟後，就已成功在MvcPage專案中使用服務注入(FactoryPattern)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在網頁內容看到下列由DemoContext所提供的訊息內容。
 
 ```
 Hello World (DemoService) by DemoServiceByTyped.GetMessage()

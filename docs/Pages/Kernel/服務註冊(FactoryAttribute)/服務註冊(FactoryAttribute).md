@@ -156,12 +156,7 @@ namespace WebApplication1
 
 ```json
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.*": "Warning",
-      "System.*": "Warning"
-    },
+  "Logging": {    
     "Serilog": {
       "LogFile":"logs/log.txt" 
     }
@@ -171,7 +166,7 @@ namespace WebApplication1
 
 ### 6. 執行專案
 
-完成以上操作步驟後，就已成功在MvcPage專案中使用服務註冊(FactoryAttribute)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World"的訊息。而在專案bin目錄底下的logs\log.txt裡，也可以看到"Hello World"的Log訊息。
+完成以上操作步驟後，就已成功在MvcPage專案中使用服務註冊(FactoryAttribute)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在網頁內容看到"Hello World"的訊息。而在專案bin目錄底下的logs\log.txt裡，也可以看到"Hello World"的Log訊息。
 
 ```
 2023-05-06 13:13:42.813 +08:00 [ERR] Hello World

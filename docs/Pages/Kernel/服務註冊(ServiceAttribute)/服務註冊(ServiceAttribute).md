@@ -35,7 +35,7 @@ namespace WebApplication1
 }
 ```
 
-「服務註冊模組」提供的ServiceAttribute，參考Configuration參數設定，依照下列規則註冊Type為Service的Instance：
+「服務註冊模組」所提供的ServiceAttribute，參考Configuration參數設定，依照下列規則在系統裡註冊Type為Service的Instance：
 
 ```
 1. 註冊Type為Service的NamedInstance：Named={Type.Namespace}.{Type.ClassNameType.ClassName}[*]
@@ -148,14 +148,6 @@ namespace WebApplication1
 
 ```json
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.*": "Warning",
-      "System.*": "Warning"
-    }
-  },
-
   "WebApplication1": {
     "FixedDemoService": {
       "Message": "Hello World"
@@ -166,7 +158,7 @@ namespace WebApplication1
 
 ### 6. 執行專案
 
-完成以上操作步驟後，就已成功在MvcPage專案中使用服務註冊(ServiceAttribute)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World"的訊息，這個由FixedDemoService所提供的訊息內容。
+完成以上操作步驟後，就已成功在MvcPage專案中使用服務註冊(ServiceAttribute)。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在網頁內容看到"Hello World"的訊息，這個由FixedDemoService所提供的訊息內容。
 
 ## 範例檔案
 

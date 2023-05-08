@@ -91,14 +91,6 @@ namespace WebApplication1
 
 ```json
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.*": "Warning",
-      "System.*": "Warning"
-    }
-  },
-
   "WebApplication1": {
     "DemoService": {
       "Message": "Hello World"
@@ -109,7 +101,7 @@ namespace WebApplication1
 
 ### 5. 執行專案
 
-完成以上操作步驟後，就已成功在MvcPage專案中使用Service注入。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在結果視窗中看到"Hello World"的訊息。
+完成以上操作步驟後，就已成功在MvcPage專案中使用Service注入。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在網頁內容看到"Hello World"的訊息。
 
 ## 範例檔案
 
