@@ -2,35 +2,12 @@
 layout: default
 title: 服務注入(DecoratorPattern)
 parent: 核心模組(Kernel)
-nav_order: 5
+nav_order: 6
 ---
 
 # 服務注入(DecoratorPattern)
 
-在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，可以在建構子再注入另外一個Instance，進行逐層的服務注入。依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(DecorateDemoService、ConcreteDemoService)為Service(DemoService)的Instance，並且逐層注入Service(DemoService)。
-
-```
-1. Controller建構子注入的DemoService demoService，為來自參數設定"DecorateDemoService"，Type為DecorateDemoService的TypedInstance。
-2. 步驟1注入的DemoService，其建構子注入的DemoService component，為來自參數設定"DecorateDemoService[A]"，Type為DecorateDemoService的NamedInstance。
-3. 步驟2注入的DemoService，其建構子注入的DemoService component，為來自參數設定"ConcreteDemoService[B]"，Type為ConcreteDemoService的NamedInstance。
-4. 步驟3注入的DemoService，其建構子沒有參數，注入時會直接使用無參數建構子生成物件。
-```
-
-```csharp
-using Microsoft.AspNetCore.Mvc;
-
-namespace WebApplication1
-{
-    public class HomeController : Controller
-    {
-        // Constructors
-        public HomeController(DemoService demoService)
-        {
-            //...
-        }
-    }
-}
-```
+在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，可以在建構子再注入另外一個Instance，進行逐層的服務注入。依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(DecorateDemoService)為Service(DemoService)的Instance，並且逐層注入Service(DemoService)。
 
 ```csharp
 using MDP.Registration;
@@ -47,16 +24,6 @@ namespace WebApplication1
             //...
         }
     }
-    
-    [Service<DemoService>()]
-    public class ConcreteDemoService : DemoService
-    {
-        // Constructors
-        public ConcreteDemoService()
-        {
-            //...
-        }
-    }
 }
 ```
 
@@ -69,12 +36,14 @@ namespace WebApplication1
     },
     
     "DecorateDemoService[A]": {
-      "component": "ConcreteDemoService[B]"
+      "component": "DecorateDemoService[B]"
     },
     
-    "ConcreteDemoService[B]": {
-      
-    }
+    "DecorateDemoService[B]": {
+      "component": "DecorateDemoService[C]"
+    },
+    
+    //...
   }
 }
 ```
@@ -126,13 +95,6 @@ namespace WebApplication1
         // Constructors
         public DecorateDemoService(string message, DemoService component)
         {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(message) == true) throw new ArgumentException($"{nameof(message)}=null");
-            if (component  == null) throw new ArgumentException($"{nameof(component )}=null");
-
-            #endregion
-
             // Default
             _message = message;
             _component  = component ;
