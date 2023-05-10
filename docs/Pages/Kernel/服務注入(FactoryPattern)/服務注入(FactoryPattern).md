@@ -10,19 +10,15 @@ nav_order: 4
 在MDP.Net核心模組中，「服務注入模組」參考Configuration參數設定及系統內註冊的服務，依照下列規則進行服務注入：
 
 - 注入至「ServiceAttribute註冊的Type」的建構子。
-```
 1. 使用Type裡參數(Parameter)數量最多的建構子，進行服務注入。
-2. 建構子的參數類型(Parameter.Type)為基本數據，使用參數名稱(Parameter.Name)取得Configuration參數內容，轉型Configuration參數內容為基本數據後注入。
-3. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，做為InstanceName，用以取得NamedInstance後注入。
-4. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，如為Null或沒有設定，預設取得TypedInstance後注入。
-5. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，無法取得Instance時，使用無參數建構子生成Instance，再綁定(Bind)Configuration參數內容後注入。
-```
+2. 建構子的參數類型(Parameter.Type)為基本數據時，使用參數名稱(Parameter.Name)取得Configuration參數內容，轉型Configuration參數內容為基本數據後注入。
+3. 建構子的參數類型(Parameter.Type)為物件類別時，使用參數名稱(Parameter.Name)取得Configuration參數內容，做為InstanceName，用以取得NamedInstance後注入。
+4. 建構子的參數類型(Parameter.Type)為物件類別時，使用參數名稱(Parameter.Name)取得Configuration參數內容，如為Null或沒有設定，預設取得TypedInstance後注入。
+5. 建構子的參數類型(Parameter.Type)為物件類別時，使用參數名稱(Parameter.Name)取得Configuration參數內容，無法取得Instance時，使用無參數建構子生成Instance，再綁定(Bind)Configuration參數內容後注入。
 
 - 注入至「Controller」的建構子。
-```
 1. 依照ASP.NET Core的規則注入。
-2. 上述規則包含，建構子的參數類型(Parameter.Type)為物件類別，取得TypedInstance後注入。
-```
+2. 預設ASP.NET Core規則，Controller建構子的參數類型(Parameter.Type)為物件類別時，取得TypedInstance後注入。
 
 本篇文件介紹，如何使用MDP.Net核心模組中「服務注入模組」，參考Configuration參數設定，進行服務注入。
 

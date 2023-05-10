@@ -36,8 +36,6 @@ namespace WebApplication1
 ```
 
 「服務註冊模組」所提供的ServiceAttribute，參考Configuration參數設定，依照下列規則在系統裡註冊Type為Service的Instance：
-
-```
 1. 註冊Type為Service的NamedInstance：Named={Type.Namespace}.{Type.ClassNameType.ClassName}[*]
 2. 註冊Type為Service的NamedInstance：Named={Type.ClassName}[*]
 3. 註冊Type為Service的TypedInstance：Typed={Type}
@@ -45,7 +43,6 @@ namespace WebApplication1
 5. 具有[*]別名的Type，不會註冊3的TypedInstance
 6. 範例[*]別名的Type："FixedDemoService[A]"、"FixedDemoService[1]"
 7. Configuration裡Namespace的每個Type，都會依照上列步驟註冊Type為Service的Instance。
-```
 
 本篇文件介紹，如何使用MDP.Net核心模組中，「服務註冊模組」所提供的ServiceAttribute進行服務註冊。
 

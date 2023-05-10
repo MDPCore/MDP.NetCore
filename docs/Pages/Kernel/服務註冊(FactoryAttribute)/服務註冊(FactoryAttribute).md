@@ -41,14 +41,11 @@ namespace WebApplication1
 ```
 
 「服務註冊模組」提供的FactoryAttribute，參考Configuration參數設定，依照下列規則啟動服務註冊：
-
-```
 1. 取得標註FactoryAttribute的FactoryClass。
 2. 檢查FactoryAttribute所設定的Namespace、ServiceName是否存在Configuration。
 3. 檢查FactoryClass，是否存在ConfigureService方法。
 4. 檢查FactoryAttribute<TBuilder, TSetting>與FactoryClass.ConfigureService(TBuilder, TSetting)是否吻合。
 5. 上述步驟通過後，執行ConfigureService進行服務註冊。
-```
 
 本篇文件介紹，如何使用MDP.Net核心模組中，「服務註冊模組」所提供的FactoryAttribute進行服務註冊。
 

@@ -7,7 +7,9 @@ nav_order: 6
 
 # 服務注入(SingletonPattern)
 
-在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，會參考singleton參數，決定注入的Instance為全局同一個、或是每次注入都是一個新的。依照下列的類別宣告，就可以在系統裡註冊Type(DemoService)為自己的Instance，並且全局都是同一個Instance。
+在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，會參考singleton參數，決定注入的Instance為全局同一個、或是每次注入都是一個新的。
+
+依照下列的類別宣告，就可以在系統裡註冊Type(DemoService)為自己的Instance，並且全局都是同一個Instance。
 
 ```csharp
 using MDP.Registration;
