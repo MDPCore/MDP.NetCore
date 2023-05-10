@@ -10,10 +10,13 @@ nav_order: 5
 在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，會參考Configuration參數設定，決定注入的Instance為TypedInstance、或是NamedInstance(參考：[服務註冊(ServiceAttribute)](../../Kernel/服務註冊(ServiceAttribute)/服務註冊(ServiceAttribute).html))。
 
 依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(DecorateDemoService、ConcreteDemoService)為Service(DemoService)的Instance，並且逐層注入Service(DemoService)。
+
+```
 1. Controller建構子注入的DemoService demoService，為來自參數設定"DecorateDemoService"，Type為DecorateDemoService的TypedInstance。
 2. 步驟1注入的DemoService，其建構子注入的DemoService component，為來自參數設定"DecorateDemoService[A]"，Type為DecorateDemoService的NamedInstance。
 3. 步驟2注入的DemoService，其建構子注入的DemoService component，為來自參數設定"ConcreteDemoService[B]"，Type為ConcreteDemoService的NamedInstance。
 4. 步驟3注入的DemoService，其建構子沒有參數，注入時會直接使用無參數建構子生成物件。
+```
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
