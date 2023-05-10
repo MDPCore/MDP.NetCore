@@ -2,7 +2,7 @@
 layout: default
 title: 服務注入(SingletonPattern)
 parent: 核心模組(Kernel)
-nav_order: 6
+nav_order: 5
 ---
 
 # 服務注入(SingletonPattern)
