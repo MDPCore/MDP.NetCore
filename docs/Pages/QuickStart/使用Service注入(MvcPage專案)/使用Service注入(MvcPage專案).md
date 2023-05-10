@@ -13,7 +13,7 @@ nav_order: 4
 
 ### 1. 建立新專案
 
-依照「[建立MvcPage專案](../建立MvcPage專案/建立MvcPage專案.html)」的操作步驟，建立新的MvcPage專案「WebApplication1」。
+依照「[建立MvcPage專案](../../QuickStart/建立MvcPage專案/建立MvcPage專案.html)」的操作步驟，建立新的MvcPage專案「WebApplication1」。
 
 ### 2. 新增DemoService
 

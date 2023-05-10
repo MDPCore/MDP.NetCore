@@ -13,7 +13,7 @@ nav_order: 6
 
 ### 1. 建立新專案
 
-依照「[建立Console專案](../建立Console專案/建立Console專案.html)」的操作步驟，建立新的Console專案「ConsoleApp1」。
+依照「[建立Console專案](../../QuickStart/建立Console專案/建立Console專案.html)」的操作步驟，建立新的Console專案「ConsoleApp1」。
 
 ### 2. 新增DemoService
 

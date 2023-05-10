@@ -2,7 +2,7 @@
 layout: default
 title: 服務注入(SingletonPattern)
 parent: 核心模組(Kernel)
-nav_order: 5
+nav_order: 6
 ---
 
 # 服務注入(SingletonPattern)
@@ -17,19 +17,7 @@ namespace WebApplication1
     [Service<DemoService>(singleton:true)]
     public class DemoService
     {
-        // Fields
-        private int _count = 0;
-
-
-        // Methods
-        public string GetMessage()
-        {
-            // Count
-            _count++;
-
-            // Return
-            return "Count=" + _count.ToString();
-        }
+        //...
     }
 }
 ```
@@ -40,7 +28,7 @@ namespace WebApplication1
 
 ### 1. 建立新專案
 
-依照「[建立MvcPage專案](../建立MvcPage專案/建立MvcPage專案.html)」的操作步驟，建立新的MvcPage專案「WebApplication1」。
+依照「[建立MvcPage專案](../../QuickStart/建立MvcPage專案/建立MvcPage專案.html)」的操作步驟，建立新的MvcPage專案「WebApplication1」。
 
 ### 2. 新增DemoService
 

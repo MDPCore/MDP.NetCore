@@ -13,8 +13,8 @@ nav_order: 4
 ```
 1. 使用Type裡參數(Parameter)數量最多的建構子，進行服務注入。
 2. 建構子的參數類型(Parameter.Type)為基本數據，使用參數名稱(Parameter.Name)取得Configuration參數內容，轉型Configuration參數內容為基本數據後注入。
-3. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，為InstanceName，用以取得NamedInstance後注入。
-4. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，為Null或沒有設定，預設取得TypedInstance後注入。
+3. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，做為InstanceName，用以取得NamedInstance後注入。
+4. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，如為Null或沒有設定，預設取得TypedInstance後注入。
 5. 建構子的參數類型(Parameter.Type)為物件類別，使用參數名稱(Parameter.Name)取得Configuration參數內容，無法取得Instance時，使用無參數建構子生成Instance，再綁定(Bind)Configuration參數內容後注入。
 ```
 
@@ -30,7 +30,7 @@ nav_order: 4
 
 ### 1. 建立新專案
 
-依照「[建立MvcPage專案](../建立MvcPage專案/建立MvcPage專案.html)」的操作步驟，建立新的MvcPage專案「WebApplication1」。
+依照「[建立MvcPage專案](../../QuickStart/建立MvcPage專案/建立MvcPage專案.html)」的操作步驟，建立新的MvcPage專案「WebApplication1」。
 
 ### 2. 新增DemoContext、DemoService、DemoSetting
 
