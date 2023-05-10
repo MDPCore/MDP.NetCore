@@ -7,9 +7,7 @@ nav_order: 5
 
 # 服務注入(DecoratorPattern)
 
-在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，會參考Configuration參數設定，決定注入的Instance為TypedInstance、或是NamedInstance(參考：[服務註冊(ServiceAttribute)](../../Kernel/服務註冊(ServiceAttribute)/服務註冊(ServiceAttribute).html))。
-
-依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(DecorateDemoService、ConcreteDemoService)為Service(DemoService)的Instance，並且逐層注入Service(DemoService)。
+在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，可以在建構子再注入另外一個Instance，進行逐層注入。依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(DecorateDemoService、ConcreteDemoService)為Service(DemoService)的Instance，並且逐層注入Service(DemoService)。
 
 ```
 1. Controller建構子注入的DemoService demoService，為來自參數設定"DecorateDemoService"，Type為DecorateDemoService的TypedInstance。
@@ -46,10 +44,10 @@ namespace WebApplication1
         // Constructors
         public DecorateDemoService(DemoService component)
         {
-	        //...
+            //...
         }
     }
-	
+    
     [Service<DemoService>()]
     public class ConcreteDemoService : DemoService
     {
@@ -66,18 +64,15 @@ namespace WebApplication1
 {
   "WebApplication1": {
 
-    // Typed
     "DecorateDemoService": {
       "component": "DecorateDemoService[A]"
     },
-
-    // Decorate
+    
     "DecorateDemoService[A]": {
       "component": "ConcreteDemoService[B]"
     },
-	
-	// Concrete
-	"ConcreteDemoService[B]": {
+    
+    "ConcreteDemoService[B]": {
       
     }
   }
