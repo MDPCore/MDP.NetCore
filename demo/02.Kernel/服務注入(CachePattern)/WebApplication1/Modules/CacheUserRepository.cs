@@ -30,15 +30,15 @@ namespace WebApplication1
         // Methods
         public User? Find()
         {
-            // UserCache-Hit
+            // Cache-Hit
             var user = _userCache.Get<User>("Test");
             if (user != null) return user;
 
-            // UserRepository-Find
+            // Repository-Find
             user = _userRepository.Find();
             if (user == null) return user;
 
-            // UserCache-Set
+            // Cache-Set
             _userCache.Set<User>("Test", user, new MemoryCacheEntryOptions()
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)

@@ -7,7 +7,7 @@ nav_order: 6
 
 # 服務注入(DecoratorPattern)
 
-在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，可以在建構子再注入另外一個Instance，進行逐層的服務注入。依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(DecorateDemoService)為Service(DemoService)的Instance，並且逐層注入Service(DemoService)。
+在MDP.Net核心模組中，「服務注入模組」注入使用ServiceAttribute註冊的Instance時，可以在建構子注入另外一個Instance，進行逐層的服務注入。依照下列的類別宣告及參數設定，就可以在系統裡註冊Type(DecorateDemoService)為Service(DemoService)的Instance，並且逐層注入Service(DemoService)。
 
 ```csharp
 using MDP.Registration;
@@ -48,7 +48,7 @@ namespace WebApplication1
 }
 ```
 
-本篇文件介紹，如何使用MDP.Net核心模組中「服務注入模組」，在注入使用ServiceAttribute註冊的Instance時，參考Configuration參數設定，進行逐層的服務注入。
+本篇文件介紹，如何使用MDP.Net核心模組中「服務注入模組」，注入使用ServiceAttribute註冊的Instance時，在建構子注入另外一個Instance，進行逐層的服務注入。
 
 ## 操作步驟
 
