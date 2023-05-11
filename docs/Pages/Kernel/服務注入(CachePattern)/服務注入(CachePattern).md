@@ -14,7 +14,7 @@ using MDP.Registration;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 
-namespace WebApplication1
+namespace WebApplication1 
 {
     [Service<UserRepository>()]
     public class CacheUserRepository : UserRepository
