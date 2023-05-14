@@ -9,11 +9,18 @@ permalink: /
 
 MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Console App。
 
+
+## 說明文件
+
+- [clark159.github.io/MDP.Net](https://clark159.github.io/MDP.Net/)
+
+
 ## 範例展示
 
 ### SleepZone.Todos
 
 - 範例檔案：
+
   - [https://github.com/Clark159/MDP.Net/tree/master/demo/00.SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/00.SleepZone.Todos)
 
 - 操作步驟：
@@ -32,13 +39,13 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 - 團隊分工：
 
-  - 團隊依專業分為：平台開發團隊、應用開發團隊。
+  - 團隊依專業分為：應用開發團隊、平台開發團隊。
   
-  - 平台開發團隊：建置SleepZone.Todos.WebApp，給應用團隊開箱即用。交付內容包含：專案原始碼、DevOps專案、CICD Pipeline、Container、Network、DNS...等平台工程產出。
+  - 應用開發團隊：負責企業架構中的應用架構，交付Application。於SleepZone.Todos範例中，負責建置SleepZone.Todos.Module，滿足用戶對應用系統的需求。開發規範依循：「[MDP.Net-軟體架構](https://github.com/Clark159/MDP.Net#mdpnet-%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B)」、「[MDP.Net-分層架構](https://github.com/Clark159/MDP.Net#mdpnet-%E5%88%86%E5%B1%A4%E6%9E%B6%E6%A7%8B)」進行開發。
   
-  - 應用開發團隊：建置SleepZone.Todos Module，滿足應用系統需求。開發規範依循：「[MDP.Net-軟體架構](https://github.com/Clark159/MDP.Net#mdpnet-%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B)」、「[MDP.Net-分層架構](https://github.com/Clark159/MDP.Net#mdpnet-%E5%88%86%E5%B1%A4%E6%9E%B6%E6%A7%8B)」進行開發。
-  
-  
+  - 平台開發團隊：負責企業架構中的技術架構，交付並維運PaaS。於SleepZone.Todos範例中，負責建置SleepZone.Todos.WebApp，給應用開發團隊開箱即用。平台內容包含：專案原始碼管理、DevOps專案管理、CICD Pipeline、Container、Network、DNS...等平台工程產出。
+     
+     
 ## 架構設計
 
 ### MDP.Net-軟體架構
@@ -64,21 +71,17 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 - MDP.Registration：加入此模組，提供Attribute註冊功能，用以移除所有.Hosting註冊用專案。
 
-
 ### MDP.Net 6.0.16
 
 - MDP.AspNetCore.Authentication.Liff.Services：加入此模組，提供Liff頁面客製化功能。
-
 
 ### MDP.Net 6.0.15
 
 - MDP.AspNetCore.Authentication.Liff：調整Liff登入效能、調整Liff登入頁面提示文字。
 
-
 ### MDP.Net 6.0.14
 
 - MDP.AspNetCore.Authentication.Liff：調整Liff登入效能、調整Liff登入頁面提示文字。
-
 
 ### MDP.Net 6.0.13
 
@@ -89,7 +92,6 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 - MDP.IdentityModel.Tokens.Jwt：加入RSA非對稱金鑰支援。
 
 - MDP.AspNetCore.Authentication.Jwt：加入RSA非對稱金鑰支援。
-
 
 ### MDP.Net 6.0.12
 
