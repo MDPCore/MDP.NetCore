@@ -41,17 +41,25 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
      
 ## 架構設計
 
-### MDP.Net-軟體架構
+### MDP.Net-企業架構
 
-![MDP.Net-軟體架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B.png)
+![MDP.Net-企業架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-企業架構.png)
 
-### MDP.Net-分層架構
+### MDP.Net-技術架構
 
-![MDP.Net-分層架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-%E5%88%86%E5%B1%A4%E6%9E%B6%E6%A7%8B.png)
+![MDP.Net-技術架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-技術架構.png)
 
 ### MDP.Net-平台架構
 
-![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%A7%8B.png)
+![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-平台架構.png)
+
+### MDP.Net-專案架構
+
+![MDP.Net-專案架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-專案架構.png)
+
+### MDP.Net-類別架構
+
+![MDP.Net-類別架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-類別架構.png)
 
 ### MDP.Net-需求分析
 
