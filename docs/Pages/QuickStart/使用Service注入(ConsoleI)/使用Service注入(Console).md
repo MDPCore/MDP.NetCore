@@ -1,11 +1,11 @@
 ---
 layout: default
-title: 使用Service注入(Console專案)
+title: 使用Service注入(Console)
 parent: 快速開始(QuickStart)
 nav_order: 6
 ---
 
-# 使用Service注入(Console專案)
+# 使用Service注入(Console)
 
 本篇文件介紹，如何在Console專案中使用Service注入。
 

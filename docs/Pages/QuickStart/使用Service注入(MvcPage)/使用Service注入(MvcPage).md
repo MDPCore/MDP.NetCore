@@ -1,19 +1,19 @@
 ---
 layout: default
-title: 使用Service注入(WebAPI專案)
+title: 使用Service注入(MvcPage)
 parent: 快速開始(QuickStart)
-nav_order: 5
+nav_order: 4
 ---
 
-# 使用Service注入(WebAPI專案)
+# 使用Service注入(MvcPage)
 
-本篇文件介紹，如何在WebAPI專案中使用Service注入。
+本篇文件介紹，如何在MvcPage專案中使用Service注入。
 
 ## 操作步驟
 
 ### 1. 建立新專案
 
-依照「[建立WebAPI專案](../../QuickStart/建立WebAPI專案/建立WebAPI專案.html)」的操作步驟，建立新的WebAPI專案「WebApplication1」。
+依照「[建立MvcPage專案](../../QuickStart/建立MvcPage專案/建立MvcPage專案.html)」的操作步驟，建立新的MvcPage專案「WebApplication1」。
 
 ### 2. 新增DemoService
 
@@ -73,13 +73,13 @@ namespace WebApplication1
 
 
         // Methods
-        public ActionResult<object> Index()
+        public ActionResult Index()
         {
             // Message
-            var message = _demoService.GetMessage();
+            this.ViewBag.Message = _demoService.GetMessage();
 
             // Return
-            return new { message = message };
+            return View();
         }
     }
 }
@@ -101,8 +101,8 @@ namespace WebApplication1
 
 ### 5. 執行專案
 
-完成以上操作步驟後，就已成功在WebAPI專案中使用Service注入。按F5執行專案，使用Postman呼叫API：/Home/Index，可以在結果視窗看到{"message":"Hello World"}的訊息。
+完成以上操作步驟後，就已成功在MvcPage專案中使用Service注入。按F5執行專案，使用Browser開啟Page：/Home/Index，可以在網頁內容看到"Hello World"的訊息。
 
 ## 範例檔案
 
-[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(WebAPI專案)](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(WebAPI專案))
+[https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(MvcPage專案)](https://github.com/Clark159/MDP.Net/tree/master/demo/01.QuickStart/使用Service注入(MvcPage專案))
