@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 依賴注入(Hosting)
-nav_order: 3
+nav_order: 4
 has_children: true
 permalink: /Pages/Hosting
 ---
