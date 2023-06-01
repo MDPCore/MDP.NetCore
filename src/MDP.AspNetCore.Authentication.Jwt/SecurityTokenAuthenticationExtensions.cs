@@ -32,14 +32,14 @@ namespace MDP.AspNetCore.Authentication.Jwt
             if (string.IsNullOrEmpty(authenticationSetting.Header) == true) throw new ArgumentException($"{nameof(authenticationSetting.Header)}=null");
             if (string.IsNullOrEmpty(authenticationSetting.SignKey) == true) throw new ArgumentException($"{nameof(authenticationSetting.SignKey)}=null");
 
-            // PolicySchemeSelector
-            services.AddPolicySchemeSelector(authenticationSetting);
+            // PolicyAuthenticationSelector
+            services.AddPolicyAuthenticationSelector(authenticationSetting);
 
             // JwtBearer
             return services.AddJwtBearer(authenticationSetting);
         }
 
-        private static void AddPolicySchemeSelector(this IServiceCollection services, SecurityTokenAuthenticationSetting authenticationSetting)
+        private static void AddPolicyAuthenticationSelector(this IServiceCollection services, SecurityTokenAuthenticationSetting authenticationSetting)
         {
             #region Contracts
 
@@ -48,15 +48,15 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
             #endregion
 
-            // SecurityTokenPolicySchemeSelector
-            var policySchemeSelector = new SecurityTokenPolicySchemeSelector(
+            // SecurityTokenPolicyAuthenticationSelector
+            var policyAuthenticationSelector = new SecurityTokenPolicyAuthenticationSelector(
                 scheme: authenticationSetting.Scheme,
                 header: authenticationSetting.Header,
                 prefix: authenticationSetting.Prefix
             );
 
             // AddSingleton
-            services.AddSingleton<PolicySchemeSelector>(policySchemeSelector);
+            services.AddSingleton<PolicyAuthenticationSelector>(policyAuthenticationSelector);
         }
 
         private static AuthenticationBuilder AddJwtBearer(this IServiceCollection services, SecurityTokenAuthenticationSetting authenticationSetting)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication.Jwt
 {
-    public class SecurityTokenPolicySchemeSelector : PolicySchemeSelector
+    public class SecurityTokenPolicyAuthenticationSelector : PolicyAuthenticationSelector
     {
         // Fields
         private readonly string _scheme = String.Empty;
@@ -18,7 +18,7 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
 
         // Constructors
-        public SecurityTokenPolicySchemeSelector(string scheme, string header, string? prefix)
+        public SecurityTokenPolicyAuthenticationSelector(string scheme, string header, string? prefix)
         {
             #region Contracts
 

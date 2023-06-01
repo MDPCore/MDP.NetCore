@@ -39,7 +39,7 @@ namespace MDP.AspNetCore.Authentication.Lab
             }, "NameAuth");
 
             // SignIn
-            await this.HttpContext.ExternalSignInAsync(new ClaimsPrincipal(claimsIdentity));
+            await this.HttpContext.RemoteSignInAsync(new ClaimsPrincipal(claimsIdentity));
 
             // Return
             return this.RedirectToRoute("SignIn", new { returnUrl = returnUrl });

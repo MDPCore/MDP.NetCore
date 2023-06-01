@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication
 {
-    public static class RemoteAuthenticationOptionsExtensions
+    public static class AuthenticationOptionsExtensions
     {
         // Methods
         public static void SignInPath(this RemoteAuthenticationOptions remoteAuthenticationOptions, string signInPath)

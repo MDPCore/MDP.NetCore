@@ -170,4 +170,4 @@ namespace WebApplication1
 
 ## 範例檔案
 
-[https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/參數管理(Configuration)](https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/參數管理(Configuration))
+[https://github.com/Clark159/MDP.Net/tree/master/demo/Kernel/參數管理(Configuration)](https://github.com/Clark159/MDP.Net/tree/master/demo/Kernel/參數管理(Configuration))

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 服務注入(CachePattern)
-parent: 核心模組(Kernel)
+parent: 依賴注入(Hosting)
 nav_order: 7
 ---
 
@@ -326,4 +326,4 @@ Clark-->2023/05/11 21:40:02
 
 ## 範例檔案
 
-[https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/服務注入(CachePattern)](https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/服務注入(CachePattern))
+[https://github.com/Clark159/MDP.Net/tree/master/demo/Hosting/服務注入(CachePattern)](https://github.com/Clark159/MDP.Net/tree/master/demo/Hosting/服務注入(CachePattern))

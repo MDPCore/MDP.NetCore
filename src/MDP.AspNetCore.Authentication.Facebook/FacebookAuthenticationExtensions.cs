@@ -31,7 +31,7 @@ namespace MDP.AspNetCore.Authentication.Facebook
 
                 // SignIn
                 options.SignInPath("/SignIn");
-                options.SignInScheme = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+                options.SignInScheme = RemoteAuthenticationDefaults.AuthenticationScheme;
             });
 
             // Return

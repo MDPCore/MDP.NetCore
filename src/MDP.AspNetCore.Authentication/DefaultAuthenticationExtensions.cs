@@ -39,11 +39,11 @@ namespace MDP.AspNetCore.Authentication
             authenticationBuilder.AddPolicy(new PolicyAuthenticationSetting()
             {
                 // DefaultScheme
-                DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme
+                DefaultScheme = LocalAuthenticationDefaults.AuthenticationScheme
             });
 
-            // Cookie
-            authenticationBuilder.AddCookie(options =>
+            // Local
+            authenticationBuilder.AddLocal(options =>
             {
                 // Options
                 options.LoginPath = new PathString("/Login");
@@ -51,8 +51,8 @@ namespace MDP.AspNetCore.Authentication
                 options.AccessDeniedPath = new PathString("/AccessDenied");
             });
 
-            // ExternalCookie
-            authenticationBuilder.AddExternalCookie(options =>
+            // Remote
+            authenticationBuilder.AddRemote(options =>
             {
                 // Options
                 options.LoginPath = new PathString("/Login");

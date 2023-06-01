@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 服務注入(SingletonPattern)
-parent: 核心模組(Kernel)
+parent: 依賴注入(Hosting)
 nav_order: 5
 ---
 
@@ -133,4 +133,4 @@ Count=1
 
 ## 範例檔案
 
-[https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/服務注入(SingletonPattern)](https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/服務注入(SingletonPattern))
+[https://github.com/Clark159/MDP.Net/tree/master/demo/Hosting/服務注入(SingletonPattern)](https://github.com/Clark159/MDP.Net/tree/master/demo/Hosting/服務注入(SingletonPattern))

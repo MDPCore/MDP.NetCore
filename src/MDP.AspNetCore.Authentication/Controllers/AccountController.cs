@@ -14,79 +14,90 @@ namespace MDP.AspNetCore.Authentication
     public class AccountController : Controller
     {
         // Fields
-        private readonly IdentityProvider _identityProvider;
+        private readonly AuthenticationProvider _authenticationProvider;
 
 
         // Constructors
-        public AccountController(IdentityProvider? identityProvider = null)
+        public AccountController(AuthenticationProvider? authenticationProvider = null)
         {
             // Default
-            _identityProvider = identityProvider ?? DefaultIdentityProvider.Current;
+            _authenticationProvider = authenticationProvider ?? DefaultAuthenticationProvider.Current;
         }
 
 
         // Methods
         [AllowAnonymous]
         [Route("/Login", Name = "Login")]
-        public ActionResult Login(string? scheme = null, string? returnUrl = null)
+        public async Task<ActionResult> Login(string? scheme = null, string? returnUrl = null)
         {           
             // Require
             returnUrl = returnUrl ?? this.Url.Content("~/");
-            if (this.User?.Identity?.IsAuthenticated == true) return this.Redirect(returnUrl);
+
+            // RemoteAuth
+            await this.HttpContext.RemoteSignOutAsync();
+
+            // LocalAuth
+            var localAuthenticateResult = await this.HttpContext.LocalAuthenticateAsync();
+            if (localAuthenticateResult.Principal?.Identity?.IsAuthenticated == true) return this.Redirect(returnUrl);
 
             // Challenge
             if (string.IsNullOrEmpty(scheme) == false)
             {
                 // Ignore
                 if (scheme.Equals(PolicyAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
-                if (scheme.Equals(CookieAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
-                if (scheme.Equals(ExternalCookieAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
+                if (scheme.Equals(LocalAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
+                if (scheme.Equals(RemoteAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) == true) throw new InvalidOperationException($"{nameof(scheme)}={scheme}");
                 
                 // Redirect
                 return this.Challenge(new AuthenticationProperties() { RedirectUri = returnUrl }, scheme);
             }
 
-            // View
-            return View("Login");
+            // Return
+            return this.View("Login");
         }
 
         [AllowAnonymous]
         [Route("/Logout", Name = "Logout")]
-        public ActionResult Logout(string? returnUrl = null)
+        public async Task<ActionResult> Logout(string? returnUrl = null)
         {
             // Require
             returnUrl = returnUrl ?? this.Url.Content("~/");
-            if (this.User?.Identity?.IsAuthenticated == false) return this.Redirect(returnUrl);
 
             // SignOut
-            return this.SignOut(new AuthenticationProperties() { RedirectUri = returnUrl });
+            await this.HttpContext.LocalSignOutAsync();
+            await this.HttpContext.RemoteSignOutAsync();
+
+            // Return
+            return this.Redirect(returnUrl);
         }
 
-        [ExternalAuthorize]
+        [AllowAnonymous]
         [Route("/SignIn", Name = "SignIn")]
         public async Task<ActionResult> SignIn(string? returnUrl = null)
         {
-            // ReturnUrl
+            // Require
             returnUrl = returnUrl ?? this.Url.Content("~/");
-            if (string.IsNullOrEmpty(returnUrl) == true) throw new InvalidOperationException($"{nameof(returnUrl)}=null");
 
-            // ExternalAuthenticateResult
-            var externalAuthenticateResult = await this.HttpContext.ExternalAuthenticateAsync();
-            if (externalAuthenticateResult.Succeeded == false) throw new InvalidOperationException($"{nameof(externalAuthenticateResult.Succeeded)}=false");
+            // LocalAuth
+            await this.HttpContext.LocalSignOutAsync();
 
-            // ExternalIdentity
-            var externalIdentity = this.User.Identity as ClaimsIdentity;
-            if (externalIdentity == null) throw new InvalidOperationException($"{nameof(externalIdentity)}=null");
-            if (externalIdentity.IsAuthenticated == false) throw new InvalidOperationException($"{nameof(externalIdentity)}=null");
+            // RemoteAuth
+            var remoteAuthenticateResult = await this.HttpContext.RemoteAuthenticateAsync();
+            if (remoteAuthenticateResult.Principal?.Identity?.IsAuthenticated == false) throw new InvalidOperationException($"{nameof(remoteAuthenticateResult)}.Principal?.Identity?.IsAuthenticated=false");
 
-            // Identity
-            var identity = _identityProvider.SignIn(externalIdentity);
-            if (identity == null)
+            // RemoteIdentity
+            var remoteIdentity = remoteAuthenticateResult.Principal?.Identity as ClaimsIdentity;
+            if (remoteIdentity == null) throw new InvalidOperationException($"{nameof(remoteIdentity)}=null");
+            if (remoteIdentity.IsAuthenticated == false) throw new InvalidOperationException($"{nameof(remoteIdentity.IsAuthenticated)}=false");
+
+            // LocalIdentity
+            var localIdentity = _authenticationProvider.SignIn(remoteIdentity);
+            if (localIdentity == null)
             {
-                if (string.IsNullOrEmpty(_identityProvider.RegisterPath) == false)
+                if (string.IsNullOrEmpty(_authenticationProvider.RegisterPath) == false)
                 {
                     // Register
-                    return this.Redirect(_identityProvider.RegisterPath);                    
+                    return this.Redirect(_authenticationProvider.RegisterPath);                    
                 }
                 else
                 {
@@ -96,8 +107,8 @@ namespace MDP.AspNetCore.Authentication
             }
 
             // SignIn
-            await this.HttpContext.ExternalSignOutAsync();
-            await this.HttpContext.SignInAsync(new ClaimsPrincipal(identity));            
+            await this.HttpContext.LocalSignInAsync(new ClaimsPrincipal(localIdentity));
+            await this.HttpContext.RemoteSignOutAsync();
 
             // Redirect
             return this.Redirect(returnUrl);

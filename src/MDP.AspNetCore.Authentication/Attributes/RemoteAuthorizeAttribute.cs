@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication
 {
-    public class ExternalAuthorizeAttribute : AuthorizeAttribute
+    public class RemoteAuthorizeAttribute : AuthorizeAttribute
     {
         // Constructors
-        public ExternalAuthorizeAttribute() : base() 
+        public RemoteAuthorizeAttribute() : base() 
         {
             // Default
-            this.AuthenticationSchemes = ExternalCookieAuthenticationDefaults.AuthenticationScheme;
+            this.AuthenticationSchemes = RemoteAuthenticationDefaults.AuthenticationScheme;
         }
     }
 }

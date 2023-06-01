@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication
 {
-    public interface PolicySchemeSelector
+    public interface PolicyAuthenticationSelector
     {
         // Properties
         public string AuthenticationScheme { get; }

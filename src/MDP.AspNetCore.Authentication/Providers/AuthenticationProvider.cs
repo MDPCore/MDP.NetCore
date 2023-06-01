@@ -7,28 +7,28 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication
 {
-    public interface IdentityProvider
+    public interface AuthenticationProvider
     {
         // Properties
         string? RegisterPath { get; set; }
 
 
         // Methods
-        ClaimsIdentity SignIn(ClaimsIdentity externalIdentity);
+        ClaimsIdentity SignIn(ClaimsIdentity remoteIdentity);
     }
 
-    internal class DefaultIdentityProvider : IdentityProvider
+    internal class DefaultAuthenticationProvider : AuthenticationProvider
     {
         // Singleton 
-        private static DefaultIdentityProvider? _instance = null;
-        public static DefaultIdentityProvider Current
+        private static DefaultAuthenticationProvider? _instance = null;
+        public static DefaultAuthenticationProvider Current
         {
             get
             {
                 // Create
                 if (_instance == null)
                 {
-                    _instance = new DefaultIdentityProvider();
+                    _instance = new DefaultAuthenticationProvider();
                 }
 
                 // Return
@@ -42,16 +42,16 @@ namespace MDP.AspNetCore.Authentication
 
 
         // Methods
-        public ClaimsIdentity SignIn(ClaimsIdentity externalIdentity)
+        public ClaimsIdentity SignIn(ClaimsIdentity remoteIdentity)
         {
             #region Contracts
 
-            if (externalIdentity == null) throw new ArgumentException($"{nameof(externalIdentity)}=null");
+            if (remoteIdentity == null) throw new ArgumentException($"{nameof(remoteIdentity)}=null");
 
             #endregion
 
             // Return
-            return externalIdentity;
+            return remoteIdentity;
         }
     }
 }

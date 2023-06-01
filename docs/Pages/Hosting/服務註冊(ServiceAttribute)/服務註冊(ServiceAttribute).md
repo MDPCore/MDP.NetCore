@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 服務註冊(ServiceAttribute)
-parent: 核心模組(Kernel)
+parent: 依賴注入(Hosting)
 nav_order: 2
 ---
 
@@ -162,4 +162,4 @@ namespace WebApplication1
 
 ## 範例檔案
 
-[https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/服務註冊(ServiceAttribute)](https://github.com/Clark159/MDP.Net/tree/master/demo/02.Kernel/服務註冊(ServiceAttribute))
+[https://github.com/Clark159/MDP.Net/tree/master/demo/Hosting/服務註冊(ServiceAttribute)](https://github.com/Clark159/MDP.Net/tree/master/demo/Hosting/服務註冊(ServiceAttribute))

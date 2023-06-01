@@ -46,18 +46,18 @@ namespace MDP.AspNetCore.Authentication
                 // ForwardDefaultSelector
                 authenticationOptions.ForwardDefaultSelector = context =>
                 {
-                    // PolicySchemeSelectorList
-                    var policySchemeSelectorList = context.RequestServices.GetRequiredService<IList<PolicySchemeSelector>>();
-                    if (policySchemeSelectorList == null) throw new InvalidOperationException($"{nameof(policySchemeSelectorList)}=null");
+                    // PolicyAuthenticationSelectorList
+                    var policyAuthenticationSelectorList = context.RequestServices.GetRequiredService<IList<PolicyAuthenticationSelector>>();
+                    if (policyAuthenticationSelectorList == null) throw new InvalidOperationException($"{nameof(policyAuthenticationSelectorList)}=null");
 
-                    // PolicySchemeSelector
-                    foreach (var policySchemeSelector in policySchemeSelectorList)
+                    // PolicyAuthenticationSelector
+                    foreach (var policyAuthenticationSelector in policyAuthenticationSelectorList)
                     {
                         // Check
-                        if (policySchemeSelector.Check(context) == false) continue;
+                        if (policyAuthenticationSelector.Check(context) == false) continue;
 
                         // Apply
-                        return policySchemeSelector.AuthenticationScheme;
+                        return policyAuthenticationSelector.AuthenticationScheme;
                     }
 
                     // DefaultScheme

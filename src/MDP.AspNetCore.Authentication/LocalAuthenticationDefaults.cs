@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authentication
 {
-    public class ExternalCookieAuthenticationDefaults
+    public class LocalAuthenticationDefaults
     {
         // Constants
-        public const string AuthenticationScheme = "ExternalCookies";
+        public const string AuthenticationScheme = "LocalAuth";
     }
 }
