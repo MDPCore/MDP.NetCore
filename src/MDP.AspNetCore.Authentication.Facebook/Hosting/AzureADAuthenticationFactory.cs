@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MDP.AspNetCore.Authentication.Facebook
 {
     [MDP.Registration.Factory<WebApplicationBuilder, FacebookAuthenticationSetting>("Authentication", "Facebook")]
-    public class FacebookAuthenticationFactoryFactory
+    public class FacebookAuthenticationFactory
     {
         // Methods
         public void ConfigureService(WebApplicationBuilder webApplicationBuilder, FacebookAuthenticationSetting authenticationSetting)

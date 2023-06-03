@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MDP.AspNetCore.Authentication.Line
 {
     [MDP.Registration.Factory<WebApplicationBuilder, LineAuthenticationSetting>("Authentication", "Line")]
-    public class LineAuthenticationFactoryFactory
+    public class LineAuthenticationFactory
     {
         // Methods
         public void ConfigureService(WebApplicationBuilder webApplicationBuilder, LineAuthenticationSetting authenticationSetting)

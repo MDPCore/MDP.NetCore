@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MDP.AspNetCore.Authentication.AzureAD
 {
     [MDP.Registration.Factory<WebApplicationBuilder, AzureADAuthenticationSetting>("Authentication", "AzureAD")]
-    public class AzureADAuthenticationFactoryFactory
+    public class AzureADAuthenticationFactory
     {
         // Methods
         public void ConfigureService(WebApplicationBuilder webApplicationBuilder, AzureADAuthenticationSetting authenticationSetting)

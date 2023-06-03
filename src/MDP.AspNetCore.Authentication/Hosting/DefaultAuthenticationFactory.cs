@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MDP.AspNetCore.Authentication
 {
     [MDP.Registration.Factory<WebApplicationBuilder, DefaultAuthenticationSetting>("Authentication")]
-    public class DefaultAuthenticationFactoryFactory
+    public class DefaultAuthenticationFactory
     {
         // Methods
         public void ConfigureService(WebApplicationBuilder webApplicationBuilder, DefaultAuthenticationSetting authenticationSetting)

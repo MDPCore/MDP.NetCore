@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MDP.AspNetCore.Authentication.Liff
 {
     [MDP.Registration.Factory<WebApplicationBuilder, LiffAuthenticationSetting>("Authentication", "Liff")]
-    public class LiffAuthenticationFactoryFactory
+    public class LiffAuthenticationFactory
     {
         // Methods
         public void ConfigureService(WebApplicationBuilder webApplicationBuilder, LiffAuthenticationSetting authenticationSetting)

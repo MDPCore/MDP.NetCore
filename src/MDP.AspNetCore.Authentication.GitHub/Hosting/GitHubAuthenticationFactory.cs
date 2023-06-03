@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MDP.AspNetCore.Authentication.GitHub
 {
     [MDP.Registration.Factory<WebApplicationBuilder, GitHubAuthenticationSetting>("Authentication", "GitHub")]
-    public class GitHubAuthenticationFactoryFactory
+    public class GitHubAuthenticationFactory
     {
         // Methods
         public void ConfigureService(WebApplicationBuilder webApplicationBuilder, GitHubAuthenticationSetting authenticationSetting)
