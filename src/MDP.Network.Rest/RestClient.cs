@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -38,80 +39,110 @@ namespace MDP.Network.Rest
 
 
         // Methods
-        public async Task<TResult?> GetAsync<TResult>(string? requestUri = null, Dictionary<string,string>? query = null) where TResult : class
+        public Task<TResponseContent?> GetAsync<TResponseContent>(string? requestUri = null, object? headers = null, object? query = null) where TResponseContent : class
         {
-            // Require
-            if (string.IsNullOrEmpty(requestUri) == true) requestUri = string.Empty;
-            if (query == null) query = new Dictionary<string, string>();
+            // Return
+            return this.SendAsync<TResponseContent>(HttpMethod.Get, requestUri, headers, query, null);
+        }
 
-            // RequestUriBuilder
-            var requestUriBuilder = new UriBuilder(requestUri);
+        public Task<TResponseContent?> PostAsync<TResponseContent>(string? requestUri = null, object? headers = null, object? content = null) where TResponseContent : class
+        {
+            // Return
+            return this.SendAsync<TResponseContent>(HttpMethod.Post, requestUri, headers, null, content);
+        }
+
+        private async Task<TResponseContent?> SendAsync<TResponseContent>(HttpMethod httpMethod, string? requestUri = null, object? headers = null, object? query = null, object? content = null) where TResponseContent : class
+        {
+            // RequestUri
+            if (string.IsNullOrEmpty(requestUri) == true) requestUri = string.Empty;
+            if (requestUri.StartsWith("/") == true) requestUri = requestUri.Substring(1, requestUri.Length - 1);
+            if (query != null)
             {
                 // RequestQuery
-                var requestQuery = new NameValueCollection();
-                foreach (var queryKey in query.Keys)
+                var requestQuery = HttpUtility.ParseQueryString(new UriBuilder(requestUri).Query);
+                query.GetType().GetProperties().ToList().ForEach(property =>
                 {
-                    requestQuery.Add(queryKey, query[queryKey]);
-                }
-                requestUriBuilder.Query = requestQuery.ToString();
+                    // PropertyName
+                    var propertyName = property.Name;
+                    if (string.IsNullOrEmpty(propertyName) == true) throw new InvalidOperationException($"{nameof(propertyName)}=null");
+
+                    // PropertyValue
+                    var propertyValue = property.GetValue(query)?.ToString();
+
+                    // Add
+                    requestQuery.Add(propertyName, propertyValue);
+                });
+
+                // RequestUri
+                var markIndex = requestUri.IndexOf('?');
+                if (markIndex >= 0) requestUri = requestUri.Remove(markIndex);
+                if (requestQuery.Count > 0) requestUri += $"?{requestQuery.ToString()}";
+            }
+            if (string.IsNullOrEmpty(_httpClient.BaseAddress?.ToString()) == false)
+            {
+                // RelativePath
+                if (Uri.TryCreate(requestUri, UriKind.Relative, out _) == false) throw new InvalidOperationException($"The requestUri must be a relative path.{nameof(requestUri)}={requestUri}");
+            }
+            else
+            {
+                // AbsolutePath
+                if (Uri.TryCreate(requestUri, UriKind.Absolute, out _) == false) throw new InvalidOperationException($"The requestUri must be a absolute path.{nameof(requestUri)}={requestUri}");
             }
 
-            // RequestUri
-            requestUri = requestUriBuilder.ToString();
-            if (string.IsNullOrEmpty(requestUri) == true) throw new InvalidOperationException($"{nameof(requestUri)}=null");
-
             // RequestMessage
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            var requestMessage = new HttpRequestMessage(httpMethod, requestUri);
+            {
+                // RequestHeaders
+                if (headers != null)
+                {
+                    headers.GetType().GetProperties().ToList().ForEach(property =>
+                    {
+                        // PropertyName
+                        var propertyName = property.Name;
+                        if (string.IsNullOrEmpty(propertyName) == true) throw new InvalidOperationException($"{nameof(propertyName)}=null");
 
-            // Return
-            return await this.SendAsync<TResult>(requestMessage);
-        }
+                        // PropertyValue
+                        var propertyValue = property.GetValue(headers)?.ToString();
 
-        public async Task<TResult?> PostAsync<TResult>(string? requestUri = null, object? payload = null) where TResult : class
-        {
-            // Require
-            if (string.IsNullOrEmpty(requestUri) == true) requestUri = string.Empty;
-            if (payload == null) payload = new { };
+                        // Add
+                        requestMessage.Headers.Add(propertyName, propertyValue);
+                    });
+                }
 
-            // RequestPayload
-            var requestPayload = System.Text.Json.JsonSerializer.Serialize(payload);
-            if (string.IsNullOrEmpty(requestPayload)==true) throw new InvalidOperationException($"{nameof(requestPayload)}=null");
-
-            // RequestMessage
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUri);
-            requestMessage.Content = new StringContent(requestPayload, Encoding.UTF8, "application/json");
-
-            // Return
-            return await this.SendAsync<TResult>(requestMessage);
-        }
-
-        private async Task<TResult?> SendAsync<TResult>(HttpRequestMessage requestMessage) where TResult : class
-        {
-            #region Contracts
-
-            if (requestMessage == null) throw new ArgumentException($"{nameof(requestMessage)}=null");
-
-            #endregion
+                // RequestContent
+                if (content != null)
+                {
+                    // RequestContentString
+                    var requestContentString = System.Text.Json.JsonSerializer.Serialize(content);
+                    if (string.IsNullOrEmpty(requestContentString) == true) throw new InvalidOperationException($"{nameof(requestContentString)}=null");
+                    
+                    // Set
+                    requestMessage.Content = new StringContent(requestContentString, Encoding.UTF8, "application/json");
+                }
+            }
 
             // ResponseMessage
             var responseMessage = await _httpClient.SendAsync(requestMessage);
-            if (responseMessage.IsSuccessStatusCode == false)
             {
-                var content = await responseMessage.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(content) == false) throw new HttpRequestException(content);
-                if (string.IsNullOrEmpty(content) == true) throw new HttpRequestException($"An unexpected error occurred(response.StatusCode={responseMessage.StatusCode}).");
+                // ErrorContent
+                if (responseMessage.IsSuccessStatusCode == false)
+                {
+                    var errorContent = await responseMessage.Content.ReadAsStringAsync();
+                    if (string.IsNullOrEmpty(errorContent) == false) throw new HttpRequestException(errorContent);
+                    if (string.IsNullOrEmpty(errorContent) == true) throw new HttpRequestException($"An unexpected error occurred(responseMessage.StatusCode={responseMessage.StatusCode}).");
+                }
+
+                // ResponseContentString
+                var responseContentString = await responseMessage.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContentString) == true) return null;
+
+                // ResponseContent
+                var responseContent = System.Text.Json.JsonSerializer.Deserialize<TResponseContent>(responseContentString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (responseContent == null) throw new InvalidOperationException($"{nameof(responseContent)}={responseContentString}");
+
+                // Return
+                return responseContent;
             }
-
-            // ResponsePayload
-            var responsePayload = await responseMessage.Content.ReadAsStringAsync();
-            if (string.IsNullOrEmpty(responsePayload) == true) return null;
-
-            // ResponseResult
-            var responseResult = System.Text.Json.JsonSerializer.Deserialize<TResult>(responsePayload, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            if (responseResult == null) throw new InvalidOperationException($"{nameof(responseResult)}={responsePayload}");
-
-            // Return
-            return responseResult;
         }
     }
 }

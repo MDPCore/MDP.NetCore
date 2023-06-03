@@ -6,10 +6,10 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
-    <ProjectReference Include="..\MDP.NetCore.Logging.Log4net\MDP.NetCore.Logging.Log4net.csproj" />
+    <ProjectReference Include="..\MDP.Logging.Log4net\MDP.Logging.Log4net.csproj" />
   </ItemGroup>
 
   <ItemGroup>

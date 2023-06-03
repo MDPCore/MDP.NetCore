@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using MDP.Logging;
+﻿using MDP.Logging;
 using MDP.Tracing;
 using MyLab.Modules;
 using System;
@@ -26,7 +25,7 @@ namespace MDP.NetCore.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.NetCore.Host.Create<Program>(args).Run();
+            MDP.NetCore.Host.Run<Program>(args);
         }
     }
 }

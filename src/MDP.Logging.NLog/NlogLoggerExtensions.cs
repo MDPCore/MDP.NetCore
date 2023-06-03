@@ -4,7 +4,7 @@ using NLog.Extensions.Logging;
 using System;
 using NLogLib = NLog;
 
-namespace MDP.NetCore.Logging.NLog
+namespace MDP.Logging.NLog
 {
     public static class NLogLoggerExtensions
     {

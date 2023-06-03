@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
-    <ProjectReference Include="..\MDP.NetCore.Logging.NLog\MDP.NetCore.Logging.NLog.csproj" />
+    <ProjectReference Include="..\MDP.Logging.NLog\MDP.Logging.NLog.csproj" />
   </ItemGroup>
 
   <ItemGroup>

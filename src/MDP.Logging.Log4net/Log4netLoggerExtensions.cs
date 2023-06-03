@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace MDP.NetCore.Logging.Log4net
+namespace MDP.Logging.Log4net
 {
     public static class Log4netLoggerExtensions
     {

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.NetCore.Logging.Log4net
+namespace MDP.Logging.Log4net
 {
     [ProviderAlias("Log4net")]
     public class Log4netLoggerProvider : ILoggerProvider

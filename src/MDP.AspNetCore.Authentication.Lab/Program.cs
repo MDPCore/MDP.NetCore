@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Hosting;
-
 namespace MDP.AspNetCore.Authentication.Lab
 {
     public class Program
@@ -8,7 +6,7 @@ namespace MDP.AspNetCore.Authentication.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.AspNetCore.Host.Create(args).Run();
+            MDP.AspNetCore.Host.Run(args);
         }
     }
 }

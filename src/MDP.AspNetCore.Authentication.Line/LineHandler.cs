@@ -44,7 +44,7 @@ namespace MDP.AspNetCore.Authentication.Line
             // AccessTokenIdentity
             var accessToken = tokens.AccessToken;
             if (string.IsNullOrEmpty(accessToken) == true) throw new InvalidOperationException($"{nameof(accessToken)} is emptied.");
-            if (string.IsNullOrEmpty(accessToken) == false) this.VerifyAccessToken(accessToken);
+            if (string.IsNullOrEmpty(accessToken) == false) await this.VerifyAccessToken(accessToken);
             var accessTokenIdentity = await this.CreateAccessTokenIdentity(accessToken);
             if (accessTokenIdentity == null) throw new InvalidOperationException($"{nameof(accessTokenIdentity)}=null");
 
@@ -77,7 +77,7 @@ namespace MDP.AspNetCore.Authentication.Line
             return authenticationTicket;
         }
 
-        private async void VerifyAccessToken(string accessToken)
+        private async Task VerifyAccessToken(string accessToken)
         {
             #region Contracts
 

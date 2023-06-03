@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 
-namespace MDP.NetCore.Logging.Log4net.Lab
+namespace MDP.Logging.NLog.Lab
 {
     public class Program
     {
@@ -22,7 +20,7 @@ namespace MDP.NetCore.Logging.Log4net.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.NetCore.Host.Create<Program>(args).Run();
+            MDP.NetCore.Host.Run<Program>(args);
         }
     }
 }

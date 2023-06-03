@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.NetCore.Logging.NLog
+namespace MDP.Logging.NLog
 {
     [MDP.Registration.Factory<IServiceCollection, NLogLoggerSetting>("Logging", "NLogLogger")]
     public class NLogLoggerFactory

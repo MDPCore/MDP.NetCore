@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 namespace MDP.IdentityModel.Tokens.Jwt.Lab
 {
@@ -36,7 +35,7 @@ namespace MDP.IdentityModel.Tokens.Jwt.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.NetCore.Host.Create<Program>(args).Run();
+            MDP.NetCore.Host.Run<Program>(args);
         }
     }
 }

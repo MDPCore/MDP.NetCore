@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.NetCore.Logging.Log4net
+namespace MDP.Logging.Log4net
 {
     [MDP.Registration.Factory<IServiceCollection, Log4netLoggerSetting>("Logging", "Log4netLogger")]
     public class Log4netLoggerFactory

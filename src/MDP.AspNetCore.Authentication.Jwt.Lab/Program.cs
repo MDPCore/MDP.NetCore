@@ -6,7 +6,7 @@ namespace MDP.AspNetCore.Authentication.Jwt.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.AspNetCore.Host.Create(args).Run();
+            MDP.AspNetCore.Host.Run(args);
         }
     }
 }

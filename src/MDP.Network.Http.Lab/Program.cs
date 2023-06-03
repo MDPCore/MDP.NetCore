@@ -1,12 +1,9 @@
-﻿using Microsoft.Extensions.Hosting;
-using System.Net.Http;
-
-namespace MDP.Network.Http.Lab
+﻿namespace MDP.Network.Http.Lab
 {
     public class Program
     {
         // Methods
-        public static void Run(IHttpClientFactory httpClientFactory)
+        public static async Task Run(IHttpClientFactory httpClientFactory)
         {
             #region Contracts
 
@@ -18,30 +15,30 @@ namespace MDP.Network.Http.Lab
             using (var httpClient = httpClientFactory.CreateClient("DefaultService"))
             {
                 // RequestMessage
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "");
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "get");
 
                 // ResponseMessage
-                var responseMessage = httpClient.SendAsync(requestMessage).Result;
+                var responseMessage = await httpClient.SendAsync(requestMessage);
                 if (responseMessage.IsSuccessStatusCode == false)
                 {
-                    var content = responseMessage.Content.ReadAsStringAsync().Result;
-                    if (string.IsNullOrEmpty(content) == false) throw new HttpRequestException(content);
-                    if (string.IsNullOrEmpty(content) == true) throw new HttpRequestException($"An unexpected error occurred(response.StatusCode={responseMessage.StatusCode}).");
+                    var errorContent = await responseMessage.Content.ReadAsStringAsync();
+                    if (string.IsNullOrEmpty(errorContent) == false) throw new HttpRequestException(errorContent);
+                    if (string.IsNullOrEmpty(errorContent) == true) throw new HttpRequestException($"An unexpected error occurred(responseMessage.StatusCode={responseMessage.StatusCode}).");
                 }
 
-                // Payload
-                var payload = responseMessage.Content.ReadAsStringAsync().Result;
-                if (string.IsNullOrEmpty(payload) == true) throw new HttpRequestException($"An unexpected error occurred(response.Payload=null).");
-                
+                // ResponseContentString
+                var responseContentString = await responseMessage.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(responseContentString) == true) throw new InvalidOperationException($"{nameof(responseContentString)}=null");
+
                 // Display
-                Console.WriteLine(payload);
+                Console.WriteLine(responseContentString);
             }                
         }
 
         public static void Main(string[] args)
         {
             // Host
-            MDP.NetCore.Host.Create<Program>(args).Run();
+            MDP.NetCore.Host.Run<Program>(args);
         }
     }
 }

@@ -43,20 +43,21 @@ namespace MDP.NetCore
 
 
         // Methods
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            // Execute
-            return Task.Run(() =>
+            try
             {
                 // Run
-                this.ExecuteMethod(_methodName);
-
+                await this.ExecuteMethod(_methodName);
+            }
+            finally
+            {
                 // End
                 _applicationLifetime.StopApplication();
-            });
+            }
         }
 
-        private void ExecuteMethod(string methodName, Dictionary<string, object>? parameters = null)
+        private async Task ExecuteMethod(string methodName, Dictionary<string, object>? parameters = null)
         {
             #region Contracts
 
@@ -82,14 +83,15 @@ namespace MDP.NetCore
                 if (parameterValueArray == null) throw new InvalidOperationException($"{nameof(parameterValueArray)}=null");
 
                 // ExecuteMethod
-                methodInfo.Invoke
+                var executeResult = methodInfo.Invoke
                 (
                     obj: instance,
                     parameters: parameterValueArray,
                     invokeAttr: BindingFlags.DoNotWrapExceptions,
                     binder: null,
                     culture: null
-                );
+                ) as Task;
+                if (executeResult != null) await executeResult;
             }
             catch(Exception exception)
             {

@@ -1,23 +1,24 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MDP.Network.Rest;
+using Microsoft.Extensions.DependencyInjection;
 using System.Xml.Linq;
 
-namespace MDP.Network.Http
+namespace MDP.Network.Rest
 {
-    [MDP.Registration.Factory<IServiceCollection, HttpClientFactorySetting>("MDP.Network.Http", "HttpClientFactory")]
-    public class HttpClientFactoryFactory
+    [MDP.Registration.Factory<IServiceCollection, RestClientFactorySetting>("MDP.Network.Rest", "RestClientFactory")]
+    public class RestClientFactoryFactory
     {
         // Methods
-        public void ConfigureService(IServiceCollection serviceCollection, HttpClientFactorySetting httpClientFactorySetting)
+        public void ConfigureService(IServiceCollection serviceCollection, RestClientFactorySetting restClientFactorySetting)
         {
             #region Contracts
 
             if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (httpClientFactorySetting == null) throw new ArgumentException($"{nameof(httpClientFactorySetting)}=null");
+            if (restClientFactorySetting == null) throw new ArgumentException($"{nameof(restClientFactorySetting)}=null");
 
             #endregion
 
             // EndpointList
-            var endpointList = httpClientFactorySetting.Endpoints ?? new Dictionary<string, Endpoint>();
+            var endpointList = restClientFactorySetting.Endpoints ?? new Dictionary<string, Endpoint>();
             if (endpointList.Count <= 0)
             {
                 // HttpClient
@@ -33,7 +34,9 @@ namespace MDP.Network.Http
                 // Name
                 var name = endpoint.Key;
                 if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");
-                     
+                name = RestClientDefaults.CreateName(name);
+                if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");
+
                 // HttpClient
                 serviceCollection.AddHttpClient(name, httpClient =>
                 {
@@ -43,7 +46,7 @@ namespace MDP.Network.Http
                     {
                         // EndsWith
                         if (baseAddress.EndsWith(@"/") == false) baseAddress += @"/";
-
+                        
                         // Set
                         httpClient.BaseAddress = new Uri(baseAddress);
                     }
@@ -61,7 +64,7 @@ namespace MDP.Network.Http
 
 
         // Class
-        public class HttpClientFactorySetting
+        public class RestClientFactorySetting
         {
             // Properties
             public Dictionary<string, Endpoint> Endpoints { get; set; } = new Dictionary<string, Endpoint>();

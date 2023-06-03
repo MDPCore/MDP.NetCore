@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-
-namespace MDP.Data.MSSql.Lab
+﻿namespace MDP.Data.MSSql.Lab
 {
     public class Program
     {
@@ -20,7 +18,7 @@ namespace MDP.Data.MSSql.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.NetCore.Host.Create<Program>(args).Run();
+            MDP.NetCore.Host.Run<Program>(args);
         }
     }
 }

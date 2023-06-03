@@ -6,7 +6,7 @@ namespace MDP.NetCore
     public static class Host
     {
         // Methods
-        public static IHost Create<TProgram>(string[] args) where TProgram : class
+        public static void Run<TProgram>(string[] args) where TProgram : class
         {
             #region Contracts
 
@@ -22,8 +22,8 @@ namespace MDP.NetCore
             var host = hostBuilder.Build();
             if (host == null) throw new InvalidOperationException($"{nameof(host)}=null");
 
-            // Return
-            return host;
+            // Run
+            host.Run();
         }
     }
 }
