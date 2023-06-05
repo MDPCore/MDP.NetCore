@@ -1,6 +1,8 @@
-﻿using MDP.Network.Rest;
+﻿using MDP.Network.Http;
+using MDP.Network.Rest;
 using Microsoft.Extensions.DependencyInjection;
 using System.Xml.Linq;
+using static MDP.Network.Http.HttpClientFactoryFactory;
 
 namespace MDP.Network.Rest
 {
@@ -18,48 +20,24 @@ namespace MDP.Network.Rest
             #endregion
 
             // EndpointList
-            var endpointList = restClientFactorySetting.Endpoints ?? new Dictionary<string, Endpoint>();
-            if (endpointList.Count <= 0)
+            var endpointList = restClientFactorySetting.Endpoints ?? new Dictionary<string, HttpClientEndpoint>();
+            foreach (var endpoint in endpointList)
             {
-                // HttpClient
-                serviceCollection.AddHttpClient();
+                // Require
+                if (endpoint.Value == null) throw new InvalidOperationException($"{nameof(endpoint.Value)}=null");
+                if (string.IsNullOrEmpty(endpoint.Key) == true) throw new InvalidOperationException($"{nameof(endpoint.Key)}=null");
 
-                // Return
-                return;
+                // Name
+                var name = endpoint.Value.Name;
+                if (string.IsNullOrEmpty(name) == true)
+                {
+                    name = endpoint.Key;
+                }
+                endpoint.Value.Name = RestClientDefaults.CreateName(name);
             }
 
             // HttpClientFactory
-            foreach (var endpoint in endpointList)
-            {
-                // Name
-                var name = endpoint.Key;
-                if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");
-                name = RestClientDefaults.CreateName(name);
-                if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");
-
-                // HttpClient
-                serviceCollection.AddHttpClient(name, httpClient =>
-                {
-                    // BaseAddress
-                    var baseAddress = endpoint.Value?.BaseAddress;
-                    if (string.IsNullOrEmpty(baseAddress) == false)
-                    {
-                        // EndsWith
-                        if (baseAddress.EndsWith(@"/") == false) baseAddress += @"/";
-                        
-                        // Set
-                        httpClient.BaseAddress = new Uri(baseAddress);
-                    }
-
-                    // Headers
-                    var headers = endpoint.Value?.Headers ?? new Dictionary<string, string>();
-                    foreach (var header in headers)
-                    {
-                        // Add
-                        httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
-                    }
-                });
-            }
+            serviceCollection.AddHttpClientFactory(endpointList.Values.ToList());
         }
 
 
@@ -67,15 +45,7 @@ namespace MDP.Network.Rest
         public class RestClientFactorySetting
         {
             // Properties
-            public Dictionary<string, Endpoint> Endpoints { get; set; } = new Dictionary<string, Endpoint>();
-        }
-
-        public class Endpoint
-        {
-            // Properties
-            public string BaseAddress { get; set; } = string.Empty;
-
-            public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+            public Dictionary<string, HttpClientEndpoint>? Endpoints { get; set; } = null;
         }
     }
 }

@@ -17,9 +17,10 @@ namespace MDP.Network.Rest.Lab
             using (var restClient = restClientFactory.CreateClient("DefaultService"))
             {
                 // ResponseContent
-                var responseContent = await restClient.GetAsync<object>("get?ccc=789", query: new {
-                    aaa= 123,
-                    bbb= 456,
+                var responseContent = await restClient.PostAsync<object>("post?ccc=789", content: new
+                {
+                    aaa = 123,
+                    bbb = 456,
                 });
                 if ((responseContent) == null) throw new InvalidOperationException($"{nameof(responseContent)}=null");
 

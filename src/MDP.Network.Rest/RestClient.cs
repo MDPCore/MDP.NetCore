@@ -39,19 +39,19 @@ namespace MDP.Network.Rest
 
 
         // Methods
-        public Task<TResponseContent?> GetAsync<TResponseContent>(string? requestUri = null, object? headers = null, object? query = null) where TResponseContent : class
+        public Task<TResponseModel?> GetAsync<TResponseModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null) where TResponseModel : class
         {
             // Return
-            return this.SendAsync<TResponseContent>(HttpMethod.Get, requestUri, headers, query, null);
+            return this.SendAsync<TResponseModel>(HttpMethod.Get, requestUri, headers, query, content);
         }
 
-        public Task<TResponseContent?> PostAsync<TResponseContent>(string? requestUri = null, object? headers = null, object? content = null) where TResponseContent : class
+        public Task<TResponseModel?> PostAsync<TResponseModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null) where TResponseModel : class
         {
             // Return
-            return this.SendAsync<TResponseContent>(HttpMethod.Post, requestUri, headers, null, content);
+            return this.SendAsync<TResponseModel>(HttpMethod.Post, requestUri, headers, query, content);
         }
 
-        private async Task<TResponseContent?> SendAsync<TResponseContent>(HttpMethod httpMethod, string? requestUri = null, object? headers = null, object? query = null, object? content = null) where TResponseContent : class
+        private async Task<TResponseModel?> SendAsync<TResponseModel>(HttpMethod httpMethod, string? requestUri = null, object? headers = null, object? query = null, object? content = null) where TResponseModel : class
         {
             // RequestUri
             if (string.IsNullOrEmpty(requestUri) == true) requestUri = string.Empty;
@@ -124,24 +124,33 @@ namespace MDP.Network.Rest
             // ResponseMessage
             var responseMessage = await _httpClient.SendAsync(requestMessage);
             {
-                // ErrorContent
-                if (responseMessage.IsSuccessStatusCode == false)
+                // IsSuccess
+                if (responseMessage.IsSuccessStatusCode == true)
                 {
-                    var errorContent = await responseMessage.Content.ReadAsStringAsync();
-                    if (string.IsNullOrEmpty(errorContent) == false) throw new HttpRequestException(errorContent);
-                    if (string.IsNullOrEmpty(errorContent) == true) throw new HttpRequestException($"An unexpected error occurred(responseMessage.StatusCode={responseMessage.StatusCode}).");
+                    // ResponseModelString
+                    var responseContentString = await responseMessage.Content.ReadAsStringAsync();
+                    if (string.IsNullOrEmpty(responseContentString) == true) return null;
+
+                    // ResponseModel
+                    var responseContent = System.Text.Json.JsonSerializer.Deserialize<TResponseModel>(responseContentString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    if (responseContent == null) throw new InvalidOperationException($"{nameof(responseContent)}={responseContentString}");
+
+                    // Return
+                    return responseContent;
                 }
+                else
+                {
+                    // ExceptionModelString
+                    var exceptionModelString = await responseMessage.Content.ReadAsStringAsync();
+                    if (string.IsNullOrEmpty(exceptionModelString) == false) throw new HttpRequestException(exceptionModelString);
 
-                // ResponseContentString
-                var responseContentString = await responseMessage.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseContentString) == true) return null;
+                    // ExceptionModel
+                    var exceptionModel = System.Text.Json.JsonSerializer.Deserialize<TResponseModel>(exceptionModelString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    if (exceptionModel == null) throw new InvalidOperationException($"{nameof(exceptionModel)}={exceptionModel}");
 
-                // ResponseContent
-                var responseContent = System.Text.Json.JsonSerializer.Deserialize<TResponseContent>(responseContentString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                if (responseContent == null) throw new InvalidOperationException($"{nameof(responseContent)}={responseContentString}");
-
-                // Return
-                return responseContent;
+                    // Throw
+                    throw new RestResponseException<object>($"An unexpected error occurred(responseMessage.StatusCode={responseMessage.StatusCode}", exceptionModel, responseMessage.StatusCode);
+                }
             }
         }
     }
