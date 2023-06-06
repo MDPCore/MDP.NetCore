@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MDP.DevKit.OpenAI
 {
-    public interface ModelRepository
+    public interface ModelService
     {
         // Methods
-        List<Model> FindAll();
+        Task<List<Model>> FindAllAsync();
 
-        Model? FindByModelId(string modelId);
+        Task<Model?> FindByIdAsync(string modelId);
     }
 }

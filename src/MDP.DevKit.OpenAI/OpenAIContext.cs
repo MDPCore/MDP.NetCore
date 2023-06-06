@@ -11,24 +11,30 @@ namespace MDP.DevKit.OpenAI
     public class OpenAIContext
     {
         // Fields
-        private readonly ModelRepository _modelRepository;
+        private readonly ModelService _modelService;
+
+        private readonly CompletionService _completionService;
 
 
         // Constructors
-        public OpenAIContext(ModelRepository modelRepository)
+        public OpenAIContext(ModelService modelService, CompletionService completionService)
         {
             #region Contracts
 
-            if (modelRepository == null) throw new ArgumentException($"{nameof(modelRepository)}=null");
+            if (modelService == null) throw new ArgumentException($"{nameof(modelService)}=null");
+            if (completionService == null) throw new ArgumentException($"{nameof(completionService)}=null");
 
             #endregion
 
             // Default
-            _modelRepository = modelRepository;
+            _modelService = modelService;
+            _completionService = completionService;
         }
 
 
         // Properties
-        public ModelRepository ModelRepository { get { return _modelRepository; } }
+        public ModelService ModelService { get { return _modelService; } }
+
+        public CompletionService CompletionService { get { return _completionService; } }
     }
 }

@@ -5,7 +5,7 @@ namespace MDP.DevKit.OpenAI.Lab
     public class Program
     {
         // Methods
-        public static void Run(OpenAIContext openAIContext)
+        public static async Task Run(OpenAIContext openAIContext)
         {
             #region Contracts
 
@@ -14,8 +14,9 @@ namespace MDP.DevKit.OpenAI.Lab
             #endregion
 
             // Execute
-            var result = openAIContext.ModelRepository.FindAll();
-            //var result = openAIContext.ModelRepository.FindByModelId("text-davinci-003");
+            //var result = await openAIContext.ModelService.FindAllAsync();
+            //var result = await openAIContext.ModelService.FindByIdAsync("text-davinci-0035");
+            var result = await openAIContext.CompletionService.CreateAsync("text-davinci-003", "Say this is a test");
 
             // Display
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result, new JsonSerializerOptions

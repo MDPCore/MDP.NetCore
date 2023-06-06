@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace MDP.DevKit.OpenAI
 {
-    [MDP.Registration.Service<ModelRepository>()]
-    public partial class RestModelRepository : ModelRepository
+    [MDP.Registration.Service<ModelService>()]
+    public partial class RestModelService : ModelService
     {
         // Fields
         private readonly RestClientFactory _restClientFactory;
 
 
         // Constructors
-        public RestModelRepository(RestClientFactory restClientFactory)
+        public RestModelService(RestClientFactory restClientFactory)
         {
             #region Contracts
 
@@ -33,13 +33,21 @@ namespace MDP.DevKit.OpenAI
         public class ErrorModel
         {
             // Properties
-            public string message { get; set; } = string.Empty;
+            public Error? error { get; set; } = null;
 
-            public string type { get; set; } = string.Empty;
 
-            public string param { get; set; } = string.Empty;
+            // Class
+            public class Error
+            {
+                // Properties
+                public string message { get; set; } = string.Empty;
 
-            public string code { get; set; } = string.Empty;
+                public string type { get; set; } = string.Empty;
+
+                public string param { get; set; } = string.Empty;
+
+                public string code { get; set; } = string.Empty;
+            }
         }
 
         public class ModelResultModel
@@ -48,8 +56,6 @@ namespace MDP.DevKit.OpenAI
             public string id { get; set; } = string.Empty;
 
             public string owned_by { get; set; } = string.Empty;
-
-            public long created { get; set; } = 0;
 
 
             // Methods
@@ -68,16 +74,16 @@ namespace MDP.DevKit.OpenAI
         }
     }
 
-    public partial class RestModelRepository : ModelRepository
+    public partial class RestModelService : ModelService
     {
         // Methods
-        public List<Model> FindAll()
+        public async Task<List<Model>> FindAllAsync()
         {
             // RestClient
             using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
             {
-                // ResultModel
-                var resultModel = restClient.GetAsync<FindAllResultModel>("/v1/models").Result;
+                // Send
+                var resultModel = await restClient.GetAsync<FindAllResultModel, ErrorModel>("/v1/models");
                 if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
                 // Result
@@ -97,10 +103,10 @@ namespace MDP.DevKit.OpenAI
         }
     }
 
-    public partial class RestModelRepository : ModelRepository
+    public partial class RestModelService : ModelService
     {
         // Methods
-        public Model? FindByModelId(string modelId)
+        public async Task<Model?> FindByIdAsync(string modelId)
         {
             #region Contracts
 
@@ -108,19 +114,28 @@ namespace MDP.DevKit.OpenAI
 
             #endregion
 
-            // RestClient
-            using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
+            // Execute
+            try
             {
-                // ResultModel
-                var resultModel = restClient.GetAsync<ModelResultModel>($"/v1/models/{modelId}").Result;
-                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+                // RestClient
+                using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
+                {
+                    // Send
+                    var resultModel = await restClient.GetAsync<ModelResultModel, ErrorModel>($"/v1/models/{modelId}");
+                    if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
-                // Result
-                var model = resultModel.ToModel();
-                if (model == null) return null;
+                    // Result
+                    var model = resultModel.ToModel();
+                    if (model == null) return null;
 
+                    // Return
+                    return model;
+                }
+            }
+            catch (RestResponseException<ErrorModel> responseException) when (responseException.Model?.error?.code == "model_not_found")
+            {
                 // Return
-                return model;
+                return null;
             }
         }
     }
