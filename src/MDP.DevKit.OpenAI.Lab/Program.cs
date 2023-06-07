@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Unicode;
 
 namespace MDP.DevKit.OpenAI.Lab
 {
@@ -16,12 +18,18 @@ namespace MDP.DevKit.OpenAI.Lab
             // Execute
             //var result = await openAIContext.ModelService.FindAllAsync();
             //var result = await openAIContext.ModelService.FindByIdAsync("text-davinci-0035");
-            var result = await openAIContext.CompletionService.CreateAsync("text-davinci-003", "Say this is a test");
+            //var result = await openAIContext.TextEmbeddingService.CreateAsync("The food was delicious and the waiter...");
+            //var result = await openAIContext.TextCompletionService.CreateAsync("Say this is a test");
+            //var result = await openAIContext.ChatCompletionService.CreateAsync(new List<ChatMessage>() { new ChatMessage() { Role= "user", Content= "Hello!" } });
+            //var result = await openAIContext.ImageGenerationService.CreateAsync("A cute baby sea otter").WriteToAsync(@"output\{0}.png");
+            //var result = await openAIContext.TextEmbeddingService.CreateAsync("The food was delicious and the waiter...");
+            var result = openAIContext.CreateAnswerAsync("我想喝綠豆湯該去哪一樓?");
 
             // Display
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result, new JsonSerializerOptions
             {
-                WriteIndented = true
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
             }));
         }
 

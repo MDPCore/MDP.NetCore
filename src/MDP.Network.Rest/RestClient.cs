@@ -39,16 +39,16 @@ namespace MDP.Network.Rest
 
 
         // Methods
-        private TResponseModel? Send<TResponseModel, TErrorModel>(HttpMethod httpMethod, string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        private TResultModel? Send<TResultModel, TErrorModel>(HttpMethod httpMethod, string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
             where TErrorModel : class
         {
             // Return
-            return this.SendAsync<TResponseModel, TErrorModel>(httpMethod, requestUri, headers, query, content).GetAwaiter().GetResult();
+            return this.SendAsync<TResultModel, TErrorModel>(httpMethod, requestUri, headers, query, content).GetAwaiter().GetResult();
         }
 
-        private async Task<TResponseModel?> SendAsync<TResponseModel, TErrorModel>(HttpMethod httpMethod, string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        private async Task<TResultModel?> SendAsync<TResultModel, TErrorModel>(HttpMethod httpMethod, string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
             where TErrorModel : class
         {
             // RequestUri
@@ -125,12 +125,12 @@ namespace MDP.Network.Rest
                 // IsSuccess
                 if (responseMessage.IsSuccessStatusCode == true)
                 {
-                    // ResponseModelString
+                    // ResultModelString
                     var responseContentString = await responseMessage.Content.ReadAsStringAsync();
                     if (string.IsNullOrEmpty(responseContentString) == true) return null;
 
-                    // ResponseModel
-                    var responseContent = System.Text.Json.JsonSerializer.Deserialize<TResponseModel>(responseContentString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    // ResultModel
+                    var responseContent = System.Text.Json.JsonSerializer.Deserialize<TResultModel>(responseContentString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     if (responseContent == null) throw new InvalidOperationException($"{nameof(responseContent)}={responseContentString}");
 
                     // Return
@@ -156,70 +156,70 @@ namespace MDP.Network.Rest
     public partial class RestClient : IDisposable
     {
         // Methods
-        public TResponseModel? Get<TResponseModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public TResultModel? Get<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
         {
             // Return
-            return this.Send<TResponseModel, dynamic>(HttpMethod.Get, requestUri, headers, query, content);
+            return this.Send<TResultModel, dynamic>(HttpMethod.Get, requestUri, headers, query, content);
         }
 
-        public TResponseModel? Get<TResponseModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public TResultModel? Get<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
             where TErrorModel : class
         {
             // Return
-            return this.Send<TResponseModel, TErrorModel>(HttpMethod.Get, requestUri, headers, query, content);
+            return this.Send<TResultModel, TErrorModel>(HttpMethod.Get, requestUri, headers, query, content);
         }
 
 
-        public Task<TResponseModel?> GetAsync<TResponseModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public Task<TResultModel?> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
         {
             // Return
-            return this.SendAsync<TResponseModel, dynamic>(HttpMethod.Get, requestUri, headers, query, content);
+            return this.SendAsync<TResultModel, dynamic>(HttpMethod.Get, requestUri, headers, query, content);
         }
 
-        public Task<TResponseModel?> GetAsync<TResponseModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public Task<TResultModel?> GetAsync<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
             where TErrorModel : class
         {
             // Return
-            return this.SendAsync<TResponseModel, TErrorModel>(HttpMethod.Get, requestUri, headers, query, content);
+            return this.SendAsync<TResultModel, TErrorModel>(HttpMethod.Get, requestUri, headers, query, content);
         }
     }
 
     public partial class RestClient : IDisposable
     {
         // Methods
-        public TResponseModel? Post<TResponseModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public TResultModel? Post<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
         {
             // Return
-            return this.Send<TResponseModel, dynamic>(HttpMethod.Post, requestUri, headers, query, content);
+            return this.Send<TResultModel, dynamic>(HttpMethod.Post, requestUri, headers, query, content);
         }
 
-        public TResponseModel? Post<TResponseModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public TResultModel? Post<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
             where TErrorModel : class
         {
             // Return
-            return this.Send<TResponseModel, TErrorModel>(HttpMethod.Post, requestUri, headers, query, content);
+            return this.Send<TResultModel, TErrorModel>(HttpMethod.Post, requestUri, headers, query, content);
         }
 
 
-        public Task<TResponseModel?> PostAsync<TResponseModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public Task<TResultModel?> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
         {
             // Return
-            return this.SendAsync<TResponseModel, dynamic>(HttpMethod.Post, requestUri, headers, query, content);
+            return this.SendAsync<TResultModel, dynamic>(HttpMethod.Post, requestUri, headers, query, content);
         }
 
-        public Task<TResponseModel?> PostAsync<TResponseModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-            where TResponseModel : class
+        public Task<TResultModel?> PostAsync<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+            where TResultModel : class
             where TErrorModel : class
         {
             // Return
-            return this.SendAsync<TResponseModel, TErrorModel>(HttpMethod.Post, requestUri, headers, query, content);
+            return this.SendAsync<TResultModel, TErrorModel>(HttpMethod.Post, requestUri, headers, query, content);
         }
     }
 }

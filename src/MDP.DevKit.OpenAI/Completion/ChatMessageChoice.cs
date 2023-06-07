@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MDP.DevKit.OpenAI
 {
-    public class Model
+    public class ChatMessageChoice : ChatMessage
     {
         // Properties
-        public string ModelId { get; set; } = string.Empty;
+        public int Index { get; set; } = 0;
 
-        public string Owner { get; set; } = string.Empty;
+        public string? FinishReason { get; set; } = null;
     }
 }

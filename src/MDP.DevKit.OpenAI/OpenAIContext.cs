@@ -13,28 +13,55 @@ namespace MDP.DevKit.OpenAI
         // Fields
         private readonly ModelService _modelService;
 
-        private readonly CompletionService _completionService;
+        private readonly TextEmbeddingService _textEmbeddingService;
+
+        private readonly TextCompletionService _textCompletionService;
+
+        private readonly ChatCompletionService _chatCompletionService;
+
+        private readonly ImageGenerationService _imageGenerationService;
 
 
         // Constructors
-        public OpenAIContext(ModelService modelService, CompletionService completionService)
+        public OpenAIContext
+        (
+            ModelService modelService,
+            TextEmbeddingService textEmbeddingService,
+            TextCompletionService textCompletionService,
+            ChatCompletionService chatCompletionService,
+            ImageGenerationService imageGenerationService
+        )
         {
             #region Contracts
 
             if (modelService == null) throw new ArgumentException($"{nameof(modelService)}=null");
-            if (completionService == null) throw new ArgumentException($"{nameof(completionService)}=null");
+            if (textEmbeddingService == null) throw new ArgumentException($"{nameof(textEmbeddingService)}=null");
+            if (textCompletionService == null) throw new ArgumentException($"{nameof(textCompletionService)}=null");
+            if (chatCompletionService == null) throw new ArgumentException($"{nameof(chatCompletionService)}=null");
+            if (imageGenerationService == null) throw new ArgumentException($"{nameof(imageGenerationService)}=null");
 
             #endregion
 
             // Default
             _modelService = modelService;
-            _completionService = completionService;
+            _textEmbeddingService = textEmbeddingService;
+            _textCompletionService = textCompletionService;
+            _chatCompletionService = chatCompletionService;
+            _imageGenerationService = imageGenerationService;
         }
 
 
         // Properties
         public ModelService ModelService { get { return _modelService; } }
 
-        public CompletionService CompletionService { get { return _completionService; } }
+        public TextEmbeddingService TextEmbeddingService { get { return _textEmbeddingService; } }
+
+        public TextCompletionService TextCompletionService { get { return _textCompletionService; } }
+
+        public ChatCompletionService ChatCompletionService { get { return _chatCompletionService; } }
+
+        public ImageGenerationService ImageGenerationService { get { return _imageGenerationService; } }
+
+        public CosineSimilarityService CosineSimilarityService { get; } = new CosineSimilarityService();
     }
 }

@@ -6,51 +6,17 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MDP.DevKit.OpenAI
+namespace MDP.DevKit.OpenAI.Accesses
 {
     [MDP.Registration.Service<ModelService>()]
-    public partial class RestModelService : ModelService
+    public partial class RestModelService : OpenAIService, ModelService
     {
-        // Fields
-        private readonly RestClientFactory _restClientFactory;
-
-
         // Constructors
-        public RestModelService(RestClientFactory restClientFactory)
-        {
-            #region Contracts
-
-            if (restClientFactory == null) throw new ArgumentException($"{nameof(restClientFactory)}=null");
-
-            #endregion
-
-            // Default
-            _restClientFactory = restClientFactory;
-        }
+        public RestModelService(RestClientFactory restClientFactory) : base(restClientFactory) { }
 
 
         // Class
-        public class ErrorModel
-        {
-            // Properties
-            public Error? error { get; set; } = null;
-
-
-            // Class
-            public class Error
-            {
-                // Properties
-                public string message { get; set; } = string.Empty;
-
-                public string type { get; set; } = string.Empty;
-
-                public string param { get; set; } = string.Empty;
-
-                public string code { get; set; } = string.Empty;
-            }
-        }
-
-        public class ModelResultModel
+        private class ModelResultModel
         {
             // Properties
             public string id { get; set; } = string.Empty;
@@ -64,7 +30,7 @@ namespace MDP.DevKit.OpenAI
                 // Create
                 var model = new Model()
                 {
-                    ModelId = this.id,
+                    Id = this.id,
                     Owner = this.owned_by,
                 };
 
@@ -79,24 +45,21 @@ namespace MDP.DevKit.OpenAI
         // Methods
         public async Task<List<Model>> FindAllAsync()
         {
-            // RestClient
-            using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
-            {
-                // Send
-                var resultModel = await restClient.GetAsync<FindAllResultModel, ErrorModel>("/v1/models");
-                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+            // Send
+            var resultModel = await this.GetAsync<FindAllResultModel, ErrorModel>("/v1/models");
+            if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
-                // Result
-                var modelList = resultModel.data?.Select(o => o.ToModel()).ToList();
-                if (modelList == null) throw new InvalidOperationException($"{nameof(modelList)}=null");
+            // Result
+            var modelList = resultModel.data?.Select(o => o.ToModel()).ToList();
+            if (modelList == null) throw new InvalidOperationException($"{nameof(modelList)}=null");
 
-                // Return
-                return modelList;
-            }
+            // Return
+            return modelList;
         }
 
+
         // Class
-        public class FindAllResultModel
+        private class FindAllResultModel
         {
             // Properties
             public List<ModelResultModel>? data { get; set; } = null;       
@@ -106,33 +69,29 @@ namespace MDP.DevKit.OpenAI
     public partial class RestModelService : ModelService
     {
         // Methods
-        public async Task<Model?> FindByIdAsync(string modelId)
+        public async Task<Model?> FindByIdAsync(string model)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(modelId) == true) throw new ArgumentException($"{nameof(modelId)}=null");
+            if (string.IsNullOrEmpty(model) == true) throw new ArgumentException($"{nameof(model)}=null");
 
             #endregion
 
             // Execute
             try
             {
-                // RestClient
-                using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
-                {
-                    // Send
-                    var resultModel = await restClient.GetAsync<ModelResultModel, ErrorModel>($"/v1/models/{modelId}");
-                    if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+                // Send
+                var resultModel = await this.GetAsync<ModelResultModel, ErrorModel>($"/v1/models/{model}");
+                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
-                    // Result
-                    var model = resultModel.ToModel();
-                    if (model == null) return null;
+                // Result
+                var modelObject = resultModel.ToModel();
+                if (modelObject == null) return null;
 
-                    // Return
-                    return model;
-                }
+                // Return
+                return modelObject;
             }
-            catch (RestResponseException<ErrorModel> responseException) when (responseException.Model?.error?.code == "model_not_found")
+            catch (OpenAIException exception) when (exception.Code == "model_not_found")
             {
                 // Return
                 return null;
