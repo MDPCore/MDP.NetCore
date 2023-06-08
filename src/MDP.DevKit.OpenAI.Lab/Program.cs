@@ -23,7 +23,7 @@ namespace MDP.DevKit.OpenAI.Lab
             //var result = await openAIContext.ChatCompletionService.CreateAsync(new List<ChatMessage>() { new ChatMessage() { Role= "user", Content= "Hello!" } });
             //var result = await openAIContext.ImageGenerationService.CreateAsync("A cute baby sea otter").WriteToAsync(@"output\{0}.png");
             //var result = await openAIContext.TextEmbeddingService.CreateAsync("The food was delicious and the waiter...");
-            var result = openAIContext.CreateAnswerAsync("我想喝綠豆湯該去哪一樓?");
+            var result = await openAIContext.CreateAnswerAsync("我想喝綠豆湯該去哪一樓?");
 
             // Display
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result, new JsonSerializerOptions
