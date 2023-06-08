@@ -8,13 +8,13 @@ namespace MDP.DevKit.OpenAI.Lab
         // Constants
         public static readonly List<string> DefaultKnowledgePointList = new List<string>()
         {
-            "B2: 美食生活館",
-            "B1: 繽紛流行館",
-            "1F: 國際美妝館",
-            "2F: 流行配件館",
-            "3F: 時尚粉領館",
-            "4F: 潮流運動館",
-            "5F: 都會休閒館"
+            "B2：美食生活館 - 各種美食餐廳、烘焙店、糕點店、特色咖啡館，以及食品超市，或是售賣烹飪器具、餐具等生活用品店。",
+            "B1：繽紛流行館 - 各式各樣的服飾、飾品、流行產品店，如快時尚品牌、流行的配飾店、潮流玩具或科技產品。",
+            "1F：國際美妝館 - 各種美妝商品，如國際品牌的化妝品、護膚品、香水等。",
+            "2F：流行配件館 - 各式配件的店，如手錶、眼鏡、首飾、帽子、包包等。",
+            "3F：時尚白領館 - 各種專為上班族、專業人士所設計的服裝和配件，如正裝、商務包、時尚辦公用品等。",
+            "4F：潮流運動館 - 各種運動相關商品，如運動服裝、運動鞋、健身器材，以及運動配件等。",
+            "5F：都會休閒館 - 休閒娛樂的地方，如書店、音樂CD店、咖啡館，或是賣休閒服裝、戶外用品的店等。",
         };
 
 
@@ -53,7 +53,7 @@ namespace MDP.DevKit.OpenAI.Lab
             similarityPointList = similarityPointList.OrderByDescending(o => o.similarityScore).ToList();
 
             // ChoicePointList
-            var choicePointList = similarityPointList.Where(o => o.similarityScore >= 0.8).Take(3).ToList();
+            var choicePointList = similarityPointList.Where(o => o.similarityScore >= 0.7).Take(3).ToList();
 
             // Prompt
             var promptBuilder = new StringBuilder();
