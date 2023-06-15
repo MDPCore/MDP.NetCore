@@ -29,7 +29,7 @@ namespace MDP.DevKit.OpenAI.Lab
             Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(result, new JsonSerializerOptions
             {
                 WriteIndented = true,
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
             }));
         }
 

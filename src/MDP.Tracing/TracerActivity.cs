@@ -14,7 +14,7 @@ namespace MDP.Tracing
 
 
         // Constructors
-        internal TracerActivity(Activity? activity = null)
+        public TracerActivity(Activity? activity = null)
         {
             // Default
             _activity = activity;

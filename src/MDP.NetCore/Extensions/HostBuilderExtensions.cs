@@ -1,7 +1,4 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using MDP.Configuration;
-using MDP.Hosting;
+﻿using MDP.Configuration;
 using MDP.Logging;
 using MDP.Tracing;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,10 +8,10 @@ using System;
 
 namespace MDP.NetCore
 {
-    public static class HostBuilderExtensions
+    public static partial class HostBuilderExtensions
     {
         // Methods        
-        public static IHostBuilder ConfigureDefault(this IHostBuilder hostBuilder) 
+        public static IHostBuilder ConfigureDefault(this IHostBuilder hostBuilder)
         {
             #region Contracts
 
@@ -22,37 +19,8 @@ namespace MDP.NetCore
 
             #endregion
 
-            // ConfigurationBuilder
-            hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
-            {
-                // Module
-                configurationBuilder.RegisterModule(hostContext.HostingEnvironment.EnvironmentName);
-            });
-
-            // ContainerBuilder
-            hostBuilder.ConfigureContainer<Autofac.ContainerBuilder>((hostContext, containerBuilder) =>
-            {
-                // Module
-                containerBuilder.RegisterModule(hostContext.Configuration);
-            });
-            hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
             // HostBuilder
-            hostBuilder.ConfigureServices((context, serviceCollection) =>
-            {
-                // Logger
-                serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(Logger<>));
-
-                // Tracer
-                serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(Tracer<>));
-
-                // RegisterContext
-                using (var registerContext = new NetCoreRegisterContext())
-                {
-                    // Module
-                    registerContext.RegisterModule(serviceCollection, context.Configuration);
-                }
-            });
+            hostBuilder.RegisterModule();
 
             // Return
             return hostBuilder;
@@ -67,16 +35,62 @@ namespace MDP.NetCore
             #endregion
 
             // HostBuilder
-            hostBuilder.ConfigureServices((context, serviceCollection) =>
+            hostBuilder.ConfigureDefault().ConfigureServices((context, serviceCollection) =>
             {
                 // ProgramService
                 serviceCollection.TryAddTransient<TProgram, TProgram>();
                 serviceCollection.Add(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
-            })
-            .ConfigureDefault();
+            });
 
             // Return
             return hostBuilder;
         }
     }
+
+    public static partial class HostBuilderExtensions
+    {
+        // Methods        
+        public static IHostBuilder RegisterModule(this IHostBuilder hostBuilder)
+        {
+            #region Contracts
+
+            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
+
+            #endregion
+
+            // ConfigurationBuilder
+            hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
+            {
+                // Module
+                configurationBuilder.RegisterModule(hostContext.HostingEnvironment.EnvironmentName);
+            });
+
+            // HostBuilder
+            hostBuilder.ConfigureServices((context, serviceCollection) =>
+            {
+                // Logger
+                serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(Logger<>));
+
+                // Tracer
+                serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(Tracer<>));
+
+                // FactoryRegisterContext
+                var factoryRegisterContext = new FactoryRegisterContext<IServiceCollection>();
+                {
+                    // Module
+                    factoryRegisterContext.RegisterModule(serviceCollection, context.Configuration);
+                }
+
+                // ServiceRegisterContext
+                var serviceRegisterContext = new ServiceRegisterContext();
+                {
+                    // Module
+                    serviceRegisterContext.RegisterModule(serviceCollection, context.Configuration);
+                }
+            });
+
+            // Return
+            return hostBuilder;
+        }
+    }    
 }

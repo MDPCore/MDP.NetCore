@@ -7,18 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Registrations\NetCoreRegisterFactory.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDP.Hosting\MDP.Hosting.csproj" />
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
     <ProjectReference Include="..\MDP.Configuration\MDP.Configuration.csproj" />
     <ProjectReference Include="..\MDP.Logging\MDP.Logging.csproj" />
     <ProjectReference Include="..\MDP.Tracing\MDP.Tracing.csproj" />
+    <ProjectReference Include="..\CLK.Reflection\CLK.Reflection.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

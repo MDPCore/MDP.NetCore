@@ -17,9 +17,9 @@ namespace MDP.Registration
 
 
         // Properties
-        public abstract bool ServiceSingleton { get; }
-
         public abstract Type ServiceType { get; }
+
+        public abstract bool Singleton { get; }
     }
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -27,20 +27,20 @@ namespace MDP.Registration
         where TService : class
     {
         // Fields
-        private bool _serviceSingleton = false;
+        private bool _singleton = false;
 
 
         // Constructors
         public ServiceAttribute(bool singleton = false)
         {
             // Default
-            _serviceSingleton = singleton;
+            _singleton = singleton;
         }
 
 
         // Properties
-        public override bool ServiceSingleton { get { return _serviceSingleton; } }
-
         public override Type ServiceType { get { return typeof(TService); } }
+
+        public override bool Singleton { get { return _singleton; } }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MDP.Tracing;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.Tracing
+namespace MDP.NetCore
 {
-    public abstract class Tracer : ITracer
+    internal abstract class Tracer : ITracer
     {
         // Fields
         private static object _syncRoot = new object();
@@ -74,7 +75,7 @@ namespace MDP.Tracing
         protected abstract string CreateActivityName(string memberName);
     }
 
-    public class Tracer<TCategoryName> : Tracer, ITracer<TCategoryName>
+    internal class Tracer<TCategoryName> : Tracer, ITracer<TCategoryName>
     {
         // Fields
         private readonly string _categoryName;

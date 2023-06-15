@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore
 {
-    public static class WebApplicationBuilderExtensions
+    public static partial class WebApplicationBuilderExtensions
     {
         // Methods
         public static WebApplicationBuilder ConfigureDefault(this WebApplicationBuilder webApplicationBuilder)
@@ -37,26 +37,27 @@ namespace MDP.AspNetCore
             // HostBuilder
             var hostBuilder = webApplicationBuilder.Host;
             {
+                // Default
                 hostBuilder.ConfigureDefault();
-            }
-
-            // MvcBuilder
-            var mvcBuilder = webApplicationBuilder.Services.AddMvc().ConfigureDefault();
-            {
-                mvcBuilder.AddMvcPart();
-                mvcBuilder.AddMvcAsset();
-                mvcBuilder.AddMvcCors(webApplicationBuilder.Configuration);
-                mvcBuilder.AddMvcSwagger(webApplicationBuilder.Configuration);
-                mvcBuilder.AddMvcForwardedHeaders(webApplicationBuilder.Configuration);
             }
 
             // WebApplicationBuilder
             {
+                // MvcBuilder
+                var mvcBuilder = webApplicationBuilder.Services.AddMvc().ConfigureDefault();
+                {
+                    mvcBuilder.AddMvcPart();
+                    mvcBuilder.AddMvcAsset();
+                    mvcBuilder.AddMvcCors(webApplicationBuilder.Configuration);
+                    mvcBuilder.AddMvcSwagger(webApplicationBuilder.Configuration);
+                    mvcBuilder.AddMvcForwardedHeaders(webApplicationBuilder.Configuration);
+                }
+
                 // RegisterContext
-                using (var registerContext = new AspNetCoreRegisterContext())
+                var registerContext = new FactoryRegisterContext<WebApplicationBuilder>();
                 {
                     // Module
-                    registerContext.RegisterModule(webApplicationBuilder);
+                    registerContext.RegisterModule(webApplicationBuilder, webApplicationBuilder.Configuration);
                 }
             }
 
@@ -125,14 +126,14 @@ namespace MDP.AspNetCore
 
             // Return
             return mvcBuilder;
-        }            
+        }
 
         private static void AddMvcPart(this IMvcBuilder mvcBuilder)
         {
             #region Contracts
 
             if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-           
+
             #endregion
 
             // ModuleAssembly
@@ -166,7 +167,7 @@ namespace MDP.AspNetCore
             #region Contracts
 
             if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-         
+
             #endregion
 
             // ModuleAssembly
@@ -179,7 +180,7 @@ namespace MDP.AspNetCore
             registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
 
             // AssetAssembly
-            var assetAssemblyList = new List<Assembly>();            
+            var assetAssemblyList = new List<Assembly>();
             foreach (var registeredAssembly in registeredAssemblyList)
             {
                 if (assetAssemblyList.Contains(registeredAssembly) == false)
