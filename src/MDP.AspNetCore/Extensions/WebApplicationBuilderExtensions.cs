@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -34,31 +35,20 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // HostBuilder
-            var hostBuilder = webApplicationBuilder.Host;
-            {
-                // Default
-                hostBuilder.ConfigureDefault();
-            }
+            // RegisterModule
+            webApplicationBuilder.RegisterModule();
 
-            // WebApplicationBuilder
+            // MvcBuilder
+            var mvcBuilder = webApplicationBuilder.Services.AddMvc();
             {
-                // MvcBuilder
-                var mvcBuilder = webApplicationBuilder.Services.AddMvc().ConfigureDefault();
-                {
-                    mvcBuilder.AddMvcPart();
-                    mvcBuilder.AddMvcAsset();
-                    mvcBuilder.AddMvcCors(webApplicationBuilder.Configuration);
-                    mvcBuilder.AddMvcSwagger(webApplicationBuilder.Configuration);
-                    mvcBuilder.AddMvcForwardedHeaders(webApplicationBuilder.Configuration);
-                }
+                // RegisterModule
+                mvcBuilder.RegisterModule();
 
-                // RegisterContext
-                var registerContext = new FactoryRegisterContext<WebApplicationBuilder>();
-                {
-                    // Module
-                    registerContext.RegisterModule(webApplicationBuilder, webApplicationBuilder.Configuration);
-                }
+                // AddModule
+                mvcBuilder.AddMvcOptions();
+                mvcBuilder.AddMvcCors(webApplicationBuilder.Configuration);
+                mvcBuilder.AddMvcSwagger(webApplicationBuilder.Configuration);
+                mvcBuilder.AddMvcForwardedHeaders(webApplicationBuilder.Configuration);
             }
 
             // Return
@@ -67,7 +57,7 @@ namespace MDP.AspNetCore
 
 
         // MvcBuilder
-        private static IMvcBuilder ConfigureDefault(this IMvcBuilder mvcBuilder)
+        private static void AddMvcOptions(this IMvcBuilder mvcBuilder)
         {
             #region Contracts
 
@@ -122,116 +112,6 @@ namespace MDP.AspNetCore
             {
                 // Filter
                 builder.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
-            });
-
-            // Return
-            return mvcBuilder;
-        }
-
-        private static void AddMvcPart(this IMvcBuilder mvcBuilder)
-        {
-            #region Contracts
-
-            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-
-            #endregion
-
-            // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.FindAllAssembly();
-            if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-
-            // RegisteredAssembly
-            var registeredAssemblyList = new List<Assembly>();
-            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
-            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
-
-            // PartAssembly
-            var partAssemblyList = new List<Assembly>();
-            foreach (var moduleAssembly in moduleAssemblyList)
-            {
-                if (registeredAssemblyList.Contains(moduleAssembly) == false)
-                {
-                    partAssemblyList.Add(moduleAssembly);
-                }
-            }
-
-            // ApplicationPart
-            foreach (var partAssembly in partAssemblyList)
-            {
-                mvcBuilder.AddApplicationPart(partAssembly);
-            }
-        }
-
-        private static void AddMvcAsset(this IMvcBuilder mvcBuilder)
-        {
-            #region Contracts
-
-            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-
-            #endregion
-
-            // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.FindAllAssembly();
-            if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
-
-            // RegisteredAssembly
-            var registeredAssemblyList = new List<Assembly>();
-            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
-            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
-
-            // AssetAssembly
-            var assetAssemblyList = new List<Assembly>();
-            foreach (var registeredAssembly in registeredAssemblyList)
-            {
-                if (assetAssemblyList.Contains(registeredAssembly) == false)
-                {
-                    assetAssemblyList.Add(registeredAssembly);
-                }
-            }
-            foreach (var moduleAssembly in moduleAssemblyList)
-            {
-                if (assetAssemblyList.Contains(moduleAssembly) == false)
-                {
-                    assetAssemblyList.Add(moduleAssembly);
-                }
-            }
-
-            // FileProviderList
-            var fileProviderList = new List<IFileProvider>();
-            foreach (var assetAssembly in assetAssemblyList)
-            {
-                // FileProvider
-                IFileProvider? fileProvider = null;
-                try
-                {
-                    fileProvider = new ManifestEmbeddedFileProvider(assetAssembly, @"wwwroot");
-                }
-                catch
-                {
-                    fileProvider = null;
-                }
-
-                // Add
-                if (fileProvider != null)
-                {
-                    fileProviderList.Add(fileProvider);
-                }
-            }
-
-            // StaticFileOptions
-            mvcBuilder.Services.AddOptions<StaticFileOptions>().Configure<IWebHostEnvironment>((options, hostEnvironment) =>
-            {
-                // FileProvider
-                if (hostEnvironment.WebRootFileProvider != null)
-                {
-                    fileProviderList.Insert(0, hostEnvironment.WebRootFileProvider);
-                }
-
-                // Attach
-                options.FileProvider = new CompositeFileProvider
-                (
-                    fileProviderList
-                );
             });
         }
 
@@ -421,6 +301,39 @@ namespace MDP.AspNetCore
                 // Write
                 writer.WriteStringValue(dataTimeString);
             }
+        }
+    }
+
+    public static partial class WebApplicationBuilderExtensions
+    {
+        // Methods
+        public static WebApplicationBuilder RegisterModule(this WebApplicationBuilder webApplicationBuilder)
+        {
+            #region Contracts
+
+            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
+
+            #endregion
+
+            // HostBuilder
+            var hostBuilder = webApplicationBuilder.Host;
+            {
+                // RegisterModule
+                hostBuilder.RegisterModule();
+            }
+
+            // WebApplicationBuilder
+            {
+                // FactoryRegisterContext
+                var factoryRegisterContext = new FactoryRegisterContext<WebApplicationBuilder>();
+                {
+                    // RegisterModule
+                    factoryRegisterContext.RegisterModule(webApplicationBuilder, webApplicationBuilder.Configuration);
+                }
+            }
+
+            // Return
+            return webApplicationBuilder;
         }
     }
 }

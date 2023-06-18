@@ -47,8 +47,15 @@ namespace MDP.NetCore
 
             // InstanceConfigList
             var instanceConfigList = new List<IConfigurationSection>();
-            instanceConfigList.AddRange(this.FindAllInstanceConfig(configuration, instanceType.Namespace!));
-            instanceConfigList.AddRange(this.FindAllInstanceConfig(configuration, serviceAttribute.ServiceType.Namespace!));
+            if (serviceAttribute.ServiceType.Namespace == instanceType.Namespace)
+            {
+                instanceConfigList.AddRange(this.FindAllInstanceConfig(configuration, instanceType.Namespace!));
+            }
+            else
+            {
+                instanceConfigList.AddRange(this.FindAllInstanceConfig(configuration, instanceType.Namespace!));
+                instanceConfigList.AddRange(this.FindAllInstanceConfig(configuration, serviceAttribute.ServiceType.Namespace!));
+            }
 
             // InstanceConfig
             foreach (var instanceConfig in instanceConfigList)

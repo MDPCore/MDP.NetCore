@@ -5,27 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 
 namespace MDP.NetCore
 {
     public static partial class HostBuilderExtensions
     {
-        // Methods        
-        public static IHostBuilder ConfigureDefault(this IHostBuilder hostBuilder)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // HostBuilder
-            hostBuilder.RegisterModule();
-
-            // Return
-            return hostBuilder;
-        }
-
+        // Methods    
         public static IHostBuilder ConfigureDefault<TProgram>(this IHostBuilder hostBuilder) where TProgram : class
         {
             #region Contracts
@@ -34,8 +20,11 @@ namespace MDP.NetCore
 
             #endregion
 
+            // RegisterModule
+            hostBuilder.RegisterModule();
+
             // HostBuilder
-            hostBuilder.ConfigureDefault().ConfigureServices((context, serviceCollection) =>
+            hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
                 // ProgramService
                 serviceCollection.TryAddTransient<TProgram, TProgram>();
@@ -61,13 +50,16 @@ namespace MDP.NetCore
             // ConfigurationBuilder
             hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
             {
-                // Module
+                // RegisterModule
                 configurationBuilder.RegisterModule(hostContext.HostingEnvironment.EnvironmentName);
             });
 
             // HostBuilder
             hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
+                // List
+                serviceCollection.TryAddTransient(typeof(IList<>), typeof(List<>));
+
                 // Logger
                 serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
@@ -77,14 +69,14 @@ namespace MDP.NetCore
                 // FactoryRegisterContext
                 var factoryRegisterContext = new FactoryRegisterContext<IServiceCollection>();
                 {
-                    // Module
+                    // RegisterModule
                     factoryRegisterContext.RegisterModule(serviceCollection, context.Configuration);
                 }
 
                 // ServiceRegisterContext
                 var serviceRegisterContext = new ServiceRegisterContext();
                 {
-                    // Module
+                    // RegisterModule
                     serviceRegisterContext.RegisterModule(serviceCollection, context.Configuration);
                 }
             });
