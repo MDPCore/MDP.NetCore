@@ -11,12 +11,16 @@
     <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
     <ProjectReference Include="..\MDP.DevKit.OpenAI\MDP.DevKit.OpenAI.csproj" PrivateAssets="All" />
     <ProjectReference Include="..\MDP.DevKit.OpenAI.Accesses\MDP.DevKit.OpenAI.Accesses.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\MDP.Network.Rest\MDP.Network.Rest.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>MDP.DevKit.OpenAI</PackageId>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(OutputPath)\MDP.DevKit.OpenAI*.dll" Pack="true" PackagePath="lib\$(TargetFramework)\" />
+  </ItemGroup>
 
   <PropertyGroup>
     <authors>CLK Software Studio</authors>
