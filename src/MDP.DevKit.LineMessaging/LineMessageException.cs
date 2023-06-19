@@ -5,26 +5,30 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MDP.DevKit.OpenAI
+namespace MDP.DevKit.LineMessaging
 {
-    public class OpenAIException : Exception
+    public class LineMessageException : Exception
     {
         // Constructors
-        public OpenAIException(string? message = null, string? type = null, string? param = null, string? code = null) : base(message) 
+        public LineMessageException(string? message = null, List<Detail>? details = null) : base(message) 
         {
             // Default
-            this.Type = type;
-            this.Param = param; 
-            this.Code = code;
+            this.Details = details;
         }
 
 
         // Properties
-        public string? Type { get; set; } = string.Empty;
+        public List<Detail>? Details { get; set; } = null;
 
-        public string? Param { get; set; } = string.Empty;
 
-        public string? Code { get; set; } = string.Empty;
+        // Class
+        public class Detail
+        {
+            // Properties
+            public string? Message { get; set; } = string.Empty;
+
+            public string? Property { get; set; } = string.Empty;
+        }
 
 
         // Methods
@@ -39,10 +43,8 @@ namespace MDP.DevKit.OpenAI
             // This
             messageBuilder.AppendLine(System.Text.Json.JsonSerializer.Serialize(new
             {
-                Message = this.Message, 
-                Type = this.Type,
-                Param = this.Param,
-                Code = this.Code
+                Message = this.Message,
+                Details = this.Details
             }, new JsonSerializerOptions { WriteIndented = false }));
 
             // Return

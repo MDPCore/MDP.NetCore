@@ -2,16 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>11.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
+    <ProjectReference Include="..\MDP.DevKit.LineMessaging\MDP.DevKit.LineMessaging.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\MDP.DevKit.LineMessaging.Accesses\MDP.DevKit.LineMessaging.Accesses.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\MDP.Network.Rest\MDP.Network.Rest.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>MDP.DevKit.LineMessaging</PackageId>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
+    <None Include="$(OutputPath)\MDP.DevKit.LineMessaging*.dll" Pack="true" PackagePath="lib\$(TargetFramework)\" />
   </ItemGroup>
 
   <PropertyGroup>

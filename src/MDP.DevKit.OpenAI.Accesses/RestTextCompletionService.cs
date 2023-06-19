@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MDP.DevKit.OpenAI.Accesses
 {
     [MDP.Registration.Service<TextCompletionService>()]
-    public partial class RestTextCompletionService : OpenAIService, TextCompletionService
+    public partial class RestTextCompletionService : RestBaseService, TextCompletionService
     {
         // Constructors
         public RestTextCompletionService(RestClientFactory restClientFactory) : base(restClientFactory) { }
@@ -28,7 +28,7 @@ namespace MDP.DevKit.OpenAI.Accesses
             #endregion
 
             // Send
-            var resultModel = await this.PostAsync<TextCompletionResultModel, ErrorModel>($"/v1/completions", content: new
+            var resultModel = await this.PostAsync<TextCompletionResultModel>($"/v1/completions", content: new
             {
                 prompt = prompt,
                 model = model,

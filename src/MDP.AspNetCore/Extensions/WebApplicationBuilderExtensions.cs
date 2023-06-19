@@ -1,21 +1,13 @@
 ﻿using MDP.NetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -41,13 +33,9 @@ namespace MDP.AspNetCore
             // MvcBuilder
             var mvcBuilder = webApplicationBuilder.Services.AddMvc();
             {
-                // RegisterModule
-                mvcBuilder.RegisterModule();
-
-                // AddModule
-                mvcBuilder.AddMvcOptions();
+                // Default
+                mvcBuilder.AddMvcDefaults();
                 mvcBuilder.AddMvcCors(webApplicationBuilder.Configuration);
-                mvcBuilder.AddMvcSwagger(webApplicationBuilder.Configuration);
                 mvcBuilder.AddMvcForwardedHeaders(webApplicationBuilder.Configuration);
             }
 
@@ -57,7 +45,7 @@ namespace MDP.AspNetCore
 
 
         // MvcBuilder
-        private static void AddMvcOptions(this IMvcBuilder mvcBuilder)
+        private static void AddMvcDefaults(this IMvcBuilder mvcBuilder)
         {
             #region Contracts
 
@@ -135,56 +123,6 @@ namespace MDP.AspNetCore
                 });
             });
             mvcBuilder.Services.Configure<CorsOptions>(configuration.GetSection("Http:Cors"));
-        }
-
-        private static void AddMvcSwagger(this IMvcBuilder mvcBuilder, IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-
-            #endregion
-
-            // ApiExplorer
-            mvcBuilder.Services.AddEndpointsApiExplorer();
-
-            // Swagger
-            mvcBuilder.Services.AddSwaggerGen(setupAction =>
-            {
-                // IncludeXmlComments
-                {
-                    // CommentFileName
-                    var commentFileName = Assembly.GetEntryAssembly()?.GetName().Name + ".xml";
-                    if (string.IsNullOrEmpty(commentFileName) == true) throw new InvalidOperationException($"{nameof(commentFileName)}=null");
-
-                    // CommentFileName
-                    var commentFileList = CLK.IO.File.GetAllFile(commentFileName);
-                    if (commentFileList == null) throw new InvalidOperationException($"{nameof(commentFileList)}=null");
-
-                    // Include
-                    var commentFile = commentFileList.FirstOrDefault();
-                    if (commentFile != null) setupAction.IncludeXmlComments(commentFile.FullName);
-                }
-
-                // TagAction
-                setupAction.TagActionsBy(apiDescription =>
-                {
-                    // ActionDescriptor
-                    var actionDescriptor = apiDescription.ActionDescriptor as ControllerActionDescriptor;
-                    if (actionDescriptor == null) return new[] { "Unknown" };
-
-                    // Area
-                    if (actionDescriptor.RouteValues.ContainsKey("area") == true)
-                    {
-                        var areaName = actionDescriptor.RouteValues["area"];
-                        if (string.IsNullOrEmpty(areaName) == false) return new[] { areaName };
-                    }
-
-                    // Non-Area
-                    return new[] { actionDescriptor.ControllerName };
-                });
-            });
         }
 
         private static void AddMvcForwardedHeaders(this IMvcBuilder mvcBuilder, IConfiguration configuration)
@@ -330,7 +268,14 @@ namespace MDP.AspNetCore
                     // RegisterModule
                     factoryRegisterContext.RegisterModule(webApplicationBuilder, webApplicationBuilder.Configuration);
                 }
-            }
+
+                // MvcBuilder
+                var mvcBuilder = webApplicationBuilder.Services.AddControllersWithViews();
+                {
+                    // RegisterModule
+                    mvcBuilder.RegisterModule();
+                }
+            }            
 
             // Return
             return webApplicationBuilder;

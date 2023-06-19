@@ -80,7 +80,7 @@ namespace MDP.AspNetCore
             );
 
             // Return
-            if (this.HttpContext?.Request.HasAccept(new List<string>() { "html" }) == true)
+            if (this.HttpContext?.Request.HasAccept("html") == true)
             {
                 // View
                 return this.View(problemDetails);

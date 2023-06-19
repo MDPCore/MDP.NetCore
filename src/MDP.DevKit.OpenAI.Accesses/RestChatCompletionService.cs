@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MDP.DevKit.OpenAI.Accesses
 {
     [MDP.Registration.Service<ChatCompletionService>()]
-    public partial class RestChatCompletionService : OpenAIService, ChatCompletionService
+    public partial class RestChatCompletionService : RestBaseService, ChatCompletionService
     {
         // Constructors
         public RestChatCompletionService(RestClientFactory restClientFactory) : base(restClientFactory) { }
@@ -28,7 +28,7 @@ namespace MDP.DevKit.OpenAI.Accesses
             #endregion
 
             // Send
-            var resultModel = await this.PostAsync<ChatCompletionResultModel, ErrorModel>($"/v1/chat/completions", content: new
+            var resultModel = await this.PostAsync<ChatCompletionResultModel>($"/v1/chat/completions", content: new
             {
                 messages = messages.Select(o=> ChatMessageActionModel.ToActionModel(o)).ToList(),
                 model = model,

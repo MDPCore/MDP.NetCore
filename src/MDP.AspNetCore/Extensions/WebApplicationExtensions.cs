@@ -23,20 +23,12 @@ namespace MDP.AspNetCore
             }
             else
             {
-                webApplication.UseWhen(context => context.Request.HasAccept(new List<string>() { "html" }) == false, applicationBuilder =>
+                webApplication.UseWhen(context => context.Request.HasAccept("html") == false, applicationBuilder =>
                 {
                     applicationBuilder.UseExceptionHandler("/Error");
                 });
             }
             webApplication.UseHook(HookMiddlewareDefaults.EnteringHook);
-
-            // Swagger
-            if (webApplication.Environment.IsDevelopment() == true)
-            {
-                webApplication.UseSwagger();
-                webApplication.UseSwaggerUI(options => { options.DefaultModelsExpandDepth(-1); });
-                webApplication.UseSwaggerDefaults();
-            }
 
             // Network 
             webApplication.UsePathBase();

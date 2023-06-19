@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace MDP.Network.Rest
 {
-    public class RestResponseException<TExceptionModel> : Exception where TExceptionModel : class
+    public class RestException<TErrorModel> : Exception where TErrorModel : class
     {
         // Constructors
-        public RestResponseException(string? message, TExceptionModel? model, HttpStatusCode? statusCode) : base(message)        
+        public RestException(HttpStatusCode? statusCode, string? message, TErrorModel? model) : base(message)        
         {
             // Default
-            this.Model = model;
             this.StatusCode = statusCode;
+            this.ErrorModel = model;
         }
 
 
         // Properties
-        public TExceptionModel? Model { get; }
-
         public HttpStatusCode? StatusCode { get; }
+
+        public TErrorModel? ErrorModel { get; }
 
 
         // Methods
@@ -34,8 +34,8 @@ namespace MDP.Network.Rest
             // Base
             messageBuilder.AppendLine(base.ToString() ?? string.Empty);
 
-            // Model
-            messageBuilder.AppendLine(System.Text.Json.JsonSerializer.Serialize(this.Model, new JsonSerializerOptions
+            // ErrorModel
+            messageBuilder.AppendLine(System.Text.Json.JsonSerializer.Serialize(this.ErrorModel, new JsonSerializerOptions
             {
                 WriteIndented = true
             }));

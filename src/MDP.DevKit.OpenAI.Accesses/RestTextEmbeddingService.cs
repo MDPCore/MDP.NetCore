@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MDP.DevKit.OpenAI.Accesses
 {
     [MDP.Registration.Service<TextEmbeddingService>()]
-    public partial class RestTextEmbeddingService : OpenAIService, TextEmbeddingService
+    public partial class RestTextEmbeddingService : RestBaseService, TextEmbeddingService
     {
         // Constructors
         public RestTextEmbeddingService(RestClientFactory restClientFactory) : base(restClientFactory) { }
@@ -28,7 +28,7 @@ namespace MDP.DevKit.OpenAI.Accesses
             #endregion
 
             // Send
-            var resultModel = await this.PostAsync<TextEmbeddingResultModel, ErrorModel>($"/v1/embeddings", content: new
+            var resultModel = await this.PostAsync<TextEmbeddingResultModel>($"/v1/embeddings", content: new
             {
                 input = prompt,
                 model = model

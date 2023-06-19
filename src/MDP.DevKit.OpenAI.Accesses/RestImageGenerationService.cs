@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MDP.DevKit.OpenAI.Accesses
 {
     [MDP.Registration.Service<ImageGenerationService>()]
-    public partial class RestImageGenerationService : OpenAIService, ImageGenerationService
+    public partial class RestImageGenerationService : RestBaseService, ImageGenerationService
     {
         // Constructors
         public RestImageGenerationService(RestClientFactory restClientFactory) : base(restClientFactory) { }
@@ -28,7 +28,7 @@ namespace MDP.DevKit.OpenAI.Accesses
             #endregion
 
             // Send
-            var resultModel = await this.PostAsync<ImageGenerationResultModel, ErrorModel>($"/v1/images/generations", content: new
+            var resultModel = await this.PostAsync<ImageGenerationResultModel>($"/v1/images/generations", content: new
             {
                 prompt = prompt,
                 n = n,

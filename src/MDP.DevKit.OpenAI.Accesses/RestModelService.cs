@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MDP.DevKit.OpenAI.Accesses
 {
     [MDP.Registration.Service<ModelService>()]
-    public partial class RestModelService : OpenAIService, ModelService
+    public partial class RestModelService : RestBaseService, ModelService
     {
         // Constructors
         public RestModelService(RestClientFactory restClientFactory) : base(restClientFactory) { }
@@ -46,7 +46,7 @@ namespace MDP.DevKit.OpenAI.Accesses
         public async Task<List<Model>> FindAllAsync()
         {
             // Send
-            var resultModel = await this.GetAsync<FindAllResultModel, ErrorModel>("/v1/models");
+            var resultModel = await this.GetAsync<FindAllResultModel>("/v1/models");
             if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
             // Result
@@ -81,7 +81,7 @@ namespace MDP.DevKit.OpenAI.Accesses
             try
             {
                 // Send
-                var resultModel = await this.GetAsync<ModelResultModel, ErrorModel>($"/v1/models/{model}");
+                var resultModel = await this.GetAsync<ModelResultModel>($"/v1/models/{model}");
                 if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
                 // Result

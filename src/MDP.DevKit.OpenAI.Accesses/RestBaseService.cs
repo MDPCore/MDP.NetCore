@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace MDP.DevKit.OpenAI.Accesses
 {
-    public abstract class OpenAIService
+    public abstract class RestBaseService
     {
         // Fields
         private readonly RestClientFactory _restClientFactory;
 
 
         // Constructors
-        internal OpenAIService(RestClientFactory restClientFactory)
+        internal RestBaseService(RestClientFactory restClientFactory)
         {
             #region Contracts
 
@@ -29,9 +29,8 @@ namespace MDP.DevKit.OpenAI.Accesses
 
 
         // Methods
-        public async Task<TResultModel?> GetAsync<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+        public async Task<TResultModel?> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
             where TResultModel : class
-            where TErrorModel : class
         {
             // Execute
             try
@@ -40,27 +39,26 @@ namespace MDP.DevKit.OpenAI.Accesses
                 using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
                 {
                     // Send
-                    var resultModel = await restClient.GetAsync<TResultModel, TErrorModel>(requestUri, headers, query, content);
+                    var resultModel = await restClient.GetAsync<TResultModel, ErrorModel>(requestUri, headers, query, content);
                     if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
                     // Return
                     return resultModel;
                 }
             }
-            catch (RestResponseException<ErrorModel> responseException) 
+            catch (RestException<ErrorModel> restException) 
             {
-                // OpenAIException
-                var openAIException = responseException.Model?.error?.ToException();
-                if (openAIException != null) throw openAIException;
+                // ResponseException
+                var responseException = restException.ErrorModel?.ToException();
+                if (responseException != null) throw responseException;
 
                 // Exception
                 throw;
             }
         }
 
-        public async Task<TResultModel?> PostAsync<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+        public async Task<TResultModel?> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
             where TResultModel : class
-            where TErrorModel : class
         {
             // Execute
             try
@@ -69,18 +67,18 @@ namespace MDP.DevKit.OpenAI.Accesses
                 using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
                 {
                     // Send
-                    var resultModel = await restClient.PostAsync<TResultModel, TErrorModel>(requestUri, headers, query, content);
+                    var resultModel = await restClient.PostAsync<TResultModel, ErrorModel>(requestUri, headers, query, content);
                     if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
                     // Return
                     return resultModel;
                 }
             }
-            catch (RestResponseException<ErrorModel> responseException)
+            catch (RestException<ErrorModel> restException)
             {
-                // OpenAIException
-                var openAIException = responseException.Model?.error?.ToException();
-                if (openAIException != null) throw openAIException;
+                // ResponseException
+                var responseException = restException.ErrorModel?.ToException();
+                if (responseException != null) throw responseException;
 
                 // Exception
                 throw;

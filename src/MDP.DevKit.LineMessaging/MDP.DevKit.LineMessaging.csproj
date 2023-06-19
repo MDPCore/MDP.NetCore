@@ -2,17 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>11.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
-  </ItemGroup>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <PackageId>MDP.DevKit.LineMessaging.Core</PackageId>
+  </PropertyGroup>
 
   <PropertyGroup>
     <authors>CLK Software Studio</authors>

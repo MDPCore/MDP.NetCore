@@ -47,7 +47,7 @@
             // HttpClient
             var httpClient = _httpClientFactory.CreateClient(name);
             if (httpClient == null) throw new InvalidOperationException($"{nameof(httpClient)}=null");
-
+            
             // Return
             return new RestClient(httpClient);
         }

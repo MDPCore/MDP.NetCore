@@ -10,7 +10,20 @@ namespace MDP.AspNetCore
     public static class HttpRequestExtensions
     {
         // Methods
-        public static bool HasAccept(this HttpRequest request, List<string> acceptList)
+        public static bool HasAccept(this HttpRequest request, string accept)
+        {
+            #region Contracts
+
+            if (request == null) throw new ArgumentException($"{nameof(request)}=null");
+            if (string.IsNullOrEmpty(accept) == true) throw new ArgumentException($"{nameof(accept)}=null");
+
+            #endregion
+
+            // Return
+            return request.HasAccept(new List<string>() { accept });
+        }
+
+        public static bool HasAccept(this HttpRequest request, List<string> acceptList) 
         {
             #region Contracts
 

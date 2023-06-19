@@ -23,23 +23,23 @@ namespace MDP.DevKit.OpenAI.Accesses
             public string? param { get; set; } = string.Empty;
 
             public string? code { get; set; } = string.Empty;
+        }
 
 
-            // Methods
-            public OpenAIException ToException()
-            {
-                // Create
-                var exception = new OpenAIException
-                (
-                    message: this.message,
-                    type: this.type,
-                    param: this.param,  
-                    code: this.code
-                );
+        // Methods
+        public OpenAIException ToException()
+        {
+            // Create
+            var exception = new OpenAIException
+            (
+                message: this.error?.message,
+                type: this.error?.type,
+                param: this.error?.param,
+                code: this.error?.code
+            );
 
-                // Return
-                return exception;
-            }
+            // Return
+            return exception;
         }
     }
 }
