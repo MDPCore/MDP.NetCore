@@ -29,14 +29,14 @@ namespace MDP.DevKit.OpenAI.Accesses
 
 
         // Methods
-        public async Task<TResultModel?> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+        protected async Task<TResultModel?> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
             where TResultModel : class
         {
             // Execute
             try
             {
                 // RestClient
-                using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
+                using (var restClient = _restClientFactory.CreateClient("MDP.DevKit.OpenAI", "OpenAIService"))
                 {
                     // Send
                     var resultModel = await restClient.GetAsync<TResultModel, ErrorModel>(requestUri, headers, query, content);
@@ -57,14 +57,14 @@ namespace MDP.DevKit.OpenAI.Accesses
             }
         }
 
-        public async Task<TResultModel?> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+        protected async Task<TResultModel?> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
             where TResultModel : class
         {
             // Execute
             try
             {
                 // RestClient
-                using (var restClient = _restClientFactory.CreateClient("OpenAIService"))
+                using (var restClient = _restClientFactory.CreateClient("MDP.DevKit.OpenAI", "OpenAIService"))
                 {
                     // Send
                     var resultModel = await restClient.PostAsync<TResultModel, ErrorModel>(requestUri, headers, query, content);

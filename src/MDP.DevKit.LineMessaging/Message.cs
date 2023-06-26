@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace MDP.DevKit.LineMessaging
 {
-    public class Message
+    public abstract class Message
     {
         // Constructors
-        public Message()
-        {
-
-        }
-
         protected Message(string messageType)
         {
             #region Contracts
@@ -28,7 +23,7 @@ namespace MDP.DevKit.LineMessaging
 
 
         // Properties
-        public string MessageType { get; set; } = string.Empty;
+        public string MessageType { get; } = string.Empty;
 
         public Sender? Sender { get; set; } = null;
     }

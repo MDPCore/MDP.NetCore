@@ -9,7 +9,7 @@ namespace MDP.DevKit.LineMessaging
     public class LocationMessage : Message
     {
         // Constants
-        private const string DefaultMessageType = "Location";
+        public const string DefaultMessageType = "location";
 
 
         // Constructors

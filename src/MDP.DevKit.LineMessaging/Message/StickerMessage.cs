@@ -9,7 +9,7 @@ namespace MDP.DevKit.LineMessaging
     public class StickerMessage : Message
     {
         // Constants
-        private const string DefaultMessageType = "Sticker";
+        public const string DefaultMessageType = "sticker";
 
 
         // Constructors

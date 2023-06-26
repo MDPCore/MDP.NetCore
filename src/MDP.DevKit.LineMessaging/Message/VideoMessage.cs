@@ -9,7 +9,7 @@ namespace MDP.DevKit.LineMessaging
     public class VideoMessage : Message
     {
         // Constants
-        private const string DefaultMessageType = "Video";
+        public const string DefaultMessageType = "video";
 
 
         // Constructors

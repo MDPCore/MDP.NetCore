@@ -9,7 +9,7 @@ namespace MDP.DevKit.LineMessaging
     public class ImageMessage : Message
     {
         // Constants
-        private const string DefaultMessageType = "Image";
+        public const string DefaultMessageType = "image";
 
 
         // Constructors

@@ -16,7 +16,7 @@ namespace MDP.DevKit.LineMessaging.Accesses
 
 
         // Constructors
-        public RestBaseService(RestClientFactory restClientFactory)
+        internal RestBaseService(RestClientFactory restClientFactory)
         {
             #region Contracts
 
@@ -30,14 +30,14 @@ namespace MDP.DevKit.LineMessaging.Accesses
 
 
         // Methods
-        public async Task<TResultModel> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
+        protected async Task<TResultModel> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
             where TResultModel : class
         {
             // Execute
             try
             {
                 // RestClient
-                using (var restClient = _restClientFactory.CreateClient("LineMessageService"))
+                using (var restClient = _restClientFactory.CreateClient("MDP.DevKit.LineMessaging", "LineMessageService"))
                 {
                     // Send
                     var resultModel = await restClient.GetAsync<TResultModel, ErrorModel>(requestUri, headers, query, content, resultFactory);
@@ -58,14 +58,14 @@ namespace MDP.DevKit.LineMessaging.Accesses
             }
         }
 
-        public async Task<TResultModel> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
+        protected async Task<TResultModel> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
             where TResultModel : class
         {
             // Execute
             try
             {
                 // RestClient
-                using (var restClient = _restClientFactory.CreateClient("LineMessageService"))
+                using (var restClient = _restClientFactory.CreateClient("MDP.DevKit.LineMessaging", "LineMessageService"))
                 {
                     // Send
                     var resultModel = await restClient.PostAsync<TResultModel, ErrorModel>(requestUri, headers, query, content, resultFactory);

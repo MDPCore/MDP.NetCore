@@ -1,6 +1,8 @@
-﻿namespace MDP.Network.Rest
+﻿using System.Net.Http;
+using MDP.Network.Http;
+
+namespace MDP.Network.Rest
 {
-    [MDP.Registration.Service<RestClientFactory>(singleton: true)]
     public class RestClientFactory
     {
         // Fields
@@ -40,14 +42,27 @@
 
             #endregion
 
-            // Name
-            name = RestClientDefaults.CreateName(name);
-            if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");
-
             // HttpClient
             var httpClient = _httpClientFactory.CreateClient(name);
             if (httpClient == null) throw new InvalidOperationException($"{nameof(httpClient)}=null");
             
+            // Return
+            return new RestClient(httpClient);
+        }
+
+        public RestClient CreateClient(string @namespace, string name)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(@namespace) == true) throw new ArgumentException($"{nameof(@namespace)}=null");
+            if (string.IsNullOrEmpty(name) == true) throw new ArgumentException($"{nameof(name)}=null");
+
+            #endregion
+
+            // HttpClient
+            var httpClient = _httpClientFactory.CreateClient(@namespace, name);
+            if (httpClient == null) throw new InvalidOperationException($"{nameof(httpClient)}=null");
+
             // Return
             return new RestClient(httpClient);
         }

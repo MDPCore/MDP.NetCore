@@ -9,7 +9,7 @@ namespace MDP.DevKit.LineMessaging
     public class TextMessage : Message
     {
         // Constants
-        private const string DefaultMessageType = "Text";
+        public const string DefaultMessageType = "text";
 
 
         // Constructors

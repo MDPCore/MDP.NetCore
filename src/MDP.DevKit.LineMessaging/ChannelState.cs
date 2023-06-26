@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MDP.DevKit.LineMessaging
 {
-    public interface SignatureValidator
+    public enum ChannelState
     {
-        // Methods
-        public bool ValidateSignature(string content, string signature);
+        Active,
+        Standby
     }
 }

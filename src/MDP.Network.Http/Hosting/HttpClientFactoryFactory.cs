@@ -7,34 +7,17 @@ namespace MDP.Network.Http
     public class HttpClientFactoryFactory
     {
         // Methods
-        public void ConfigureService(IServiceCollection serviceCollection, HttpClientFactorySetting httpClientFactorySetting)
+        public void ConfigureService(IServiceCollection serviceCollection, HttpClientFactorySetting setting)
         {
             #region Contracts
 
             if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (httpClientFactorySetting == null) throw new ArgumentException($"{nameof(httpClientFactorySetting)}=null");
+            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
 
             #endregion
 
-            // EndpointList
-            var endpointList = httpClientFactorySetting.Endpoints ?? new Dictionary<string, HttpClientEndpoint>();
-            foreach (var endpoint in endpointList)
-            {
-                // Require
-                if (endpoint.Value == null) throw new InvalidOperationException($"{nameof(endpoint.Value)}=null");
-                if (string.IsNullOrEmpty(endpoint.Key) == true) throw new InvalidOperationException($"{nameof(endpoint.Key)}=null");
-
-                // Name
-                var name = endpoint.Value.Name;
-                if (string.IsNullOrEmpty(name) == true)
-                {
-                    name = endpoint.Key;
-                }
-                endpoint.Value.Name = name;
-            }
-
             // HttpClientFactory
-            serviceCollection.AddHttpClientFactory(endpointList.Values.ToList());
+            serviceCollection.AddHttpClientFactory(setting.Endpoints);
         }
 
 

@@ -9,7 +9,7 @@ namespace MDP.DevKit.LineMessaging
     public class AudioMessage : Message
     {
         // Constants
-        private const string DefaultMessageType = "Audio";
+        public const string DefaultMessageType = "audio";
 
 
         // Constructors

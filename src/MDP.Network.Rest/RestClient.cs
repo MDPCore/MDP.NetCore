@@ -130,68 +130,131 @@ namespace MDP.Network.Rest
                 // IsSuccess
                 if (responseMessage.IsSuccessStatusCode == true)
                 {
-                    // ResponseContentString
-                    var responseContentString = await responseMessage.Content.ReadAsStringAsync();
-                    if (string.IsNullOrEmpty(responseContentString) == true) responseContentString = "{}";
-
                     // ResultModel
-                    TResultModel? resultModel = null;
-                    if (resultFactory != null)
-                    {
-                        // ResultDocument
-                        var resultDocument = JsonDocument.Parse(responseContentString);
-                        if (resultDocument == null) throw new InvalidOperationException($"{nameof(resultDocument)}=null");
-
-                        // ResultFactory
-                        using (resultDocument) { resultModel = resultFactory.Invoke(resultDocument.RootElement); }
-                    }
-                    else if (typeof(TResultModel) == typeof(string))
-                    {
-                        // Setting
-                        resultModel = responseContentString as TResultModel;
-                    }
-                    else
-                    {
-                        // Deserialize
-                        resultModel = System.Text.Json.JsonSerializer.Deserialize<TResultModel>(responseContentString, _serializerOptions);
-                    }
-                    if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}={responseContentString}");
+                    var resultModel = await this.CreateResultModel(responseMessage, resultFactory);
+                    if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
                     // Return
                     return resultModel;
                 }
                 else
                 {
-                    // ResponseErrorString
-                    var responseErrorString = await responseMessage.Content.ReadAsStringAsync();
-                    if (string.IsNullOrEmpty(responseErrorString) == true) responseMessage.EnsureSuccessStatusCode();
-
                     // ErrorModel
-                    TErrorModel? errorModel = null;
-                    if (errorFactory != null)
-                    {
-                        // ErrorDocument
-                        var errorDocument = JsonDocument.Parse(responseErrorString);
-                        if (errorDocument == null) throw new InvalidOperationException($"{nameof(errorDocument)}=null");
-
-                        // ErrorFactory
-                        using (errorDocument) { errorModel = errorFactory.Invoke(errorDocument.RootElement); }
-                    }
-                    else if (typeof(TErrorModel) == typeof(string))
-                    {
-                        // Setting
-                        errorModel = responseErrorString as TErrorModel;
-                    }
-                    else
-                    {
-                        // Deserialize
-                        errorModel = System.Text.Json.JsonSerializer.Deserialize<TErrorModel>(responseErrorString, _serializerOptions);
-                    }
+                    var errorModel = await this.CreateErrorModel(responseMessage, errorFactory);
                     if (errorModel == null) responseMessage.EnsureSuccessStatusCode();
 
                     // Throw
                     throw new RestException<TErrorModel>(responseMessage.StatusCode, $"An unexpected error occurred(statusCode={(int)(responseMessage.StatusCode)})", errorModel);
                 }
+            }
+        }
+
+        private async Task<TResultModel> CreateResultModel<TResultModel>(HttpResponseMessage responseMessage, Func<JsonElement, TResultModel>? resultFactory = null)
+            where TResultModel : class
+        {
+            #region Contracts
+
+            if (responseMessage == null) throw new ArgumentException($"{nameof(responseMessage)}=null");
+
+            #endregion
+
+            // ResultModel
+            TResultModel? resultModel = null;
+
+            // ContentStream
+            if (typeof(TResultModel) == typeof(Stream))
+            {
+                // Create
+                using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
+                {                    
+                    // Stream
+                    var memoryStream = new MemoryStream();
+                    {
+                        await contentStream.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+                    }
+                    resultModel = memoryStream as TResultModel;
+                }
+                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+
+                // Return
+                return resultModel;
+            }
+
+            // ContentString
+            var contentString = await responseMessage.Content.ReadAsStringAsync();
+            {
+                // Default
+                if (string.IsNullOrEmpty(contentString) == true) contentString = "{}";
+
+                // Create
+                if (resultFactory != null)
+                {
+                    // ResultDocument
+                    var resultDocument = JsonDocument.Parse(contentString);
+                    if (resultDocument == null) throw new InvalidOperationException($"{nameof(resultDocument)}=null");
+
+                    // ResultFactory
+                    using (resultDocument) { resultModel = resultFactory.Invoke(resultDocument.RootElement); }
+                }
+                else if (typeof(TResultModel) == typeof(string))
+                {
+                    // String
+                    resultModel = contentString as TResultModel;
+                }
+                else
+                {
+                    // Deserialize
+                    resultModel = System.Text.Json.JsonSerializer.Deserialize<TResultModel>(contentString, _serializerOptions);
+                }
+                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}={contentString}");
+
+                // Return
+                return resultModel;
+            }
+        }
+
+        private async Task<TErrorModel?> CreateErrorModel<TErrorModel>(HttpResponseMessage responseMessage, Func<JsonElement, TErrorModel>? errorFactory = null)
+               where TErrorModel : class
+        {
+            #region Contracts
+
+            if (responseMessage == null) throw new ArgumentException($"{nameof(responseMessage)}=null");
+
+            #endregion
+
+            // ErrorModel
+            TErrorModel? errorModel = null;
+
+            // ErrorString
+            var errorString = await responseMessage.Content.ReadAsStringAsync();
+            {
+                // Default
+                if (string.IsNullOrEmpty(errorString) == true) return null;
+
+                // Create
+                if (errorFactory != null)
+                {
+                    // ErrorDocument
+                    var errorDocument = JsonDocument.Parse(errorString);
+                    if (errorDocument == null) throw new InvalidOperationException($"{nameof(errorDocument)}=null");
+
+                    // ErrorFactory
+                    using (errorDocument) { errorModel = errorFactory.Invoke(errorDocument.RootElement); }
+                }
+                else if (typeof(TErrorModel) == typeof(string))
+                {
+                    // String
+                    errorModel = errorString as TErrorModel;
+                }
+                else
+                {
+                    // Deserialize
+                    errorModel = System.Text.Json.JsonSerializer.Deserialize<TErrorModel>(errorString, _serializerOptions);
+                }
+
+                // Return
+                return errorModel;
             }
         }
     }

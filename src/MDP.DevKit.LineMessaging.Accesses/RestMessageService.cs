@@ -17,52 +17,78 @@ namespace MDP.DevKit.LineMessaging.Accesses
 
 
         // Methods
-        public Task<string> SendMessageAsync(string userId, Message message, string? replyToken = null)
+        public Task<string> ReplyMessageAsync(Message message, string replyToken)
         {
             #region Contracts
 
+            if (message == null) throw new ArgumentException($"{nameof(message)}=null");
+            if (string.IsNullOrEmpty(replyToken) == true) throw new ArgumentException($"{nameof(replyToken)}=null");
+
+            #endregion
+
+            // ReplyMessageAsync
+            return this.ReplyMessageAsync(new List<Message>() { message }, replyToken);
+        }
+
+        public Task<string> PushMessageAsync(Message message, string userId)
+        {
+            #region Contracts
+
+            if (message == null) throw new ArgumentException($"{nameof(message)}=null");
             if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException($"{nameof(userId)}=null");
+
+            #endregion
+
+            // PushMessageAsync
+            return this.PushMessageAsync(new List<Message>() { message }, userId);
+        }
+
+        public Task<string> MulticastMessageAsync(Message message, List<string> userIdList)
+        {
+            #region Contracts
+
+            if (message == null) throw new ArgumentException($"{nameof(message)}=null");
+            if (userIdList == null) throw new ArgumentException($"{nameof(userIdList)}=null");
+
+            #endregion
+
+            // MulticastMessageAsync
+            return this.MulticastMessageAsync(new List<Message>() { message }, userIdList);
+        }
+
+        public Task<string> BroadcastMessageAsync(Message message)
+        {
+            #region Contracts
+
             if (message == null) throw new ArgumentException($"{nameof(message)}=null");
 
             #endregion
 
-            // SendMessageAsync
-            return this.SendMessageAsync(userId, new List<Message>() { message }, replyToken);
+            // BroadcastMessageAsync
+            return this.BroadcastMessageAsync(new List<Message>() { message });
         }
 
-        public async Task<string> SendMessageAsync(string userId, List<Message> messageList, string? replyToken = null)
+
+        public async Task<string> ReplyMessageAsync(List<Message> messageList, string replyToken)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException($"{nameof(userId)}=null");
             if (messageList == null) throw new ArgumentException($"{nameof(messageList)}=null");
+            if (string.IsNullOrEmpty(replyToken) == true) throw new ArgumentException($"{nameof(replyToken)}=null");
 
             #endregion
 
-            // Messages
-            var messages = messageList.Select(message => this.SerializeMessages(message)).ToList();
-            if (messages.Count == 0) throw new InvalidOperationException($"{nameof(messages)}.Count == 0");
-                        
             // RequestUrl
-            var requestUri = string.Empty;
-            if (replyToken == null) requestUri = @"/message/push";
-            if (replyToken != null) requestUri = @"/message/reply";
+            var requestUri = @"/message/reply";
 
             // RequestContent
             dynamic requestContent = new ExpandoObject();
             {
-                // Destination 
-                if (string.IsNullOrEmpty(replyToken) == true)
-                {
-                    requestContent.to = userId;
-                }
-                else
-                {
-                    requestContent.replyToken = replyToken;
-                }
+                // ReplyToken 
+                requestContent.replyToken = replyToken;
 
-                // Message
-                requestContent.messages = messages;
+                // Messages
+                requestContent.messages = messageList.Select(message => this.SerializeMessages(message)).ToList();
             }
 
             // ResultFactory
@@ -80,6 +106,117 @@ namespace MDP.DevKit.LineMessaging.Accesses
                 return resultModel;
             }
         }
+
+        public async Task<string> PushMessageAsync(List<Message> messageList, string userId)
+        {
+            #region Contracts
+
+            if (messageList == null) throw new ArgumentException($"{nameof(messageList)}=null");
+            if (string.IsNullOrEmpty(userId) == true) throw new ArgumentException($"{nameof(userId)}=null");
+
+            #endregion
+
+            // RequestUrl
+            var requestUri = @"/message/push";
+
+            // RequestContent
+            dynamic requestContent = new ExpandoObject();
+            {
+                // To 
+                requestContent.to = userId;
+
+                // Messages
+                requestContent.messages = messageList.Select(message => this.SerializeMessages(message)).ToList();
+            }
+
+            // ResultFactory
+            {
+
+            }
+
+            // Execute
+            {
+                // PostAsync
+                var resultModel = await this.PostAsync<string>(requestUri, content: requestContent);
+                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+
+                // Return
+                return resultModel;
+            }
+        }
+
+        public async Task<string> MulticastMessageAsync(List<Message> messageList, List<string> userIdList)
+        {
+            #region Contracts
+
+            if (messageList == null) throw new ArgumentException($"{nameof(messageList)}=null");
+            if (userIdList == null) throw new ArgumentException($"{nameof(userIdList)}=null");
+
+            #endregion
+
+            // RequestUrl
+            var requestUri = @"/message/multicast";
+
+            // RequestContent
+            dynamic requestContent = new ExpandoObject();
+            {
+                // To 
+                requestContent.to = userIdList;
+
+                // Messages
+                requestContent.messages = messageList.Select(message => this.SerializeMessages(message)).ToList();
+            }
+
+            // ResultFactory
+            {
+
+            }
+
+            // Execute
+            {
+                // PostAsync
+                var resultModel = await this.PostAsync<string>(requestUri, content: requestContent);
+                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+
+                // Return
+                return resultModel;
+            }
+        }
+
+        public async Task<string> BroadcastMessageAsync(List<Message> messageList)
+        {
+            #region Contracts
+
+            if (messageList == null) throw new ArgumentException($"{nameof(messageList)}=null");
+
+            #endregion
+
+            // RequestUrl
+            var requestUri = @"/message/broadcast";
+
+            // RequestContent
+            dynamic requestContent = new ExpandoObject();
+            {
+                // Messages
+                requestContent.messages = messageList.Select(message => this.SerializeMessages(message)).ToList();
+            }
+
+            // ResultFactory
+            {
+
+            }
+
+            // Execute
+            {
+                // PostAsync
+                var resultModel = await this.PostAsync<string>(requestUri, content: requestContent);
+                if (resultModel == null) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+
+                // Return
+                return resultModel;
+            }
+        }
+
 
         private dynamic SerializeMessages(Message message)
         {

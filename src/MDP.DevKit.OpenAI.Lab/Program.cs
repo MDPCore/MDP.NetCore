@@ -21,7 +21,7 @@ namespace MDP.DevKit.OpenAI.Lab
             //var result = await openAIContext.TextEmbeddingService.CreateAsync("The food was delicious and the waiter...");
             //var result = await openAIContext.TextCompletionService.CreateAsync("Say this is a test");
             //var result = await openAIContext.ChatCompletionService.CreateAsync(new List<ChatMessage>() { new ChatMessage() { Role= "user", Content= "Hello!" } });
-            //var result = await openAIContext.ImageGenerationService.CreateAsync("A cute baby sea otter").WriteToAsync(@"output\{0}.png");
+            //var result = await openAIContext.ImageGenerationService.CreateAsync("A cute baby sea otter").WriteToAsync(@"bin\output\{0}.png");
             //var result = await openAIContext.TextEmbeddingService.CreateAsync("The food was delicious and the waiter...");
             var result = await openAIContext.CreateAnswerAsync("我想喝綠豆湯該去哪一樓?");
 

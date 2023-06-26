@@ -85,6 +85,7 @@ namespace MDP.DevKit.OpenAI.Accesses
 
                     // ImageStream
                     imageStream = new MemoryStream(imageBytes, 0, imageBytes.Length);
+                    imageStream.Position = 0;
                 }
                 
                 // Create
