@@ -149,6 +149,7 @@ namespace MDP.Network.Rest
             }
         }
 
+
         private async Task<TResultModel> CreateResultModel<TResultModel>(HttpResponseMessage responseMessage, Func<JsonElement, TResultModel>? resultFactory = null)
             where TResultModel : class
         {
@@ -166,7 +167,7 @@ namespace MDP.Network.Rest
             {
                 // Create
                 using (var contentStream = await responseMessage.Content.ReadAsStreamAsync())
-                {                    
+                {
                     // Stream
                     var memoryStream = new MemoryStream();
                     {
@@ -185,11 +186,14 @@ namespace MDP.Network.Rest
             var contentString = await responseMessage.Content.ReadAsStringAsync();
             {
                 // Default
-                if (string.IsNullOrEmpty(contentString) == true) contentString = "{}";
+                if (string.IsNullOrEmpty(contentString) == true) contentString = string.Empty;
 
                 // Create
                 if (resultFactory != null)
                 {
+                    // Default
+                    if (string.IsNullOrEmpty(contentString) == true) contentString = "{}";
+
                     // ResultDocument
                     var resultDocument = JsonDocument.Parse(contentString);
                     if (resultDocument == null) throw new InvalidOperationException($"{nameof(resultDocument)}=null");
@@ -199,11 +203,17 @@ namespace MDP.Network.Rest
                 }
                 else if (typeof(TResultModel) == typeof(string))
                 {
+                    // Default
+                    if (string.IsNullOrEmpty(contentString) == true) contentString = string.Empty;
+
                     // String
                     resultModel = contentString as TResultModel;
                 }
                 else
                 {
+                    // Default
+                    if (string.IsNullOrEmpty(contentString) == true) contentString = "{}";
+
                     // Deserialize
                     resultModel = System.Text.Json.JsonSerializer.Deserialize<TResultModel>(contentString, _serializerOptions);
                 }
@@ -235,6 +245,9 @@ namespace MDP.Network.Rest
                 // Create
                 if (errorFactory != null)
                 {
+                    // Default
+                    if (string.IsNullOrEmpty(errorString) == true) errorString = "{}";
+
                     // ErrorDocument
                     var errorDocument = JsonDocument.Parse(errorString);
                     if (errorDocument == null) throw new InvalidOperationException($"{nameof(errorDocument)}=null");
@@ -244,11 +257,17 @@ namespace MDP.Network.Rest
                 }
                 else if (typeof(TErrorModel) == typeof(string))
                 {
+                    // Default
+                    if (string.IsNullOrEmpty(errorString) == true) errorString = string.Empty;
+
                     // String
                     errorModel = errorString as TErrorModel;
                 }
                 else
                 {
+                    // Default
+                    if (string.IsNullOrEmpty(errorString) == true) errorString = "{}";
+
                     // Deserialize
                     errorModel = System.Text.Json.JsonSerializer.Deserialize<TErrorModel>(errorString, _serializerOptions);
                 }
@@ -262,12 +281,6 @@ namespace MDP.Network.Rest
     public partial class RestClient : IDisposable
     {
         // Methods
-        public string Get(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-        {
-            // Return
-            return this.Send<string, dynamic>(HttpMethod.Get, requestUri, headers, query, content);
-        }
-
         public TResultModel Get<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
             where TResultModel : class
         {
@@ -283,12 +296,6 @@ namespace MDP.Network.Rest
             return this.Send<TResultModel, TErrorModel>(HttpMethod.Get, requestUri, headers, query, content, resultFactory, errorFactory);
         }
 
-
-        public Task<string> GetAsync(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-        {
-            // Return
-            return this.SendAsync<string, dynamic>(HttpMethod.Get, requestUri, headers, query, content);
-        }
 
         public Task<TResultModel> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
             where TResultModel : class
@@ -309,12 +316,6 @@ namespace MDP.Network.Rest
     public partial class RestClient : IDisposable
     {
         // Methods
-        public string Post(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-        {
-            // Return
-            return this.Send<string, dynamic>(HttpMethod.Post, requestUri, headers, query, content);
-        }
-
         public TResultModel Post<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
             where TResultModel : class
         {
@@ -331,12 +332,6 @@ namespace MDP.Network.Rest
         }
 
 
-        public Task<string> PostAsync(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
-        {
-            // Return
-            return this.SendAsync<string, dynamic>(HttpMethod.Post, requestUri, headers, query, content);
-        }
-
         public Task<TResultModel> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
             where TResultModel : class
         {
@@ -350,6 +345,76 @@ namespace MDP.Network.Rest
         {
             // Return
             return this.SendAsync<TResultModel, TErrorModel>(HttpMethod.Post, requestUri, headers, query, content, resultFactory, errorFactory);
+        }
+    }
+
+    public partial class RestClient : IDisposable
+    {
+        // Methods
+        public TResultModel Put<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
+            where TResultModel : class
+        {
+            // Return
+            return this.Send<TResultModel, dynamic>(HttpMethod.Put, requestUri, headers, query, content, resultFactory);
+        }
+
+        public TResultModel Put<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null, Func<JsonElement, TErrorModel>? errorFactory = null)
+            where TResultModel : class
+            where TErrorModel : class
+        {
+            // Return
+            return this.Send<TResultModel, TErrorModel>(HttpMethod.Put, requestUri, headers, query, content, resultFactory, errorFactory);
+        }
+
+
+        public Task<TResultModel> PutAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
+            where TResultModel : class
+        {
+            // Return
+            return this.SendAsync<TResultModel, dynamic>(HttpMethod.Put, requestUri, headers, query, content, resultFactory);
+        }
+
+        public Task<TResultModel> PutAsync<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null, Func<JsonElement, TErrorModel>? errorFactory = null)
+            where TResultModel : class
+            where TErrorModel : class
+        {
+            // Return
+            return this.SendAsync<TResultModel, TErrorModel>(HttpMethod.Put, requestUri, headers, query, content, resultFactory, errorFactory);
+        }
+    }
+
+    public partial class RestClient : IDisposable
+    {
+        // Methods
+        public TResultModel Delete<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
+            where TResultModel : class
+        {
+            // Return
+            return this.Send<TResultModel, dynamic>(HttpMethod.Delete, requestUri, headers, query, content, resultFactory);
+        }
+
+        public TResultModel Delete<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null, Func<JsonElement, TErrorModel>? errorFactory = null)
+            where TResultModel : class
+            where TErrorModel : class
+        {
+            // Return
+            return this.Send<TResultModel, TErrorModel>(HttpMethod.Delete, requestUri, headers, query, content, resultFactory, errorFactory);
+        }
+
+
+        public Task<TResultModel> DeleteAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null)
+            where TResultModel : class
+        {
+            // Return
+            return this.SendAsync<TResultModel, dynamic>(HttpMethod.Delete, requestUri, headers, query, content, resultFactory);
+        }
+
+        public Task<TResultModel> DeleteAsync<TResultModel, TErrorModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null, Func<JsonElement, TResultModel>? resultFactory = null, Func<JsonElement, TErrorModel>? errorFactory = null)
+            where TResultModel : class
+            where TErrorModel : class
+        {
+            // Return
+            return this.SendAsync<TResultModel, TErrorModel>(HttpMethod.Delete, requestUri, headers, query, content, resultFactory, errorFactory);
         }
     }
 }
