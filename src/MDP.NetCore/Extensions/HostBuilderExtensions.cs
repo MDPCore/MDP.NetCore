@@ -20,16 +20,19 @@ namespace MDP.NetCore
 
             #endregion
 
-            // RegisterModule
-            hostBuilder.RegisterModule();
-
             // HostBuilder
-            hostBuilder.ConfigureServices((context, serviceCollection) =>
             {
+                // MDP
+                hostBuilder.AddMdp();
+
                 // ProgramService
-                serviceCollection.TryAddTransient<TProgram, TProgram>();
-                serviceCollection.Add(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
-            });
+                hostBuilder.ConfigureServices((context, serviceCollection) =>
+                {
+                    // Register
+                    serviceCollection.TryAddTransient<TProgram, TProgram>();
+                    serviceCollection.Add(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
+                });
+            }
 
             // Return
             return hostBuilder;
@@ -39,7 +42,7 @@ namespace MDP.NetCore
     public static partial class HostBuilderExtensions
     {
         // Methods        
-        public static IHostBuilder RegisterModule(this IHostBuilder hostBuilder)
+        public static IHostBuilder AddMdp(this IHostBuilder hostBuilder)
         {
             #region Contracts
 

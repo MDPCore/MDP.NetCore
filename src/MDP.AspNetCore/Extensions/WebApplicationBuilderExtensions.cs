@@ -27,8 +27,11 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // RegisterModule
-            webApplicationBuilder.RegisterModule();
+            // WebApplicationBuilder
+            {
+                // MDP
+                webApplicationBuilder.AddMdp();
+            }
 
             // MvcBuilder
             var mvcBuilder = webApplicationBuilder.Services.AddMvc();
@@ -245,7 +248,7 @@ namespace MDP.AspNetCore
     public static partial class WebApplicationBuilderExtensions
     {
         // Methods
-        public static WebApplicationBuilder RegisterModule(this WebApplicationBuilder webApplicationBuilder)
+        public static WebApplicationBuilder AddMdp(this WebApplicationBuilder webApplicationBuilder)
         {
             #region Contracts
 
@@ -256,8 +259,8 @@ namespace MDP.AspNetCore
             // HostBuilder
             var hostBuilder = webApplicationBuilder.Host;
             {
-                // RegisterModule
-                hostBuilder.RegisterModule();
+                // MDP
+                hostBuilder.AddMdp();
             }
 
             // WebApplicationBuilder

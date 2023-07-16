@@ -68,6 +68,20 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 ## 版本更新
 
+### MDP.Net 6.1.5
+
+- MDP.NetCore：加入AddMdp()，提升平台識別。
+
+- MDP.AspNetCore：加入AddMdp()，提升平台識別。
+
+### MDP.Net 6.1.4
+
+- MDP.DevKit.LineMessaging：遷移此模組，遷移至獨立Repo進行維護。
+
+### MDP.Net 6.1.2
+
+- MDP.Hosting：移除Autofac參考。
+
 ### MDP.Net 6.1.0
 
 - MDP.Registration：加入此模組，提供Attribute註冊功能，用以移除所有.Hosting註冊用專案。
