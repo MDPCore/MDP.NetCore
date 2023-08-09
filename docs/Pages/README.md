@@ -21,7 +21,7 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 - 範例檔案：
 
-  - [https://github.com/Clark159/MDP.Net/tree/master/demo/00.SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/00.SleepZone.Todos)
+  - [https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos)
 
 - 操作步驟：
 
@@ -37,43 +37,69 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
   
   - 上述步驟內容，展示使用DI機制，進行Context注入組裝，並且設定為Singleton模式。所以在沒有資料庫的狀態下，FindAll才能讀取到之前寫入的Todo。
 
-- 團隊分工：
-
-  - 團隊依專業分為：應用開發團隊、平台開發團隊。
-  
-  - 應用開發團隊：負責企業架構中的應用架構，交付Application。於SleepZone.Todos範例中，負責建置SleepZone.Todos.Module，滿足用戶對應用系統的需求。開發規範依循：「[MDP.Net-軟體架構](https://github.com/Clark159/MDP.Net#mdpnet-%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B)」、「[MDP.Net-分層架構](https://github.com/Clark159/MDP.Net#mdpnet-%E5%88%86%E5%B1%A4%E6%9E%B6%E6%A7%8B)」進行開發。
-  
-  - 平台開發團隊：負責企業架構中的技術架構，交付並維運PaaS。於SleepZone.Todos範例中，負責建置SleepZone.Todos.WebApp，給應用開發團隊開箱即用。平台內容包含：專案原始碼管理、DevOps專案管理、CICD Pipeline、Container、Network、DNS...等平台工程產出。
-     
      
 ## 架構設計
-
-### MDP.Net-企業架構
-
-![MDP.Net-企業架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-企業架構.png)
-
-### MDP.Net-技術架構
-
-![MDP.Net-技術架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-技術架構.png)
 
 ### MDP.Net-平台架構
 
 ![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-平台架構.png)
 
-### MDP.Net-專案架構
+### MDP.Net-模組架構
 
 ![MDP.Net-專案架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-專案架構.png)
 
-### MDP.Net-類別架構
+### MDP.Net-模組清單
 
-![MDP.Net-類別架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-類別架構.png)
+- MDP.DevKit
+  
+  - MDP.DevKit.LineMessaging
 
-### MDP.Net-需求分析
+  - MDP.DevKit.OpenAI 
+ 
+- MDP.AspNetCore.Authentication
 
-![MDP.Net-需求分析](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90.png)
+  - MDP.AspNetCore.Authentication
+  
+  - MDP.AspNetCore.Authentication.AzureAD
+  
+  - MDP.AspNetCore.Authentication.Facebook
+  
+  - MDP.AspNetCore.Authentication.GitHub
+  
+  - MDP.AspNetCore.Authentication.Google
+  
+  - MDP.AspNetCore.Authentication.Jwt
+  
+  - MDP.AspNetCore.Authentication.Liff
+  
+  - MDP.AspNetCore.Authentication.Line
+
+- MDP.Network
+  
+  - MDP.Network.Http
+  
+  - MDP.Network.Rest
+  
+- MDP.Data
+
+  - MDP.Data.MSSql
 
 
 ## 版本更新
+
+### MDP.Net 6.1.5
+
+- MDP.NetCore：加入AddMdp()，提升平台識別。
+
+- MDP.AspNetCore：加入AddMdp()，提升平台識別。
+
+### MDP.Net 6.1.4
+
+- MDP.DevKit.LineMessaging：遷移此模組，遷移至獨立Repo進行維護。
+
+### MDP.Net 6.1.2
+
+- MDP.Hosting：移除Autofac參考。
 
 ### MDP.Net 6.1.0
 
