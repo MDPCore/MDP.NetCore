@@ -22,7 +22,7 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 
 - 平台：MDP.Net透過「平台」的設計，提供一個開箱即用的執行平台，將參數調整、模組整合、環境調適...等等環境建設作業簡化封裝，方便開發人員依照專案需求，快速搭建執行環境。
 
-- 隔離：MDP.Net加入「隔離」的設計，並遵循三層式的「[MDP.Net-模組架構](https://github.com/Clark159/MDP.Net#mdpnet-模組架構)」， 以減少模組對於元件、平台、框架的直接依賴，方便開發人員依照技術需求，快速抽換相依元件。
+- 隔離：MDP.Net加入「隔離」的設計，並遵循三層式的[MDP.Net-模組架構](https://github.com/Clark159/MDP.Net#mdpnet-模組架構)， 以減少模組對於元件、平台、框架的直接依賴，方便開發人員依照技術需求，快速抽換相依元件。
 
 ![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-平台架構.png)
 
