@@ -46,7 +46,7 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立Web App、Co
 
 ### MDP.Net-模組架構
 
-![MDP.Net-專案架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-專案架構.png)
+![MDP.Net-模組架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-模組架構.png)
 
 ### MDP.Net-模組清單
 
