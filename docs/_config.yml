@@ -1,12 +1,17 @@
 
 # Site
 title: MDP.Net
+email: clark159@hotmail.com
 
-# theme
+# Theme
 remote_theme: pmarsceill/just-the-docs
 aux_links:
-  "MDP.Net on GitHub":
+  "Source Code on GitHub":
     - "//github.com/Clark159/MDP.Net"
-search_enabled: false
 favicon_ico: "/Pages/favicon.ico"
 color_scheme: dark
+search_enabled: false
+
+# Plugins
+plugins:
+  - jekyll-sitemap
