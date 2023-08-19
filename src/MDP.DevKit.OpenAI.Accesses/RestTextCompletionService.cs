@@ -54,9 +54,9 @@ namespace MDP.DevKit.OpenAI.Accesses
 
             public string model { get; set; } = string.Empty;
 
-            public List<TextMessageChoiceResultModel>? choices { get; set; } = null;
+            public List<TextMessageChoiceResultModel> choices { get; set; } = null;
 
-            public CompletionUsageResultModel? usage { get; set; } = null;
+            public CompletionUsageResultModel usage { get; set; } = null;
 
 
             // Methods
@@ -79,7 +79,7 @@ namespace MDP.DevKit.OpenAI.Accesses
         private class TextMessageChoiceResultModel
         {
             // Properties
-            public string? text { get; set; } = string.Empty;
+            public string text { get; set; } = string.Empty;
 
             public int index { get; set; } = 0;
 

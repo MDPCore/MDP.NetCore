@@ -14,11 +14,11 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
         private readonly string _header = String.Empty;
 
-        private readonly string? _prefix = String.Empty;
+        private readonly string _prefix = String.Empty;
 
 
         // Constructors
-        public SecurityTokenPolicyAuthenticationSelector(string scheme, string header, string? prefix)
+        public SecurityTokenPolicyAuthenticationSelector(string scheme, string header, string prefix)
         {
             #region Contracts
 

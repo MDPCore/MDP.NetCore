@@ -9,20 +9,20 @@ namespace MDP.DevKit.OpenAI.Accesses
     internal class ErrorModel
     {
         // Properties
-        public Error? error { get; set; } = null;
+        public Error error { get; set; } = null;
 
 
         // Class
         public class Error
         {
             // Properties
-            public string? message { get; set; } = string.Empty;
+            public string message { get; set; } = string.Empty;
 
-            public string? type { get; set; } = string.Empty;
+            public string type { get; set; } = string.Empty;
 
-            public string? param { get; set; } = string.Empty;
+            public string param { get; set; } = string.Empty;
 
-            public string? code { get; set; } = string.Empty;
+            public string code { get; set; } = string.Empty;
         }
 
 

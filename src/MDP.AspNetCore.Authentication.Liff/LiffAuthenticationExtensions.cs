@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MDP.AspNetCore.Authentication.Liff
 {
     public static class LiffAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddLiffAuthentication(this IServiceCollection services, LiffAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddLiffAuthentication(this IServiceCollection services, LiffAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -32,7 +33,7 @@ namespace MDP.AspNetCore.Authentication.Liff
                 options.ClientSecret = authenticationSetting.ClientSecret;
 
                 // SignIn
-                options.SignInPath("/SignIn");
+                options.SignInPath("/.auth/signin");
                 options.SignInScheme = RemoteAuthenticationDefaults.AuthenticationScheme;
             });
 

@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS1591: 遺漏公用可見類型或成員的 XML 註解
+dotnet_diagnostic.CS1591.severity = none

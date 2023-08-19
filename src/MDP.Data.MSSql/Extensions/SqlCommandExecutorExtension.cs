@@ -1,12 +1,15 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MDP.Data.MSSql
 {
     public static partial class SqlClientExtension
     {
         // Methods
-        public static T? ExecuteParse<T>(this SqlClient command, List<TypeHandler>? typeHandlerList = null)
+        public static T ExecuteParse<T>(this SqlClient command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 
@@ -18,7 +21,7 @@ namespace MDP.Data.MSSql
             return command.ExecuteParseAll<T>(typeHandlerList).FirstOrDefault();
         }
 
-        public static dynamic? ExecuteParse(this SqlClient command, List<TypeHandler>? typeHandlerList = null)
+        public static dynamic ExecuteParse(this SqlClient command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 
@@ -34,7 +37,7 @@ namespace MDP.Data.MSSql
     public static partial class SqlClientExtension
     {
         // Methods
-        public static List<T> ExecuteParseAll<T>(this SqlClient command, List<TypeHandler>? typeHandlerList = null)
+        public static List<T> ExecuteParseAll<T>(this SqlClient command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 
@@ -64,7 +67,7 @@ namespace MDP.Data.MSSql
             }
         }
 
-        public static List<dynamic> ExecuteParseAll(this SqlClient command, List<TypeHandler>? typeHandlerList = null)
+        public static List<dynamic> ExecuteParseAll(this SqlClient command, List<TypeHandler> typeHandlerList = null)
         {
             #region Contracts
 

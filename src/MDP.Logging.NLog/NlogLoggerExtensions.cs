@@ -9,7 +9,7 @@ namespace MDP.Logging.NLog
     public static class NLogLoggerExtensions
     {
         // Methods
-        public static IServiceCollection AddNLogLogger(this IServiceCollection services, NLogLoggerSetting? loggerSetting = null)
+        public static IServiceCollection AddNLogLogger(this IServiceCollection services, NLogLoggerSetting loggerSetting = null)
         {
             #region Contracts
 
@@ -28,7 +28,7 @@ namespace MDP.Logging.NLog
             return services;
         }
 
-        private static NLogLib.LogFactory CreateLogFactory(IServiceCollection services, NLogLoggerSetting? loggerSetting = null)
+        private static NLogLib.LogFactory CreateLogFactory(IServiceCollection services, NLogLoggerSetting loggerSetting = null)
         {
             #region Contracts
 

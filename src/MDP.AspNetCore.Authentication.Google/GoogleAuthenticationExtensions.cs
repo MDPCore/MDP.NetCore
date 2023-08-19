@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MDP.AspNetCore.Authentication.Google
 {
     public static class GoogleAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddGoogleAuthentication(this IServiceCollection services, GoogleAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddGoogleAuthentication(this IServiceCollection services, GoogleAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -32,7 +33,7 @@ namespace MDP.AspNetCore.Authentication.Google
                 options.SaveTokens = true;
 
                 // SignIn
-                options.SignInPath("/SignIn");
+                options.SignInPath("/.auth/signin");
                 options.SignInScheme = RemoteAuthenticationDefaults.AuthenticationScheme;
             });
 

@@ -20,7 +20,8 @@
     <hr />
 
     <!--LoginByAzureAD-->
-    <form asp-route="Login" asp-route-scheme="@AzureADDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form action="/.auth/login/AzureAD" method="get">
+        <input type="hidden" name="returnUrl" value="@Context.Request.Query["ReturnUrl"]" />
         <input type="submit" value="LoginByAzureAD" /><br />
         <br />
     </form>

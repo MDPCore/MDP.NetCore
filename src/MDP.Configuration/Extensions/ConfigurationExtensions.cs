@@ -8,7 +8,7 @@ namespace MDP.Configuration
     public static class ConfigurationExtensions
     {
         // Methods   
-        public static T? Bind<T>(this IConfigurationRoot configuration, string path) where T : class, new()
+        public static T Bind<T>(this IConfigurationRoot configuration, string path) where T : class, new()
         {
             #region Contracts
 
@@ -21,7 +21,7 @@ namespace MDP.Configuration
             return configuration.GetSection(path).Bind<T>();
         }
 
-        public static T? Bind<T>(this IConfigurationSection configuration, string path) where T : class, new()
+        public static T Bind<T>(this IConfigurationSection configuration, string path) where T : class, new()
         {
             #region Contracts
 
@@ -37,7 +37,7 @@ namespace MDP.Configuration
             return configuration.GetSection(path).Bind<T>();
         }
 
-        public static T? Bind<T>(this IConfigurationSection configuration) where T : class, new()
+        public static T Bind<T>(this IConfigurationSection configuration) where T : class, new()
         {
             #region Contracts
 

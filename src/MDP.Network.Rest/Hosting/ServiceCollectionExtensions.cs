@@ -2,13 +2,16 @@
 using MDP.Network.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Net.Http;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace MDP.Network.Rest
 {
     public static class ServiceCollectionExtensions
     {
         // Methods
-        public static void AddRestClientFactory(this IServiceCollection serviceCollection, Dictionary<string, RestClientEndpoint>? endpointDictionary = null)
+        public static void AddRestClientFactory(this IServiceCollection serviceCollection, Dictionary<string, RestClientEndpoint> endpointDictionary = null)
         {
             #region Contracts
 
@@ -20,7 +23,7 @@ namespace MDP.Network.Rest
             serviceCollection.AddRestClientFactory(null, endpointDictionary);
         }
 
-        public static void AddRestClientFactory(this IServiceCollection serviceCollection, string? @namespace = null, Dictionary<string, RestClientEndpoint>? endpointDictionary = null)
+        public static void AddRestClientFactory(this IServiceCollection serviceCollection, string @namespace = null, Dictionary<string, RestClientEndpoint> endpointDictionary = null)
         {
             #region Contracts
 
@@ -40,7 +43,7 @@ namespace MDP.Network.Rest
         }
 
 
-        public static void AddRestClientFactory(this IServiceCollection serviceCollection, List<RestClientEndpoint>? endpointList = null)
+        public static void AddRestClientFactory(this IServiceCollection serviceCollection, List<RestClientEndpoint> endpointList = null)
         {
             #region Contracts
 
@@ -52,7 +55,7 @@ namespace MDP.Network.Rest
             serviceCollection.AddRestClientFactory(null, endpointList);
         }
 
-        public static void AddRestClientFactory(this IServiceCollection serviceCollection, string? @namespace = null, List<RestClientEndpoint>? endpointList = null)
+        public static void AddRestClientFactory(this IServiceCollection serviceCollection, string @namespace = null, List<RestClientEndpoint> endpointList = null)
         {
             #region Contracts
 

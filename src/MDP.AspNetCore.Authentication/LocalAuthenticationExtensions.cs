@@ -17,7 +17,7 @@ namespace MDP.AspNetCore.Authentication
     public static partial class LocalAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddLocal(this AuthenticationBuilder builder, Action<CookieAuthenticationOptions>? configureOptions = null)
+        public static AuthenticationBuilder AddLocal(this AuthenticationBuilder builder, Action<CookieAuthenticationOptions> configureOptions = null)
         {
             #region Contracts
 
@@ -52,7 +52,7 @@ namespace MDP.AspNetCore.Authentication
             #endregion
 
             // AuthenticateAsync
-            return httpContext.AuthenticateAsync(LocalAuthenticationDefaults.AuthenticationScheme);
+            return httpContext.AuthenticateAsync();
         }
 
         public static Task LocalSignInAsync(this HttpContext httpContext, ClaimsPrincipal principal)
@@ -65,7 +65,7 @@ namespace MDP.AspNetCore.Authentication
             #endregion
 
             // SignInAsync
-            return httpContext.SignInAsync(LocalAuthenticationDefaults.AuthenticationScheme, principal);
+            return httpContext.SignInAsync(principal);
         }
 
         public static Task LocalSignOutAsync(this HttpContext httpContext)
@@ -77,7 +77,7 @@ namespace MDP.AspNetCore.Authentication
             #endregion
 
             // SignOutAsync
-            return httpContext.SignOutAsync(LocalAuthenticationDefaults.AuthenticationScheme);
+            return httpContext.SignOutAsync();
         }
     }
 }

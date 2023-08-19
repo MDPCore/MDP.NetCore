@@ -15,7 +15,7 @@ namespace MDP.NetCore
             #endregion
 
             // HostBuilder
-            var hostBuilder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args).ConfigureDefault<TProgram>();
+            var hostBuilder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args).ConfigureMDP<TProgram>();
             if (hostBuilder == null) throw new InvalidOperationException($"{nameof(hostBuilder)}=null");
 
             // Host

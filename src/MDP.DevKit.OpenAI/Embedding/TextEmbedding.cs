@@ -11,8 +11,8 @@ namespace MDP.DevKit.OpenAI
         // Properties
         public string Model { get; set; } = string.Empty;
 
-        public List<EmbeddingVector>? Data { get; set; } = null;
+        public List<EmbeddingVector> Data { get; set; } = null;
 
-        public EmbeddingUsage? Usage { get; set; } = null;
+        public EmbeddingUsage Usage { get; set; } = null;
     }
 }

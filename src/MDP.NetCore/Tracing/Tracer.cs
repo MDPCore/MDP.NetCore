@@ -15,7 +15,7 @@ namespace MDP.NetCore
         // Fields
         private static object _syncRoot = new object();
 
-        private static ActivitySource? _activitySource = null;
+        private static ActivitySource _activitySource = null;
 
 
         // Constructors

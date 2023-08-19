@@ -1,5 +1,7 @@
 ﻿using MDP.Network.Rest;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace MDP.Network.Rest
@@ -26,7 +28,7 @@ namespace MDP.Network.Rest
         public class RestClientFactorySetting
         {
             // Properties
-            public Dictionary<string, RestClientEndpoint>? Endpoints { get; set; } = null;
+            public Dictionary<string, RestClientEndpoint> Endpoints { get; set; } = null;
         }
     }
 }

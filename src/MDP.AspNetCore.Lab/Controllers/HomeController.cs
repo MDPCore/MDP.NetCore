@@ -1,7 +1,7 @@
 ﻿using MDP.Logging;
 using MDP.Tracing;
 using Microsoft.AspNetCore.Mvc;
-using MyLab.Modules;
+using MyLab.Module;
 using System;
 
 namespace MDP.AspNetCore.Lab
@@ -9,22 +9,20 @@ namespace MDP.AspNetCore.Lab
     public class HomeController : Controller
     {
         // Fields
-        private readonly WorkService _workService;
+        private readonly WorkContext _workContext;
 
 
         // Constructors
-        public HomeController(WorkService workService, ILogger<Program> logger, ITracer<Program> tracer)
+        public HomeController(WorkContext workContext)
         {
             #region Contracts
 
-            if (workService == null) throw new ArgumentException($"{nameof(workService)}=null");
-            if (logger == null) throw new ArgumentException($"{nameof(logger)}=null");
-            if (tracer == null) throw new ArgumentException($"{nameof(tracer)}=null");
+            if (workContext == null) throw new ArgumentException($"{nameof(workContext)}=null");
 
             #endregion
 
             // Default
-            _workService = workService;
+            _workContext = workContext;
         }
 
 
@@ -32,7 +30,7 @@ namespace MDP.AspNetCore.Lab
         public ActionResult Index()
         {
             // Message
-            var message = _workService.GetValue();
+            var message = _workContext.GetValue();
             if (string.IsNullOrEmpty(message) == true) throw new InvalidOperationException($"{nameof(message)}=null");
 
             // ViewBag
@@ -42,12 +40,7 @@ namespace MDP.AspNetCore.Lab
             return View();
         }
 
-        /// <summary>
-        /// 測試API
-        /// </summary>
-        /// <param name="value">測試輸入</param>
-        /// <returns>測試輸出</returns>
-        public string Echo(string value)
+        public ActionResult<string> Echo(string value)
         {
             #region Contracts
 

@@ -57,7 +57,7 @@ namespace MDP.NetCore
             }
         }
 
-        private async Task ExecuteMethod(string methodName, Dictionary<string, object>? parameters = null)
+        private async Task ExecuteMethod(string methodName, Dictionary<string, object> parameters = null)
         {
             #region Contracts
 

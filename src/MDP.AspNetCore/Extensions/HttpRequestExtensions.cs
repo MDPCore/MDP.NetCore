@@ -10,7 +10,19 @@ namespace MDP.AspNetCore
     public static class HttpRequestExtensions
     {
         // Methods
-        public static bool HasAccept(this HttpRequest request, string accept)
+        public static bool IsAPI(this HttpRequest request)
+        {
+            #region Contracts
+
+            if (request == null) throw new ArgumentException($"{nameof(request)}=null");
+
+            #endregion
+
+            // Return
+            return (request.HasAccept("html") == false);
+        }
+
+        private static bool HasAccept(this HttpRequest request, string accept)
         {
             #region Contracts
 
@@ -23,7 +35,7 @@ namespace MDP.AspNetCore
             return request.HasAccept(new List<string>() { accept });
         }
 
-        public static bool HasAccept(this HttpRequest request, List<string> acceptList) 
+        private static bool HasAccept(this HttpRequest request, List<string> acceptList) 
         {
             #region Contracts
 

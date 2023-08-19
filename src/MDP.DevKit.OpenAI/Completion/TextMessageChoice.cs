@@ -11,6 +11,6 @@ namespace MDP.DevKit.OpenAI
         // Properties
         public int Index { get; set; } = 0;
 
-        public string? FinishReason { get; set; } = null;
+        public string FinishReason { get; set; } = null;
     }
 }

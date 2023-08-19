@@ -29,7 +29,7 @@ namespace MDP.DevKit.OpenAI.Accesses
 
 
         // Methods
-        protected async Task<TResultModel?> GetAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+        protected async Task<TResultModel> GetAsync<TResultModel>(string requestUri = null, object headers = null, object query = null, object content = null)
             where TResultModel : class
         {
             // Execute
@@ -57,7 +57,7 @@ namespace MDP.DevKit.OpenAI.Accesses
             }
         }
 
-        protected async Task<TResultModel?> PostAsync<TResultModel>(string? requestUri = null, object? headers = null, object? query = null, object? content = null)
+        protected async Task<TResultModel> PostAsync<TResultModel>(string requestUri = null, object headers = null, object query = null, object content = null)
             where TResultModel : class
         {
             // Execute

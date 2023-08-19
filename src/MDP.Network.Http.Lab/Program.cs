@@ -1,4 +1,8 @@
-﻿namespace MDP.Network.Http.Lab
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace MDP.Network.Http.Lab
 {
     public class Program
     {

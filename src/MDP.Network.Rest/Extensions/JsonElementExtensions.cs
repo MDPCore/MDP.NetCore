@@ -17,7 +17,7 @@ namespace MDP.Network.Rest
 
 
         // Methods
-        public static TResult? GetProperty<TResult>(this JsonElement jsonElement, string propertyName)
+        public static TResult GetProperty<TResult>(this JsonElement jsonElement, string propertyName)
         {
             #region Contracts
 
@@ -27,24 +27,24 @@ namespace MDP.Network.Rest
 
             // Variables
             var resultType = typeof(TResult);
-            var defaultValue = typeof(TResult).IsValueType == true ? default(TResult) : default(TResult?);
+            var defaultValue = typeof(TResult).IsValueType == true ? default(TResult) : default(TResult);
 
             // ResultElement
             if (jsonElement.TryGetProperty(propertyName, out var resultElement) == false) return defaultValue;
-            if (resultElement.GetType() == resultType) return (TResult?)(object)resultElement;
+            if (resultElement.GetType() == resultType) return (TResult)(object)resultElement;
 
             // Primitive
             if (resultType.IsPrimitive == true || (resultType.IsPrimitive == false && Nullable.GetUnderlyingType(typeof(TResult))?.IsPrimitive == true))
             {
                 // Parse
-                if (resultType == typeof(bool) || resultType == typeof(bool?)) { return (TResult?)(object)resultElement.GetBoolean(); }
-                if (resultType == typeof(byte) || resultType == typeof(byte?)) { if (resultElement.TryGetByte(out var result) == true) return (TResult?)(object)result; else return defaultValue; }
-                if (resultType == typeof(short) || resultType == typeof(short?)) { if (resultElement.TryGetInt16(out var result) == true) return (TResult?)(object)result; else return defaultValue; }
-                if (resultType == typeof(int) || resultType == typeof(int?)) { if (resultElement.TryGetInt32(out var result) == true) return (TResult?)(object)result; else return defaultValue; }
-                if (resultType == typeof(long) || resultType == typeof(long?)) { if (resultElement.TryGetInt64(out var result) == true) return (TResult?)(object)result; else return defaultValue; }
-                if (resultType == typeof(float) || resultType == typeof(float?)) { if (resultElement.TryGetSingle(out var result) == true) return (TResult?)(object)result; else return defaultValue; }
-                if (resultType == typeof(double) || resultType == typeof(double?)) { if (resultElement.TryGetDouble(out var result) == true) return (TResult?)(object)result; else return defaultValue; }
-                if (resultType == typeof(decimal) || resultType == typeof(decimal?)) { if (resultElement.TryGetDecimal(out var result) == true) return (TResult?)(object)result; else return defaultValue; }
+                if (resultType == typeof(bool) || resultType == typeof(bool?)) { return (TResult)(object)resultElement.GetBoolean(); }
+                if (resultType == typeof(byte) || resultType == typeof(byte?)) { if (resultElement.TryGetByte(out var result) == true) return (TResult)(object)result; else return defaultValue; }
+                if (resultType == typeof(short) || resultType == typeof(short?)) { if (resultElement.TryGetInt16(out var result) == true) return (TResult)(object)result; else return defaultValue; }
+                if (resultType == typeof(int) || resultType == typeof(int?)) { if (resultElement.TryGetInt32(out var result) == true) return (TResult)(object)result; else return defaultValue; }
+                if (resultType == typeof(long) || resultType == typeof(long?)) { if (resultElement.TryGetInt64(out var result) == true) return (TResult)(object)result; else return defaultValue; }
+                if (resultType == typeof(float) || resultType == typeof(float?)) { if (resultElement.TryGetSingle(out var result) == true) return (TResult)(object)result; else return defaultValue; }
+                if (resultType == typeof(double) || resultType == typeof(double?)) { if (resultElement.TryGetDouble(out var result) == true) return (TResult)(object)result; else return defaultValue; }
+                if (resultType == typeof(decimal) || resultType == typeof(decimal?)) { if (resultElement.TryGetDecimal(out var result) == true) return (TResult)(object)result; else return defaultValue; }
                
                 // Throw
                 throw new InvalidOperationException($"ResultType={typeof(TResult)}, ResultValue={resultElement.GetString()}");
@@ -56,7 +56,7 @@ namespace MDP.Network.Rest
                 // Parse
                 var result = resultElement.GetString();
                 if (result == null) return defaultValue;
-                if (result != null) return (TResult?)(object)result;
+                if (result != null) return (TResult)(object)result;
             }
 
             // DateTime
@@ -65,7 +65,7 @@ namespace MDP.Network.Rest
                 // Parse
                 if (resultElement.TryGetDateTime(out var result) == true)
                 {
-                    return (TResult?)(object)result;
+                    return (TResult)(object)result;
                 }
                 return defaultValue;
             }
@@ -76,7 +76,7 @@ namespace MDP.Network.Rest
                 // Parse
                 var result = resultElement.Deserialize<TResult>(_serializerOptions);
                 if (result == null) return defaultValue;
-                if (result != null) return (TResult?)(object)result;
+                if (result != null) return (TResult)(object)result;
             }
 
             // Throw

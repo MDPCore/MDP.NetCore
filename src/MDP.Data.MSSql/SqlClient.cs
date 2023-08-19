@@ -1,6 +1,8 @@
 ﻿using CLK;
 using Microsoft.Data.SqlClient;
+using System;
 using System.Data;
+using System.Linq;
 
 namespace MDP.Data.MSSql
 {
@@ -33,7 +35,7 @@ namespace MDP.Data.MSSql
         public void Dispose()
         {
             // Exception
-            Exception? exception = null;
+            Exception exception = null;
 
             // Command
             if (_command != null)

@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using MDP.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
-using MDP.IdentityModel.Tokens.Jwt;
+using MDP.Security.Tokens.Jwt;
 
 namespace MDP.AspNetCore.Authentication.Jwt.Lab
 {
@@ -35,7 +35,8 @@ namespace MDP.AspNetCore.Authentication.Jwt.Lab
         // Methods
         public ActionResult Index()
         {
-            return View();
+            // Return
+            return View("Index");
         }
     }
 
@@ -82,7 +83,7 @@ namespace MDP.AspNetCore.Authentication.Jwt.Lab
         public class GetTokenResultModel
         {
             // Properties
-            public string? Token { get; set; } = string.Empty;
+            public string Token { get; set; } = string.Empty;
         }
     }
 
@@ -127,7 +128,7 @@ namespace MDP.AspNetCore.Authentication.Jwt.Lab
         public class GetUserResultModel
         {
             // Properties
-            public UserModel? User { get; set; }
+            public UserModel User { get; set; }
         }
 
         public class UserModel

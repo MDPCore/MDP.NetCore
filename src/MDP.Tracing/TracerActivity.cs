@@ -10,11 +10,11 @@ namespace MDP.Tracing
     public class TracerActivity : IDisposable
     {
         // Fields
-        private readonly Activity? _activity = null;
+        private readonly Activity _activity = null;
 
 
         // Constructors
-        public TracerActivity(Activity? activity = null)
+        public TracerActivity(Activity activity = null)
         {
             // Default
             _activity = activity;
@@ -28,7 +28,7 @@ namespace MDP.Tracing
 
 
         // Methods
-        public void AddTag(string key, string? value)
+        public void AddTag(string key, string value)
         {
             #region Contracts
 
@@ -40,7 +40,7 @@ namespace MDP.Tracing
             _activity?.AddTag(key, value);
         }
 
-        public void AddTag(string key, object? value)
+        public void AddTag(string key, object value)
         {
             #region Contracts
 

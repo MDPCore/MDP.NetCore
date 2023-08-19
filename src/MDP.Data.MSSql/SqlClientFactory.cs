@@ -1,4 +1,7 @@
-﻿namespace MDP.Data.MSSql
+﻿using System;
+using System.Collections.Generic;
+
+namespace MDP.Data.MSSql
 {
     [MDP.Registration.Service<SqlClientFactory>(singleton: true)]
     public class SqlClientFactory

@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 
 namespace MDP.Network.Http
 {
     public static class ServiceCollectionExtensions
     {
         // Methods
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, Dictionary<string, HttpClientEndpoint>? endpointDictionary = null)
+        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, Dictionary<string, HttpClientEndpoint> endpointDictionary = null)
         {
             #region Contracts
 
@@ -17,7 +19,7 @@ namespace MDP.Network.Http
             serviceCollection.AddHttpClientFactory(null, endpointDictionary);
         }
 
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, string? @namespace = null, Dictionary<string, HttpClientEndpoint>? endpointDictionary = null)
+        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, string @namespace = null, Dictionary<string, HttpClientEndpoint> endpointDictionary = null)
         {
             #region Contracts
 
@@ -57,7 +59,7 @@ namespace MDP.Network.Http
         }
 
 
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, List<HttpClientEndpoint>? endpointList = null)
+        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, List<HttpClientEndpoint> endpointList = null)
         {
             #region Contracts
 
@@ -69,7 +71,7 @@ namespace MDP.Network.Http
             serviceCollection.AddHttpClientFactory(null, endpointList);
         }
 
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, string? @namespace = null, List<HttpClientEndpoint>? endpointList = null)
+        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, string @namespace = null, List<HttpClientEndpoint> endpointList = null)
         {
             #region Contracts
 
@@ -92,7 +94,7 @@ namespace MDP.Network.Http
             foreach (var endpoint in endpointList)
             {
                 // Name
-                string? name = null;
+                string name = null;
                 if (string.IsNullOrEmpty(@namespace) == true) name = $"{endpoint.Name}";
                 if (string.IsNullOrEmpty(@namespace) == false) name = $"{@namespace}.{endpoint.Name}";
                 if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");

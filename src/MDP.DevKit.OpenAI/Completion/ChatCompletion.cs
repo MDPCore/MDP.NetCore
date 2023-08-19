@@ -13,8 +13,8 @@ namespace MDP.DevKit.OpenAI
 
         public string Model { get; set; } = string.Empty;
 
-        public List<ChatMessageChoice>? Choices { get; set; } = null;
+        public List<ChatMessageChoice> Choices { get; set; } = null;
 
-        public CompletionUsage? Usage { get; set; } = null;
+        public CompletionUsage Usage { get; set; } = null;
     }
 }

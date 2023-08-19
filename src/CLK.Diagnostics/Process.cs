@@ -7,7 +7,7 @@ namespace CLK.Diagnostics
     public static class Process
     {
         // Methods
-        public static string Execute(string fileName, string? arguments = null)
+        public static string Execute(string fileName, string arguments = null)
         {
             #region Contracts
 

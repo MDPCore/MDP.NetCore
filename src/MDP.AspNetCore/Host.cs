@@ -14,11 +14,11 @@ namespace MDP.AspNetCore
             #endregion
 
             // HostBuilder
-            var hostBuilder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args).ConfigureDefault();
+            var hostBuilder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args).ConfigureMDP();
             if (hostBuilder == null) throw new InvalidOperationException($"{nameof(hostBuilder)}=null");
 
             // Host
-            var host = hostBuilder.Build().ConfigureDefault();
+            var host = hostBuilder.Build().ConfigureMDP();
             if (host == null) throw new InvalidOperationException($"{nameof(host)}=null");
 
             // Run

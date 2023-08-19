@@ -12,7 +12,7 @@ namespace CLK.Reflection
         // Fields
         private readonly static object _syncLock = new object();
 
-        private static ReadOnlyCollection<System.Type>? _typeList = null;
+        private static ReadOnlyCollection<System.Type> _typeList = null;
 
 
         // Methods

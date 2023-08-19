@@ -10,7 +10,7 @@ namespace MDP.DevKit.OpenAI
     public class OpenAIException : Exception
     {
         // Constructors
-        public OpenAIException(string? message = null, string? type = null, string? param = null, string? code = null) : base(message) 
+        public OpenAIException(string message = null, string type = null, string param = null, string code = null) : base(message) 
         {
             // Default
             this.Type = type;
@@ -20,11 +20,11 @@ namespace MDP.DevKit.OpenAI
 
 
         // Properties
-        public string? Type { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
 
-        public string? Param { get; set; } = string.Empty;
+        public string Param { get; set; } = string.Empty;
 
-        public string? Code { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
 
 
         // Methods

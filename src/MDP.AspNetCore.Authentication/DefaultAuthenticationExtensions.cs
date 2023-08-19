@@ -17,7 +17,7 @@ namespace MDP.AspNetCore.Authentication
     public static class DefaultAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddDefaultAuthentication(this IServiceCollection services, DefaultAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddDefaultAuthentication(this IServiceCollection services, DefaultAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -27,38 +27,44 @@ namespace MDP.AspNetCore.Authentication
 
             // AuthenticationSetting
             if (authenticationSetting == null) authenticationSetting = new DefaultAuthenticationSetting();
-          
+            if (string.IsNullOrEmpty(authenticationSetting.DefaultScheme) == true) throw new InvalidOperationException("authenticationSetting.DefaultScheme=null");
+
             // AuthenticationBuilder   
             var authenticationBuilder = services.AddAuthentication(options =>
             {
                 // DefaultScheme
-                options.DefaultScheme = PolicyAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultScheme = authenticationSetting.DefaultScheme;
+                options.DefaultAuthenticateScheme = PolicyAuthenticationDefaults.AuthenticationScheme;
             });
 
             // Policy
             authenticationBuilder.AddPolicy(new PolicyAuthenticationSetting()
             {
                 // DefaultScheme
-                DefaultScheme = LocalAuthenticationDefaults.AuthenticationScheme
+                DefaultScheme = authenticationSetting.DefaultScheme
             });
 
             // Local
-            authenticationBuilder.AddLocal(options =>
+            if (authenticationSetting.DefaultScheme == LocalAuthenticationDefaults.AuthenticationScheme)
             {
-                // Options
-                options.LoginPath = new PathString("/Login");
-                options.LogoutPath = new PathString("/Logout");
-                options.AccessDeniedPath = new PathString("/AccessDenied");
-            });
+                authenticationBuilder.AddLocal(options =>
+                {
+                    // Options
+                    options.LoginPath = new PathString(authenticationSetting.LoginPath);
+                    options.LogoutPath = new PathString(authenticationSetting.LogoutPath);
+                    options.AccessDeniedPath = new PathString(authenticationSetting.AccessDeniedPath);
+                });
+            }
 
             // Remote
-            authenticationBuilder.AddRemote(options =>
             {
-                // Options
-                options.LoginPath = new PathString("/Login");
-                options.LogoutPath = new PathString("/Logout");
-                options.AccessDeniedPath = new PathString("/AccessDenied");
-            });
+                authenticationBuilder.AddRemote(options =>
+                {
+                    // Options
+                    options.ForwardChallenge = authenticationSetting.DefaultScheme;
+                    options.ForwardForbid = authenticationSetting.DefaultScheme;
+                });
+            }
 
             // Return
             return authenticationBuilder;

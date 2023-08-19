@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MDP.AspNetCore.Authentication.AzureAD
 {
     public static class AzureADAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddAzureADAuthentication(this IServiceCollection services, AzureADAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddAzureADAuthentication(this IServiceCollection services, AzureADAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -32,7 +33,7 @@ namespace MDP.AspNetCore.Authentication.AzureAD
                 options.ClientSecret = authenticationSetting.ClientSecret;
 
                 // SignIn
-                options.SignInPath("/SignIn");
+                options.SignInPath("/.auth/signin");
                 options.SignInScheme = RemoteAuthenticationDefaults.AuthenticationScheme;
             });
 

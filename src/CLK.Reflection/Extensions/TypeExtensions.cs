@@ -31,7 +31,7 @@ namespace CLK.Reflection
             return constructorInfo;
         }
 
-        public static MethodInfo? FindMethod(this System.Type type, string methodName)
+        public static MethodInfo FindMethod(this System.Type type, string methodName)
         {
             #region Contracts
 

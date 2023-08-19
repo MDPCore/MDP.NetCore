@@ -21,7 +21,7 @@ namespace CLK.Mocks
             base.Remove(Tuple.Create(entityId));
         }
 
-        public TEntity? FindById(TEntityId entityId)
+        public TEntity FindById(TEntityId entityId)
         {
             #region Contracts
 
@@ -54,7 +54,7 @@ namespace CLK.Mocks
             base.Remove(Tuple.Create(entityId1, entityId2));
         }
 
-        public TEntity? FindById(TEntityId1 entityId1, TEntityId2 entityId2)
+        public TEntity FindById(TEntityId1 entityId1, TEntityId2 entityId2)
         {
             #region Contracts
 
@@ -89,7 +89,7 @@ namespace CLK.Mocks
             base.Remove(Tuple.Create(entityId1, entityId2, entityId3));
         }
 
-        public TEntity? FindById(TEntityId1 entityId1, TEntityId2 entityId2, TEntityId3 entityId3)
+        public TEntity FindById(TEntityId1 entityId1, TEntityId2 entityId2, TEntityId3 entityId3)
         {
             #region Contracts
 

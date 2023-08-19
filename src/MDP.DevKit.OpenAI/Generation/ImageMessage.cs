@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,6 @@ namespace MDP.DevKit.OpenAI
 
 
         // Properties
-        public MemoryStream? Image { get; set; } = null;
+        public MemoryStream Image { get; set; } = null;
     }
 }

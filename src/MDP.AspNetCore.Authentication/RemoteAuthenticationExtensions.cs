@@ -17,7 +17,7 @@ namespace MDP.AspNetCore.Authentication
     public static partial class RemoteAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddRemote(this AuthenticationBuilder builder, Action<CookieAuthenticationOptions>? configureOptions = null)
+        public static AuthenticationBuilder AddRemote(this AuthenticationBuilder builder, Action<CookieAuthenticationOptions> configureOptions = null)
         {
             #region Contracts
 

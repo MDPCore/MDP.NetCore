@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace MDP.Network.Http
@@ -25,7 +27,7 @@ namespace MDP.Network.Http
         public class HttpClientFactorySetting
         {
             // Properties
-            public Dictionary<string, HttpClientEndpoint>? Endpoints { get; set; } = null;
+            public Dictionary<string, HttpClientEndpoint> Endpoints { get; set; } = null;
         }
     }
 }

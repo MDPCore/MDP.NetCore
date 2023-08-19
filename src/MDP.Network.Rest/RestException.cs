@@ -11,7 +11,7 @@ namespace MDP.Network.Rest
     public class RestException<TErrorModel> : Exception where TErrorModel : class
     {
         // Constructors
-        public RestException(HttpStatusCode? statusCode, string? message, TErrorModel? model) : base(message)        
+        public RestException(HttpStatusCode statusCode, string message, TErrorModel model) : base(message)        
         {
             // Default
             this.StatusCode = statusCode;
@@ -20,9 +20,9 @@ namespace MDP.Network.Rest
 
 
         // Properties
-        public HttpStatusCode? StatusCode { get; }
+        public HttpStatusCode StatusCode { get; }
 
-        public TErrorModel? ErrorModel { get; }
+        public TErrorModel ErrorModel { get; }
 
 
         // Methods

@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using MDP.Network.Http;
 
 namespace MDP.Network.Rest

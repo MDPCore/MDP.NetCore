@@ -7,7 +7,7 @@ namespace MDP.Logging.Log4net
     public static class Log4netLoggerExtensions
     {
         // Methods
-        public static IServiceCollection AddLog4netLogger(this IServiceCollection services, Log4netLoggerSetting? loggerSetting = null)
+        public static IServiceCollection AddLog4netLogger(this IServiceCollection services, Log4netLoggerSetting loggerSetting = null)
         {
             #region Contracts
 
@@ -26,7 +26,7 @@ namespace MDP.Logging.Log4net
             return services;
         }
 
-        private static Log4netLoggerProvider CreateLoggerProvider(IServiceCollection services, Log4netLoggerSetting? loggerSetting = null)
+        private static Log4netLoggerProvider CreateLoggerProvider(IServiceCollection services, Log4netLoggerSetting loggerSetting = null)
         {
             #region Contracts
 

@@ -1,4 +1,6 @@
-﻿namespace MDP.Data.MSSql.Lab
+﻿using System;
+
+namespace MDP.Data.MSSql.Lab
 {
     public class Program
     {

@@ -15,7 +15,16 @@ namespace MDP.AspNetCore.Authentication.Line.Lab
         [Authorize]
         public ActionResult Index()
         {
-            return View();
+            // Return
+            return View("Index");
+        }
+
+        [AllowAnonymous]
+        [Route("/login", Name = "Login")]
+        public ActionResult Login(string scheme = null, string returnUrl = null)
+        {
+            // Return
+            return this.View("Login");
         }
     }
 }

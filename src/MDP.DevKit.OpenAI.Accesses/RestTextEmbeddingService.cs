@@ -50,9 +50,9 @@ namespace MDP.DevKit.OpenAI.Accesses
             // Properties
             public string model { get; set; } = string.Empty;
 
-            public List<EmbeddingVectorResultModel>? data { get; set; } = null;
+            public List<EmbeddingVectorResultModel> data { get; set; } = null;
 
-            public EmbeddingUsageResultModel? usage { get; set; } = null;
+            public EmbeddingUsageResultModel usage { get; set; } = null;
 
 
             // Methods

@@ -12,13 +12,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace MDP.AspNetCore.Authentication.Jwt
 {
     public static class SecurityTokenAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddSecurityTokenAuthentication(this IServiceCollection services, SecurityTokenAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddSecurityTokenAuthentication(this IServiceCollection services, SecurityTokenAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -146,6 +147,20 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
                         // Return
                         return Task.CompletedTask;
+                    },
+
+                    // OnAuthenticationFailed
+                    OnAuthenticationFailed = context =>
+                    {
+                        // Header
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        // Content
+                        var content = JsonSerializer.Serialize(new { message = "Authentication failed" });
+
+                        // Return
+                        return context.Response.WriteAsync(content);
                     }
                 };
             });

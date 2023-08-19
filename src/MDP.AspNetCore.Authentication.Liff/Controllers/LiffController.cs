@@ -35,7 +35,7 @@ namespace MDP.AspNetCore.Authentication.Liff.Services
         // Methods
         [AllowAnonymous]
         [Route("/Login-Liff", Name = "Login-Liff")]
-        public ActionResult Login(string? authenticationScheme = null, string? returnUrl = null)
+        public ActionResult Login(string authenticationScheme = null, string returnUrl = null)
         {
             // ReturnUrl
             returnUrl = returnUrl ?? this.Url.Content("~/");

@@ -90,7 +90,7 @@ namespace CLK.Mocks
             _entityList.Clear();
         }
 
-        protected TEntity? FindById(TEntityId entityId)
+        protected TEntity FindById(TEntityId entityId)
         {
             #region Contracts
 

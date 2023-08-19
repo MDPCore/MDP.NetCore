@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
+    <ProjectReference Include="..\MDP.DevKit.OpenAI\MDP.DevKit.OpenAI.csproj" />
+    <ProjectReference Include="..\MDP.Network.Rest\MDP.Network.Rest.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <PackageId>MDP.DevKit.OpenAI.Accesses</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <authors>CLK Software Studio</authors>
+    <copyright>Copyright © 2014 CLK Software Studio</copyright>
+    <description>MDP.Net Library</description>
+    <PackageIcon>Package.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Clark159/MDP.Net</PackageProjectUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Package.png" Pack="true" PackagePath="\Package.png" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\README.md" />
+  </ItemGroup>
+
+</Project>

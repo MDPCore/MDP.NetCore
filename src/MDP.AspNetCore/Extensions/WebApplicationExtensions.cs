@@ -8,7 +8,7 @@ namespace MDP.AspNetCore
     internal static class WebApplicationExtensions
     {
         // Methods
-        public static WebApplication ConfigureDefault(this WebApplication webApplication)
+        public static WebApplication ConfigureMDP(this WebApplication webApplication)
         {
             #region Contracts
 
@@ -16,23 +16,16 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // Environment
+            // ExceptionHandler
             if (webApplication.Environment.IsDevelopment() == false)
             {
-                webApplication.UseExceptionHandler("/Error");
+                webApplication.UseProblemDetails();
             }
-            else
-            {
-                webApplication.UseWhen(context => context.Request.HasAccept("html") == false, applicationBuilder =>
-                {
-                    applicationBuilder.UseExceptionHandler("/Error");
-                });
-            }
-            webApplication.UseHook(HookMiddlewareDefaults.EnteringHook);
+            webApplication.UseHook("ExceptionHandler");
 
             // Network 
             webApplication.UsePathBase();
-            webApplication.UseForwardedHeaders();
+            webApplication.UsePathDefault();
 
             // Security
             webApplication.UseHsts();
@@ -43,19 +36,15 @@ namespace MDP.AspNetCore
             webApplication.UseStaticFiles();
 
             // Routing
-            webApplication.UseRouting().UseHook(HookMiddlewareDefaults.RoutingHook);
-            {
-                // Network
-                webApplication.UseCors();
-                webApplication.UsePathDefault();
+            webApplication.UseRouting().UseHook("Routing");
 
-                // Auth
-                webApplication.UseAuthentication();
-                webApplication.UseAuthorization();
-            }
+            // Auth
+            webApplication.UseAuthentication();
+            webApplication.UseAuthorization();
+
+            // MVC
             webApplication.MapControllers();
             webApplication.MapDefaultControllerRoute();
-            webApplication.UseHook(HookMiddlewareDefaults.RoutedHook);
 
             // Return
             return webApplication;

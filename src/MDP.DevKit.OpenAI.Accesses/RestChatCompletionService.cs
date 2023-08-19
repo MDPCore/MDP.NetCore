@@ -77,9 +77,9 @@ namespace MDP.DevKit.OpenAI.Accesses
 
             public string model { get; set; } = string.Empty;
 
-            public List<ChatMessageChoiceResultModel>? choices { get; set; } = null;
+            public List<ChatMessageChoiceResultModel> choices { get; set; } = null;
 
-            public CompletionUsageResultModel? usage { get; set; } = null;
+            public CompletionUsageResultModel usage { get; set; } = null;
 
 
             // Methods
@@ -102,7 +102,7 @@ namespace MDP.DevKit.OpenAI.Accesses
         private class ChatMessageChoiceResultModel
         {
             // Properties
-            public Message? message { get; set; }
+            public Message message { get; set; }
 
             public int index { get; set; } = 0;
 

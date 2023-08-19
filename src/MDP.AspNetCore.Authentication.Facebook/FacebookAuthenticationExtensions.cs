@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MDP.AspNetCore.Authentication.Facebook
 {
     public static class FacebookAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddFacebookAuthentication(this IServiceCollection services, FacebookAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddFacebookAuthentication(this IServiceCollection services, FacebookAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -30,7 +31,7 @@ namespace MDP.AspNetCore.Authentication.Facebook
                 options.ClientSecret = authenticationSetting.ClientSecret;
 
                 // SignIn
-                options.SignInPath("/SignIn");
+                options.SignInPath("/.auth/signin");
                 options.SignInScheme = RemoteAuthenticationDefaults.AuthenticationScheme;
             });
 

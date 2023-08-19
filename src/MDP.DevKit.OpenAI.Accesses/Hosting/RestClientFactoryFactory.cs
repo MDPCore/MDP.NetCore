@@ -1,5 +1,7 @@
 ﻿using MDP.Network.Rest;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
 
 namespace MDP.DevKit.OpenAI.Accesses
 {
@@ -25,7 +27,7 @@ namespace MDP.DevKit.OpenAI.Accesses
         public class RestClientFactorySetting
         {
             // Properties
-            public Dictionary<string, RestClientEndpoint>? Endpoints { get; set; } = null;
+            public Dictionary<string, RestClientEndpoint> Endpoints { get; set; } = null;
         }
     }
 }

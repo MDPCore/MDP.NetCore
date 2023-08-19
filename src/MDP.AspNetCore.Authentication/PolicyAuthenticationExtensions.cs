@@ -12,7 +12,7 @@ namespace MDP.AspNetCore.Authentication
     public static class PolicyAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddPolicy(this AuthenticationBuilder builder, PolicyAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddPolicy(this AuthenticationBuilder builder, PolicyAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -24,7 +24,7 @@ namespace MDP.AspNetCore.Authentication
             return builder.AddPolicy(PolicyAuthenticationDefaults.AuthenticationScheme, authenticationSetting);
         }
 
-        public static AuthenticationBuilder AddPolicy(this AuthenticationBuilder builder, string authenticationScheme, PolicyAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddPolicy(this AuthenticationBuilder builder, string authenticationScheme, PolicyAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -40,9 +40,6 @@ namespace MDP.AspNetCore.Authentication
             // PolicyScheme
             builder.AddPolicyScheme(authenticationScheme, null, authenticationOptions =>
             {
-                // ForwardDefault
-                authenticationOptions.ForwardDefault = authenticationSetting.DefaultScheme;
-
                 // ForwardDefaultSelector
                 authenticationOptions.ForwardDefaultSelector = context =>
                 {

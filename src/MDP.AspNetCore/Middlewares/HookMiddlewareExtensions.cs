@@ -9,7 +9,7 @@ namespace MDP.AspNetCore
     public static partial class HookMiddlewareExtensions
     {
         // Methods        
-        private static WebApplicationBuilder AddHookMiddleware(this WebApplicationBuilder hostBuilder, string hookName, Action<WebApplication> configureMiddleware)
+        public static WebApplicationBuilder AddHook(this WebApplicationBuilder hostBuilder, string hookName, Action<WebApplication> configureMiddleware)
         {
             #region Contracts
 
@@ -25,51 +25,12 @@ namespace MDP.AspNetCore
             // Return
             return hostBuilder;
         }
-
-        public static WebApplicationBuilder AddEnteringMiddleware(this WebApplicationBuilder hostBuilder, Action<WebApplication> configureMiddleware)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-            if (configureMiddleware == null) throw new ArgumentException($"{nameof(configureMiddleware)}=null");
-
-            #endregion
-
-            // HookMiddleware
-            return hostBuilder.AddHookMiddleware(HookMiddlewareDefaults.EnteringHook, configureMiddleware);
-        }
-
-        public static WebApplicationBuilder AddRoutingMiddleware(this WebApplicationBuilder hostBuilder, Action<WebApplication> configureMiddleware)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-            if (configureMiddleware == null) throw new ArgumentException($"{nameof(configureMiddleware)}=null");
-
-            #endregion
-
-            // HookMiddleware
-            return hostBuilder.AddHookMiddleware(HookMiddlewareDefaults.RoutingHook, configureMiddleware);
-        }
-
-        public static WebApplicationBuilder AddRoutedMiddleware(this WebApplicationBuilder hostBuilder, Action<WebApplication> configureMiddleware)
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-            if (configureMiddleware == null) throw new ArgumentException($"{nameof(configureMiddleware)}=null");
-
-            #endregion
-
-            // AddHookMiddleware
-            return hostBuilder.AddHookMiddleware(HookMiddlewareDefaults.RoutedHook, configureMiddleware);
-        }
     }
 
     public static partial class HookMiddlewareExtensions
     {
         // Methods 
-        internal static IApplicationBuilder UseHook(this IApplicationBuilder app, string hookName)
+        public static IApplicationBuilder UseHook(this IApplicationBuilder app, string hookName)
         {
             #region Contracts
 
@@ -86,7 +47,7 @@ namespace MDP.AspNetCore
             return host.UseHook(hookName);
         }
 
-        internal static WebApplication UseHook(this WebApplication host, string hookName)
+        public static WebApplication UseHook(this WebApplication host, string hookName)
         {
             #region Contracts
 
@@ -95,15 +56,14 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // HookList
-            var hookList = host.Services.GetRequiredService<IEnumerable<HookMiddleware>>()?.TakeWhile(o => o.HookName == hookName);
-            if (hookList == null) throw new InvalidOperationException($"{nameof(hookList)}=null");
-            if (hookList.Any() == false) return host;
-
-            // Configure
-            foreach (var hook in hookList)
+            // HookMiddlewareList
+            var hookMiddlewareList = host.Services.GetRequiredService<IEnumerable<HookMiddleware>>()?.TakeWhile(o => o.HookName == hookName);
+            if (hookMiddlewareList == null) throw new InvalidOperationException($"{nameof(hookMiddlewareList)}=null");
+            
+            // ConfigureMiddleware
+            foreach (var hookMiddleware in hookMiddlewareList)
             {
-                hook.ConfigureMiddleware(host);
+                hookMiddleware.ConfigureMiddleware(host);
             }
 
             // Return

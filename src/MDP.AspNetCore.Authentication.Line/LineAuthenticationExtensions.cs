@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MDP.AspNetCore.Authentication.Line
 {
     public static class LineAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddLineAuthentication(this IServiceCollection services, LineAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddLineAuthentication(this IServiceCollection services, LineAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -30,7 +31,7 @@ namespace MDP.AspNetCore.Authentication.Line
                 options.ClientSecret = authenticationSetting.ClientSecret;
 
                 // SignIn
-                options.SignInPath("/SignIn");
+                options.SignInPath("/.auth/signin");
                 options.SignInScheme = RemoteAuthenticationDefaults.AuthenticationScheme;
             });
 

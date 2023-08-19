@@ -17,9 +17,9 @@ namespace MDP.AspNetCore.Authentication.Jwt
 
         public string Header { get; set; } = "Authorization";
 
-        public string? Prefix { get; set; } = "Bearer ";
+        public string Prefix { get; set; } = "Bearer ";
 
-        public string? Issuer { get; set; } = String.Empty;
+        public string Issuer { get; set; } = String.Empty;
 
         public string SignKey { get; set; } = String.Empty;
     }

@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MDP.DevKit.OpenAI.Lab
 {
@@ -19,7 +23,7 @@ namespace MDP.DevKit.OpenAI.Lab
 
 
         // Methods
-        public static async Task<dynamic> CreateAnswerAsync(this OpenAIContext openAIContext, string question, List<string>? knowledgePointList = null, float temperature = 0, int maxTokens = 200)
+        public static async Task<dynamic> CreateAnswerAsync(this OpenAIContext openAIContext, string question, List<string> knowledgePointList = null, float temperature = 0, int maxTokens = 200)
         {
             #region Contracts
 

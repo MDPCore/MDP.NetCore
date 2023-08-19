@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Text.Json;
 
 namespace MDP.Configuration.Lab
 {
@@ -25,17 +24,21 @@ namespace MDP.Configuration.Lab
 
             // Bind
             var setting = configuration.Bind<Setting>("MDP.Module01:Setting");
-            if(setting == null) throw new InvalidOperationException($"{nameof(setting)}=null");
+            if (setting == null) throw new InvalidOperationException($"{nameof(setting)}=null");
 
             // Display
-            Console.WriteLine($"setting={JsonSerializer.Serialize(setting)}");
+            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(setting, Newtonsoft.Json.Formatting.Indented));
         }
 
         // Class
         public class Setting
         {
             // Properties
-            public string Message { get; set; } = string.Empty;
+            public string MessageA { get; set; } = string.Empty;
+
+            public string MessageB { get; set; } = string.Empty;
+
+            public string MessageC { get; set; } = string.Empty;
         }
     }
 }

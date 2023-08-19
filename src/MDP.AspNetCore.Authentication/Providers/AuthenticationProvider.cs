@@ -10,7 +10,7 @@ namespace MDP.AspNetCore.Authentication
     public interface AuthenticationProvider
     {
         // Properties
-        string? RegisterPath { get; set; }
+        string RegisterPath { get; set; }
 
 
         // Methods
@@ -20,7 +20,7 @@ namespace MDP.AspNetCore.Authentication
     internal class DefaultAuthenticationProvider : AuthenticationProvider
     {
         // Singleton 
-        private static DefaultAuthenticationProvider? _instance = null;
+        private static DefaultAuthenticationProvider _instance = null;
         public static DefaultAuthenticationProvider Current
         {
             get
@@ -38,7 +38,7 @@ namespace MDP.AspNetCore.Authentication
 
 
         // Properties
-        public string? RegisterPath { get; set; } = string.Empty;
+        public string RegisterPath { get; set; } = string.Empty;
 
 
         // Methods

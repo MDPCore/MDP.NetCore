@@ -1,4 +1,5 @@
-﻿using MDP.NetCore;
+﻿using MDP.Hosting;
+using MDP.NetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -19,7 +20,7 @@ namespace MDP.AspNetCore
     public static partial class WebApplicationBuilderExtensions
     {
         // Methods
-        public static WebApplicationBuilder ConfigureDefault(this WebApplicationBuilder webApplicationBuilder)
+        public static WebApplicationBuilder ConfigureMDP(this WebApplicationBuilder webApplicationBuilder)
         {
             #region Contracts
 
@@ -28,123 +29,64 @@ namespace MDP.AspNetCore
             #endregion
 
             // WebApplicationBuilder
-            {
-                // MDP
-                webApplicationBuilder.AddMdp();
-            }
+            webApplicationBuilder.AddMDP();
+            webApplicationBuilder.AddProblemDetails();
 
             // MvcBuilder
             var mvcBuilder = webApplicationBuilder.Services.AddMvc();
             {
-                // Default
-                mvcBuilder.AddMvcDefaults();
-                mvcBuilder.AddMvcCors(webApplicationBuilder.Configuration);
-                mvcBuilder.AddMvcForwardedHeaders(webApplicationBuilder.Configuration);
+                // MvcOptions
+                mvcBuilder.AddMvcOptions((options) =>
+                {
+                    // NotAcceptable
+                    options.ReturnHttpNotAcceptable = false;
+
+                    // AcceptHeader
+                    options.RespectBrowserAcceptHeader = true;
+
+                    // OutputFormatters:Null
+                    options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+                    options.OutputFormatters.Insert(0, new NullContentOutputFormatter());
+                });
+
+                // RazorOptions
+                mvcBuilder.AddRazorOptions((options) =>
+                {
+                    // ViewLocation
+                    options.ViewLocationFormats.Add("/Views/{0}.cshtml");
+
+                    // AreaViewLocation
+                    options.AreaViewLocationFormats.Add("/Views/{2}/{1}/{0}.cshtml");
+                    options.AreaViewLocationFormats.Add("/Views/{2}/Shared/{0}.cshtml");
+                    options.AreaViewLocationFormats.Add("/Views/{2}/{0}.cshtml");
+                });
+
+                // JsonOptions
+                mvcBuilder.AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs);
+                    options.JsonSerializerOptions.Converters.Add(new DateTimeISO8601Converter());
+                });
+
+                // HtmlEncoder
+                mvcBuilder.Services.AddSingleton<HtmlEncoder>
+                (
+                    HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+                );
+
+                // HttpContext
+                mvcBuilder.Services.AddHttpContextAccessor();
+
+                // LoggerOptions
+                mvcBuilder.Services.AddLogging(builder =>
+                {
+                    // Filter
+                    builder.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
+                });
             }
 
             // Return
             return webApplicationBuilder;
-        }
-
-
-        // MvcBuilder
-        private static void AddMvcDefaults(this IMvcBuilder mvcBuilder)
-        {
-            #region Contracts
-
-            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-
-            #endregion
-
-            // MvcOptions
-            mvcBuilder.AddMvcOptions((options) =>
-            {
-                // NotAcceptable
-                options.ReturnHttpNotAcceptable = false;
-
-                // AcceptHeader
-                options.RespectBrowserAcceptHeader = true;
-
-                // OutputFormatters:Null
-                options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
-                options.OutputFormatters.Insert(0, new NullContentOutputFormatter());
-            });
-
-            // RazorOptions
-            mvcBuilder.AddRazorOptions((options) =>
-            {
-                // ViewLocation
-                options.ViewLocationFormats.Add("/Views/{0}.cshtml");
-
-                // AreaViewLocation
-                options.AreaViewLocationFormats.Add("/Views/{2}/{1}/{0}.cshtml");
-                options.AreaViewLocationFormats.Add("/Views/{2}/Shared/{0}.cshtml");
-                options.AreaViewLocationFormats.Add("/Views/{2}/{0}.cshtml");
-            });
-
-            // HttpContext
-            mvcBuilder.Services.AddHttpContextAccessor();
-
-            // HtmlEncoder
-            mvcBuilder.Services.AddSingleton<HtmlEncoder>
-            (
-                HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
-            );
-
-            // JsonOptions
-            mvcBuilder.AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs);
-                options.JsonSerializerOptions.Converters.Add(new DateTimeISO8601Converter());
-            });
-
-            // LoggerOptions
-            mvcBuilder.Services.AddLogging(builder =>
-            {
-                // Filter
-                builder.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
-            });
-        }
-
-        private static void AddMvcCors(this IMvcBuilder mvcBuilder, IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-
-            #endregion
-
-            // Cors
-            mvcBuilder.Services.AddCors(option =>
-            {
-                option.AddDefaultPolicy(corsBuilder =>
-                {
-                    corsBuilder.AllowAnyOrigin();
-                    corsBuilder.AllowAnyHeader();
-                    corsBuilder.AllowAnyMethod();
-                });
-            });
-            mvcBuilder.Services.Configure<CorsOptions>(configuration.GetSection("Http:Cors"));
-        }
-
-        private static void AddMvcForwardedHeaders(this IMvcBuilder mvcBuilder, IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (mvcBuilder == null) throw new ArgumentException($"{nameof(mvcBuilder)}=null");
-            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-
-            #endregion
-
-            // ForwardedHeaders
-            mvcBuilder.Services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.All;
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
-            });
-            mvcBuilder.Services.Configure<ForwardedHeadersOptions>(configuration.GetSection("Http:ForwardedHeaders"));
         }
 
 
@@ -248,7 +190,7 @@ namespace MDP.AspNetCore
     public static partial class WebApplicationBuilderExtensions
     {
         // Methods
-        public static WebApplicationBuilder AddMdp(this WebApplicationBuilder webApplicationBuilder)
+        public static WebApplicationBuilder AddMDP(this WebApplicationBuilder webApplicationBuilder)
         {
             #region Contracts
 
@@ -256,29 +198,21 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // HostBuilder
-            var hostBuilder = webApplicationBuilder.Host;
+            // ContainerBuilder
             {
-                // MDP
-                hostBuilder.AddMdp();
+                // Base
+                webApplicationBuilder.Host.AddMDP();
+
+                // RegisterModule
+                webApplicationBuilder.RegisterModule(webApplicationBuilder.Configuration);
             }
 
-            // WebApplicationBuilder
+            // MvcBuilder
+            var mvcBuilder = webApplicationBuilder.Services.AddMvc();
             {
-                // FactoryRegisterContext
-                var factoryRegisterContext = new FactoryRegisterContext<WebApplicationBuilder>();
-                {
-                    // RegisterModule
-                    factoryRegisterContext.RegisterModule(webApplicationBuilder, webApplicationBuilder.Configuration);
-                }
-
-                // MvcBuilder
-                var mvcBuilder = webApplicationBuilder.Services.AddControllersWithViews();
-                {
-                    // RegisterModule
-                    mvcBuilder.RegisterModule();
-                }
-            }            
+                // RegisterModule
+                MvcRegister.RegisterModule(mvcBuilder);
+            }
 
             // Return
             return webApplicationBuilder;

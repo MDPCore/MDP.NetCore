@@ -20,7 +20,8 @@
     <hr />
 
     <!--LoginByGoogle-->
-    <form asp-route="Login" asp-route-scheme="@GoogleDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form action="/.auth/login/Google" method="get">
+        <input type="hidden" name="returnUrl" value="@Context.Request.Query["ReturnUrl"]" />
         <input type="submit" value="LoginByGoogle" /><br />
         <br />
     </form>

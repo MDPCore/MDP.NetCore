@@ -50,7 +50,7 @@ namespace MDP.DevKit.OpenAI.Accesses
         private class ImageGenerationResultModel
         {
             // Properties
-            public List<ImageMessageResultModel>? data { get; set; } = null;
+            public List<ImageMessageResultModel> data { get; set; } = null;
 
 
             // Methods
@@ -70,14 +70,14 @@ namespace MDP.DevKit.OpenAI.Accesses
         private class ImageMessageResultModel
         {
             // Properties
-            public string? b64_json { get; set; } = string.Empty;
+            public string b64_json { get; set; } = string.Empty;
 
 
             // Methods
             public ImageMessage ToImageMessage()
             {
                 // ImageStream
-                MemoryStream? imageStream = null;
+                MemoryStream imageStream = null;
                 if (string.IsNullOrEmpty(this.b64_json) == false)
                 {
                     // ImageBytes

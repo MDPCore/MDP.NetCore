@@ -20,7 +20,8 @@
     <hr />
 
     <!--LoginByGitHub-->
-    <form asp-route="Login" asp-route-scheme="@GitHubDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form action="/.auth/login/GitHub" method="get">
+        <input type="hidden" name="returnUrl" value="@Context.Request.Query["ReturnUrl"]" />
         <input type="submit" value="LoginByGitHub" /><br />
         <br />
     </form>

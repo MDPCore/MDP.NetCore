@@ -11,6 +11,6 @@ namespace MDP.DevKit.OpenAI
         // Methods
         Task<List<Model>> FindAllAsync();
 
-        Task<Model?> FindByIdAsync(string model);
+        Task<Model> FindByIdAsync(string model);
     }
 }

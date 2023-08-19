@@ -19,7 +19,15 @@ namespace MDP.AspNetCore.Authentication.Lab
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> LoginByName(string username, string? returnUrl = null)
+        [Route("/login", Name = "Login")]
+        public ActionResult Login(string scheme = null, string returnUrl = null)
+        {
+            // Return
+            return this.View("Login");
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> LoginByName(string username, string returnUrl = null)
         {
             #region Contracts
 
@@ -42,7 +50,7 @@ namespace MDP.AspNetCore.Authentication.Lab
             await this.HttpContext.RemoteSignInAsync(new ClaimsPrincipal(claimsIdentity));
 
             // Return
-            return this.RedirectToRoute("SignIn", new { returnUrl = returnUrl });
+            return this.RedirectToRoute("/.auth/signin", new { returnUrl = returnUrl });
         }
     }
 
@@ -87,7 +95,7 @@ namespace MDP.AspNetCore.Authentication.Lab
         public class GetUserResultModel
         {
             // Properties
-            public UserModel? User { get; set; }
+            public UserModel User { get; set; }
         }
 
         public class UserModel

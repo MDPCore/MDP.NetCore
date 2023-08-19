@@ -18,7 +18,7 @@ namespace MDP.AspNetCore.Authentication
 
 
         // Constructors
-        public AccountController(AuthenticationProvider? authenticationProvider = null)
+        public AccountController(AuthenticationProvider authenticationProvider = null)
         {
             // Default
             _authenticationProvider = authenticationProvider ?? DefaultAuthenticationProvider.Current;
@@ -27,8 +27,8 @@ namespace MDP.AspNetCore.Authentication
 
         // Methods
         [AllowAnonymous]
-        [Route("/Login", Name = "Login")]
-        public async Task<ActionResult> Login(string? scheme = null, string? returnUrl = null)
+        [Route("/.auth/login/{scheme}", Name = "/.auth/login")]
+        public async Task<ActionResult> Login(string scheme = null, string returnUrl = null)
         {           
             // Require
             returnUrl = returnUrl ?? this.Url.Content("~/");
@@ -53,12 +53,12 @@ namespace MDP.AspNetCore.Authentication
             }
 
             // Return
-            return this.View("Login");
+            return this.Challenge(new AuthenticationProperties() { RedirectUri = returnUrl });
         }
 
         [AllowAnonymous]
-        [Route("/Logout", Name = "Logout")]
-        public async Task<ActionResult> Logout(string? returnUrl = null)
+        [Route("/.auth/logout", Name = "/.auth/logout")]
+        public async Task<ActionResult> Logout(string returnUrl = null)
         {
             // Require
             returnUrl = returnUrl ?? this.Url.Content("~/");
@@ -72,8 +72,8 @@ namespace MDP.AspNetCore.Authentication
         }
 
         [AllowAnonymous]
-        [Route("/SignIn", Name = "SignIn")]
-        public async Task<ActionResult> SignIn(string? returnUrl = null)
+        [Route("/.auth/signin", Name = "/.auth/signin")]
+        public async Task<ActionResult> SignIn(string returnUrl = null)
         {
             // Require
             returnUrl = returnUrl ?? this.Url.Content("~/");

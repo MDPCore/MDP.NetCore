@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MDP.AspNetCore.Authentication.GitHub
 {
     public static class GitHubAuthenticationExtensions
     {
         // Methods
-        public static AuthenticationBuilder AddGitHubAuthentication(this IServiceCollection services, GitHubAuthenticationSetting? authenticationSetting = null)
+        public static AuthenticationBuilder AddGitHubAuthentication(this IServiceCollection services, GitHubAuthenticationSetting authenticationSetting = null)
         {
             #region Contracts
 
@@ -30,7 +31,7 @@ namespace MDP.AspNetCore.Authentication.GitHub
                 options.ClientSecret = authenticationSetting.ClientSecret;
 
                 // SignIn
-                options.SignInPath("/SignIn");
+                options.SignInPath("/.auth/signin");
                 options.SignInScheme = RemoteAuthenticationDefaults.AuthenticationScheme;
             });
 

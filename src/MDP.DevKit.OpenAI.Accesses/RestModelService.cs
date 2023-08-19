@@ -62,14 +62,14 @@ namespace MDP.DevKit.OpenAI.Accesses
         private class FindAllResultModel
         {
             // Properties
-            public List<ModelResultModel>? data { get; set; } = null;       
+            public List<ModelResultModel> data { get; set; } = null;       
         }
     }
 
     public partial class RestModelService : ModelService
     {
         // Methods
-        public async Task<Model?> FindByIdAsync(string model)
+        public async Task<Model> FindByIdAsync(string model)
         {
             #region Contracts
 

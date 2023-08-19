@@ -20,7 +20,8 @@
     <hr />
 
     <!--LoginByFacebook-->
-    <form asp-route="Login" asp-route-scheme="@FacebookDefaults.AuthenticationScheme" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" method="post">
+    <form action="/.auth/login/Facebook" method="get">
+        <input type="hidden" name="returnUrl" value="@Context.Request.Query["ReturnUrl"]" />
         <input type="submit" value="LoginByFacebook" /><br />
         <br />
     </form>
