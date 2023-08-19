@@ -4,14 +4,14 @@ using System;
 namespace MyLab.Module
 {
     [Service<WorkService>()]
-    public class HelloWorkService : WorkService
+    public class MessageService : WorkService
     {
         // Fields
         private readonly string _message;
 
 
         // Constructors
-        public HelloWorkService(string message)
+        public MessageService(string message)
         {
             #region Contracts
 
