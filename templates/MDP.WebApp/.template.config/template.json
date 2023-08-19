@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "CLK Software Studio", 
+    "identity": "MDP.WebApp",
+    "shortName": "MDP.WebApp",
+    "sourceName": "MDP.WebApp",
+    "defaultName": "WebApplication1",
+    "name": "[MDP.Net] ASP.NET Core Web 應用程式",
+    "description": "建立基於 MDP.Net 平台的 ASP.NET Core Web 應用程式，並且附有DI注入的註冊與設定範例。",
+    "tags": {
+      "language": "C#" ,
+      "type":"project"
+    },
+    "classifications": [ "Web/WebAPI" ], 
+}
