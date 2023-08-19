@@ -16,6 +16,8 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立：Web站台
 
 ## MDP.Net-平台架構
 
+![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-平台架構.png)
+
 MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過架構設計提供模組重用、參數調整、環境建置...等等面向的快速開發能力。
 
 - 模組：企業的商業知識、共用的功能邏輯，在MDP.Net裡會被開發成為一個一個的「模組」，方便開發人員依照商業需求，快速組合出應用系統。
@@ -23,8 +25,6 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 - 隔離：MDP.Net加入「隔離」的設計，並且模組開發遵循三層式架構設計， 以減少模組對於元件、平台、框架的直接依賴，方便開發人員依照技術需求，快速抽換相依元件。
 
 - 平台：MDP.Net透過「平台」的設計，提供一個開箱即用的執行平台，將參數調整、模組整合、環境調適...等等環境建設作業簡化封裝，方便開發人員依照專案需求，快速搭建執行環境。
-
-![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-平台架構.png)
 
 
 ## MDP.Net-模組清單
@@ -72,6 +72,8 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 
 ## MDP.Net-模組架構
 
+![MDP.Net-模組架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-模組架構.png)
+
 MDP.Net遵循三層式架構，將模組開發切割為：系統展示、領域邏輯、資料存取三個分層，減少模組對於元件、平台、框架的直接依賴，提高模組自身的內聚力。
 
 - 系統展示(Presentation)：與目標客戶互動、與遠端系統通訊...等等的功能邏輯，會被歸類在系統展示。例如，使用MessageBox通知使用者處理結果、提供API給遠端系統使用。
@@ -100,8 +102,6 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 - Context：做為模組入口的根物件(Class)，遵循Facade Pattern設計的原則，將上述四種物件與介面進行收整。除了做為模組被註冊、注入、使用的根物件之外，也可以封裝商業邏輯成為物件方法。
   
-![MDP.Net-模組架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-模組架構.png)
-
 
 ## 範例展示(SleepZone.Todos)
 
