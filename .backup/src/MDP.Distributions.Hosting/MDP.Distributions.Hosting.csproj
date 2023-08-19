@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MDP.Hosting" Version="6.0.13" />
+    <PackageReference Include="MDP.Data.SqlClient.Hosting" Version="6.0.13" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Distributions.Accesses\MDP.Distributions.Accesses.csproj" />
+    <ProjectReference Include="..\MDP.Distributions\MDP.Distributions.csproj" />
+  </ItemGroup>
+
+</Project>
