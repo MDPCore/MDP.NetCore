@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>MDP.WebApp</id>
+	<description>MDP.WebApp</description>	
+    <projectUrl>https://github.com/Clark159/MDP.Net</projectUrl>    
+    <version>0.0.0</version>
+    <icon>Package.png</icon>
+    <readme>README.md</readme>    
+	<authors>CLK Software Studio</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>	
+	<copyright>Copyright © 2014 CLK Software Studio</copyright>
+	<packageTypes>
+      <packageType name="Template" />
+    </packageTypes>
+  </metadata>
+  <files>
+    <file src="**\*.*" target="content" exclude="**\bin\**;**\obj\**;**\.vs\**" />
+	<file src="..\..\Package.png" target="" />
+	<file src="..\..\README.md" target="" />
+  </files>
+</package>

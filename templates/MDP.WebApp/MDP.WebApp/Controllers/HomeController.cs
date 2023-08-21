@@ -6,14 +6,14 @@ namespace MDP.WebApp
     public class HomeController : Controller
     {
         // Fields
-        private readonly WorkService _workService = null;
+        private readonly WorkContext _workContext = null;
 
 
         // Constructors
-        public HomeController(WorkService workService)
+        public HomeController(WorkContext workContext)
         {
             // Default
-            _workService = workService;
+            _workContext = workContext;
         }
 
 
@@ -21,7 +21,7 @@ namespace MDP.WebApp
         public ActionResult Index()
         {
             // ViewBag
-            this.ViewBag.Message = _workService.GetValue();
+            this.ViewBag.Message = _workContext.GetValue();
 
             // Return
             return View();

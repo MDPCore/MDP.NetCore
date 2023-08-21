@@ -2,12 +2,38 @@
 
 namespace MDP.WebApp
 {
+    [Service<WorkContext>()]
+    public class WorkContext
+    {
+        // Fields
+        private readonly WorkService _workService;
+
+
+        // Constructors
+        public WorkContext(WorkService workService)
+        {
+            // Default
+            _workService = workService;
+        }
+
+
+        // Methods
+        public string GetValue()
+        {
+            // Return
+            return _workService.GetValue();
+        }
+    }
+
     public interface WorkService
     {
         // Methods
         string GetValue();
     }
+}
 
+namespace MDP.WebApp
+{
     [Service<WorkService>()]
     public class MessageService : WorkService
     {
