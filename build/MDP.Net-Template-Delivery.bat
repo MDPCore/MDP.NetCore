@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 
 :: ================================================
 :: Variables
-set version=0.0.1
+set version=0.1.1
 
 set buildDir=%~dp0
 set srcDir=%~dp0..\templates
@@ -26,13 +26,13 @@ for /r %srcDir% %%f in (*.nuspec) do (
 )
 
 :: Push
-:: for /r %outputDir% %%f in (*.nupkg) do (
-::   echo Pushing package:%%~nf
-::   nuget push "%%f" -templates https://api.nuget.org/v3/index.json
-:: )
+for /r %outputDir% %%f in (*.nupkg) do (
+  echo Pushing package:%%~nf
+  nuget push "%%f" -src https://api.nuget.org/v3/index.json
+)
 
 :: Clear
-:: rmdir /s /q %outputDir%
+rmdir /s /q %outputDir%
 
 
 :: ================================================

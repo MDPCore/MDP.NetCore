@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
-    <id>MDP.WebApp</id>
-	<description>[MDP.Net] WebApp Template</description>	
+    <id>MDP.ConsoleApp</id>
+	<description>[MDP.Net] ConsoleApp Template</description>	
     <projectUrl>https://github.com/Clark159/MDP.Net</projectUrl>    
     <version>0.0.0</version>
     <icon>Package.png</icon>

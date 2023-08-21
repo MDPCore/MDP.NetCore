@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "CLK Software Studio", 
+    "identity": "MDP.ConsoleApp",
+    "shortName": "MDP.ConsoleApp",
+    "sourceName": "MDP.ConsoleApp",
+    "defaultName": "ConsoleApp1",
+    "name": "[MDP.Net] 主控台應用程式",
+    "description": "建立基於 MDP.Net 平台的主控台應用程式，並且附有DI注入的範例。",
+    "tags": {
+      "language": "C#" ,
+      "type":"project"
+    },
+    "classifications": [ "Common/Console" ], 
+}
