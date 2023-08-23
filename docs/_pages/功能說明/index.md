@@ -1,3 +1,12 @@
+---
+layout: default
+title: MDP.Net首頁
+parent: null
+nav_order: 1
+permalink: /
+---
+
+
 # MDP.Net 
 
 MDP.Net是.NET版本的開發平台，協助開發人員快速建立：Web站台、API服務、Console程式。並提供多種功能模組，方便開發人員依照商業需求，快速組合出應用系統。
