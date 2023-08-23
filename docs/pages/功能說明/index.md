@@ -40,13 +40,13 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 
 ## 模組清單
 
-- 開發工具(MDP.DevKit)
-  
-  - MDP.DevKit.LineMessaging
+- 開發工具
 
   - MDP.DevKit.OpenAI 
+  
+  - MDP.DevKit.LineMessaging
  
-- 身分驗證(MDP.AspNetCore.Authentication)
+- 身分驗證
 
   - MDP.AspNetCore.Authentication
   
@@ -64,25 +64,29 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
   
   - MDP.AspNetCore.Authentication.Line
   
-- 角色授權(MDP.AspNetCore.RBAC)
+  - MDP.AspNetCore.Authentication.LocalAD
+  
+  - MDP.AspNetCore.Authentication.Password
+  
+- 角色授權
 
   - MDP.AspNetCore.RBAC
 
   - MDP.AspNetCore.RBAC.Azure
 
-- 網路通訊(MDP.Network)
+- 網路通訊
   
   - MDP.Network.Http
   
   - MDP.Network.Rest
   
-- 日誌服務(MDP.Logging)
+- 日誌服務
   
   - MDP.Logging.Log4net
   
   - MDP.Logging.NLog
   
-- 資料存取(MDP.Data)
+- 資料存取
 
   - MDP.Data.MSSql  
   
