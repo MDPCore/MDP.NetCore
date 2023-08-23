@@ -63,6 +63,12 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
   - MDP.AspNetCore.Authentication.Liff
   
   - MDP.AspNetCore.Authentication.Line
+  
+- 角色授權(MDP.AspNetCore.RBAC)
+
+  - MDP.AspNetCore.RBAC
+
+  - MDP.AspNetCore.RBAC.Azure
 
 - 網路通訊(MDP.Network)
   
@@ -79,6 +85,10 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 - 資料存取(MDP.Data)
 
   - MDP.Data.MSSql  
+  
+  - MDP.Data.MySql
+  
+  - MDP.Data.Redis
   
 
 ## 模組架構
