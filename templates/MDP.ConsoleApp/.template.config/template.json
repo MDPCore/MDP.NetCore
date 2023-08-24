@@ -11,5 +11,5 @@
       "language": "C#" ,
       "type":"project"
     },
-    "classifications": [ "Common/Console" ], 
+    "classifications": [ "MDP.Net", "Common", "Console" ]
 }

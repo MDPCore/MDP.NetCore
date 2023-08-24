@@ -11,5 +11,5 @@
       "language": "C#" ,
       "type":"project"
     },
-    "classifications": [ "Web/WebAPI" ], 
+    "classifications": [ "MDP.Net", "Web", "WebAPI" ]
 }
