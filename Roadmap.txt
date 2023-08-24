@@ -1,0 +1,114 @@
+CLK Software Studio
+
+MDP.Net
+  功能導覽：介紹MDP.Net的核心功能與架構。
+  快速開始：為新用戶提供上手指南。
+  參數管理：管理和設置參數的詳細說明。
+  相依管理：關於相依性注入的操作和管理。
+  執行平台：
+  日誌紀錄：日誌紀錄和追蹤的使用說明。
+  網路通訊：包括Http和Rest的通訊說明。
+  資料存取：
+  身分驗證：關於身分驗證機制的實現和使用。
+  角色授權：角色基礎授權的設置和管理。
+  Line訊息整合：Line訊息服務的整合方式。
+  OpenAI服務整合：如何整合和使用OpenAI的服務。
+    
+MDP.AspNetCore.Authentication
+  功能導覽：介紹MDP.AspNetCore.Authentication的核心功能與架構。
+  快速開始：新用戶如何快速使用身分驗證。
+  OAuth身分驗證：OAuth機制的實作和使用方式。
+  Token身分驗證：Token認證的設定和操作指南。
+  Password身分驗證：密碼驗證的管理和使用流程。
+  User手動註冊：如何手動註冊用戶的步驟。
+  User自動註冊：自動註冊用戶的設定和流程。
+  
+MDP.AspNetCore.RBAC
+  功能導覽：介紹MDP.AspNetCore.RBAC的核心功能與架構。
+  快速開始：如何迅速設置和開始使用角色授權。  
+
+MDP.DevKit.LineMessaging
+  功能導覽：介紹MDP.DevKit.LineMessaging的核心功能與架構。
+  快速開始：新用戶如何快速上手Line訊息整合。
+  Message發送：訊息發送的方法和可用選項。
+  Message類型：支援的訊息類型和格式說明。
+  Event接收：如何接收和處理來自Line的事件。
+  Event類型：Line事件的類型和相關設定。
+
+MDP.DevKit.OpenAI
+  功能導覽：介紹MDP.DevKit.OpenAI的核心功能與架構。
+  快速開始：新用戶如何快速上手OpenAI服務整合。
+
+
+======================================================================
+MDP.Net：提供AspNetCore平台、NetCore平台、Config管理、DI管理。
+MDP.AspNetCore.Authentication：提供OAuth身分驗證、Token身分驗證、User註冊流程。
+MDP.AspNetCore.RBAC：提供RBAC身分授權。
+MDP.DevKit.LineMessaging：提供Line訊息整合。
+
+
+標題：雲端整合
+內容：提供與主流雲平台的無縫整合，助力企業雲端轉型。
+機器學習套件
+
+標題：金融整合
+內容：提供與各種支付和金融平台的整合，便捷支付和資金流管理。
+
+標題：資料庫整合
+內容：提供與不同資料庫的連接管理，支援事務處理，增強資料存取靈活性和效率。
+分散式服務框架
+
+標題：API管理工具
+內容：提供API的版本控制、文檔生成、安全性控制等，有助於維護和管理API。
+多語言支援套件
+
+標題：監控和日誌
+內容：監控系統運行狀況，記錄重要信息，有助於故障排查和性能優化。
+
+標題：分散服務框架
+內容：支援微服務架構，實現服務之間的輕量通訊，增強系統的擴展性和可維護性。
+API管理工具
+
+標題：多語言支援
+內容：讓您的應用程序支持多語言界面，適應全球化需求。
+監控和日誌工具
+
+標題：機器學習
+內容：提供機器學習模型訓練和部署的工具，促進AI技術應用。
+前端開發套件
+
+標題：前端開發
+內容：提供前端框架和組件，加速網頁開發和設計。
+文件管理系統
+
+
+==========================
+TPIsoftware
+
+CLKstudios
+CLKsoftware.net
+
+CLKsys.com
+
+CLKcore.com
+CLKsoftware.net
+BiosWorkshop.com
+
+
+==========================
+MDP.AspNetCore.Authentication
+  RemoteAuthentication
+  RemoteAuthorizeAttribute
+
+.auth/login/aad
+.auth/login/aad/callback
+
+DefaultScheme
+LoginPath
+AccessDeniedPath
+
+
+==========================
+<head>
+  <meta http-equiv="refresh" content="0; url=https://example.com" />
+</head>
