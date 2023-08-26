@@ -9,11 +9,11 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立：Web站台
 
 ## 快速開始
 
-- [開發一個注入功能模組的API服務](https://clark159.github.io/MDP.Net/快速開始/開發一個注入功能模組的API服務/)
+- [開發一個依賴注入+參數管理的API服務](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的API服務/)
 
-- [開發一個注入功能模組的Web站台](https://clark159.github.io/MDP.Net/快速開始/開發一個注入功能模組的Web站台/)
+- [開發一個依賴注入+參數管理的Web站台](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Web站台/)
 
-- [開發一個注入功能模組的Console程式](https://clark159.github.io/MDP.Net/快速開始/開發一個注入功能模組的Console程式/)
+- [開發一個依賴注入+參數管理的Console程式](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Console程式/)
 
 
 ## 平台架構
