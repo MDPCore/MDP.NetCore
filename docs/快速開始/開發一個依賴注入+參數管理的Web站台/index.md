@@ -77,7 +77,7 @@ namespace WebApplication1
 }
 ```
 
-5.改寫專案內的Controllers\HomeController、Views\Home\Index.cshtml，注入並使用MessaeRepository。
+5.改寫專案內的Controllers\HomeController.cs、Views\Home\Index.cshtml，注入並使用MessaeRepository。
 
 ```csharp
 using System;
