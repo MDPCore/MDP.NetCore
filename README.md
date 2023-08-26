@@ -9,16 +9,16 @@ MDP.Net是.NET版本的開發平台，協助開發人員快速建立：Web站台
 
 ## 快速開始
 
-- [開發一個注入功能模組的API服務](https://clark159.github.io/MDP.Net/pages/快速開始/開發一個注入功能模組的API服務/)
+- [開發一個注入功能模組的API服務](https://clark159.github.io/MDP.Net/快速開始/開發一個注入功能模組的API服務/)
 
-- [開發一個注入功能模組的Web站台](https://clark159.github.io/MDP.Net/pages/快速開始/開發一個注入功能模組的Web站台/)
+- [開發一個注入功能模組的Web站台](https://clark159.github.io/MDP.Net/快速開始/開發一個注入功能模組的Web站台/)
 
-- [開發一個注入功能模組的Console程式](https://clark159.github.io/MDP.Net/pages/快速開始/開發一個注入功能模組的Console程式/)
+- [開發一個注入功能模組的Console程式](https://clark159.github.io/MDP.Net/快速開始/開發一個注入功能模組的Console程式/)
 
 
 ## 平台架構
 
-![MDP.Net-平台架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-平台架構.png)
+![MDP.Net-平台架構](https://clark159.github.io/MDP.Net/功能導覽/MDP.Net-平台架構.png)
 
 MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過架構設計提供模組重用、參數調整、環境建置...等等面向的快速開發能力。
 
@@ -31,64 +31,64 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 
 ## 模組清單
 
-- 開發工具
+### 開發工具
 
-  - MDP.DevKit.OpenAI 
-  
-  - MDP.DevKit.LineMessaging
+- MDP.DevKit.OpenAI 
+
+- MDP.DevKit.LineMessaging
  
-- 身分驗證
+### 身分驗證
 
-  - MDP.AspNetCore.Authentication
-  
-  - MDP.AspNetCore.Authentication.AzureAD
-  
-  - MDP.AspNetCore.Authentication.Facebook
-  
-  - MDP.AspNetCore.Authentication.GitHub
-  
-  - MDP.AspNetCore.Authentication.Google
-  
-  - MDP.AspNetCore.Authentication.Jwt
-  
-  - MDP.AspNetCore.Authentication.Liff
-  
-  - MDP.AspNetCore.Authentication.Line
-  
-  - MDP.AspNetCore.Authentication.LocalAD
-  
-  - MDP.AspNetCore.Authentication.Password
-  
-- 角色授權
+- MDP.AspNetCore.Authentication
 
-  - MDP.AspNetCore.RBAC
+- MDP.AspNetCore.Authentication.AzureAD
 
-  - MDP.AspNetCore.RBAC.Azure
+- MDP.AspNetCore.Authentication.Facebook
 
-- 網路通訊
-  
-  - MDP.Network.Http
-  
-  - MDP.Network.Rest
-  
-- 日誌服務
-  
-  - MDP.Logging.Log4net
-  
-  - MDP.Logging.NLog
-  
-- 資料存取
+- MDP.AspNetCore.Authentication.GitHub
 
-  - MDP.Data.MSSql  
+- MDP.AspNetCore.Authentication.Google
+
+- MDP.AspNetCore.Authentication.Jwt
+
+- MDP.AspNetCore.Authentication.Liff
+
+- MDP.AspNetCore.Authentication.Line
+
+- MDP.AspNetCore.Authentication.LocalAD
+
+- MDP.AspNetCore.Authentication.Password
   
-  - MDP.Data.MySql
+### 角色授權
+
+- MDP.AspNetCore.RBAC
+
+- MDP.AspNetCore.RBAC.Azure
+
+### 網路通訊
+
+- MDP.Network.Http
+
+- MDP.Network.Rest
   
-  - MDP.Data.Redis
+### 日誌服務
+  
+- MDP.Logging.Log4net
+
+- MDP.Logging.NLog
+  
+### 資料存取
+
+- MDP.Data.MSSql  
+
+- MDP.Data.MySql
+
+- MDP.Data.Redis
   
 
 ## 模組架構
 
-![MDP.Net-模組架構](https://raw.githubusercontent.com/Clark159/MDP.Net/master/docs/MDP.Net-模組架構.png)
+![MDP.Net-模組架構](https://clark159.github.io/MDP.Net/功能導覽/MDP.Net-模組架構.png)
 
 MDP.Net遵循三層式架構，將模組開發切割為：系統展示、領域邏輯、資料存取三個分層，減少模組對於元件、平台、框架的直接依賴，提高模組自身的內聚力。
 
@@ -121,23 +121,23 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 ## 模組範例
 
-- 範例檔案：
+### 範例程式：
 
-  - [https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos)
+- 範例下載： [https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos)
 
-- 操作步驟：
+### 開發步驟：
 
-  - 使用Visual Studio 2022開啟方案：SleepZone.Todos.sln
-  
-  - 設定起始專案為：01.Application/SleepZone.Todos.WebApp
-  
-  - 按下F5執行專案後，於瀏覽器的網址列：輸入「[https://localhost:44392/Home/Index](https://localhost:44392/Home/Index)」，進入SleepZone.Todos頁面。
-  
-  - SleepZone.Todos頁面：點擊「AddTodo按鈕」新增工作項目，看到{ "statusCode": 200 }代表工作項目新增成功。
+- 使用Visual Studio 2022開啟方案：SleepZone.Todos.sln
 
-  - SleepZone.Todos頁面：點擊「FindAllTodo按鈕」查詢所有工作項目，看到{ "statusCode": 200 }代表工作項目查詢成功。
-  
-  - 上述步驟內容，展示使用DI機制，進行Context注入組裝，並且設定為Singleton模式。所以在沒有資料庫的狀態下，FindAll才能讀取到之前寫入的Todo。
+- 設定起始專案為：01.Application/SleepZone.Todos.WebApp
+
+- 按下F5執行專案後，於瀏覽器的網址列：輸入「[https://localhost:44392/Home/Index](https://localhost:44392/Home/Index)」，進入SleepZone.Todos頁面。
+
+- SleepZone.Todos頁面：點擊「AddTodo按鈕」新增工作項目，看到{ "statusCode": 200 }代表工作項目新增成功。
+
+- SleepZone.Todos頁面：點擊「FindAllTodo按鈕」查詢所有工作項目，看到{ "statusCode": 200 }代表工作項目查詢成功。
+
+- 上述步驟內容，展示使用DI機制，進行Context注入組裝，並且設定為Singleton模式。所以在沒有資料庫的狀態下，FindAll才能讀取到之前寫入的Todo。
 
 
 ## 版本更新
