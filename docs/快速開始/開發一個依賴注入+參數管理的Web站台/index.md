@@ -38,7 +38,7 @@ namespace WebApplication1
 }
 ```
 
-3.於專案內加入Modules\ConfigMessaeRepository.cs，做為注入的Implement。程式碼中的```Service<MessaeRepository>()```，將ConfigMessaeRepository註冊為MessaeRepository。
+3.於專案內加入Modules\ConfigMessaeRepository.cs，做為注入的Implement。程式碼中的 ``` Service<MessaeRepository>() ``` ，將ConfigMessaeRepository註冊為MessaeRepository。
 
 ```csharp
 using MDP.Registration;
@@ -70,7 +70,7 @@ namespace WebApplication1
 }
 ```
 
-4.改寫專案內的appsettings.json，加入ConfigMessaeRepository的參數設定。參數檔中的```"ConfigMessaeRepository": { "Message": "Hello World" }```，設定生成ConfigMessaeRepository的時候，將Hello World帶入建構子的Message參數。
+4.改寫專案內的appsettings.json，加入ConfigMessaeRepository的參數設定。參數檔中的 ``` "ConfigMessaeRepository": { "Message": "Hello World" } ``` ，設定生成ConfigMessaeRepository的時候，將Hello World帶入建構子的Message參數。
 
 ```json
 {
