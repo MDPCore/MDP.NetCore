@@ -10,9 +10,6 @@ has_children: false
 
 從零開始，開發一個依賴注入+參數管理的Web站台，是難度不高但繁瑣的工作項目。本篇內容協助開發人員使用MDP.Net，逐步完成必要的設計和實作。
 
-
-## 範例程式
-
 - 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Web站台/WebApplication1.zip)
 
 
@@ -38,7 +35,7 @@ namespace WebApplication1
 }
 ```
 
-3.於專案內加入Modules\ConfigMessaeRepository.cs，做為注入的Implement。程式碼中的 ``` Service<MessaeRepository>() ``` ，將ConfigMessaeRepository註冊為MessaeRepository。
+3.於專案內加入Modules\ConfigMessaeRepository.cs，做為注入的Implement。程式碼中的``` Service<MessaeRepository>() ```，將ConfigMessaeRepository註冊為MessaeRepository。
 
 ```csharp
 using MDP.Registration;
@@ -70,7 +67,7 @@ namespace WebApplication1
 }
 ```
 
-4.改寫專案內的appsettings.json，加入ConfigMessaeRepository的參數設定。參數檔中的 ``` "ConfigMessaeRepository": { "Message": "Hello World" } ``` ，設定生成ConfigMessaeRepository的時候，將Hello World帶入建構子的Message參數。
+4.改寫專案內的appsettings.json，加入ConfigMessaeRepository的參數設定。參數檔中的``` "ConfigMessaeRepository": { "Message": "Hello World" } ```，設定生成ConfigMessaeRepository的時候，將Hello World帶入建構子的Message參數。
 
 ```json
 {
@@ -135,5 +132,5 @@ namespace WebApplication1
 </html>
 ```
 
-6.執行專案，於執行開啟的Browser視窗內，可以看到由MessaeRepository所提供的Hello World。
+6.執行專案，於開啟的Browser視窗內，可以看到由MessaeRepository所提供的Hello World。
 ![01.執行結果01.png](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Web站台/01.執行結果01.png)
