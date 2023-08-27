@@ -22,12 +22,12 @@ dotnet new install MDP.WebApp
 dotnet new MDP.WebApp -n WebApplication1
 ```
 
-2.使用Visual Studio開啟WebApplication1專案。並於專案內加入Modules\MessaeRepository.cs，做為注入的Interface。
+2.使用Visual Studio開啟WebApplication1專案。並於專案內加入Modules\MessageRepository.cs，做為注入的Interface。
 
 ```csharp
 namespace WebApplication1
 {
-    public interface MessaeRepository
+    public interface MessageRepository
     {
         // Methods
         string GetValue();
@@ -35,22 +35,22 @@ namespace WebApplication1
 }
 ```
 
-3.於專案內加入Modules\ConfigMessaeRepository.cs，做為注入的Implement。程式碼中的``` Service<MessaeRepository>() ```，將ConfigMessaeRepository註冊為MessaeRepository。
+3.於專案內加入Modules\ConfigMessageRepository.cs，做為注入的Implement。程式碼中的``` Service<MessageRepository>() ```，將ConfigMessageRepository註冊為MessageRepository。
 
 ```csharp
 using MDP.Registration;
 
 namespace WebApplication1
 {
-    [Service<MessaeRepository>()]
-    public class ConfigMessaeRepository : MessaeRepository
+    [Service<MessageRepository>()]
+    public class ConfigMessageRepository : MessageRepository
     {
         // Fields
         private readonly string _message;
 
 
         // Constructors
-        public ConfigMessaeRepository(string message)
+        public ConfigMessageRepository(string message)
         {
             // Default
             _message = message;
@@ -67,17 +67,17 @@ namespace WebApplication1
 }
 ```
 
-4.改寫專案內的appsettings.json，加入ConfigMessaeRepository的參數設定。參數檔中的``` "ConfigMessaeRepository": { "Message": "Hello World" } ```，設定生成ConfigMessaeRepository的時候，將Hello World帶入建構子的Message參數。
+4.改寫專案內的appsettings.json，加入ConfigMessageRepository的參數設定。參數檔中的``` "ConfigMessageRepository": { "Message": "Hello World" } ```，設定生成ConfigMessageRepository的時候，將Hello World帶入建構子的Message參數。
 
 ```json
 {
   "WebApplication1": {
-    "ConfigMessaeRepository": { "Message": "Hello World" }
+    "ConfigMessageRepository": { "Message": "Hello World" }
   }
 }
 ```
 
-5.改寫專案內的Controllers\HomeController.cs，注入並使用MessaeRepository。
+5.改寫專案內的Controllers\HomeController.cs，注入並使用MessageRepository。
 
 ```csharp
 using System;
@@ -88,14 +88,14 @@ namespace WebApplication1
     public class HomeController : Controller
     {
         // Fields
-        private readonly MessaeRepository _messaeRepository = null;
+        private readonly MessageRepository _messageRepository = null;
 
 
         // Constructors
-        public HomeController(MessaeRepository messaeRepository)
+        public HomeController(MessageRepository messageRepository)
         {
             // Default
-            _messaeRepository = messaeRepository;
+            _messageRepository = messageRepository;
         }
 
 
@@ -104,7 +104,7 @@ namespace WebApplication1
         {
             // ResultModel
             var resultModel = new IndexResultModel();
-            resultModel.Message = _messaeRepository.GetValue();
+            resultModel.Message = _messageRepository.GetValue();
 
             // Return
             return resultModel;
@@ -121,5 +121,5 @@ namespace WebApplication1
 }
 ```
 
-6.執行專案，於開啟的Console視窗內，可以看到由MessaeRepository所提供的Hello World。
+6.執行專案，於開啟的Console視窗內，可以看到由MessageRepository所提供的Hello World。
 ![01.執行結果01.png](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的API服務/01.執行結果01.png)
