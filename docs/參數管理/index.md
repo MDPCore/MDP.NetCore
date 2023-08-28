@@ -52,7 +52,7 @@ MDP.Configuration擴充.Net Core既有的參數管理，加入在開發/測試/�
 
 ## 模組使用
 
-MDP.Configuration預設內建在MDP.Net專案範本內。於命令提示字元輸入下列指令，使用MDP.Net專案範本所建立的專案，並將Config設定檔放到指定的資料夾，即可使用MDP.Configuration所提供的參數管理功能。
+MDP.Configuration預設內建在MDP.Net專案範本內。於命令提示字元輸入下列指令，使用MDP.Net專案範本來建立專案，並將Config設定檔放到指定的資料夾，即可使用MDP.Configuration所提供的參數管理功能。
 
 ```
 // 建立API服務、Web站台
