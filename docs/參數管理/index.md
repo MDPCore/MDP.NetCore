@@ -19,7 +19,7 @@ MDP.Configuration是.NET版本的開發套件，協助開發人員快速建立�
 
 ![MDP.Configuration-模組架構.png](https://clark159.github.io/MDP.Net/參數管理/MDP.Configuration-模組架構.png)
 
-MDP.Configuration擴充.Net Core既有的參數管理，加入了依照：開發/測試/正式三個執行環境，讀取不同Config設定檔的功能。
+MDP.Configuration擴充.Net Core既有的參數管理，加入在開發/測試/正式三個執行環境，各自讀取不同Config設定檔的功能。
 
 1.執行環境(Environment)名稱：
 
