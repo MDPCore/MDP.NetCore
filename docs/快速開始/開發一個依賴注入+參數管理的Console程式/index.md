@@ -8,14 +8,14 @@ has_children: false
 
 # 開發一個依賴注入+參數管理的Console程式
 
-從零開始，開發一個依賴注入+參數管理的Console程式，是難度不高但繁瑣的工作項目。本篇內容協助開發人員使用MDP.Net，逐步完成必要的設計和實作。
+從零開始，開發一個依賴注入+參數管理的Console程式，是難度不高但繁瑣的工作項目。本篇範例協助開發人員使用MDP.Net，逐步完成必要的設計和實作。
 
 - 範例下載：[ConsoleApp1.zip](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Console程式/ConsoleApp1.zip)
 
 
-## 開發步驟
+## 操作步驟
 
-1.開啟命令提示字元，輸入下列指令。用以安裝MDP.WebApp範本、並且建立一個名為ConsoleApp1的Console程式。
+1.開啟命令提示字元，輸入下列指令。用以安裝MDP.ConsoleApp範本、並且建立一個名為ConsoleApp1的Console程式。
 
 ```
 dotnet new install MDP.ConsoleApp
@@ -106,4 +106,5 @@ namespace ConsoleApp1
 ```
 
 6.執行專案，於開啟的Console視窗內，可以看到由MessageRepository所提供的Hello World。
+
 ![01.執行結果01.png](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Console程式/01.執行結果01.png)

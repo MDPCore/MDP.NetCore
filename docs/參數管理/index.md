@@ -17,9 +17,9 @@ MDP.Configuration是.NET版本的開發套件，協助開發人員快速建立�
 
 ## 模組架構
 
-![MDP.Configuration-模組架構]()
+![MDP.Configuration-模組架構.png](https://clark159.github.io/MDP.Net/參數管理/MDP.Configuration-模組架構.png)
 
-MDP.Configuration擴充.Net Core既有的參數管理，加入了依照：開發/測試/正式三個執行環境，讀取不同設定檔的功能。
+MDP.Configuration擴充.Net Core既有的參數管理，加入了依照：開發/測試/正式三個執行環境，讀取不同Config設定檔的功能。
 
 1.執行環境(Environment)名稱：
 
@@ -29,21 +29,21 @@ MDP.Configuration擴充.Net Core既有的參數管理，加入了依照：開發
 - 正式環境：Production
 ```
 
-2.執行資料夾(<EntryDir>)讀取設定檔：
+2.執行資料夾(``` <EntryDir> ```)讀取Config設定檔：
 
 ```
 - <EntryDir>\appsettings.json
 - <EntryDir>\*.{Environment}.json
 ```
 
-3.參數資料夾(<EntryDir>\config)讀取設定檔：
+3.參數資料夾(``` <EntryDir>\config ```)讀取Config設定檔：
 
 ```
 - <EntryDir>\config\appsettings.json
 - <EntryDir>\config\*.{Environment}.json
 ```
 
-4.環境資料夾(<EntryDir>\config\{Environment})讀取設定檔：
+4.環境資料夾(``` <EntryDir>\config\{Environment} ```)讀取Config設定檔：
 
 ```
 - <EntryDir>\config\{Environment}\*.json
@@ -52,6 +52,153 @@ MDP.Configuration擴充.Net Core既有的參數管理，加入了依照：開發
 
 ## 模組使用
 
+MDP.Configuration預設內建在MDP.Net專案範本內。於命令提示字元輸入下列指令，使用MDP.Net專案範本所建立的專案，並將Config設定檔放到指定的資料夾，即可使用MDP.Configuration所提供的參數管理功能。
+
+```
+// 建立API服務、Web站台
+dotnet new install MDP.WebApp
+dotnet new MDP.WebApp -n WebApplication1
+
+// 建立Console程式
+dotnet new install MDP.ConsoleApp
+dotnet new MDP.ConsoleApp -n ConsoleApp1
+```
+
+另外，MDP.Configuration也可做為獨立套件，掛載至既有的.Net專案。開發人員可以透過CLI指令、NuGet套件管理員，加入MDP.Configuration套件參考。接著使用RegisterModule擴充方法，來掛載模組到ConfigurationBuilder。最後將Config設定檔放到指定的資料夾，即可使用MDP.Configuration所提供的參數管理功能。
+
+```
+// 新增NuGet套件參考
+dotnet add package MDP.Configuration
+
+// RegisterModule擴充方法
+var configurationBuilder = new ConfigurationBuilder();
+configurationBuilder.RegisterModule(environment);
+```
 
 ## 模組範例
 
+專案開發過程，通常需要在開發/測試/正式三個執行環境，各自讀取不同Config設定檔，用以提供連線字串、功能參數...等等的參數置換功能。本篇範例協助開發人員，逐步完成必要的設計和實作。
+
+- 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/參數管理/WebApplication1.zip)
+
+### 操作步驟
+
+1.開啟命令提示字元，輸入下列指令。用以安裝MDP.WebApp範本、並且建立一個名為WebApplication1的Web站台。
+
+```
+dotnet new install MDP.WebApp
+dotnet new MDP.WebApp -n WebApplication1
+```
+
+2.使用Visual Studio開啟WebApplication1專案。於專案內加入下列三個Config設定檔，作為開發/測試/正式三個執行環境，各自讀取的Config設定檔。
+
+- 開發環境：\config\Development\appsettings.json
+
+```json
+{
+  "WebApplication1": {
+    "Message": "Hello World By Development"
+  }
+}
+```
+
+- 測試環境：\config\Staging\appsettings.json
+
+```json
+{
+  "WebApplication1": {
+    "Message": "Hello World By Staging"
+  }
+}
+```
+
+- 正式環境：\config\Production\appsettings.json
+
+```json
+{
+  "WebApplication1": {
+    "Message": "Hello World By Production"
+  }
+}
+```
+
+5.改寫專案內的Controllers\HomeController.cs、Views\Home\Index.cshtml，注入並使用.Net Core內建的IConfiguration。
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+
+namespace WebApplication1
+{
+    public class HomeController : Controller
+    {
+        // Fields
+        private readonly IConfiguration _configuration = null;
+
+
+        // Constructors
+        public HomeController(IConfiguration configuration)
+        {
+            // Default
+            _configuration = configuration;
+        }
+
+
+        // Methods
+        public ActionResult Index()
+        {
+            // ViewBag
+            this.ViewBag.Message = _configuration.GetSection("WebApplication1:Message").Get<string>();
+
+            // Return
+            return View();
+        }
+    }
+}
+```
+
+```csharp
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>WebApplication1</title>
+</head>
+<body>
+
+    <!--Title-->
+    <h2>WebApplication1</h2>
+    <hr />
+
+    <!--Message-->
+    <h3>@ViewBag.Message</h3>
+
+</body>
+</html>
+```
+
+6.執行專案，於開啟的Browser視窗內，可以看到由``` 開發環境：\config\Development\appsettings.json ```所提供的 Hello World By Development。
+
+![01.執行結果01.png](https://clark159.github.io/MDP.Net/參數管理/01.執行結果01.png)
+
+7.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
+
+```json
+{
+  "profiles": {
+    "WebApplication1": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7146;http://localhost:5257",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      }
+    }
+  }
+}
+```
+
+6.重建並執行專案，於開啟的Browser視窗內，可以看到由``` 測試環境：\config\Staging\appsettings.json ```所提供的 Hello World By Staging。
+
+![01.執行結果02.png](https://clark159.github.io/MDP.Net/參數管理/01.執行結果02.png)
