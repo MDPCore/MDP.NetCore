@@ -21,7 +21,7 @@ MDP.Hosting是一個.NET開發套件，協助開發人員快速建立具有依�
 
 ![MDP.Hosting-模組架構.png](https://clark159.github.io/MDP.Net/依賴注入/MDP.Hosting-模組架構.png)
 
-MDP.Hosting擴充.NET Core既有的依賴注入，加入標籤註冊/具名實例/具名注入三個功能服務，提供給開發人員依據業務場景進行組合使用。
+MDP.Hosting擴充.NET Core既有的依賴注入，加入標籤註冊/具名實例/具名注入三個功能服務，提供給開發人員依據需求進行組合使用。
 
 - 標籤註冊：MDP.Hosting提供ServiceAttribute、FactoryAttribute兩種標籤註冊模式。ServiceAttribute比較簡便，設定類別(Class)要註冊為甚麼服務(Service)就好；FactoryAttribute比較靈活，可以用程式碼設定類別(Class)要註冊為甚麼服務(Service)。
 
