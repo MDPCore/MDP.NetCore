@@ -54,7 +54,7 @@ MDP.Hosting擴充.NET Core既有的依賴注入，加入標籤註冊/具名實�
 
 ### 套用專案範本使用
 
-MDP.Configuration預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Configuration所提供的參數管理功能。
+MDP.Hosting預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Hosting所提供的依賴注入功能。
 
 1.在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  
@@ -72,13 +72,13 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 ### 做為獨立套件使用
 
-另外，MDP.Configuration也可做為獨立套件，掛載至既有.NET專案。依照下列操作步驟，即可使用MDP.Configuration所提供的參數管理功能。
+另外，MDP.Hosting也可做為獨立套件，掛載至既有.NET專案。依照下列操作步驟，即可使用MDP.Hosting所提供的依賴注入功能。
 
-1.於專案內，使用CLI指令、NuGet套件管理員，加入MDP.Configuration套件參考。
+1.於專案內，使用CLI指令、NuGet套件管理員，加入MDP.Hosting套件參考。
 
 ```
 // 新增NuGet套件參考
-dotnet add package MDP.Configuration
+dotnet add package MDP.Hosting
 ```
 
 2.XXXXXXXXXXX
