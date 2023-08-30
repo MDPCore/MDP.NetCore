@@ -1,12 +1,12 @@
 # MDP.Net 
 
-MDP.Net是.NET版本的開發平台，協助開發人員快速建立：Web站台、API服務、Console程式。並提供多種功能模組，方便開發人員依照商業需求，快速組合出應用系統。
+MDP.Net是一個.NET開發平台，協助開發人員快速建立Web站台、API服務和Console程式。提供參數管理、依賴注入、身分驗證等多種功能模組，用以簡化開發流程並滿足多變的商業需求。
 
 - 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
 
 - 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
 
-
+ 
 ## 快速開始
 
 - [開發一個依賴注入+參數管理的API服務](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的API服務/)
