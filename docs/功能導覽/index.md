@@ -130,7 +130,7 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 ## 模組範例
 
-### 範例程式：
+本篇範例協助開發人員使用MDP.Net的模組架構，逐步完成必要的設計和實作。
 
 - 範例下載： [https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos)
 

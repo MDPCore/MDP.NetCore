@@ -17,42 +17,124 @@ MDP.Hosting是一個.NET開發套件，協助開發人員快速建立具有依�
 - 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
 
 
-# 模組架構
+## 模組架構
 
 ![MDP.Hosting-模組架構.png](https://clark159.github.io/MDP.Net/依賴注入/MDP.Hosting-模組架構.png)
 
-MDP.Hosting擴充.NET Core既有的依賴注入，加入標籤註冊/具名實例/具名注入三個功能服務，提供給開發人員依據需求進行組合使用。
+MDP.Hosting擴充.NET Core既有的依賴注入，加入標籤註冊/具名實例/具名注入三個功能服務，提供給開發人員組合使用。
 
-- 標籤註冊：MDP.Hosting提供ServiceAttribute、FactoryAttribute兩種標籤註冊模式。ServiceAttribute比較簡便，設定類別(Class)要註冊為甚麼服務(Service)就好；FactoryAttribute比較靈活，可以用程式碼設定類別(Class)要註冊為甚麼服務(Service)。
+### 標籤註冊
 
-```csharp
-// ServiceAttribute
+MDP.Hosting提供ServiceAttribute標籤，只要使用標籤參數就可以註冊類別(Clss)。
 
-// FactoryAttribute
-```
+- TService：ServiceAttribute的泛型參數，用來定義類別生成的實例(Instance)屬於甚麼服務(Service)。
 
-- 具名實例：MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config參數，進行實例(Instance)的生成。開發人員可以透過設定Config參數，生成多個具名實例；而每個具名實例，除了被標記為服務(Service)的Type類型之外，還會被標註實例(Instance)本身的Name名稱。
-
-```json
-宣告兩個具名物件
-```
-
-- 具名注入：被標註Type類型及Name名稱的實例(Instance)，在系統裡就可以被注入使用。預設.NET Core內建的依賴注入，會使用Type類型做為條件取得實例，來提供Typed注入；而MDP.Hosting的依賴注入，則是可以額外使用Name名稱做為條件取得實例，來提供Named注入。(註：.NET8將會支援Named注入)
+- singleton：ServiceAttribute的建構子參數，用來定義類別生成的實例(Instance)是否為全域唯一。
 
 ```
-//範例1：Typed注入
-
+[Service<MessageRepository>(singleton:false)]
+public class MockMessageRepository : MessageRepository
+{
+  //...
+}
 ```
 
 ```
-//範例2：Named注入
+註冊的類別：MockMessageRepository
 
+實例屬於甚麼服務：MessageRepository
+
+實例是否全域唯一：singleton=false(否:預設值)
+```
+
+### 具名實例
+
+MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config參數，進行實例(Instance)的生成。開發人員可以透過設定Config參數，生成多個具名實例；而每個具名實例，除了被標記為服務(Service)的Type類型之外，還會被標註實例(Instance)本身的Name名稱。
+	
+```
+[Service<MessageRepository>()]
+public class MockMessageRepository : MessageRepository
+{
+  //...
+}
+```
+
+```
+{
+  "MyLab.Module": {
+    "MockMessageRepository": {}
+  }
+}
+```
+
+```
+生成的實例：MockMessageRepository
+
+實例的Type類型：MessageRepository
+
+實例的Name名稱：MockMessageRepository
+```
+
+### 具名注入
+
+被標註Type類型及Name名稱的實例(Instance)，在系統裡就可以被注入使用。預設.NET Core內建的依賴注入，會使用Type類型做為條件取得實例，來提供Typed注入；而MDP.Hosting的依賴注入，則是可以額外使用Name名稱做為條件取得實例，來提供Named注入。(註：.NET8將會支援Named注入)
+
+```
+public class HomeController : Controller
+{
+	public HomeController(MessageContext messageContext)
+	{
+	    // ...
+	}
+}
+
+[Service<MessageContext>(singleton: true)]
+public class MessageContext
+{
+	public MessageContext(MessageRepository messageRepository)
+	{
+		// ...
+	}
+}
+
+[Service<MessageRepository>()]
+public class MockMessageRepository : MessageRepository
+{
+    //...
+}
+```
+
+```
+{
+  "MyLab.Module": {
+    "MessageContext": {
+	  "messageRepository": "MockMessageRepository"
+	},
+    "MockMessageRepository": {}
+  }
+}
+```
+
+```
+注入範例1：public HomeController(MessageContext messageContext)
+
+注入類型：Typed注入
+
+注入邏輯：ASP.NET Core生成HomeController的時候，取得Type類型被標註為MessageContext的實例來注入。
+```
+
+```
+注入範例2：public MessageContext(MessageRepository messageRepository)
+
+注入類型：Named注入
+
+注入邏輯：MDP.Hosting生成MessageContext的時候，參考Config，取得Name名稱被標註為MockMessageRepository的實例來注入。
 ```
 
 
 ## 模組使用
 
-### 套用專案範本使用
+### 套用專案範本
 
 MDP.Hosting預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Hosting所提供的依賴注入功能。
 
@@ -70,7 +152,7 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 2.XXXXXXXXXXX
 
-### 做為獨立套件使用
+### 做為獨立套件
 
 另外，MDP.Hosting也可做為獨立套件，掛載至既有.NET專案。依照下列操作步驟，即可使用MDP.Hosting所提供的依賴注入功能。
 
@@ -98,3 +180,5 @@ XXXXXXXXXXXXXXXXXXXX
 dotnet new install MDP.WebApp
 dotnet new MDP.WebApp -n WebApplication1
 ```
+
+
