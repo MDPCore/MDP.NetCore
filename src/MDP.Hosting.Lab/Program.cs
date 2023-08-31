@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyLab.Module;
 using System;
+using MyLab.Module;
 
 namespace MDP.Hosting.Lab
 {
@@ -35,11 +36,11 @@ namespace MDP.Hosting.Lab
             if (container == null) throw new InvalidOperationException($"{nameof(container)}=null");
 
             // Resolve
-            var workContext = container.ResolveTyped<WorkContext>();
-            if (workContext == null) throw new InvalidOperationException($"{nameof(workContext)}=null");
+            var messageContext = container.ResolveTyped<MessageContext>();
+            if (messageContext == null) throw new InvalidOperationException($"{nameof(messageContext)}=null");
 
             // Display
-            Console.WriteLine(workContext.GetValue());
+            Console.WriteLine(messageContext.GetValue());
         }
     }
 }

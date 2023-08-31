@@ -23,10 +23,9 @@ namespace MDP.Hosting
             var instanceTypeList = CLK.Reflection.Type.FindAllType();
             if (instanceTypeList == null) throw new InvalidOperationException($"{nameof(instanceTypeList)}=null");
 
-            // InstanceType
+            // RegisterInstance
             foreach (var instanceType in instanceTypeList)
             {
-                // RegisterInstance
                 RegisterInstance(containerBuilder, configuration, instanceType);
             }
 
@@ -52,82 +51,48 @@ namespace MDP.Hosting
             var instanceConfigList = new List<IConfigurationSection>();
             if (serviceAttribute.ServiceType.Namespace == instanceType.Namespace)
             {
-                instanceConfigList.AddRange(FindAllInstanceConfig(configuration, instanceType.Namespace!));
+                // Add
+                instanceConfigList.AddRange(FindAllInstanceConfig(configuration, instanceType.Namespace));
             }
             else
             {
-                instanceConfigList.AddRange(FindAllInstanceConfig(configuration, instanceType.Namespace!));
-                instanceConfigList.AddRange(FindAllInstanceConfig(configuration, serviceAttribute.ServiceType.Namespace!));
+                // Add
+                instanceConfigList.AddRange(FindAllInstanceConfig(configuration, instanceType.Namespace));
+                instanceConfigList.AddRange(FindAllInstanceConfig(configuration, serviceAttribute.ServiceType.Namespace));
             }
 
-            // InstanceConfig
+            // RegisterInstance
             foreach (var instanceConfig in instanceConfigList)
             {
                 // InstanceName
-                var instanceName = $"{instanceConfig.Key}";
+                var instanceName = instanceConfig.Key;
                 if (string.IsNullOrEmpty(instanceName) == true) throw new InvalidOperationException($"{nameof(instanceName)}=null");
+                if (instanceName.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == false) continue;
 
                 // FullInstanceName
-                var fullInstanceName = $"{instanceType.Namespace!}.{instanceConfig.Key}";
+                var fullInstanceName = $"{instanceType.Namespace}.{instanceName}";
                 if (string.IsNullOrEmpty(fullInstanceName) == true) throw new InvalidOperationException($"{nameof(fullInstanceName)}=null");
 
-                // RegisterTyped
-                if (instanceName.Equals(instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
+                // RegisterTyped: ServiceType
+                containerBuilder.RegisterTyped(instanceType, (serviceProvider) =>
                 {
-                    // Default
-                    containerBuilder.RegisterTyped(instanceType, (serviceProvider) =>
-                    {
-                        return ServiceActivator.CreateInstance(instanceType, instanceConfig, serviceProvider);
-                    }
-                    , serviceAttribute.Singleton);
-
-                    if (instanceType != serviceAttribute.ServiceType)
-                    {
-                        containerBuilder.RegisterTyped(serviceAttribute.ServiceType, (serviceProvider) =>
-                        {
-                            return serviceProvider.ResolveTyped(instanceType);
-                        }
-                        , serviceAttribute.Singleton);
-                    }
-
-                    // InstanceName
-                    containerBuilder.RegisterNamed(serviceAttribute.ServiceType, instanceName, (serviceProvider) =>
-                    {
-                        return serviceProvider.ResolveTyped(instanceType);
-                    }
-                    , serviceAttribute.Singleton);
-
-                    // FullInstanceName
-                    containerBuilder.RegisterNamed(serviceAttribute.ServiceType, fullInstanceName, (serviceProvider) =>
-                    {
-                        return serviceProvider.ResolveTyped(instanceType);
-                    }
-                    , serviceAttribute.Singleton);
-
-                    // Continue
-                    continue;
+                    return serviceProvider.ResolveNamed(serviceAttribute.ServiceType, fullInstanceName);
                 }
+                , serviceAttribute.Singleton);
 
-                // RegisterNamed
-                if (instanceName.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == true)
+                // RegisterNamed: InstanceName
+                containerBuilder.RegisterNamed(serviceAttribute.ServiceType, instanceName, (serviceProvider) =>
                 {
-                    // InstanceName
-                    containerBuilder.RegisterNamed(serviceAttribute.ServiceType, instanceName, (serviceProvider) =>
-                    {
-                        return ServiceActivator.CreateInstance(instanceType, instanceConfig, serviceProvider);
-                    }
-                    , serviceAttribute.Singleton);
-
-                    // FullInstanceName
-                    containerBuilder.RegisterNamed(serviceAttribute.ServiceType, fullInstanceName, (serviceProvider) =>
-                    {
-                        return serviceProvider.ResolveNamed(serviceAttribute.ServiceType, instanceName);
-                    }
-                    , serviceAttribute.Singleton);
-
-                    // Continue
-                    continue;
+                    return serviceProvider.ResolveNamed(serviceAttribute.ServiceType, fullInstanceName);
                 }
+                , serviceAttribute.Singleton);
+
+                // RegisterNamed: FullInstanceName
+                containerBuilder.RegisterNamed(serviceAttribute.ServiceType, fullInstanceName, (serviceProvider) =>
+                {                    
+                    return ServiceActivator.CreateInstance(instanceType, instanceConfig, serviceProvider);
+                }
+                , serviceAttribute.Singleton);
             }
         }
 

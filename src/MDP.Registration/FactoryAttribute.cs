@@ -38,7 +38,7 @@ namespace MDP.Registration
 
 
         // Constructors
-        public FactoryAttribute(string @namespace, string @name = null)
+        public FactoryAttribute(string @namespace, string @service = null)
         {
             #region Contracts
 
@@ -48,7 +48,7 @@ namespace MDP.Registration
 
             // Default
             _serviceNamespace = @namespace;
-            _serviceName = @name;
+            _serviceName = @service;
         }
 
 

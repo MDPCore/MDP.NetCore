@@ -1,6 +1,6 @@
 ﻿namespace MyLab.Module
 {
-    public interface WorkService
+    public interface MessageRepository
     {
         // Methods
         string GetValue();

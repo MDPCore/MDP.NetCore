@@ -46,7 +46,7 @@ namespace MDP.Hosting
             // FactoryAttribute
             var factoryAttribute = factoryType.GetCustomAttributes(false).Where(attr => attr.GetType().IsGenericType && attr.GetType().GetGenericTypeDefinition() == typeof(FactoryAttribute<,>)).OfType<FactoryAttribute>().FirstOrDefault();
             if (factoryAttribute == null) return;
-            if (factoryAttribute.BuilderType != typeof(TContainerBuilder)) return;
+            if (factoryAttribute.BuilderType.IsAssignableFrom(typeof(TContainerBuilder)) == false) return;
 
             // ServiceName
             if (string.IsNullOrEmpty(factoryAttribute.ServiceName) == true)
@@ -61,7 +61,7 @@ namespace MDP.Hosting
             else
             {
                 // FactoryConfigList
-                var factoryConfigList = FindAllFactoryConfig(configuration, factoryAttribute.ServiceNamespace);
+                var factoryConfigList = FindAllServiceConfig(configuration, factoryAttribute.ServiceNamespace);
                 if (factoryConfigList == null) throw new InvalidOperationException($"{nameof(factoryConfigList)}=null");
 
                 // FactoryConfig
@@ -92,15 +92,15 @@ namespace MDP.Hosting
 
             // FactoryMethod
             var ractoryMethod = factoryType.GetMethod("ConfigureService");
-            if (ractoryMethod == null) throw new InvalidOperationException($"Factory.RegisterService(WebApplicationBuilder, TSetting) not found.");
+            if (ractoryMethod == null) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
 
             // ParameterList
             var parameterList = ractoryMethod.GetParameters();
             if (parameterList == null) throw new InvalidOperationException($"{nameof(parameterList)}=null");
-            if (parameterList.Length != 2) throw new InvalidOperationException($"Factory.RegisterService(WebApplicationBuilder, TSetting) not found.");
-            if (parameterList[0].ParameterType != typeof(TContainerBuilder)) throw new InvalidOperationException($"Factory.RegisterService(WebApplicationBuilder, TSetting) not found.");
-            if (parameterList[1].ParameterType != factoryAttribute.SettingType) throw new InvalidOperationException($"Factory.RegisterService(WebApplicationBuilder, TSetting) not found.");
-
+            if (parameterList.Length != 2) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
+            if (parameterList[0].ParameterType.IsAssignableFrom(typeof(TContainerBuilder)) == false) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
+            if (parameterList[1].ParameterType.IsAssignableFrom(factoryAttribute.SettingType) == false) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
+           
             // FactorySetting
             var factorySetting = Activator.CreateInstance(factoryAttribute.SettingType);
             if (factorySetting == null) throw new InvalidOperationException($"{nameof(factorySetting)}=null");
@@ -132,7 +132,7 @@ namespace MDP.Hosting
             return namespaceConfig;
         }
 
-        private static List<IConfigurationSection> FindAllFactoryConfig(IConfiguration configuration, string serviceNamespace)
+        private static List<IConfigurationSection> FindAllServiceConfig(IConfiguration configuration, string serviceNamespace)
         {
             #region Contracts
 
@@ -146,12 +146,12 @@ namespace MDP.Hosting
             if (namespaceConfig == null) return new List<IConfigurationSection>();
             if (namespaceConfig.Exists() == false) return new List<IConfigurationSection>();
 
-            // FactoryConfigList
-            var factoryConfigList = namespaceConfig.GetChildren();
-            if (factoryConfigList == null) throw new InvalidOperationException($"{nameof(factoryConfigList)}=null");
+            // ServiceConfigList
+            var serviceConfigList = namespaceConfig.GetChildren();
+            if (serviceConfigList == null) throw new InvalidOperationException($"{nameof(serviceConfigList)}=null");
 
             // Return
-            return factoryConfigList.ToList();
+            return serviceConfigList.ToList();
         }
     }
 }

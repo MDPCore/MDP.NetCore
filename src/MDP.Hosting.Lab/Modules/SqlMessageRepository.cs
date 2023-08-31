@@ -1,24 +1,17 @@
 ﻿using MDP.Registration;
-using System;
 
 namespace MyLab.Module
 {
-    [Service<WorkService>()]
-    public class MessageService : WorkService
+    //[Service<MessageRepository>()]
+    public class SqlMessageRepository : MessageRepository
     {
         // Fields
         private readonly string _message;
 
 
         // Constructors
-        public MessageService(string message)
+        public SqlMessageRepository(string message)
         {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(message) == true) throw new ArgumentException(nameof(message));
-
-            #endregion
-
             // Default
             _message = message;
         }
