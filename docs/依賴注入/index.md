@@ -41,9 +41,7 @@ public class MockMessageRepository : MessageRepository
 
 ```
 註冊的類別：MockMessageRepository
-
 實例屬於甚麼服務：MessageRepository
-
 實例是否全域唯一：singleton=false(否:預設值)
 ```
 
@@ -69,9 +67,7 @@ public class MockMessageRepository : MessageRepository
 
 ```
 生成的實例：MockMessageRepository
-
 實例的Type類型：MessageRepository
-
 實例的Name名稱：MockMessageRepository
 ```
 
@@ -117,17 +113,13 @@ public class MockMessageRepository : MessageRepository
 
 ```
 注入範例1：public HomeController(MessageContext messageContext)
-
 注入類型：Typed注入
-
 注入邏輯：ASP.NET Core生成HomeController的時候，取得Type類型被標註為MessageContext的實例來注入。
 ```
 
 ```
 注入範例2：public MessageContext(MessageRepository messageRepository)
-
 注入類型：Named注入
-
 注入邏輯：MDP.Hosting生成MessageContext的時候，參考Config，取得Name名稱被標註為MockMessageRepository的實例來注入。
 ```
 
