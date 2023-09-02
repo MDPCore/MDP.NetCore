@@ -38,6 +38,39 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 - 平台：MDP.Net透過「平台」的設計，提供一個開箱即用的執行平台，將參數調整、模組整合、環境調適...等等環境建設作業簡化封裝，方便開發人員依照專案需求，快速搭建執行環境。
 
 
+## 模組架構
+
+![MDP.Net-模組架構](https://clark159.github.io/MDP.Net/功能導覽/MDP.Net-模組架構.png)
+
+MDP.Net遵循三層式架構，將模組開發切割為：系統展示、領域邏輯、資料存取三個分層，減少模組對於元件、平台、框架的直接依賴，提高模組自身的內聚力。
+
+- 系統展示(Presentation)：與目標客戶互動、與遠端系統通訊...等等的功能邏輯，會被歸類在系統展示。例如，使用MessageBox通知使用者處理結果、提供API給遠端系統使用。
+
+- 領域邏輯(Domain)：封裝商業知識的物件、流程、演算法...等等的功能邏輯，會被歸類在領域邏輯。例如，出勤系統的刷卡記錄物件、購物商城的折購計算規則。
+
+- 資料存取(Accesses)：資料庫的新增修改、遠端服務的呼叫調用...等等的功能邏輯，會被歸類在資料存取。例如，將資料存放到SQL Server、或者是從遠端API取得資料。
+
+MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，依序命名為：
+
+- Module001.csproj：領域邏輯專案。
+
+- Module001.WebAPI.csproj：系統展示專案。
+
+- Module001.Accesses.csproj：資料存取專案。
+
+而在MDP.Net的領域邏輯(Domain)裡，也加入了下列設計，來進一步提升程式開發速度。
+
+- Entity：DDD領域模型的實例物件(Class)，用以定義資料物件的物件屬性，並可以封裝商業邏輯成為物件方法。
+
+- Repository：資料庫存取的邊界介面(Interface)，用來定義實例物件(Entity)進出資料庫的介面方法。
+
+- Provider：遠端系統調用的邊界介面(Interface)，用來定義實例物件(Entity)進出遠端系統的介面方法。
+
+- Service：商業知識的流程即演算法的封裝物件(Class)，封裝商業邏輯成為物件方法。也可以設計為邊界介面(Interface)，將商業邏輯用實做注入的方式使用。
+
+- Context：做為模組入口的根物件(Class)，遵循Facade Pattern設計的原則，將上述四種物件與介面進行收整。除了做為模組被註冊、注入、使用的根物件之外，也可以封裝商業邏輯成為物件方法。
+
+
 ## 模組清單
 
 ### 開發工具
@@ -93,61 +126,7 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 - MDP.Data.MySql
 
 - MDP.Data.Redis
-  
-
-## 模組架構
-
-![MDP.Net-模組架構](https://clark159.github.io/MDP.Net/功能導覽/MDP.Net-模組架構.png)
-
-MDP.Net遵循三層式架構，將模組開發切割為：系統展示、領域邏輯、資料存取三個分層，減少模組對於元件、平台、框架的直接依賴，提高模組自身的內聚力。
-
-- 系統展示(Presentation)：與目標客戶互動、與遠端系統通訊...等等的功能邏輯，會被歸類在系統展示。例如，使用MessageBox通知使用者處理結果、提供API給遠端系統使用。
-
-- 領域邏輯(Domain)：封裝商業知識的物件、流程、演算法...等等的功能邏輯，會被歸類在領域邏輯。例如，出勤系統的刷卡記錄物件、購物商城的折購計算規則。
-
-- 資料存取(Accesses)：資料庫的新增修改、遠端服務的呼叫調用...等等的功能邏輯，會被歸類在資料存取。例如，將資料存放到SQL Server、或者是從遠端API取得資料。
-
-MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，依序命名為：
-
-- Module001.csproj：領域邏輯專案。
-
-- Module001.WebAPI.csproj：系統展示專案。
-
-- Module001.Accesses.csproj：資料存取專案。
-
-而在MDP.Net的領域邏輯(Domain)裡，也加入了下列設計，來進一步提升程式開發速度。
-
-- Entity：DDD領域模型的實例物件(Class)，用以定義資料物件的物件屬性，並可以封裝商業邏輯成為物件方法。
-
-- Repository：資料庫存取的邊界介面(Interface)，用來定義實例物件(Entity)進出資料庫的介面方法。
-
-- Provider：遠端系統調用的邊界介面(Interface)，用來定義實例物件(Entity)進出遠端系統的介面方法。
-
-- Service：商業知識的流程即演算法的封裝物件(Class)，封裝商業邏輯成為物件方法。也可以設計為邊界介面(Interface)，將商業邏輯用實做注入的方式使用。
-
-- Context：做為模組入口的根物件(Class)，遵循Facade Pattern設計的原則，將上述四種物件與介面進行收整。除了做為模組被註冊、注入、使用的根物件之外，也可以封裝商業邏輯成為物件方法。
-  
-
-## 模組範例
-
-本篇範例協助開發人員使用MDP.Net的模組架構，逐步完成必要的設計和實作。
-
-- 範例下載： [https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos](https://github.com/Clark159/MDP.Net/tree/master/demo/SleepZone.Todos)
-
-### 開發步驟：
-
-- 使用Visual Studio 2022開啟方案：SleepZone.Todos.sln
-
-- 設定起始專案為：01.Application/SleepZone.Todos.WebApp
-
-- 按下F5執行專案後，於瀏覽器的網址列：輸入「[https://localhost:44392/Home/Index](https://localhost:44392/Home/Index)」，進入SleepZone.Todos頁面。
-
-- SleepZone.Todos頁面：點擊「AddTodo按鈕」新增工作項目，看到{ "statusCode": 200 }代表工作項目新增成功。
-
-- SleepZone.Todos頁面：點擊「FindAllTodo按鈕」查詢所有工作項目，看到{ "statusCode": 200 }代表工作項目查詢成功。
-
-- 上述步驟內容，展示使用DI機制，進行Context注入組裝，並且設定為Singleton模式。所以在沒有資料庫的狀態下，FindAll才能讀取到之前寫入的Todo。
-
+ 
 
 ## 版本更新
 
