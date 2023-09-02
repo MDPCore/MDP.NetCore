@@ -63,7 +63,7 @@ EntryDir>\*.{EnvironmentName}.json
 
 ## 模組使用
 
-### 建立專案
+### 專案建立
 
 MDP.Configuration預設內建在MDP.Net專案範本內。依照下列操作步驟，即可建立專案來使用MDP.Configuration所提供的參數管理功能。
 
@@ -79,7 +79,7 @@ dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
 
-### 配置參數
+### 參數配置
 
 於專案內，將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
 

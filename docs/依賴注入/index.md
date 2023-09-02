@@ -23,7 +23,7 @@ MDP.Hosting是一個.NET開發模組，協助開發人員快速建立具有依�
 
 ### 標籤註冊
 
-MDP.Hosting擴充.NET Core既有的參數管理，加入ServiceAttribute標籤，開發人員只要使用標籤參數就可以註冊類別(Clss)。
+MDP.Hosting擴充.NET Core既有的參數管理，加入ServiceAttribute標籤，開發人員只要使用標籤參數就可以註冊類別(Class)。
 
 - TService：ServiceAttribute的泛型參數，用來定義類別生成的實例(Instance)屬於甚麼服務(Service)。
 
