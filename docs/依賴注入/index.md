@@ -10,7 +10,7 @@ has_children: false
 
 (施工中)
 
-MDP.Hosting是一個.NET開發套件，協助開發人員快速建立具有依賴注入的應用系統。提供標籤註冊、具名實例、具名注入等功能服務，用以簡化開發流程並滿足多變的商業需求。
+MDP.Hosting是一個.NET開發模組，協助開發人員快速建立具有依賴注入的應用系統。提供標籤註冊、具名實例、具名注入等功能服務，用以簡化開發流程並滿足多變的商業需求。
 
 - 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
 
@@ -21,11 +21,9 @@ MDP.Hosting是一個.NET開發套件，協助開發人員快速建立具有依�
 
 ![MDP.Hosting-模組架構.png](https://clark159.github.io/MDP.Net/依賴注入/MDP.Hosting-模組架構.png)
 
-MDP.Hosting擴充.NET Core既有的依賴注入，加入標籤註冊/具名實例/具名注入三個功能服務，提供給開發人員組合使用。
-
 ### 標籤註冊
 
-MDP.Hosting提供ServiceAttribute標籤，只要使用標籤參數就可以註冊類別(Clss)。
+MDP.Hosting擴充.NET Core既有的參數管理，加入ServiceAttribute標籤，開發人員只要使用標籤參數就可以註冊類別(Clss)。
 
 - TService：ServiceAttribute的泛型參數，用來定義類別生成的實例(Instance)屬於甚麼服務(Service)。
 
@@ -37,9 +35,7 @@ public class MockMessageRepository : MessageRepository
 {
   //...
 }
-```
 
-```
 註冊的類別：MockMessageRepository
 實例屬於甚麼服務：MessageRepository
 實例是否全域唯一：singleton=false(否:預設值)
