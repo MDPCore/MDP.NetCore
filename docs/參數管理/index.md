@@ -8,7 +8,7 @@ has_children: false
 
 # MDP.Configuration
 
-MDP.Configuration是一個.NET開發套件，協助開發人員快速建立具有參數管理的應用系統。提供在開發/測試/正式三個執行環境，讀取不同Config設定檔的功能服務，用以簡化開發流程並滿足多變的商業需求。
+MDP.Configuration是一個.NET開發套件，協助開發人員快速建立具有參數管理的應用系統。提供動態參數配置的功能服務，用以簡化開發流程並滿足多變的商業需求。
 
 - 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
 
@@ -19,44 +19,55 @@ MDP.Configuration是一個.NET開發套件，協助開發人員快速建立具�
 
 ![MDP.Configuration-模組架構.png](https://clark159.github.io/MDP.Net/參數管理/MDP.Configuration-模組架構.png)
 
-MDP.Configuration擴充.NET Core既有的參數管理，加入在開發/測試/正式三個執行環境，讀取不同Config設定檔的功能服務，提供給開發人員組合使用。
+### 動態參數配置
 
-- 執行環境(Environment)名稱：
+MDP.Configuration擴充.NET Core既有的參數管理，加入在開發/測試/正式三個執行環境，依據執行環境名稱(EnvironmentName)讀取不同Config設定檔的功能服務。
+
+- 執行環境設定：
 
 ```
+// 執行環境名稱(EnvironmentName)
 開發環境：Development
 測試環境：Staging
 正式環境：Production
+
+// 環境變數名稱
+Web專案：ASPNETCORE_ENVIRONMENT
+Console專案：NETCORE_ENVIRONMENT
+
+// 環境變數範例
+ASPNETCORE_ENVIRONMENT=Staging
+NETCORE_ENVIRONMENT=Production
 ```
 
-- 執行資料夾(``` <EntryDir> ```)讀取的Config設定檔：
+- 不同執行環境，執行資料夾(``` <EntryDir> ```)讀取的Config設定檔：
 
 ```
 <EntryDir>\appsettings.json
-EntryDir>\*.{Environment}.json
+EntryDir>\*.{EnvironmentName}.json
 ```
 
-- 參數資料夾(``` <EntryDir>\config ```)讀取的Config設定檔：
+- 不同執行環境，參數資料夾(``` <EntryDir>\config ```)讀取的Config設定檔：
 
 ```
 <EntryDir>\config\appsettings.json
-<EntryDir>\config\*.{Environment}.json
+<EntryDir>\config\*.{EnvironmentName}.json
 ```
 
-- 環境資料夾(``` <EntryDir>\config\{Environment} ```)讀取的Config設定檔：
+- 不同執行環境，環境資料夾(``` <EntryDir>\config\{EnvironmentName} ```)讀取的Config設定檔：
 
 ```
-<EntryDir>\config\{Environment}\*.json
+<EntryDir>\config\{EnvironmentName}\*.json
 ```
 
 
 ## 模組使用
 
-### 套用專案範本
+### 建立專案
 
-MDP.Configuration預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Configuration所提供的參數管理功能。
+MDP.Configuration預設內建在MDP.Net專案範本內。依照下列操作步驟，即可建立專案來使用MDP.Configuration所提供的參數管理功能。
 
-1.在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
+- 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  
 ```
 // 建立API服務、Web站台
@@ -68,38 +79,9 @@ dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
 
-2.於專案內，將Config設定檔放到指定的資料夾。
+### 配置參數
 
-```
-// JSON格式的Config設定檔
-{
-  "property1": {
-    "property2": "value"
-    "property3": [value, value]
-  }
-}
-```
-
-### 做為獨立套件
-
-另外，MDP.Configuration也可做為獨立套件，掛載至既有.NET專案。依照下列操作步驟，即可使用MDP.Configuration所提供的參數管理功能。
-
-1.於專案內，使用CLI指令、NuGet套件管理員，加入MDP.Configuration套件參考。
-
-```
-// 新增NuGet套件參考
-dotnet add package MDP.Configuration
-```
-
-2.於專案內，使用ConfigurationBuilder.RegisterModule擴充方法掛載模組。
-
-```
-// RegisterModule擴充方法
-var configurationBuilder = new ConfigurationBuilder();
-configurationBuilder.RegisterModule(environment);
-```
-
-3.於專案內，將Config設定檔放到指定的資料夾。
+於專案內，將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
 
 ```
 // JSON格式的Config設定檔
