@@ -40,21 +40,21 @@ ASPNETCORE_ENVIRONMENT=Staging
 NETCORE_ENVIRONMENT=Production
 ```
 
-- 不同執行環境，執行資料夾(``` <EntryDir> ```)讀取的Config設定檔：
+- 依執行環境名稱，讀取執行資料夾(``` <EntryDir> ```)內的Config設定檔：
 
 ```
 <EntryDir>\appsettings.json
 EntryDir>\*.{EnvironmentName}.json
 ```
 
-- 不同執行環境，參數資料夾(``` <EntryDir>\config ```)讀取的Config設定檔：
+- 依執行環境名稱，讀取參數資料夾(``` <EntryDir>\config ```)內的Config設定檔：
 
 ```
 <EntryDir>\config\appsettings.json
 <EntryDir>\config\*.{EnvironmentName}.json
 ```
 
-- 不同執行環境，環境資料夾(``` <EntryDir>\config\{EnvironmentName} ```)讀取的Config設定檔：
+- 依執行環境名稱，讀取環境資料夾(``` <EntryDir>\config\{EnvironmentName} ```)內的Config設定檔：
 
 ```
 <EntryDir>\config\{EnvironmentName}\*.json
@@ -63,9 +63,9 @@ EntryDir>\*.{EnvironmentName}.json
 
 ## 模組使用
 
-### 專案建立
+### 加入套件
 
-MDP.Configuration預設內建在MDP.Net專案範本內。依照下列操作步驟，即可建立專案來使用MDP.Configuration所提供的參數管理功能。
+MDP.Configuration預設內建在MDP.Net專案範本內。依照下列操作步驟，即可在專案內使用MDP.Configuration所提供的參數管理功能。
 
 - 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  
@@ -79,9 +79,9 @@ dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
 
-### 參數配置
+### 配置參數
 
-於專案內，將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
+完成加入套件後，將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
 
 ```
 // JSON格式的Config設定檔
