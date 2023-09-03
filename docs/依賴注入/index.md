@@ -23,101 +23,132 @@ MDP.Hosting是一個.NET開發模組，協助開發人員快速建立具有依�
 
 ### 標籤註冊
 
-MDP.Hosting擴充.NET Core既有的參數管理，加入ServiceAttribute標籤，開發人員只要使用標籤參數就可以註冊類別(Class)。
+MDP.Hosting擴充.NET Core既有的參數管理，加入ServiceAttribute標籤，開發人員只要使用標籤宣告就可以註冊類別(Class)。
 
 ```
 [Service<MessageRepository>(singleton:false)]
-public class MockMessageRepository : MessageRepository
+public class SqlMessageRepository : MessageRepository
 {
   //...
 }
 
-註冊的類別：MockMessageRepository
-類別生成的實例，屬於甚麼服務：MessageRepository
-類別生成的實例，是否全域唯一：singleton=false(否:預設值，可省略)
+註冊的類別(Class)：SqlMessageRepository
+註冊為甚麼服務(Service)：MessageRepository
+生成為唯一實例(Instance)：singleton=false(否:預設值，可省略)
 ```
-ServiceAttribute標籤
 
-- TService：ServiceAttribute的泛型參數，用來定義類別生成的實例(Instance)屬於甚麼服務(Service)。
+ServiceAttribute標籤，用來宣告註冊的類別(Class)、這個類別註冊為甚麼服務(Service)、以及類別生成的實例(Instance)是否全域唯一。
 
-- singleton：ServiceAttribute的建構子參數，用來定義類別生成的實例(Instance)是否為全域唯一。
+```
+命名空間：MDP.Registration
+
+類別定義：
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class ServiceAttribute<TService> : ServiceAttribute where TService : class
+```
+
+- TService：類別註冊為甚麼服務(Service)。
+
+- singleton：類別生成的實例(Instance)是否全域唯一。
 
 ### 具名實例
 
-MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config參數，進行實例(Instance)的生成。開發人員可以透過設定Config參數，生成多個具名實例；而每個具名實例，除了被標記為服務(Service)的Type類型之外，還會被標註實例(Instance)本身的Name名稱。
+MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config參數生成實例(Instance)。開發人員可以透過設定Config參數，生成多個實例；而每個實例除了被標記為服務(Service)的Type類型之外，還會被標註實例(Instance)本身的Name名稱。
 	
 ```
-[Service<MessageRepository>()]
-public class MockMessageRepository : MessageRepository
+// 註冊類別
+namespace MyLab.Module
 {
-  //...
+    [Service<MessageRepository>()]
+    public class SqlMessageRepository : MessageRepository
+    {
+        //...
+    }
 }
-```
 
-```
+// Config參數
 {
   "MyLab.Module": {
-    "MockMessageRepository": {}
+    "SqlMessageRepository": {}
   }
 }
-```
 
-```
-生成的實例：MockMessageRepository
+生成的實例：SqlMessageRepository
 實例的Type類型：MessageRepository
-實例的Name名稱：MockMessageRepository
+實例的Name名稱：SqlMessageRepository
 ```
 
 ### 具名注入
 
 被標註Type類型及Name名稱的實例(Instance)，在系統裡就可以被注入使用。預設.NET Core內建的依賴注入，會使用Type類型做為條件取得實例，來提供Typed注入；而MDP.Hosting的依賴注入，則是可以額外使用Name名稱做為條件取得實例，來提供Named注入。(註：.NET8將會支援Named注入)
 
+- Typed注入範例：ASP.NET Core生成HomeController的時候，取得Type類型被標註為MessageRepository的實例來注入。
+
 ```
+// 註冊類別
+namespace MyLab.Module
+{
+    [Service<MessageRepository>()]
+    public class SqlMessageRepository : MessageRepository
+    {
+        //...
+    }
+}
+
+// Config參數
+{
+  "MyLab.Module": {
+    "SqlMessageRepository": {}
+  }
+}
+
+// 服務注入
 public class HomeController : Controller
 {
-	public HomeController(MessageContext messageContext)
+	public HomeController(MessageRepository messageRepository)
 	{
 	    // ...
 	}
 }
 
-[Service<MessageContext>(singleton: true)]
-public class MessageContext
+注入的實例：SqlMessageRepository
+注入的Type類型：MessageRepository
+```
+
+- Named注入範例：MDP.Hosting生成MessageContext的時候參考Config，取得Name名稱被標註為SqlMessageRepository的實例來注入。
+
+```
+// 註冊類別
+namespace MyLab.Module
 {
-	public MessageContext(MessageRepository messageRepository)
+	[Service<MessageContext>(singleton: true)]
+	public class MessageContext
 	{
-		// ...
+		public MessageContext(MessageRepository messageRepository)
+		{
+			// ...
+		}
+	}
+
+	[Service<MessageRepository>()]
+	public class SqlMessageRepository : MessageRepository
+	{
+ 	   //...
 	}
 }
 
-[Service<MessageRepository>()]
-public class MockMessageRepository : MessageRepository
-{
-    //...
-}
-```
-
-```
+// Config參數
 {
   "MyLab.Module": {
     "MessageContext": {
-	  "messageRepository": "MockMessageRepository"
+	  "messageRepository": "SqlMessageRepository"
 	},
-    "MockMessageRepository": {}
+    "SqlMessageRepository": {}
   }
 }
-```
 
-```
-注入範例1：public HomeController(MessageContext messageContext)
-注入類型：Typed注入
-注入邏輯：ASP.NET Core生成HomeController的時候，取得Type類型被標註為MessageContext的實例來注入。
-```
-
-```
-注入範例2：public MessageContext(MessageRepository messageRepository)
-注入類型：Named注入
-注入邏輯：MDP.Hosting生成MessageContext的時候，參考Config，取得Name名稱被標註為MockMessageRepository的實例來注入。
+注入的實例：SqlMessageRepository
+注入的Name名稱：SqlMessageRepository
 ```
 
 
@@ -125,7 +156,7 @@ public class MockMessageRepository : MessageRepository
 
 ### 加入套件
 
-MDP.Hosting預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Configuration所提供的參數管理功能。
+MDP.Hosting預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Hosting所提供的依賴注入功能。
 
 - 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  
@@ -138,6 +169,11 @@ dotnet new MDP.WebApp -n WebApplication1
 dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
+
+### 宣告標籤
+
+完成加入套件後，
+
 
 ### 配置參數
 
