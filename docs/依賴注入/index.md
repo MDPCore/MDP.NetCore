@@ -25,10 +25,6 @@ MDP.Hosting是一個.NET開發模組，協助開發人員快速建立具有依�
 
 MDP.Hosting擴充.NET Core既有的參數管理，加入ServiceAttribute標籤，開發人員只要使用標籤參數就可以註冊類別(Class)。
 
-- TService：ServiceAttribute的泛型參數，用來定義類別生成的實例(Instance)屬於甚麼服務(Service)。
-
-- singleton：ServiceAttribute的建構子參數，用來定義類別生成的實例(Instance)是否為全域唯一。
-
 ```
 [Service<MessageRepository>(singleton:false)]
 public class MockMessageRepository : MessageRepository
@@ -37,9 +33,14 @@ public class MockMessageRepository : MessageRepository
 }
 
 註冊的類別：MockMessageRepository
-實例屬於甚麼服務：MessageRepository
-實例是否全域唯一：singleton=false(否:預設值)
+類別生成的實例，屬於甚麼服務：MessageRepository
+類別生成的實例，是否全域唯一：singleton=false(否:預設值，可省略)
 ```
+ServiceAttribute標籤
+
+- TService：ServiceAttribute的泛型參數，用來定義類別生成的實例(Instance)屬於甚麼服務(Service)。
+
+- singleton：ServiceAttribute的建構子參數，用來定義類別生成的實例(Instance)是否為全域唯一。
 
 ### 具名實例
 
@@ -122,11 +123,11 @@ public class MockMessageRepository : MessageRepository
 
 ## 模組使用
 
-### 套用專案範本
+### 加入套件
 
-MDP.Hosting預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Hosting所提供的依賴注入功能。
+MDP.Hosting預設內建在MDP.Net專案範本內。依照下列操作步驟，即可使用MDP.Configuration所提供的參數管理功能。
 
-1.在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
+- 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  
 ```
 // 建立API服務、Web站台
@@ -138,21 +139,19 @@ dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
 
-2.XXXXXXXXXXX
+### 配置參數
 
-### 做為獨立套件
-
-另外，MDP.Hosting也可做為獨立套件，掛載至既有.NET專案。依照下列操作步驟，即可使用MDP.Hosting所提供的依賴注入功能。
-
-1.於專案內，使用CLI指令、NuGet套件管理員，加入MDP.Hosting套件參考。
+完成加入套件後，XXXXXXXXX
 
 ```
-// 新增NuGet套件參考
-dotnet add package MDP.Hosting
+// JSON格式的Config設定檔
+{
+  "property1": {
+    "property2": "value"
+    "property3": [value, value]
+  }
+}
 ```
-
-2.XXXXXXXXXXX
-
 
 ## 模組範例
 
