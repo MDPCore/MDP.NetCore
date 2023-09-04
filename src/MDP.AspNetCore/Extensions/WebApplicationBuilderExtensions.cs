@@ -242,6 +242,7 @@ namespace MDP.AspNetCore
                     corsBuilder.AllowAnyOrigin();
                     corsBuilder.AllowAnyHeader();
                     corsBuilder.AllowAnyMethod();
+                    corsBuilder.AllowCredentials();
                 });
             });
             hostBuilder.Services.Configure<CorsOptions>(hostBuilder.Configuration.GetSection("Http:Cors"));
