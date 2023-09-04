@@ -63,9 +63,9 @@ EntryDir>\*.{EnvironmentName}.json
 
 ## 模組使用
 
-### 加入套件
+### 加入模組
 
-MDP.Configuration預設內建在MDP.Net專案範本內。依照下列操作步驟，即可在專案內使用MDP.Configuration所提供的參數管理功能。
+MDP.Configuration預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立包含MDP.Configuration模組的專案。
 
 - 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  
@@ -79,12 +79,12 @@ dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
 
-### 配置參數
+### 設定參數
 
-完成加入套件後，將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
+建立包含MDP.Configuration模組的專案之後，在專案裡將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
 
 ```
-// JSON格式的Config設定檔
+// Config設定
 {
   "property1": {
     "property2": "value"
