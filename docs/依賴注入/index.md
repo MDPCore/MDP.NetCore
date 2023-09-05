@@ -229,7 +229,7 @@ MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過設定Confi
 
 ## 模組範例
 
-專案開發過程，在開發/測試/正式三個執行環境，常常需要使用不同的連線字串、甚至使用不同資料來源。例如：開發環境使用Mock資料來源(假資料)、測試環境使用SQL資料來源(連線至測試資料庫)、正式環境使用SQL資料來源(連線至正式資料庫)。本篇範例協助開發人員使用MDP.Hosting，逐步完成必要的設計和實作。
+專案開發過程，在開發/測試/正式三個執行環境，常常需要各自使用不同資料來源、或是使用不同連線字串。例如：開發環境使用Mock資料來源(假資料)、測試環境使用SQL資料來源(連線至測試資料庫)、正式環境使用SQL資料來源(連線至正式資料庫)。本篇範例協助開發人員使用MDP.Hosting，逐步完成必要的設計和實作。
 
 
 - 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/依賴注入/WebApplication1.zip)
@@ -336,9 +336,64 @@ namespace WebApplication1
 }
 ```
 
-4.於專案內加入下列三個Config設定檔，作為開發/測試/正式三個執行環境，各自讀取的Config設定檔。
+4.改寫專案內的Controllers\HomeController.cs、Views\Home\Index.cshtml，注入並使用MessageContext。
 
-- 開發環境：\config\Development\appsettings.json，設定為MessageContext具名注入MockMessageRepository。
+```csharp
+using System;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApplication1
+{
+    public class HomeController : Controller
+    {
+        // Fields
+        private readonly MessageContext _messageContext = null;
+
+
+        // Constructors
+        public HomeController(MessageContext messageContext)
+        {
+            // Default
+            _messageContext = messageContext;
+        }
+
+
+        // Methods
+        public ActionResult Index()
+        {
+            // ViewBag
+            this.ViewBag.Message = _messageContext.GetValue();
+
+            // Return
+            return View();
+        }
+    }
+}
+```
+
+```csharp
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>WebApplication1</title>
+</head>
+<body>
+
+    <!--Title-->
+    <h2>WebApplication1</h2>
+    <hr />
+
+    <!--Message-->
+    <h3>@ViewBag.Message</h3>
+
+</body>
+</html>
+```
+
+5.於專案內加入下列三個Config設定檔，用來定義開發/測試/正式三個執行環境，各自使用不同資料來源、使用不同連線字串。
+
+- 開發環境：\config\Development\appsettings.json，設定為MessageContext具名注入MockMessageRepository。(Mock資料來源)
 
 ```
 {
@@ -351,7 +406,7 @@ namespace WebApplication1
 }
 ```
 
-- 測試環境：\config\Staging\appsettings.json，設定為MessageContext具名注入SqlMessageRepository，並且設定連線至Staging Database。
+- 測試環境：\config\Staging\appsettings.json，設定為MessageContext具名注入SqlMessageRepository，並且設定連線至Staging Database。(SQL資料來源)
 
 ```
 {
@@ -364,7 +419,7 @@ namespace WebApplication1
 }
 ```
 
-- 正式環境：\config\Production\appsettings.json，設定為MessageContext具名注入SqlMessageRepository，並且設定連線至Production Database。
+- 正式環境：\config\Production\appsettings.json，設定為MessageContext具名注入SqlMessageRepository，並且設定連線至Production Database。(SQL資料來源)
 
 ```
 {
@@ -377,11 +432,11 @@ namespace WebApplication1
 }
 ```
 
-5.執行專案，於開啟的Browser視窗內，可以看到系統依照``` 開發環境：\config\Development\appsettings.json ```的設定執行，於畫面顯示MockMessageRepository回傳的Hello World By Mock Source。
+6.執行專案，於開啟的Browser視窗內，可以看到系統依照``` 開發環境：\config\Development\appsettings.json ```的設定執行，於畫面顯示MockMessageRepository回傳的Hello World By Mock Source。
 
 ![01.執行結果01.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果01.png)
 
-6.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
+7.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
 
 ```json
 {
@@ -399,6 +454,10 @@ namespace WebApplication1
 }
 ```
 
-7.重建並執行專案，於開啟的Browser視窗內，可以看到系統依照``` 測試環境：\config\Staging\appsettings.json ```的設定執行，於畫面顯示SqlMessageRepository回傳的Hello World By Staging Database。
+8.重建並執行專案，於開啟的Browser視窗內，可以看到系統依照``` 測試環境：\config\Staging\appsettings.json ```的設定執行，於畫面顯示SqlMessageRepository回傳的Hello World By Staging Database。
 
 ![01.執行結果02.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果02.png)
+
+9.最後將ASPNETCORE_ENVIRONMENT的內容改為Production，重建並執行專案，於開啟的Browser視窗內，可以看到系統依照``` 正式環境：\config\Production\appsettings.json ```的設定執行，於畫面顯示SqlMessageRepository回傳的Hello World By Production Database。
+
+![01.執行結果03.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果03.png)
