@@ -2,7 +2,7 @@
 layout: default
 title: 日誌紀錄
 parent: null
-nav_order: 6
+nav_order: 5
 has_children: true
 ---
 

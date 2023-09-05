@@ -63,7 +63,7 @@ public ServiceAttribute(bool singleton = false)
 
 ### 具名實例
 
-MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config設定生成實例(Instance)。開發人員可以透過設定Config設定，生成多個實例；而每個實例除了被標記為服務(Service)的Type類型之外，還會被標註實例(Instance)本身的Name名稱。
+MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config設定生成實例(Instance)。開發人員可以透過設定Config設定，生成多個實例；而每個實例除了被標記為服務(Service)的Type類型之外，還會被標記為實例(Instance)本身的Name名稱。
 	
 ```
 // 註冊類別
@@ -243,4 +243,162 @@ dotnet new install MDP.WebApp
 dotnet new MDP.WebApp -n WebApplication1
 ```
 
+2.使用Visual Studio開啟WebApplication1專案。於專案內加入Modules\MessageContext.cs、Modules\MessageRepository.cs，並使用標籤宣告來註冊MessageContext。
 
+```
+using MDP.Registration;
+
+namespace WebApplication1
+{
+    [Service<MessageContext>(singleton: true)]
+    public class MessageContext
+    {
+        // Fields
+        private readonly MessageRepository _messageRepository = null;
+
+
+        // Constructors
+        public MessageContext(MessageRepository messageRepository)
+        {
+            // Default
+            _messageRepository = messageRepository;
+        }
+
+
+        // Methods
+        public string GetValue()
+        {
+            // Return
+            return _messageRepository.GetValue();
+        }
+    }
+}
+```
+
+```
+namespace WebApplication1
+{
+    public interface MessageRepository
+    {
+        // Methods
+        string GetValue();
+    }
+}
+```
+
+3.於專案內加入Modules\SqlMessageRepository.cs、Modules\MockMessageRepository.cs，並使用標籤宣告來註冊類別為MessageRepository。
+
+```
+using MDP.Registration;
+
+namespace WebApplication1
+{
+    [Service<MessageRepository>()]
+    public class SqlMessageRepository : MessageRepository
+    {
+        // Fields
+        private readonly string _connectionString;
+
+
+        // Constructors
+        public SqlMessageRepository(string connectionString)
+        {
+            // Default
+            _connectionString = connectionString;
+        }
+
+
+        // Methods
+        public string GetValue()
+        {
+            // Return
+            return "Hello World By " + _connectionString;
+        }
+    }
+}
+```
+
+```
+using MDP.Registration;
+
+namespace WebApplication1
+{
+    [Service<MessageRepository>()]
+    public class MockMessageRepository : MessageRepository
+    {
+        // Methods
+        public string GetValue()
+        {
+            // Return
+            return "Hello World By Mock Source";
+        }
+    }
+}
+```
+
+4.於專案內加入下列三個Config設定檔，作為開發/測試/正式三個執行環境，各自讀取的Config設定檔。
+
+- 開發環境：\config\Development\appsettings.json，設定為MessageContext具名注入MockMessageRepository。
+
+```
+{
+  "WebApplication1": {
+    "MessageContext": {
+      "MessageRepository": "MockMessageRepository"
+    },
+    "MockMessageRepository": {}
+  }
+}
+```
+
+- 測試環境：\config\Staging\appsettings.json，設定為MessageContext具名注入SqlMessageRepository，並且設定連線至Staging Database。
+
+```
+{
+  "WebApplication1": {
+    "MessageContext": {
+      "MessageRepository": "SqlMessageRepository"
+    },
+    "SqlMessageRepository": { "connectionString": "Staging Database" }
+  }
+}
+```
+
+- 正式環境：\config\Production\appsettings.json，設定為MessageContext具名注入SqlMessageRepository，並且設定連線至Production Database。
+
+```
+{
+  "WebApplication1": {
+    "MessageContext": {
+      "MessageRepository": "SqlMessageRepository"
+    },
+    "SqlMessageRepository": { "connectionString": "Production Database" }
+  }
+}
+```
+
+5.執行專案，於開啟的Browser視窗內，可以看到系統依照``` 開發環境：\config\Development\appsettings.json ```的設定執行，於畫面顯示MockMessageRepository回傳的Hello World By Mock Source。
+
+![01.執行結果01.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果01.png)
+
+6.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
+
+```json
+{
+  "profiles": {
+    "WebApplication1": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7146;http://localhost:5257",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      }
+    }
+  }
+}
+```
+
+7.重建並執行專案，於開啟的Browser視窗內，可以看到系統依照``` 測試環境：\config\Staging\appsettings.json ```的設定執行，於畫面顯示SqlMessageRepository回傳的Hello World By Staging Database。
+
+![01.執行結果02.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果02.png)

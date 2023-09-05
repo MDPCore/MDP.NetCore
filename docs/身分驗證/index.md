@@ -2,7 +2,7 @@
 layout: default
 title: 身分驗證
 parent: null
-nav_order: 7
+nav_order: 6
 has_children: false
 ---
 
