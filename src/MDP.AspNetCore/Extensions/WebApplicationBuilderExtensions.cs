@@ -239,7 +239,7 @@ namespace MDP.AspNetCore
             {
                 option.AddDefaultPolicy(corsBuilder =>
                 {
-                    corsBuilder.AllowAnyOrigin();
+                    corsBuilder.SetIsOriginAllowed(origin => true);
                     corsBuilder.AllowAnyHeader();
                     corsBuilder.AllowAnyMethod();
                     corsBuilder.AllowCredentials();
