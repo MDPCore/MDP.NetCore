@@ -7,7 +7,7 @@ permalink: /
 ---
 
 
-# MDP.Net (Micro Domain Platform)
+# MDP.Net
 
 MDP.Net是一個.NET開發平台，協助開發人員快速建立Web站台、API服務和Console程式。提供參數管理、依賴注入、身分驗證等多種功能模組，用以簡化開發流程並滿足多變的商業需求。
 
