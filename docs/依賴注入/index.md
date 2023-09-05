@@ -231,7 +231,6 @@ MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過設定Confi
 
 專案開發過程，在開發/測試/正式三個執行環境，常常需要各自使用不同資料來源、或是使用不同連線字串。例如：開發環境使用Mock資料來源(假資料)、測試環境使用SQL資料來源(連線至測試資料庫)、正式環境使用SQL資料來源(連線至正式資料庫)。本篇範例協助開發人員使用MDP.Hosting，逐步完成必要的設計和實作。
 
-
 - 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/依賴注入/WebApplication1.zip)
 
 ### 操作步驟
