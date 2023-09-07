@@ -18,7 +18,7 @@ MDP.Net是一個.NET開發平台，協助開發人員快速建立Web站台、API
 
 ## 平台架構
 
-![MDP.Net-平台架構](https://clark159.github.io/MDP.Net/功能導覽/MDP.Net-平台架構.png)
+![MDP.Net-平台架構](https://clark159.github.io/MDP.Net/功能說明/MDP.Net-平台架構.png)
 
 MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過架構設計提供模組重用、參數調整、環境建置...等等面向的快速開發能力。
 
@@ -31,7 +31,7 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 
 ## 模組架構
 
-![MDP.Net-模組架構](https://clark159.github.io/MDP.Net/功能導覽/MDP.Net-模組架構.png)
+![MDP.Net-模組架構](https://clark159.github.io/MDP.Net/功能說明/MDP.Net-模組架構.png)
 
 MDP.Net遵循三層式架構，將模組開發切割為：系統展示、領域邏輯、資料存取三個分層，減少模組對於元件、平台、框架的直接依賴，提高模組自身的內聚力。
 
