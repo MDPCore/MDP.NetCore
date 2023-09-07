@@ -1,11 +1,11 @@
 ---
 layout: default
-title: NLog日誌紀錄
+title: Serilog日誌紀錄
 parent: 日誌紀錄
-nav_order: 2
+nav_order: 3
 ---
 
-# NLog日誌紀錄 (施工中)
+# Serilog日誌紀錄 (施工中)
 
 
 ## 模組架構
