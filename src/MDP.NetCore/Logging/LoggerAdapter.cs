@@ -3,14 +3,14 @@ using System;
 
 namespace MDP.NetCore
 {
-    internal class Logger<TCategoryName> : MDP.Logging.ILogger<TCategoryName>
+    internal class LoggerAdapter<TCategoryName> : MDP.Logging.ILogger<TCategoryName>
     {
         // Fields
         private readonly Microsoft.Extensions.Logging.ILogger<TCategoryName> _logger;
 
 
         // Constructors
-        public Logger(Microsoft.Extensions.Logging.ILogger<TCategoryName> logger)
+        public LoggerAdapter(Microsoft.Extensions.Logging.ILogger<TCategoryName> logger)
         {
             #region Contracts
 

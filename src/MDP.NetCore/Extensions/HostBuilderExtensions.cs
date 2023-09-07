@@ -54,10 +54,10 @@ namespace MDP.NetCore
                 serviceCollection.RegisterModule(context.Configuration);
 
                 // Logger
-                serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(Logger<>));
+                serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(LoggerAdapter<>));
 
                 // Tracer
-                serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(Tracer<>));
+                serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(TracerAdapter<>));
             });
 
             // Return

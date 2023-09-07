@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MDP.NetCore
 {
-    internal abstract class Tracer : ITracer
+    internal abstract class TracerAdapter : ITracer
     {
         // Fields
         private static object _syncRoot = new object();
@@ -19,7 +19,7 @@ namespace MDP.NetCore
 
 
         // Constructors
-        internal Tracer()
+        public TracerAdapter()
         {
 
         }
@@ -75,14 +75,14 @@ namespace MDP.NetCore
         protected abstract string CreateActivityName(string memberName);
     }
 
-    internal class Tracer<TCategoryName> : Tracer, ITracer<TCategoryName>
+    internal class TracerAdapter<TCategoryName> : TracerAdapter, ITracer<TCategoryName>
     {
         // Fields
         private readonly string _categoryName;
 
 
         // Constructors
-        public Tracer() 
+        public TracerAdapter() 
         {
             // CategoryName
             _categoryName = typeof(TCategoryName).FullName!;
