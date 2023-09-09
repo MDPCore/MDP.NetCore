@@ -5,7 +5,7 @@ parent: 日誌紀錄
 nav_order: 1
 ---
 
-# MDP.Logging (施工中)
+# MDP.Logging
 
 MDP.Logging是一個.NET開發模組，協助開發人員快速建立具有日誌紀錄的應用系統。提供NLog、Log4net、Serilog等功能模組，用以簡化開發流程並滿足多變的商業需求。
 
