@@ -8,7 +8,7 @@ has_children: false
 
 # MDP.Configuration
 
-MDP.Configuration是一個.NET開發模組，協助開發人員快速建立具有參數管理的應用系統。提供動態參數配置等功能服務，用以簡化開發流程並滿足多變的商業需求。
+MDP.Configuration是一個.NET開發模組，協助開發人員快速建立具有參數管理的應用系統。提供參數掛載等功能服務，用以簡化開發流程並滿足多變的商業需求。
 
 - 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
 
@@ -19,7 +19,7 @@ MDP.Configuration是一個.NET開發模組，協助開發人員快速建立具�
 
 ![MDP.Configuration-模組架構.png](https://clark159.github.io/MDP.Net/參數管理/MDP.Configuration-模組架構.png)
 
-### 動態參數配置
+### 參數掛載
 
 MDP.Configuration擴充.NET Core既有的參數管理，加入在開發/測試/正式三個執行環境，依據執行環境名稱(EnvironmentName)讀取不同Config設定檔的功能服務。
 

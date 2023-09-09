@@ -39,7 +39,7 @@ namespace MDP.Logging
         void LogCritical(Exception exception, string message, params object[] args);
     }
 
-    public interface ILogger<TCategoryName> : ILogger
+    public interface ILogger<TCategory> : ILogger
     {
         
     }
