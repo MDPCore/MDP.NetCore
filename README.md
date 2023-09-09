@@ -84,13 +84,9 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 - MDP.AspNetCore.Authentication.Jwt
 
-- MDP.AspNetCore.Authentication.Liff
-
 - MDP.AspNetCore.Authentication.Line
 
-- MDP.AspNetCore.Authentication.LocalAD
-
-- MDP.AspNetCore.Authentication.Password
+- MDP.AspNetCore.Authentication.Liff
   
 ### 角色授權
 

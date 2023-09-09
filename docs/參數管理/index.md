@@ -64,7 +64,7 @@ EntryDir>\*.{EnvironmentName}.json
 
 MDP.Configuration擴充.NET Core既有的參數管理，使用.NET Core內建的IConfiguration介面提供參數讀取功能。
 
-```
+```csharp
 // IConfiguration
 IConfiguration configuration;
 
@@ -123,7 +123,7 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 建立包含MDP.Configuration模組的專案之後，在專案裡將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
 
-```
+```json
 // Config設定
 {
   "property1": {
@@ -137,23 +137,19 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 完成參數設定之後的專案，就可以注入IConfiguration介面來使用參數管理。
 
-```
+```csharp
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+
 namespace WebApplication1
 {
     public class HomeController : Controller
     {
-        // Fields
-        private readonly IConfiguration _configuration = null;
-
-
         // Constructors
         public HomeController(IConfiguration configuration)
-        {
-            // Default
-            _configuration = configuration;
-            
+        {            
              // Setting
-             var setting = _configuration.GetSection("Setting").Get<string>();
+             var setting = configuration.GetSection("Setting").Get<string>();
         }
     }
 }

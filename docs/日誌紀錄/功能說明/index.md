@@ -39,7 +39,7 @@ MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog
 
 MDP.Logging擴充.NET Core既有的日誌紀錄，加入ILogger介面來提供日誌寫入功能，並做為抽象層以減少應用程式對於元件、平台、框架的直接依賴。而在系統底層ILogger介面則是由LoggerAdapter物件實作並轉接.NET Core框架內建的日誌寫入功能。
 
-```
+```csharp
 // Logger
 ILogger logger;
 
@@ -126,7 +126,46 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 建立包含MDP.Logging模組的專案之後，就可以注入ILogger介面來使用日誌紀錄。
 
+```csharp
+using MDP.Logging;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApplication1
+{
+    public class HomeController : Controller
+    {
+        // Constructors
+        public HomeController(ILogger<HomeController> logger)
+        {
+            // Log
+            logger.LogError("Hello World");
+        }
+    }
+}
 ```
+
+
+## 模組範例
+
+專案開發過程，需要將日誌訊息輸出，方便開發人員觀測系統執行狀況。本篇範例協助開發人員使用MDP.Logging，逐步完成必要的設計和實作。
+
+- 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/WebApplication1.zip)
+
+### 操作步驟
+
+1.開啟命令提示字元，輸入下列指令。用以安裝MDP.WebApp範本、並且建立一個名為WebApplication1的Web站台。
+
+```
+dotnet new install MDP.WebApp
+dotnet new MDP.WebApp -n WebApplication1
+```
+
+2.使用Visual Studio開啟WebApplication1專案。改寫專案內的Controllers\HomeController.cs、Views\Home\Index.cshtml，注入並使用ILogger。
+
+```csharp
+using MDP.Logging;
+using Microsoft.AspNetCore.Mvc;
+
 namespace WebApplication1
 {
     public class HomeController : Controller
@@ -140,26 +179,39 @@ namespace WebApplication1
         {
             // Default
             _logger = logger;
-            
-             // Log
+        }
+
+
+        // Methods
+        public ActionResult Index()
+        {
+            // Log
             _logger.LogError("Hello World");
+
+            // Return
+            return View();
         }
     }
 }
 ```
 
+```csharp
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>WebApplication1</title>
+</head>
+<body>
 
-## 模組範例
+    <!--Title-->
+    <h2>WebApplication1</h2>
+    <hr />
 
-專案開發過程，需要將日誌訊息輸出，方便開發人員觀測系統執行狀況。本篇範例協助開發人員使用MDP.Logging，逐步完成必要的設計和實作。
-
-- 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/日誌紀錄/快速開始/WebApplication1.zip)
-
-### 操作步驟
-
-1.開啟命令提示字元，輸入下列指令。用以安裝MDP.WebApp範本、並且建立一個名為WebApplication1的Web站台。
-
+</body>
+</html>
 ```
-dotnet new install MDP.WebApp
-dotnet new MDP.WebApp -n WebApplication1
-```
+
+3.執行專案，於開啟的Console視窗內，可以看到透過ILogger所寫入的日誌訊息 Hello World。(透過.NET Core底層的ConsoleLogger輸出)
+
+![01.執行結果01.png](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/01.執行結果01.png)
