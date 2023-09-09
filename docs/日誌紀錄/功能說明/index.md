@@ -14,13 +14,13 @@ MDP.Logging是一個.NET開發模組，協助開發人員快速建立具有日�
 - 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
 
 
-## 模組架構
+## 模組功能
 
-![MDP.Logging-模組架構.png](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/MDP.Logging-模組架構.png)
+![MDP.Logging-模組功能.png](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/MDP.Logging-模組功能.png)
 
 ### 模組掛載
 
-MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog等功能模組的掛載功能。開發人員可以透過設定Config設定，掛載在執行階段使用的功能模組。
+MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog等功能模組的掛載功能。開發人員可以透過設定Config設定，掛載在執行階段使用的日誌紀錄。
 
 ```
 // Config設定
@@ -35,11 +35,19 @@ MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog
 - 模組參數：ConfigFile="nlog.config"。(nlog.config是預設值，可省略)
 ```
 
-### 抽象隔離
+### 日誌寫入
 
-MDP.Logging擴充.NET Core既有的日誌紀錄，加入ILogger介面、LoggerAdapter物件。ILogger介面作為抽象層，提供給應用程式使用，以減少應用程式對於元件、平台、框架的直接依賴。並且ILogger介面透過LoggerAdapter物件，轉接提供.NET Core框架內建的日誌紀錄功能。
+MDP.Logging擴充.NET Core既有的日誌紀錄，加入ILogger介面來提供日誌寫入功能，並做為抽象層以減少應用程式對於元件、平台、框架的直接依賴。而在系統底層ILogger介面則是由LoggerAdapter物件實作並轉接.NET Core框架內建的日誌寫入功能。
 
-ILogger介面：用來提供日誌服務的介面。
+```
+// Logger
+ILogger logger;
+
+// Log
+logger.LogError("Hello World");  
+```
+   
+ILogger介面：ILogger介面提供日誌寫入功能。
 
 - 命名空間：
 
@@ -114,9 +122,9 @@ dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
 
-### 寫入日誌
+### 取得ILogger
 
-建立包含MDP.Logging模組的專案之後，就可以注入並使用ILogger介面來寫入日誌。
+建立包含MDP.Logging模組的專案之後，就可以注入ILogger介面來使用日誌紀錄。
 
 ```
 namespace WebApplication1
@@ -134,11 +142,12 @@ namespace WebApplication1
             _logger = logger;
             
              // Log
-    logger.LogError("Hello World");
+            _logger.LogError("Hello World");
         }
     }
 }
 ```
+
 
 ## 模組範例
 

@@ -15,9 +15,9 @@ MDP.Hosting是一個.NET開發模組，協助開發人員快速建立具有依�
 - 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
 
 
-## 模組架構
+## 模組功能
 
-![MDP.Hosting-模組架構.png](https://clark159.github.io/MDP.Net/依賴注入/MDP.Hosting-模組架構.png)
+![MDP.Hosting-模組功能.png](https://clark159.github.io/MDP.Net/依賴注入/MDP.Hosting-模組功能.png)
 
 ### 標籤註冊
 
@@ -189,9 +189,9 @@ dotnet new install MDP.ConsoleApp
 dotnet new MDP.ConsoleApp -n ConsoleApp1
 ```
 
-### 使用標籤
+### 使用ServiceAttribute
 
-建立包含MDP.Hosting模組的專案之後，使用ServiceAttribute標籤，就可以透過標籤宣告來註冊類別(Class)。
+建立包含MDP.Hosting模組的專案之後，就可以使用ServiceAttribute標籤，透過標籤宣告來註冊類別(Class)。
 
 ```
 // 註冊類別
@@ -210,7 +210,7 @@ namespace MyLab.Module
 
 ### 設定參數
 
-MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過設定Config設定生成實例。
+MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過設定Config設定生成實例(Instance)。
 
 ```
 // Config設定

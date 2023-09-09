@@ -15,9 +15,9 @@ MDP.Configuration是一個.NET開發模組，協助開發人員快速建立具�
 - 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
 
 
-## 模組架構
+## 模組功能
 
-![MDP.Configuration-模組架構.png](https://clark159.github.io/MDP.Net/參數管理/MDP.Configuration-模組架構.png)
+![MDP.Configuration-模組功能.png](https://clark159.github.io/MDP.Net/參數管理/MDP.Configuration-模組功能.png)
 
 ### 參數掛載
 
@@ -60,6 +60,46 @@ EntryDir>\*.{EnvironmentName}.json
 <EntryDir>\config\{EnvironmentName}\*.json
 ```
 
+### 參數讀取
+
+MDP.Configuration擴充.NET Core既有的參數管理，使用.NET Core內建的IConfiguration介面提供參數讀取功能。
+
+```
+// IConfiguration
+IConfiguration configuration;
+
+// Setting
+var setting = configuration.GetSection("Setting").Get<string>();
+```
+
+IConfiguration介面：IConfiguration介面提供參數讀取功能。
+
+- 命名空間：
+
+```
+Microsoft.Extensions.Configuration
+```
+
+- 類別定義：
+
+```
+public interface IConfiguration
+```
+
+- 類別方法：
+
+```
+// GetSection
+public IConfigurationSection GetSection(string key);
+
+- key：讀取的參數路徑
+
+// Get<T>
+public static T? Get<T> (this IConfiguration configuration);
+
+- T：讀取的參數類型
+```
+
 
 ## 模組使用
 
@@ -90,6 +130,32 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
     "property2": "value"
     "property3": [value, value]
   }
+}
+```
+
+### 取得IConfiguration
+
+完成參數設定之後的專案，就可以注入IConfiguration介面來使用參數管理。
+
+```
+namespace WebApplication1
+{
+    public class HomeController : Controller
+    {
+        // Fields
+        private readonly IConfiguration _configuration = null;
+
+
+        // Constructors
+        public HomeController(IConfiguration configuration)
+        {
+            // Default
+            _configuration = configuration;
+            
+             // Setting
+             var setting = _configuration.GetSection("Setting").Get<string>();
+        }
+    }
 }
 ```
 
