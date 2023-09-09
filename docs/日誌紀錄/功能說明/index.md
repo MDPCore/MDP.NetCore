@@ -39,7 +39,7 @@ MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog
 
 MDP.Logging擴充.NET Core既有的日誌紀錄，加入ILogger介面來提供日誌寫入功能，並做為抽象層以減少應用程式對於元件、平台、框架的直接依賴。而在系統底層ILogger介面則是由LoggerAdapter物件實作並轉接.NET Core框架內建的日誌寫入功能。
 
-```csharp
+```
 // Logger
 ILogger logger;
 
@@ -126,7 +126,7 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 建立包含MDP.Logging模組的專案之後，就可以注入ILogger介面來使用日誌紀錄。
 
-```csharp
+```
 using MDP.Logging;
 using Microsoft.AspNetCore.Mvc;
 
@@ -162,7 +162,7 @@ dotnet new MDP.WebApp -n WebApplication1
 
 2.使用Visual Studio開啟WebApplication1專案。改寫專案內的Controllers\HomeController.cs、Views\Home\Index.cshtml，注入並使用ILogger。
 
-```csharp
+```
 using MDP.Logging;
 using Microsoft.AspNetCore.Mvc;
 
@@ -195,7 +195,7 @@ namespace WebApplication1
 }
 ```
 
-```csharp
+```
 <!DOCTYPE html>
 <html>
 <head>

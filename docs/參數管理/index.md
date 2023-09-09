@@ -64,7 +64,7 @@ EntryDir>\*.{EnvironmentName}.json
 
 MDP.Configuration擴充.NET Core既有的參數管理，使用.NET Core內建的IConfiguration介面提供參數讀取功能。
 
-```csharp
+```
 // IConfiguration
 IConfiguration configuration;
 
@@ -123,7 +123,7 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 建立包含MDP.Configuration模組的專案之後，在專案裡將Config設定檔放到指定的資料夾，系統就會依據執行環境名稱(EnvironmentName)讀取不同Config設定檔。
 
-```json
+```
 // Config設定
 {
   "property1": {
@@ -137,7 +137,7 @@ dotnet new MDP.ConsoleApp -n ConsoleApp1
 
 完成參數設定之後的專案，就可以注入IConfiguration介面來使用參數管理。
 
-```csharp
+```
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -175,7 +175,7 @@ dotnet new MDP.WebApp -n WebApplication1
 
 - 開發環境：\config\Development\appsettings.json
 
-```json
+```
 {
   "WebApplication1": {
     "Message": "Hello World By Development"
@@ -185,7 +185,7 @@ dotnet new MDP.WebApp -n WebApplication1
 
 - 測試環境：\config\Staging\appsettings.json
 
-```json
+```
 {
   "WebApplication1": {
     "Message": "Hello World By Staging"
@@ -195,7 +195,7 @@ dotnet new MDP.WebApp -n WebApplication1
 
 - 正式環境：\config\Production\appsettings.json
 
-```json
+```
 {
   "WebApplication1": {
     "Message": "Hello World By Production"
@@ -205,7 +205,7 @@ dotnet new MDP.WebApp -n WebApplication1
 
 5.改寫專案內的Controllers\HomeController.cs、Views\Home\Index.cshtml，注入並使用.Net Core內建的IConfiguration。
 
-```csharp
+```
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -238,7 +238,7 @@ namespace WebApplication1
 }
 ```
 
-```csharp
+```
 <!DOCTYPE html>
 <html>
 <head>
@@ -264,7 +264,7 @@ namespace WebApplication1
 
 7.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
 
-```json
+```
 {
   "profiles": {
     "WebApplication1": {

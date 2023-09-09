@@ -24,7 +24,7 @@ dotnet new MDP.WebApp -n WebApplication1
 
 2.使用Visual Studio開啟WebApplication1專案。並於專案內加入Modules\MessageRepository.cs，做為注入的Interface。
 
-```csharp
+```
 namespace WebApplication1
 {
     public interface MessageRepository
@@ -37,7 +37,7 @@ namespace WebApplication1
 
 3.於專案內加入Modules\ConfigMessageRepository.cs，做為注入的Implement。程式碼中的``` Service<MessageRepository>() ```，將ConfigMessageRepository註冊為MessageRepository。
 
-```csharp
+```
 using MDP.Registration;
 
 namespace WebApplication1
@@ -69,7 +69,7 @@ namespace WebApplication1
 
 4.改寫專案內的appsettings.json，加入ConfigMessageRepository的參數設定。參數檔中的``` "ConfigMessageRepository": { "Message": "Hello World" } ```，設定生成ConfigMessageRepository的時候，將Hello World帶入建構子的Message參數。
 
-```json
+```
 {
   "WebApplication1": {
     "ConfigMessageRepository": { "Message": "Hello World" }
@@ -79,7 +79,7 @@ namespace WebApplication1
 
 5.改寫專案內的Controllers\HomeController.cs，注入並使用MessageRepository。
 
-```csharp
+```
 using System;
 using Microsoft.AspNetCore.Mvc;
 

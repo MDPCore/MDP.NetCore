@@ -337,7 +337,7 @@ namespace WebApplication1
 
 4.改寫專案內的Controllers\HomeController.cs、Views\Home\Index.cshtml，注入並使用MessageContext。
 
-```csharp
+```
 using System;
 using Microsoft.AspNetCore.Mvc;
 
@@ -370,7 +370,7 @@ namespace WebApplication1
 }
 ```
 
-```csharp
+```
 <!DOCTYPE html>
 <html>
 <head>
@@ -437,7 +437,7 @@ namespace WebApplication1
 
 7.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
 
-```json
+```
 {
   "profiles": {
     "WebApplication1": {
