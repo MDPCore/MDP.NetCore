@@ -63,7 +63,7 @@ public ServiceAttribute(bool singleton = false)
 
 ### 具名實例
 
-MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config設定生成實例(Instance)。開發人員可以透過設定Config設定，生成多個實例；而每個實例除了被標記為服務(Service)的Type類型之外，還會被標記為實例(Instance)本身的Name名稱。
+MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config設定生成實例(Instance)。開發人員可以透過Config設定，生成多個實例；而每個實例除了被標記為服務(Service)的Type類型之外，還會被標記為實例(Instance)本身的Name名稱。
 	
 ```
 // 註冊類別
@@ -173,7 +173,7 @@ namespace MyLab.Module
 
 ## 模組使用
 
-### 加入模組
+### 建立專案
 
 MDP.Hosting預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立包含MDP.Hosting模組的專案。
 
@@ -210,7 +210,7 @@ namespace MyLab.Module
 
 ### 設定參數
 
-MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過設定Config設定生成實例(Instance)。
+MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過Config設定生成實例(Instance)。
 
 ```
 // Config設定

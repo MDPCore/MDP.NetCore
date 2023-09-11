@@ -103,7 +103,7 @@ public static T? Get<T> (this IConfiguration configuration);
 
 ## 模組使用
 
-### 加入模組
+### 建立專案
 
 MDP.Configuration預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立包含MDP.Configuration模組的專案。
 

@@ -20,19 +20,19 @@ MDP.Logging是一個.NET開發模組，協助開發人員快速建立具有日�
 
 ### 模組掛載
 
-MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog等功能模組的掛載功能。開發人員可以透過設定Config設定，掛載在執行階段使用的日誌紀錄。
+MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog等功能模組的掛載功能。開發人員可以透過Config設定，掛載在執行階段使用的日誌紀錄。
 
 ```
 // Config設定
 {
   "Logging": {
-    "NLog": { "ConfigFile" : "nlog.config"}
+    "NLogLogger": { "ConfigFile" : "nlog.config"}
   }
 }
 
 - 命名空間：Logging
-- 模組名稱：NLog
-- 模組參數：ConfigFile="nlog.config"。(nlog.config是預設值，可省略)
+- 掛載的日誌類別：NLogLogger
+- NLog的設定檔路徑：ConfigFile="nlog.config"。(nlog.config是預設值，可省略)
 ```
 
 ### 日誌寫入
@@ -106,7 +106,7 @@ void LogCritical(Exception exception, string message, params object[] args);
 
 ## 模組使用
 
-### 加入模組
+### 建立專案
 
 MDP.Logging預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立包含MDP.Logging模組的專案。
 
