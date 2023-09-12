@@ -117,7 +117,7 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 ## 版本更新
 
-### MDP.Net 6.1.6
+### MDP.Net 6.1.7
 
 - MDP.Logging.Serilog：加入此模組，提供Serilog日誌服務。
 
