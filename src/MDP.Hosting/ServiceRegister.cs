@@ -74,7 +74,7 @@ namespace MDP.Hosting
                 if (string.IsNullOrEmpty(fullInstanceName) == true) throw new InvalidOperationException($"{nameof(fullInstanceName)}=null");
 
                 // RegisterTyped: ServiceType
-                containerBuilder.RegisterTyped(instanceType, (serviceProvider) =>
+                containerBuilder.RegisterTyped(serviceAttribute.ServiceType, (serviceProvider) =>
                 {
                     return serviceProvider.ResolveNamed(serviceAttribute.ServiceType, fullInstanceName);
                 }
