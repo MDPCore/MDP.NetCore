@@ -64,7 +64,7 @@ public ServiceAttribute(bool singleton = false)
 ### 具名實例
 
 MDP.Hosting裡完成註冊的類別(Class)，在執行階段會參考Config設定生成實例(Instance)。開發人員可以透過Config設定，生成多個實例；而每個實例除了被標記為服務(Service)的Type類型之外，還會被標記為實例(Instance)本身的Name名稱。
-	
+    
 ```
 // 註冊類別
 namespace MyLab.Module
@@ -120,10 +120,10 @@ namespace MyLab.Module
 // 服務注入
 public class HomeController : Controller
 {
-	public HomeController(MessageRepository messageRepository)
-	{
-	    // ...
-	}
+    public HomeController(MessageRepository messageRepository)
+    {
+        // ...
+    }
 }
 
 - 命名空間：MyLab.Module
@@ -138,28 +138,28 @@ Named注入範例：MDP.Hosting生成MessageContext的時候，參考Config設�
 // 註冊類別
 namespace MyLab.Module
 {
-	[Service<MessageContext>(singleton: true)]
-	public class MessageContext
-	{
-		public MessageContext(MessageRepository messageRepository)
-		{
-			// ...
-		}
-	}
+    [Service<MessageContext>(singleton: true)]
+    public class MessageContext
+    {
+        public MessageContext(MessageRepository messageRepository)
+        {
+            // ...
+        }
+    }
 
-	[Service<MessageRepository>()]
-	public class SqlMessageRepository : MessageRepository
-	{
- 	   //...
-	}
+    [Service<MessageRepository>()]
+    public class SqlMessageRepository : MessageRepository
+    {
+        //...
+    }
 }
 
 // Config設定
 {
   "MyLab.Module": {
     "MessageContext": {
-	  "messageRepository": "SqlMessageRepository"
-	},
+      "messageRepository": "SqlMessageRepository"
+    },
     "SqlMessageRepository": {}
   }
 }

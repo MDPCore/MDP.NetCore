@@ -8,7 +8,7 @@ nav_order: 4
 # MDP.Logging.Log4net
 
 MDP.Logging.Log4net擴充.NET Core既有的日誌紀錄，加入Log4net日誌寫入功能。開發人員可以透過Config設定，掛載在執行階段使用的Log4net日誌紀錄。
-
+    
 
 ## 模組使用
 
