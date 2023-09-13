@@ -4,7 +4,7 @@ MDP.Net是一個.NET開發平台，協助開發人員快速建立Web站台、API
 
 - 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
 
-- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/) 
+- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
 
  
 ## 快速開始
@@ -117,7 +117,7 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 ## 版本更新
 
-### MDP.Net 6.1.7
+### MDP.Net 6.1.8
 
 - MDP.Logging.Serilog：加入此模組，提供Serilog日誌服務。
 
