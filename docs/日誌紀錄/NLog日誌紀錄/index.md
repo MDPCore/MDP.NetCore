@@ -167,6 +167,6 @@ namespace WebApplication1
 </html>
 ```
 
-5.執行專案，於專案的log資料夾內可以看到日誌檔案，找到log資料夾就可以看到日誌檔案，日誌檔案中包含透過ILogger所寫入的日誌訊息 Hello World。(透過NLogLogger輸出)
+5.執行專案，於專案的log資料夾裡可以看到日誌檔案，日誌檔案中包含透過ILogger所寫入的日誌訊息 Hello World。(透過NLogLogger輸出)
 
 ![01.執行結果01.png](https://clark159.github.io/MDP.Net/日誌紀錄/NLog日誌紀錄/01.執行結果01.png)
