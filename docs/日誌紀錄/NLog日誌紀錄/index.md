@@ -9,6 +9,10 @@ nav_order: 2
 
 MDP.Logging.NLog擴充.NET Core既有的日誌紀錄，加入NLog日誌寫入功能。開發人員可以透過Config設定，掛載在執行階段使用的NLog日誌紀錄。
 
+- 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
+
+- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
+
 
 ## 模組使用
 
