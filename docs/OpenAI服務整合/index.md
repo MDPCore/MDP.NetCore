@@ -2,7 +2,7 @@
 layout: default
 title: OpenAI服務整合
 parent: null
-nav_order: 9
+nav_order: 21
 has_children: false
 ---
 

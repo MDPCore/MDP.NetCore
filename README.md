@@ -41,13 +41,17 @@ MDP.Net遵循三層式架構，將模組開發切割為：系統展示、領域�
 
 - 資料存取(Accesses)：資料庫的新增修改、遠端服務的呼叫調用...等等的功能邏輯，會被歸類在資料存取。例如，將資料存放到SQL Server、或者是從遠端API取得資料。
 
-MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，依序命名為：
+MDP.Net的模組程式遵循此分層，將每個模組拆解為五種類型的專案，並依序命名為：
 
 - Module001.csproj：領域邏輯專案。
 
-- Module001.WebAPI.csproj：系統展示專案。
+- Module001.Web.csproj：系統展示專案。(前台&API)
 
-- Module001.Accesses.csproj：資料存取專案。
+- Module001.Admin.csproj：系統展示專案。(後台)
+
+- Module001.Mocks.csproj：資料存取專案。(Mocks)
+
+- Module001.Accesses.csproj：資料存取專案。(SQL、REST、Cache)
 
 而在MDP.Net的領域邏輯(Domain)裡，也加入了下列設計，來進一步提升程式開發速度。
 
@@ -74,17 +78,19 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 - MDP.AspNetCore.Authentication
 
-- MDP.AspNetCore.Authentication.AzureAD
-
-- MDP.AspNetCore.Authentication.Facebook
-
-- MDP.AspNetCore.Authentication.GitHub
+- MDP.AspNetCore.Authentication.Line
 
 - MDP.AspNetCore.Authentication.Google
 
-- MDP.AspNetCore.Authentication.Jwt
+- MDP.AspNetCore.Authentication.Facebook
 
-- MDP.AspNetCore.Authentication.Line
+- MDP.AspNetCore.Authentication.AzureAD
+
+- MDP.AspNetCore.Authentication.Microsoft
+
+- MDP.AspNetCore.Authentication.GitHub
+
+- MDP.AspNetCore.Authentication.Jwt
 
 - MDP.AspNetCore.Authentication.Liff
   
@@ -92,7 +98,11 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為三個專案，�
 
 - MDP.AspNetCore.RBAC
 
-- MDP.AspNetCore.RBAC.Azure
+- MDP.AspNetCore.RBAC.Admin
+
+### 後台管理
+
+- MDP.AspNetCore.AdminLTE
 
 ### 網路通訊
 
