@@ -7,7 +7,7 @@ nav_order: 1
 
 # MDP.Logging
 
-MDP.Logging是一個.NET開發模組，協助開發人員快速建立具有日誌紀錄的應用系統。提供NLog、Log4net、Serilog等功能模組，用以簡化開發流程並滿足多變的商業需求。
+MDP.Logging是開源的.NET開發套件，協助開發人員快速建立具有日誌紀錄的應用系統。提供NLog、Log4net、Serilog等功能模組，用以簡化開發流程並滿足多變的商業需求。
 
 - 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
 

@@ -8,7 +8,7 @@ has_children: false
 
 # MDP.Configuration
 
-MDP.Configuration是一個.NET開發模組，協助開發人員快速建立具有參數管理的應用系統。提供參數掛載等功能服務，用以簡化開發流程並滿足多變的商業需求。
+MDP.Configuration是開源的.NET開發套件，協助開發人員快速建立具有參數管理的應用系統。提供參數掛載等功能服務，用以簡化開發流程並滿足多變的商業需求。
 
 - 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
 
