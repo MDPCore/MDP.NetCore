@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 角色授權
-parent: null
+parent: nullX
 nav_order: 7
 has_children: false
 ---
