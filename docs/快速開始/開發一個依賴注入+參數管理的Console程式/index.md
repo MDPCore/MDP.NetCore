@@ -6,6 +6,7 @@ nav_order: 3
 has_children: false
 ---
 
+
 # 開發一個依賴注入+參數管理的Console程式
 
 從零開始，開發一個依賴注入+參數管理的Console程式，是難度不高但繁瑣的工作項目。本篇範例協助開發人員使用MDP.Net，逐步完成必要的設計和實作。

@@ -5,6 +5,7 @@ parent: 日誌紀錄
 nav_order: 1
 ---
 
+
 # MDP.Logging
 
 MDP.Logging是開源的.NET開發套件，協助開發人員快速建立具有日誌紀錄的應用系統。提供NLog、Log4net、Serilog等功能模組，用以簡化開發流程並滿足多變的商業需求。
@@ -29,7 +30,6 @@ MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog
     "NLogLogger": { "ConfigFile" : "nlog.config"}
   }
 }
-
 - 命名空間：Logging
 - 掛載的日誌類別：NLogLogger
 - NLog的設定檔路徑：ConfigFile="nlog.config"。(nlog.config是預設值，可省略)
@@ -38,64 +38,33 @@ MDP.Logging擴充.NET Core既有的日誌紀錄，加入NLog、Log4net、Serilog
 ### 日誌寫入
 
 MDP.Logging擴充.NET Core既有的日誌紀錄，加入ILogger介面來提供日誌寫入功能，並做為抽象層以減少應用程式對於元件、平台、框架的直接依賴。而在系統底層ILogger介面則是由LoggerAdapter物件實作並轉接.NET Core框架內建的日誌寫入功能。
-
-```
-// Logger
-ILogger logger;
-
-// Log
-logger.LogError("Hello World");  
-```
    
-ILogger介面：ILogger介面提供日誌寫入功能。
-
-- 命名空間：
-
 ```
+// 命名空間：
 MDP.Logging
-```
 
-- 類別定義：
-
-```
+// 類別定義：
 public interface ILogger
-
 public interface ILogger<TCategory> : ILogger
-
 - TCategory：寫入日誌的類別(Class)
-```
 
-- 類別方法：
-
-```
-// Debug
+// 類別方法：
 void LogDebug(string message, params object[] args);
-
 void LogDebug(Exception exception, string message, params object[] args);
 
-// Trace
 void LogTrace(string message, params object[] args);
-
 void LogTrace(Exception exception, string message, params object[] args);
 
-// Information
 void LogInformation(string message, params object[] args);
-
 void LogInformation(Exception exception, string message, params object[] args);
 
-// Warning
 void LogWarning(string message, params object[] args);
-
 void LogWarning(Exception exception, string message, params object[] args);
 
-// Error
 void LogError(string message, params object[] args);
-
 void LogError(Exception exception, string message, params object[] args);
 
-// Critical
 void LogCritical(string message, params object[] args);
-
 void LogCritical(Exception exception, string message, params object[] args);
 
 - message：寫入日誌的訊息內容。
@@ -106,9 +75,9 @@ void LogCritical(Exception exception, string message, params object[] args);
 
 ## 模組使用
 
-### 建立專案
+### 加入專案
 
-MDP.Logging預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立包含MDP.Logging模組的專案。
+MDP.Logging預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立加入MDP.Logging模組的專案。
 
 - 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  

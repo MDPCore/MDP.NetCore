@@ -6,6 +6,7 @@ nav_order: 4
 has_children: false
 ---
 
+
 # MDP.Hosting
 
 MDP.Hosting是開源的.NET開發套件，協助開發人員快速建立具有依賴注入的應用系統。提供標籤註冊、具名實例、具名注入等功能服務，用以簡化開發流程並滿足多變的商業需求。
@@ -30,7 +31,6 @@ public class SqlMessageRepository : MessageRepository
 {
   //...
 }
-
 - 註冊的類別(Class)：SqlMessageRepository
 - 註冊為甚麼服務(Service)：MessageRepository
 - 生成為唯一實例(Instance)：singleton=false(false是預設值，可省略)
@@ -38,26 +38,17 @@ public class SqlMessageRepository : MessageRepository
 
 ServiceAttribute標籤：用來宣告註冊的類別(Class)、這個類別註冊為甚麼服務(Service)、以及類別生成的實例(Instance)是否全域唯一。
 
-- 命名空間：
-
 ```
+// 命名空間：
 MDP.Registration
-```
 
-- 類別定義：
-
-```
+// 類別定義：
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class ServiceAttribute<TService> : ServiceAttribute where TService : class
-
 - TService：類別註冊為甚麼服務(Service)。
-```
 
-- 建構函式：
-
-```
+// 建構函式：
 public ServiceAttribute(bool singleton = false)
-
 - singleton：類別生成的實例(Instance)是否全域唯一。(false是預設值，可省略)
 ```
 
@@ -85,7 +76,6 @@ namespace MyLab.Module
     "SqlMessageRepository": { "ConnectionString" : "Database Connection String"}
   }
 }
-
 - 命名空間：MyLab.Module
 - 生成實例：SqlMessageRepository
 - 生成參數：ConnectionString="Database Connection String"
@@ -163,7 +153,6 @@ namespace MyLab.Module
     "SqlMessageRepository": {}
   }
 }
-
 - 命名空間：MyLab.Module
 - 生成實例：SqlMessageRepository
 - 實例Type類型：MessageRepository
@@ -173,9 +162,9 @@ namespace MyLab.Module
 
 ## 模組使用
 
-### 建立專案
+### 加入專案
 
-MDP.Hosting預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立包含MDP.Hosting模組的專案。
+MDP.Hosting預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立加入MDP.Hosting模組的專案。
 
 - 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  
@@ -219,7 +208,6 @@ MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過Config設�
     "SqlMessageRepository": { "ConnectionString" : "Database Connection String"}
   }
 }
-
 - 命名空間：MyLab.Module
 - 生成實例：SqlMessageRepository
 - 生成參數：ConnectionString="Database Connection String"

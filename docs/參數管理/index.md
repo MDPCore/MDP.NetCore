@@ -6,6 +6,7 @@ nav_order: 3
 has_children: false
 ---
 
+
 # MDP.Configuration
 
 MDP.Configuration是開源的.NET開發套件，協助開發人員快速建立具有參數管理的應用系統。提供參數掛載等功能服務，用以簡化開發流程並滿足多變的商業需求。
@@ -65,47 +66,28 @@ EntryDir>\*.{EnvironmentName}.json
 MDP.Configuration擴充.NET Core既有的參數管理，使用.NET Core內建的IConfiguration介面提供參數讀取功能。
 
 ```
-// IConfiguration
-IConfiguration configuration;
-
-// Setting
-var setting = configuration.GetSection("Setting").Get<string>();
-```
-
-IConfiguration介面：IConfiguration介面提供參數讀取功能。
-
-- 命名空間：
-
-```
+// 命名空間：
 Microsoft.Extensions.Configuration
-```
 
-- 類別定義：
-
-```
+// 類別定義：
 public interface IConfiguration
-```
 
-- 類別方法：
-
-```
-// GetSection
+// 類別方法：
 public IConfigurationSection GetSection(string key);
+- key：讀取的參數路徑。
+- IConfigurationSection：回傳值，讀取的參數內容。
 
-- key：讀取的參數路徑
-
-// Get<T>
 public static T? Get<T> (this IConfiguration configuration);
-
-- T：讀取的參數類型
+- T：讀取的參數類型。
+- T?，回傳值，讀取的參數內容。
 ```
 
 
 ## 模組使用
 
-### 建立專案
+### 加入專案
 
-MDP.Configuration預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立包含MDP.Configuration模組的專案。
+MDP.Configuration預設內建在MDP.Net專案範本內，依照下列操作步驟，即可建立加入MDP.Configuration模組的專案。
 
 - 在命令提示字元輸入下列指令，使用MDP.Net專案範本建立專案。
  

@@ -5,6 +5,7 @@ parent: 日誌紀錄
 nav_order: 3
 ---
 
+
 # MDP.Logging.Serilog
 
 MDP.Logging.Serilog擴充.NET Core既有的日誌紀錄，加入Serilog日誌寫入功能。開發人員可以透過Config設定，掛載在執行階段使用的Serilog日誌紀錄。
@@ -16,7 +17,7 @@ MDP.Logging.Serilog擴充.NET Core既有的日誌紀錄，加入Serilog日誌寫
 
 ## 模組使用
 
-### 建立專案
+### 加入專案
 
 MDP.Logging.Serilog預設獨立在MDP.Net專案範本外，依照下列操作步驟，即可建立加入MDP.Logging.Serilog模組的專案。
 
@@ -49,7 +50,6 @@ MDP.Logging.Serilog
     "SerilogLogger": { "ConfigFile" : "serilog.json"}
   }
 }
-
 - 命名空間：Logging
 - 掛載的日誌類別：SerilogLogger
 - Serilog的設定檔路徑：ConfigFile="serilog.json"。(serilog.json是預設值，可省略)
