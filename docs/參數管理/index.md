@@ -140,7 +140,7 @@ namespace WebApplication1
 
 ## 模組範例
 
-專案開發過程，通常需要在開發/測試/正式三個執行環境，讀取不同Config設定檔，用以提供連線字串、功能參數...等等的參數管理。本篇範例協助開發人員使用MDP.Configuration，逐步完成必要的設計和實作。
+在開發/測試/正式三個執行環境，讀取不同Config設定檔，用以提供連線字串、功能參數...等等的參數管理，是開發系統時常見的功能需求。本篇範例協助開發人員使用MDP.Configuration，逐步完成必要的設計和實作。
 
 - 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/參數管理/WebApplication1.zip)
 

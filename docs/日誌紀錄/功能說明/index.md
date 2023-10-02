@@ -116,7 +116,7 @@ namespace WebApplication1
 
 ## 模組範例
 
-專案開發過程，需要將日誌訊息輸出，方便開發人員觀測系統執行狀況。本篇範例協助開發人員使用MDP.Logging，逐步完成必要的設計和實作。
+將日誌訊息輸出到Console視窗，方便開發人員觀測系統執行狀況，是開發系統時常見的功能需求。本篇範例協助開發人員使用MDP.Logging，逐步完成必要的設計和實作。
 
 - 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/WebApplication1.zip)
 
