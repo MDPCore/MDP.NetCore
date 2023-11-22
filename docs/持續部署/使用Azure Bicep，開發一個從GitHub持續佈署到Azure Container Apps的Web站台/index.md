@@ -1,14 +1,16 @@
 ---
 layout: default
-title: 開發一個從GitHub持續佈署到Azure Container Apps的Web站台
+title: 使用Azure Bicep，開發一個從GitHub持續佈署到Azure Container Apps的Web站台
 parent: 持續部署
-nav_order: 1
+nav_order: 2
 ---
 
 
-# 開發一個從GitHub持續佈署到Azure Container Apps的Web站台
+# 使用Azure Bicep，開發一個從GitHub持續佈署到Azure Container Apps的Web站台
 
-程式碼簽入GitHub之後，啟動GitHub Action流程，編譯並部署程式到Azure Container Apps，是開發系統時常見的功能需求。本篇範例協助開發人員使用GitHub與Azure，逐步完成必要的設計和實作。
+程式碼簽入GitHub之後，啟動GitHub Action流程，編譯並部署程式到Azure Container Apps，是開發系統時常見的功能需求。本篇範例協助開發人員使用GitHub與Azure Bicep，逐步完成必要的設計和實作。
+
+- 範例下載：[SleepZone.zip](https://clark159.github.io/MDP.Net/持續部署/使用Azure Bicep，開發一個從GitHub持續佈署到Azure Container Apps的Web站台/SleepZone.zip)
 
 
 ## 操作步驟
@@ -37,17 +39,17 @@ nav_order: 1
 
 ![02.建立Application03.png](https://clark159.github.io/MDP.Net/持續部署/開發一個從GitHub持續佈署到Azure Container Apps的Web站台/02.建立Application03.png)
 
-5.在Cloud Shell視窗，切換至Bash並執行下列指令，以取得「服務主體憑證」。該指令會建立名為sleep-zone-app的應用程式註冊，並授權它為sleep-zone-group資源群組的參與者(Contributor)角色。
+5.在Cloud Shell視窗，切換至Bash並執行下列指令，以取得部署使用的「服務主體憑證」。該指令會建立名為sleep-zone-app-contributor的應用程式註冊，並授權它為sleep-zone-group資源群組的參與者(Contributor)角色。
 
 ```
 az ad sp create-for-rbac \
-    --name "sleep-zone-app" \
-    --role Contributor \
+    --name "sleep-zone-app-contributor" \
+    --role "Contributor" \
     --scopes xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
     --sdk-auth
 	
-- 服務主體名稱：--name "sleep-zone-app"，可自訂，限制使用英文小寫與「-」。
-- 服務主體授權角色：--role Contributor。
+- 服務主體名稱：--name "sleep-zone-app-contributor"，可自訂，限制使用英文小寫與「-」。
+- 服務主體授權角色：--role "Contributor"。
 - 服務主體授權範圍：--scopes xxxxxxxxxxxxxxx。(xxxxx填入先前取得的資源識別碼)
 ```
 
@@ -102,9 +104,10 @@ ENTRYPOINT ["dotnet", "WebApplication1.dll"]
 
 ![04.建立WebApplication03.png](https://clark159.github.io/MDP.Net/持續部署/開發一個從GitHub持續佈署到Azure Container Apps的Web站台/04.建立WebApplication03.png)
 
-10.於本機Repository資料夾裡，建立.github\workflows資料夾，並加入azure-build-deployment.yml。
+10.於本機Repository資料夾裡，建立.github\workflows資料夾，並加入azure-build-deployment.yml、azure-build-deployment.bicep。
 
 ```
+// azure-build-deployment.yml
 {% raw %}
 name: azure-build-deployment
 
@@ -128,30 +131,74 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Checkout GitHub Repository 
+      - name: Checkout GitHub Repository  
         uses: actions/checkout@v4
 
       - name: Deploy AzureContainerRegistry by MDP
-        uses: MDPOps/azure-container-registry-deploy@v1            
+        uses: MDPOps/azure-container-registry-deploy@v1
         with:
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          containerAppsName: ${{ env.CONTAINER_APPS_NAME }}
           dockerFilePath: ${{ env.DOCKER_FILE_PATH }}
+          dockerImageName: ${{ env.CONTAINER_APPS_NAME }}
         id: azure-container-registry-deploy
 
-      - name: Deploy AzureContainerApps by MDP
-        uses: MDPOps/azure-container-apps-deploy@v1            
+      - name: Deploy AzureResourceManager by MDP
+        uses: MDPOps/azure-resource-manager-deploy@v1
         with:
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          containerAppsName: ${{ env.CONTAINER_APPS_NAME }}
-          containerImageName:  ${{ steps.azure-container-registry-deploy.outputs.containerImageName }}
-          containerRegistryName:  ${{ steps.azure-container-registry-deploy.outputs.containerRegistryName }}
-        id: azure-container-apps-deploy
-
+          parameters: >-
+            containerAppName=${{ env.CONTAINER_APPS_NAME }}
+            containerRegistryName=${{ steps.azure-container-registry-deploy.outputs.containerRegistryName }}
+            containerRegistryCredentials=${{ toJson(steps.azure-container-registry-deploy.outputs.containerRegistryCredentials) }}
+        id: azure-resource-manager-deploy     	  
+{% endraw %}
 - Git分支名稱：main，要特別注意Repository裡的分支是 master or main。
 - 資源群組名稱：RESOURCE_GROUP_NAME: sleep-zone-group，Azure資源群組名稱。
 - 容器應用名稱：CONTAINER_APPS_NAME: sleep-zone-app，可自訂，限制使用英文小寫與「-」。
 - Dockerfile路徑：DOCKER_FILE_PATH: ./src/WebApplication1/Dockerfile，路徑區分大小寫，相對於Repository資料夾。
+```
+
+```
+// azure-build-deployment.bicep
+{% raw %}
+// Inputs
+@description('ContainerApp Name')
+param containerAppName string
+
+@description('ContainerRegistry Name')
+param containerRegistryName string 
+
+@description('ContainerRegistry Credentials')
+@secure()
+param containerRegistryCredentials object 
+
+
+// LogAnalyticsWorkspace
+module logAnalyticsWorkspace 'modules/logAnalyticsWorkspace.bicep' =  {
+  name: 'logAnalyticsWorkspace'
+  params: {
+    
+  }
+}
+
+// ContainerAppsEnvironment
+module containerAppsEnvironment 'modules/containerAppsEnvironment.bicep' =  {
+  name: 'containerAppsEnvironment'
+  params: {
+    logAnalyticsWorkspaceName: logAnalyticsWorkspace.outputs.name
+  }
+}
+
+// ContainerApp
+module containerApp 'modules/containerApp.bicep' =  {
+  name: 'containerApp'
+  params: {
+    containerAppName: containerAppName
+    containerAppsEnvironmentName: containerAppsEnvironment.outputs.name
+    containerRegistryName: containerRegistryName
+    containerRegistryCredentials: containerRegistryCredentials 
+  }
+}	  
 {% endraw %}
 ```
 
