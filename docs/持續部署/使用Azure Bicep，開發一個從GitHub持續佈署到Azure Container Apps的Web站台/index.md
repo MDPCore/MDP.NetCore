@@ -151,11 +151,12 @@ jobs:
             containerRegistryName=${{ steps.azure-container-registry-deploy.outputs.containerRegistryName }}
             containerRegistryCredentials=${{ toJson(steps.azure-container-registry-deploy.outputs.containerRegistryCredentials) }}
         id: azure-resource-manager-deploy     	  
-{% endraw %}
+
 - Git分支名稱：main，要特別注意Repository裡的分支是 master or main。
-- 資源群組名稱：RESOURCE_GROUP_NAME: sleep-zone-group，Azure資源群組名稱。
+- 資源群組名稱：RESOURCE_GROUP_NAME: sleep-zone-group，可自訂，限制使用英文小寫與「-」。
 - 容器應用名稱：CONTAINER_APPS_NAME: sleep-zone-app，可自訂，限制使用英文小寫與「-」。
 - Dockerfile路徑：DOCKER_FILE_PATH: ./src/WebApplication1/Dockerfile，路徑區分大小寫，相對於Repository資料夾。
+{% endraw %}
 ```
 
 ```
