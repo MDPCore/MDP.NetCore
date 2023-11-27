@@ -29,7 +29,7 @@ nav_order: 1
 
 ![01.建立ResourceGroup05.png](https://clark159.github.io/MDP.Net/持續部署/使用Azure Portal，開發一個從GitHub持續佈署到Azure Container Apps的Web站台/01.建立ResourceGroup05.png)
 
-3.回到[Azure Portal](https://portal.azure.com/)。於右上角的選單裡，點擊Cloud Shell按鈕後，開啟Cloud Shell視窗。於Cloud Shell視窗，切換至Bash並執行下列指令，用來取得部署使用的「服務主體憑證」。該指令會建立名為sleep-zone-app-contributor的應用程式註冊，並授權它為sleep-zone-group資源群組的參與者(Contributor)角色。
+3.回到[Azure Portal](https://portal.azure.com/)。於右上角的選單裡，點擊Cloud Shell按鈕後，開啟Cloud Shell視窗。於Cloud Shell視窗，切換至Bash並執行下列指令，用來取得部署使用的「服務主體憑證」。該指令會建立名為sleep-zone-app-contributor的應用程式註冊(服務主體)，並授權它為sleep-zone-group資源群組的參與者(Contributor)角色。
 
 ```
 az ad sp create-for-rbac \
@@ -38,9 +38,9 @@ az ad sp create-for-rbac \
     --scopes xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
     --sdk-auth
     
-- 服務主體名稱：--name "sleep-zone-app-contributor"，可自訂，限制使用英文小寫與「-」。
+- 服務主體名稱：--name "sleep-zone-app-contributor"，可自訂。(sleep-zone-app-contributor為持續部署用的服務主體)
 - 服務主體授權角色：--role "Contributor"。
-- 服務主體授權範圍：--scopes xxxxxxxxxxxxxxx。(xxxxx填入先前取得的資源識別碼)
+- 服務主體授權範圍：--scopes xxxxxxxxxxxxxxx。(xxxxx為先前取得的資源群組-資源識別碼)
 ```
 
 ![02.建立Application01.png](https://clark159.github.io/MDP.Net/持續部署/使用Azure Portal，開發一個從GitHub持續佈署到Azure Container Apps的Web站台/02.建立Application01.png)
@@ -70,8 +70,8 @@ az acr import \
     --image sleep-zone-app:latest
     
 - 容器登錄名稱：--name sleepzone。(sleepzone為先前建立的容器登錄名稱)
-- 來源映像名稱：--source mcr.microsoft.com/k8se/quickstart:latest，固定值。(微軟官方的QuickStart映像檔)
-- 目的映像名稱：--image sleep-zone-app:latest，可自訂，格式為image-name:tag-name。(sleep-zone-app為容器應用名稱)
+- 來源映像名稱：--source mcr.microsoft.com/k8se/quickstart:latest，固定值。(QuickStart為微軟官方的映像檔)
+- 容器映像名稱：--image sleep-zone-app:latest，可自訂，限制使用英文小寫與「-」，格式為image-name:tag-name。
 ```
 
 ![03.建立ContainerRegistry06.png](https://clark159.github.io/MDP.Net/持續部署/使用Azure Portal，開發一個從GitHub持續佈署到Azure Container Apps的Web站台/03.建立ContainerRegistry06.png)
@@ -108,6 +108,8 @@ az acr import \
 // 建立Web站台
 dotnet new install MDP.WebApp
 dotnet new MDP.WebApp -n WebApplication1
+
+- 應用程式名稱：WebApplication1，可自訂，限制使用英文大小寫。
 ```
 
 ![06.建立WebApplication01.png](https://clark159.github.io/MDP.Net/持續部署/使用Azure Portal，開發一個從GitHub持續佈署到Azure Container Apps的Web站台/06.建立WebApplication01.png)
@@ -131,6 +133,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "WebApplication1.dll"]
+
+- 應用程式名稱：WebApplication1，可自訂，限制使用英文大小寫。
 ```
 
 ![06.建立WebApplication03.png](https://clark159.github.io/MDP.Net/持續部署/使用Azure Portal，開發一個從GitHub持續佈署到Azure Container Apps的Web站台/06.建立WebApplication03.png)
@@ -138,7 +142,6 @@ ENTRYPOINT ["dotnet", "WebApplication1.dll"]
 12.於本機Repository資料夾裡，建立.github\workflows資料夾，並加入azure-build-deployment.yml。
 
 ```
-// azure-build-deployment.yml
 {% raw %}
 name: azure-build-deployment
 
@@ -183,11 +186,11 @@ jobs:
             --name ${{ env.CONTAINER_APPS_NAME }}
             --resource-group ${{ env.RESOURCE_GROUP_NAME }}
             --image ${{ env.CONTAINER_REGISTRY_NAME }}.azurecr.io/${{ env.CONTAINER_APPS_NAME }}:${{ github.sha }}
-			
+            
 - Git分支名稱：main，要特別注意Repository裡的分支是 master or main。
-- 資源群組名稱：RESOURCE_GROUP_NAME: sleep-zone-group，可自訂，限制使用英文小寫與「-」。
+- 資源群組名稱：RESOURCE_GROUP_NAME: sleep-zone-group。(sleep-zone-group為先前建立的資源群組名稱)
 - 容器應用名稱：CONTAINER_APPS_NAME: sleep-zone-app，可自訂，限制使用英文小寫與「-」。
-- 容器登錄名稱：CONTAINER_REGISTRY_NAME: sleepzone，可自訂，限制使用英文小寫。
+- 容器登錄名稱：CONTAINER_REGISTRY_NAME: sleepzone。(sleepzone為先前建立的容器登錄名稱)
 - Dockerfile路徑：DOCKER_FILE_PATH: ./src/WebApplication1/Dockerfile，路徑區分大小寫，相對於Repository資料夾。
 {% endraw %}
 ```
