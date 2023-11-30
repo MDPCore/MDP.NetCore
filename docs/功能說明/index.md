@@ -77,61 +77,13 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為五種類型的�
 
 ## 模組清單
 
-### 開發工具
+- [MDP.Net](https://github.com/Clark159/MDP.Net)：協助開發人員快速建立Web站台、API服務和Console程式。
 
-- MDP.DevKit.OpenAI 
+- [MDP.AspNetCore.Authentication](https://github.com/Clark159/MDP.AspNetCore.Authentication)：協助開發人員快速建立整合ASP.NET Core身分驗證的應用系統。
 
-- MDP.DevKit.LineMessaging
- 
-### 身分驗證
+- [MDP.DevKit.LineMessaging](https://github.com/Clark159/MDP.DevKit.LineMessaging)：協助開發人員快速建立整合Line訊息服務的應用系統。
 
-- MDP.AspNetCore.Authentication
-
-- MDP.AspNetCore.Authentication.Line
-
-- MDP.AspNetCore.Authentication.Google
-
-- MDP.AspNetCore.Authentication.Facebook
-
-- MDP.AspNetCore.Authentication.AzureAD
-
-- MDP.AspNetCore.Authentication.Microsoft
-
-- MDP.AspNetCore.Authentication.GitHub
-
-- MDP.AspNetCore.Authentication.Jwt
-
-- MDP.AspNetCore.Authentication.Liff
-  
-### 角色授權
-
-- MDP.AspNetCore.RBAC
-
-- MDP.AspNetCore.RBAC.Admin
-
-### 後台管理
-
-- MDP.AspNetCore.AdminLTE
-
-### 網路通訊
-
-- MDP.Network.Http
-
-- MDP.Network.Rest
-  
-### 日誌服務
-  
-- MDP.Logging.Log4net
-
-- MDP.Logging.NLog
-  
-### 資料存取
-
-- MDP.Data.MSSql  
-
-- MDP.Data.MySql
-
-- MDP.Data.Redis
+- [MDP.DevKit.OpenAI](https://github.com/Clark159/MDP.DevKit.OpenAI)：協助開發人員快速建立整合OpenAI智能服務的應用系統。
  
 
 ## 版本更新
