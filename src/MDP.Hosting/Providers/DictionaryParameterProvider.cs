@@ -23,6 +23,8 @@ namespace MDP.Hosting
             _parameterDictionary = new Dictionary<string, object>(parameterDictionary, StringComparer.OrdinalIgnoreCase);
         }
 
+
+        // Methods
         public bool Exists(string parameterName)
         {
             #region Contracts
@@ -50,8 +52,10 @@ namespace MDP.Hosting
             // Require
             if (_parameterDictionary.ContainsKey(parameterName) == false) return null;
 
-            // Get
-            var parameter = Convert.ChangeType(_parameterDictionary[parameterName], parameterType);
+            // Parameter
+            object parameter = _parameterDictionary[parameterName];
+            if (parameter == null) return null;
+            if (parameterType.IsInstanceOfType(parameter) == false) return null;
 
             // Return
             return parameter;
