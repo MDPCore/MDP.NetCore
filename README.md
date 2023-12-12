@@ -79,7 +79,7 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為五種類型的�
 
 ## 版本更新
 
-### MDP.Net 6.1.9
+### MDP.Net 6.1.10
 
 - MDP.Registration：加入ServiceRegistration，簡化Factory註冊服務的步驟。
 
