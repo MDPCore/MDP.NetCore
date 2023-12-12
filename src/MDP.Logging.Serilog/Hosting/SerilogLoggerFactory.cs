@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MDP.Registration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace MDP.Logging.Serilog
 {
-    [MDP.Registration.Factory<IServiceCollection, SerilogLoggerSetting>("Logging", "SerilogLogger")]
-    public class SerilogLoggerFactory
+    public class SerilogLoggerFactory : Factory<IServiceCollection, SerilogLoggerSetting>
     {
+        // Constructors
+        public SerilogLoggerFactory() : base("Logging", "SerilogLogger") { }
+
+
         // Methods
-        public void ConfigureService(IServiceCollection serviceCollection, SerilogLoggerSetting setting)
+        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, SerilogLoggerSetting setting)
         {
             #region Contracts
 
@@ -22,6 +26,9 @@ namespace MDP.Logging.Serilog
 
             // Serilog
             serviceCollection.AddSerilogLogger(setting);
+
+            // Return
+            return null;
         }
     }
 }

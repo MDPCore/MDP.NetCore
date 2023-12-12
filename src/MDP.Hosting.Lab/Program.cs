@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyLab.Module;
 using System;
-using MyLab.Module;
 
 namespace MDP.Hosting.Lab
 {

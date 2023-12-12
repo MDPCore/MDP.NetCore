@@ -6,15 +6,16 @@ using System.Linq;
 
 namespace MDP.Hosting
 {
-    public class FactoryRegister
+    public partial class FactoryRegister
     {
         // Methods
-        public static TContainerBuilder RegisterModule<TContainerBuilder>(TContainerBuilder containerBuilder, IConfiguration configuration) where TContainerBuilder : class
+        public static TContainerBuilder RegisterModule<TContainerBuilder>(TContainerBuilder containerBuilder, IConfiguration configuration, Action<ServiceRegistration> serviceRegister) where TContainerBuilder : class
         {
             #region Contracts
 
             if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+            if (serviceRegister == null) throw new ArgumentException($"{nameof(serviceRegister)}=null");
 
             #endregion
 
@@ -25,95 +26,109 @@ namespace MDP.Hosting
             // FactoryType
             foreach (var factoryType in factoryTypeList)
             {
+                // Require
+                if (factoryType.IsClass == false) continue;
+                if (factoryType.IsPublic == false) continue;
+                if (factoryType.IsAbstract == true) continue;
+                if (factoryType.IsGenericType == true) continue;
+                if (factoryType.FullName.StartsWith("Microsoft") == true) continue;
+                if (factoryType.FullName.StartsWith("System") == true) continue;
+                if (factoryType.IsAssignableTo(typeof(Factory)) == false) continue;
+
+                // FactoryInterface
+                Type factoryInterface = factoryType;
+                while (true)
+                {
+                    // BaseType
+                    factoryInterface = factoryInterface.BaseType;
+                    if (factoryInterface == typeof(object)) factoryInterface = null;
+                    if (factoryInterface == null) break;
+
+                    // Factory
+                    if (factoryInterface.IsGenericType && factoryInterface.GetGenericTypeDefinition() == typeof(Factory<,>))
+                    {
+                        break;
+                    }
+                }
+                if (factoryInterface == null) throw new InvalidOperationException($"{nameof(factoryInterface)}=null");
+
+                // FactoryArguments
+                var factoryArguments = factoryInterface.GetGenericArguments();
+                if (factoryArguments.Length != 2) throw new InvalidOperationException($"{nameof(factoryArguments.Length)}={factoryArguments.Length}");
+                if (factoryArguments[0].IsAssignableFrom(typeof(TContainerBuilder)) == false) continue;
+
+                // SettingType
+                var settingType = factoryArguments[1];
+
+                // Factory
+                var factory = Activator.CreateInstance(factoryType) as Factory;
+                if (factory == null) throw new InvalidOperationException($"{nameof(factory)}=null");
+
+                // FactoryConfig
+                IConfigurationSection factoryConfig = null;
+                if (string.IsNullOrEmpty(factory.ServiceName) == true)
+                {
+                    factoryConfig = FindNamespaceConfig(configuration, factory.ServiceNamespace);
+                }
+                else
+                {
+                    factoryConfig = FindServiceConfig(configuration, factory.ServiceNamespace, factory.ServiceName);
+                }
+                if (factoryConfig == null) continue;
+
+
                 // RegisterFactory
-                RegisterFactory(containerBuilder, configuration, factoryType);
+                RegisterFactory(containerBuilder, factory, settingType, factoryConfig, serviceRegister);
             }
 
             // Return
             return containerBuilder;
         }
 
-        private static void RegisterFactory<TContainerBuilder>(TContainerBuilder containerBuilder, IConfiguration configuration, Type factoryType) where TContainerBuilder : class
+        private static void RegisterFactory<TContainerBuilder>(TContainerBuilder containerBuilder, Factory factory, Type settingType, IConfigurationSection factoryConfig, Action<ServiceRegistration> serviceRegister) where TContainerBuilder : class
         {
             #region Contracts
 
             if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
-            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-            if (factoryType == null) throw new ArgumentException($"{nameof(factoryType)}=null");
-
-            #endregion
-
-            // FactoryAttribute
-            var factoryAttribute = factoryType.GetCustomAttributes(false).Where(attr => attr.GetType().IsGenericType && attr.GetType().GetGenericTypeDefinition() == typeof(FactoryAttribute<,>)).OfType<FactoryAttribute>().FirstOrDefault();
-            if (factoryAttribute == null) return;
-            if (factoryAttribute.BuilderType.IsAssignableFrom(typeof(TContainerBuilder)) == false) return;
-
-            // ServiceName
-            if (string.IsNullOrEmpty(factoryAttribute.ServiceName) == true)
-            {
-                // FactoryConfig
-                var factoryConfig = FindNamespaceConfig(configuration, factoryAttribute.ServiceNamespace);
-                if (factoryConfig == null) return;
-
-                // InvokeFactory
-                InvokeFactory(containerBuilder, factoryType, factoryAttribute, factoryConfig);
-            }
-            else
-            {
-                // FactoryConfigList
-                var factoryConfigList = FindAllServiceConfig(configuration, factoryAttribute.ServiceNamespace);
-                if (factoryConfigList == null) throw new InvalidOperationException($"{nameof(factoryConfigList)}=null");
-
-                // FactoryConfig
-                foreach (var factoryConfig in factoryConfigList)
-                {
-                    if (factoryConfig.Key.StartsWith(factoryAttribute.ServiceName, StringComparison.OrdinalIgnoreCase) == true)
-                    {
-                        // InvokeFactory
-                        InvokeFactory(containerBuilder, factoryType, factoryAttribute, factoryConfig);
-                    }
-                }
-            }
-        }
-
-        private static void InvokeFactory<TContainerBuilder>(TContainerBuilder containerBuilder, Type factoryType, FactoryAttribute factoryAttribute, IConfigurationSection factoryConfig) where TContainerBuilder : class
-        {
-            #region Contracts
-
-            if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
-            if (factoryType == null) throw new ArgumentException($"{nameof(factoryType)}=null");
-            if (factoryAttribute == null) throw new ArgumentException($"{nameof(factoryAttribute)}=null");
+            if (factory == null) throw new ArgumentException($"{nameof(factory)}=null");
+            if (settingType == null) throw new ArgumentException($"{nameof(settingType)}=null");
             if (factoryConfig == null) throw new ArgumentException($"{nameof(factoryConfig)}=null");
+            if (serviceRegister == null) throw new ArgumentException($"{nameof(serviceRegister)}=null");
 
-            #endregion
-
-            // Require
-            if (factoryType.IsAbstract == true) return;
+            #endregion           
 
             // FactoryMethod
-            var ractoryMethod = factoryType.GetMethod("ConfigureService");
-            if (ractoryMethod == null) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
+            var factoryMethod = factory.GetType().GetMethod("ConfigureService");
+            if (factoryMethod == null) throw new InvalidOperationException($"Factory.ConfigureService({typeof(TContainerBuilder)}, {settingType}) not found.");
 
             // ParameterList
-            var parameterList = ractoryMethod.GetParameters();
+            var parameterList = factoryMethod.GetParameters();
             if (parameterList == null) throw new InvalidOperationException($"{nameof(parameterList)}=null");
-            if (parameterList.Length != 2) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
-            if (parameterList[0].ParameterType.IsAssignableFrom(typeof(TContainerBuilder)) == false) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
-            if (parameterList[1].ParameterType.IsAssignableFrom(factoryAttribute.SettingType) == false) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {factoryAttribute.SettingType}) not found.");
-           
+            if (parameterList.Length != 2) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {settingType}) not found.");
+            if (parameterList[0].ParameterType.IsAssignableFrom(typeof(TContainerBuilder)) == false) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {settingType}) not found.");
+            if (parameterList[1].ParameterType.IsAssignableFrom(settingType) == false) throw new InvalidOperationException($"Factory.RegisterService({typeof(TContainerBuilder)}, {settingType}) not found.");
+
             // FactorySetting
-            var factorySetting = Activator.CreateInstance(factoryAttribute.SettingType);
+            var factorySetting = Activator.CreateInstance(settingType);
             if (factorySetting == null) throw new InvalidOperationException($"{nameof(factorySetting)}=null");
             ConfigurationBinder.Bind(factoryConfig, factorySetting);
-
-            // Factory
-            var factory = Activator.CreateInstance(factoryType);
-            if (factory == null) throw new InvalidOperationException($"{nameof(factory)}=null");
-
+                       
             // Invoke
-            ractoryMethod.Invoke(factory, new object[] { containerBuilder, factorySetting });
-        }
+            var serviceRegistrationList =  factoryMethod.Invoke(factory, new object[] { containerBuilder, factorySetting }) as List<ServiceRegistration>;
+            if (serviceRegistrationList == null) return;
+            if (serviceRegistrationList.Count <= 0) return;
 
+            // ServiceRegister
+            foreach (var serviceRegistration in serviceRegistrationList)
+            {
+                serviceRegister(serviceRegistration);
+            }
+        }
+    }
+
+    public partial class FactoryRegister
+    {
+        // Methods
         private static IConfigurationSection FindNamespaceConfig(IConfiguration configuration, string serviceNamespace)
         {
             #region Contracts
@@ -132,26 +147,27 @@ namespace MDP.Hosting
             return namespaceConfig;
         }
 
-        private static List<IConfigurationSection> FindAllServiceConfig(IConfiguration configuration, string serviceNamespace)
+        private static IConfigurationSection FindServiceConfig(IConfiguration configuration, string serviceNamespace, string serviceName)
         {
             #region Contracts
 
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
             if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
+            if (string.IsNullOrEmpty(serviceName) == true) throw new ArgumentException($"{nameof(serviceName)}=null");
 
             #endregion
 
             // NamespaceConfig
             var namespaceConfig = configuration.GetSection(serviceNamespace);
-            if (namespaceConfig == null) return new List<IConfigurationSection>();
-            if (namespaceConfig.Exists() == false) return new List<IConfigurationSection>();
+            if (namespaceConfig == null) return null;
+            if (namespaceConfig.Exists() == false) return null;
 
             // ServiceConfigList
             var serviceConfigList = namespaceConfig.GetChildren();
             if (serviceConfigList == null) throw new InvalidOperationException($"{nameof(serviceConfigList)}=null");
 
             // Return
-            return serviceConfigList.ToList();
+            return serviceConfigList.FirstOrDefault(o => string.Equals(o.Key, serviceName, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

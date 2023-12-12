@@ -1,16 +1,21 @@
 ﻿using MDP.Network.Rest;
+using MDP.Registration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using static MDP.Network.Rest.RestClientFactoryFactory;
 
 namespace MDP.Network.Rest
 {
-    [MDP.Registration.Factory<IServiceCollection, RestClientFactorySetting>("MDP.Network.Rest", "RestClientFactory")]
-    public class RestClientFactoryFactory
+    public class RestClientFactoryFactory : Factory<IServiceCollection, RestClientFactoryFactory.Setting>
     {
+        // Constructors
+        public RestClientFactoryFactory() : base("MDP.Network.Rest", "RestClientFactory") { }
+
+
         // Methods
-        public void ConfigureService(IServiceCollection serviceCollection, RestClientFactorySetting setting)
+        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, Setting setting)
         {
             #region Contracts
 
@@ -21,11 +26,14 @@ namespace MDP.Network.Rest
 
             // RestClientFactory
             serviceCollection.AddRestClientFactory(setting.Endpoints);
+
+            // Return
+            return null;
         }
 
 
         // Class
-        public class RestClientFactorySetting
+        public class Setting
         {
             // Properties
             public Dictionary<string, RestClientEndpoint> Endpoints { get; set; } = null;

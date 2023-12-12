@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MDP.Registration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 
 namespace MDP.Hosting
 {
-    public static class ServiceCollectionExtensions
+    public static partial class ServiceCollectionExtensions
     {
         // Methods
         public static void RegisterTyped(this IServiceCollection serviceCollection, Type serviceType, Func<IServiceProvider, object> resolveAction, bool singleton = false)
@@ -78,6 +81,53 @@ namespace MDP.Hosting
 
             // RegisterNamed
             serviceCollection.RegisterNamed(typeof(TService), instanceName, resolveAction, singleton);
+        }
+    }
+
+    public static partial class ServiceCollectionExtensions
+    {
+        // Methods
+        public static void RegisterModule(this IServiceCollection serviceCollection, IConfiguration configuration)
+        {
+            #region Contracts
+
+            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+
+            #endregion
+
+            // FactoryRegister
+            FactoryRegister.RegisterModule(serviceCollection, configuration, o => serviceCollection.RegisterService(o));
+
+            // ServiceRegister
+            ServiceRegister.RegisterModule(serviceCollection, configuration);
+
+            // DefaultRegister
+            {
+                // List
+                serviceCollection.TryAddTransient(typeof(IList<>), typeof(List<>));
+            }
+        }
+
+        private static void RegisterService(this IServiceCollection serviceCollection, ServiceRegistration serviceRegistration)
+        {
+            #region Contracts
+
+            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
+            if (serviceRegistration == null) throw new ArgumentException($"{nameof(serviceRegistration)}=null");
+
+            #endregion
+
+            // RegisterService
+            ServiceRegister.RegisterService
+            (
+                containerBuilder: serviceCollection,
+                serviceType: serviceRegistration.ServiceType,
+                instanceType: serviceRegistration.InstanceType,
+                instanceName: serviceRegistration.InstanceName,
+                parameters: serviceRegistration.Parameters,
+                singleton: serviceRegistration.Singleton
+            );
         }
     }
 }

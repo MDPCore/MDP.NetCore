@@ -1,17 +1,22 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MDP.Registration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MDP.Registration;
 
 namespace MDP.Logging.Log4net
 {
-    [MDP.Registration.Factory<IServiceCollection, Log4netLoggerSetting>("Logging", "Log4netLogger")]
-    public class Log4netLoggerFactory
+    public class Log4netLoggerFactory : Factory<IServiceCollection, Log4netLoggerSetting>
     {
+        // Constructors
+        public Log4netLoggerFactory() : base("Logging", "Log4netLogger") { }
+
+
         // Methods
-        public void ConfigureService(IServiceCollection serviceCollection, Log4netLoggerSetting setting)
+        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, Log4netLoggerSetting setting)
         {
             #region Contracts
 
@@ -22,6 +27,9 @@ namespace MDP.Logging.Log4net
 
             // Log4net
             serviceCollection.AddLog4netLogger(setting);
+
+            // Return
+            return null;
         }
     }
 }

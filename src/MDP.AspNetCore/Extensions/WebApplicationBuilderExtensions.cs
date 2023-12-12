@@ -1,11 +1,13 @@
 ﻿using MDP.Hosting;
 using MDP.NetCore;
+using MDP.Registration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
@@ -216,6 +218,48 @@ namespace MDP.AspNetCore
 
             // Return
             return webApplicationBuilder;
+        }
+    }
+
+    public static partial class WebApplicationBuilderExtensions
+    {
+        // Methods
+        public static void RegisterModule(this WebApplicationBuilder webApplicationBuilder, IConfiguration configuration)
+        {
+            #region Contracts
+
+            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
+            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
+
+            #endregion
+
+            // FactoryRegister
+            FactoryRegister.RegisterModule(webApplicationBuilder, configuration, o => webApplicationBuilder.RegisterService(o));
+        }
+
+        private static void RegisterService(this WebApplicationBuilder webApplicationBuilder, ServiceRegistration serviceRegistration)
+        {
+            #region Contracts
+
+            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
+            if (serviceRegistration == null) throw new ArgumentException($"{nameof(serviceRegistration)}=null");
+
+            #endregion
+
+            // ConfigureServices
+            webApplicationBuilder.Host.ConfigureServices((context, serviceCollection) =>
+            {
+                // RegisterService
+                ServiceRegister.RegisterService
+                (
+                    containerBuilder: serviceCollection,
+                    serviceType: serviceRegistration.ServiceType,
+                    instanceType: serviceRegistration.InstanceType,
+                    instanceName: serviceRegistration.InstanceName,
+                    parameters: serviceRegistration.Parameters,
+                    singleton: serviceRegistration.Singleton
+                );
+            });
         }
     }
 }

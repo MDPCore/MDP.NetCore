@@ -2,14 +2,18 @@
 using MDP.Registration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 
 namespace MyLab.Module
 {
-    [Factory<IServiceCollection, Setting>("MyLab.Module", "SqlMessageRepository")]
-    public class SqlMessageRepositoryFactory
+    public class SqlMessageRepositoryFactory : Factory<IServiceCollection, SqlMessageRepositoryFactory.Setting>
     {
+        // Constructors
+        public SqlMessageRepositoryFactory() : base("MyLab.Module", "SqlMessageRepository") { }
+
+
         // Methods
-        public void ConfigureService(IServiceCollection builder, Setting setting)
+        public override List<ServiceRegistration> ConfigureService(IServiceCollection builder, Setting setting)
         {
             #region Contracts
 
@@ -18,20 +22,21 @@ namespace MyLab.Module
 
             #endregion
 
-            // RegisterTyped
-            builder.RegisterTyped<MessageRepository>((serviceProvider) =>
+            // SqlMessageRepository
+            var serviceRegistration = new ServiceRegistration()
             {
-                return serviceProvider.ResolveNamed<MessageRepository>("SqlMessageRepository");
-            });
+                ServiceType = typeof(MessageRepository),
+                InstanceType = typeof(SqlMessageRepository),
+                InstanceName = nameof(SqlMessageRepository),
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Message" , setting.Message}
+                },
+                Singleton = false,
+            };
 
-            // RegisterNamed
-            builder.RegisterNamed<MessageRepository>("SqlMessageRepository", (serviceProvider) =>
-            {
-                return new SqlMessageRepository
-                (
-                    message: setting.Message
-                );
-            });            
+            // Return
+            return new List<ServiceRegistration>() { serviceRegistration };
         }
 
 

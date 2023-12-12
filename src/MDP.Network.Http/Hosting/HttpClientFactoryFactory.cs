@@ -1,15 +1,19 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MDP.Registration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace MDP.Network.Http
 {
-    [MDP.Registration.Factory<IServiceCollection, HttpClientFactorySetting>("MDP.Network.Http", "HttpClientFactory")]
-    public class HttpClientFactoryFactory
+    public class HttpClientFactoryFactory: Factory<IServiceCollection, HttpClientFactoryFactory.Setting>
     {
+        // Constructors
+        public HttpClientFactoryFactory() : base("MDP.Network.Http", "HttpClientFactory") { }
+
+
         // Methods
-        public void ConfigureService(IServiceCollection serviceCollection, HttpClientFactorySetting setting)
+        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, Setting setting)
         {
             #region Contracts
 
@@ -20,11 +24,14 @@ namespace MDP.Network.Http
 
             // HttpClientFactory
             serviceCollection.AddHttpClientFactory(setting.Endpoints);
+
+            // Return
+            return null;
         }
 
 
         // Class
-        public class HttpClientFactorySetting
+        public class Setting
         {
             // Properties
             public Dictionary<string, HttpClientEndpoint> Endpoints { get; set; } = null;

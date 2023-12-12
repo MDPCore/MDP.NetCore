@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MDP.Registration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace MDP.Logging.NLog
 {
-    [MDP.Registration.Factory<IServiceCollection, NLogLoggerSetting>("Logging", "NLogLogger")]
-    public class NLogLoggerFactory
+    public class NLogLoggerFactory : Factory<IServiceCollection, NLogLoggerSetting>
     {
+        // Constructors
+        public NLogLoggerFactory() : base("Logging", "NLogLogger") { }
+
+
         // Methods
-        public void ConfigureService(IServiceCollection serviceCollection, NLogLoggerSetting setting)
+        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, NLogLoggerSetting setting)
         {
             #region Contracts
 
@@ -22,6 +26,9 @@ namespace MDP.Logging.NLog
 
             // NLog
             serviceCollection.AddNLogLogger(setting);
+
+            // Return
+            return null;
         }
     }
 }
