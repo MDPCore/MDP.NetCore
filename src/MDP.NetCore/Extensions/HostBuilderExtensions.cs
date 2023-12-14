@@ -48,10 +48,17 @@ namespace MDP.NetCore
             });
 
             // ContainerBuilder
-            hostBuilder.ConfigureServices((context, serviceCollection) =>
+            hostBuilder.ConfigureServices((hostContext, serviceCollection) =>
             {
+                // Environment
+                {
+                    // ApplicationName
+                    var applicationName = hostContext.Configuration["HostEnvironment:ApplicationName"];
+                    if (string.IsNullOrEmpty(applicationName) == false) hostContext.HostingEnvironment.ApplicationName = applicationName;
+                }
+
                 // RegisterModule
-                serviceCollection.RegisterModule(context.Configuration);
+                serviceCollection.RegisterModule(hostContext.Configuration);
 
                 // Logger
                 serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(LoggerAdapter<>));
