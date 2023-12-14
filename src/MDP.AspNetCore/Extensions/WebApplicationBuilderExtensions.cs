@@ -246,20 +246,16 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // ConfigureServices
-            webApplicationBuilder.Host.ConfigureServices((context, serviceCollection) =>
-            {
-                // RegisterService
-                ServiceRegister.RegisterService
-                (
-                    containerBuilder: serviceCollection,
-                    serviceType: serviceRegistration.ServiceType,
-                    instanceType: serviceRegistration.InstanceType,
-                    instanceName: serviceRegistration.InstanceName,
-                    parameters: serviceRegistration.Parameters,
-                    singleton: serviceRegistration.Singleton
-                );
-            });
+            // RegisterService
+            ServiceRegister.RegisterService
+            (
+                containerBuilder: webApplicationBuilder.Services,
+                serviceType: serviceRegistration.ServiceType,
+                instanceType: serviceRegistration.InstanceType,
+                instanceName: serviceRegistration.InstanceName,
+                parameters: serviceRegistration.Parameters,
+                singleton: serviceRegistration.Singleton
+            );
         }
     }
 }
