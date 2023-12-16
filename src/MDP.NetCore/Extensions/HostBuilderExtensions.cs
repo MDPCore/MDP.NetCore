@@ -1,4 +1,5 @@
-﻿using MDP.Configuration;
+﻿using MDP.Application;
+using MDP.Configuration;
 using MDP.Hosting;
 using MDP.Logging;
 using MDP.Tracing;
@@ -50,12 +51,12 @@ namespace MDP.NetCore
             // ContainerBuilder
             hostBuilder.ConfigureServices((hostContext, serviceCollection) =>
             {
-                // Environment
-                {
-                    // ApplicationName
-                    var applicationName = hostContext.Configuration["HostEnvironment:ApplicationName"];
-                    if (string.IsNullOrEmpty(applicationName) == false) hostContext.HostingEnvironment.ApplicationName = applicationName;
-                }
+                // Application
+                var applicationName = string.Empty;
+                if (string.IsNullOrEmpty(applicationName) == true) applicationName = hostContext.Configuration["Environment:ApplicationName"];
+                if (string.IsNullOrEmpty(applicationName) == true) applicationName = hostContext.HostingEnvironment.ApplicationName;
+                if (string.IsNullOrEmpty(applicationName) == true) throw new InvalidOperationException($"{nameof(applicationName)}=null");
+                serviceCollection.AddSingleton(typeof(ApplicationInfo), new ApplicationInfo(applicationName));
 
                 // RegisterModule
                 serviceCollection.RegisterModule(hostContext.Configuration);
