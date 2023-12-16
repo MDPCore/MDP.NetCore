@@ -96,38 +96,20 @@ namespace MDP.Hosting
 
             #endregion
 
-            // FactoryRegister
-            FactoryRegister.RegisterModule(serviceCollection, configuration, o => serviceCollection.RegisterService(o));
-
-            // ServiceRegister
-            ServiceRegister.RegisterModule(serviceCollection, configuration);
-
             // DefaultRegister
             {
                 // List
                 serviceCollection.TryAddTransient(typeof(IList<>), typeof(List<>));
             }
-        }
 
-        private static void RegisterService(this IServiceCollection serviceCollection, ServiceRegistration serviceRegistration)
-        {
-            #region Contracts
+            // ServiceRegister
+            ServiceRegister.RegisterModule(serviceCollection, configuration);
 
-            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (serviceRegistration == null) throw new ArgumentException($"{nameof(serviceRegistration)}=null");
-
-            #endregion
-
-            // RegisterService
-            ServiceRegister.RegisterService
-            (
-                containerBuilder: serviceCollection,
-                serviceType: serviceRegistration.ServiceType,
-                instanceType: serviceRegistration.InstanceType,
-                instanceName: serviceRegistration.InstanceName,
-                parameters: serviceRegistration.Parameters,
-                singleton: serviceRegistration.Singleton
-            );
+            // FactoryRegister
+            FactoryRegister.RegisterModule(serviceCollection, configuration);
+                
+            // ServiceRegistrationRegister
+            ServiceRegistrationRegister.RegisterModule(serviceCollection, typeof(IServiceCollection));
         }
     }
 }

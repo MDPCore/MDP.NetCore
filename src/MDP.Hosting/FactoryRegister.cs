@@ -9,14 +9,13 @@ namespace MDP.Hosting
     public partial class FactoryRegister
     {
         // Methods
-        public static TContainerBuilder RegisterModule<TContainerBuilder>(TContainerBuilder containerBuilder, IConfiguration configuration, Action<ServiceRegistration> serviceRegister) where TContainerBuilder : class
+        public static TContainerBuilder RegisterModule<TContainerBuilder>(TContainerBuilder containerBuilder, IConfiguration configuration) where TContainerBuilder : class
         {
             #region Contracts
 
             if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-            if (serviceRegister == null) throw new ArgumentException($"{nameof(serviceRegister)}=null");
-
+           
             #endregion
 
             // FactoryTypeList
@@ -78,14 +77,14 @@ namespace MDP.Hosting
 
 
                 // RegisterFactory
-                RegisterFactory(containerBuilder, factory, settingType, factoryConfig, serviceRegister);
+                RegisterFactory(containerBuilder, factory, settingType, factoryConfig);
             }
 
             // Return
             return containerBuilder;
         }
 
-        private static void RegisterFactory<TContainerBuilder>(TContainerBuilder containerBuilder, Factory factory, Type settingType, IConfigurationSection factoryConfig, Action<ServiceRegistration> serviceRegister) where TContainerBuilder : class
+        private static void RegisterFactory<TContainerBuilder>(TContainerBuilder containerBuilder, Factory factory, Type settingType, IConfigurationSection factoryConfig) where TContainerBuilder : class
         {
             #region Contracts
 
@@ -93,7 +92,6 @@ namespace MDP.Hosting
             if (factory == null) throw new ArgumentException($"{nameof(factory)}=null");
             if (settingType == null) throw new ArgumentException($"{nameof(settingType)}=null");
             if (factoryConfig == null) throw new ArgumentException($"{nameof(factoryConfig)}=null");
-            if (serviceRegister == null) throw new ArgumentException($"{nameof(serviceRegister)}=null");
 
             #endregion           
 
@@ -112,17 +110,9 @@ namespace MDP.Hosting
             var factorySetting = Activator.CreateInstance(settingType);
             if (factorySetting == null) throw new InvalidOperationException($"{nameof(factorySetting)}=null");
             ConfigurationBinder.Bind(factoryConfig, factorySetting);
-                       
-            // Invoke
-            var serviceRegistrationList =  factoryMethod.Invoke(factory, new object[] { containerBuilder, factorySetting }) as List<ServiceRegistration>;
-            if (serviceRegistrationList == null) return;
-            if (serviceRegistrationList.Count <= 0) return;
 
-            // ServiceRegister
-            foreach (var serviceRegistration in serviceRegistrationList)
-            {
-                serviceRegister(serviceRegistration);
-            }
+            // Invoke
+            factoryMethod.Invoke(factory, new object[] { containerBuilder, factorySetting });
         }
     }
 

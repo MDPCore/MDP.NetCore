@@ -22,18 +22,21 @@ namespace MDP.NetCore
             #endregion
 
             // HostBuilder
-            hostBuilder.AddMDP();
-            hostBuilder.AddProgram<TProgram>();
+            hostBuilder.ConfigureMDP();
+
+            // ContainerBuilder
+            hostBuilder.ConfigureServices((context, serviceCollection) =>
+            {
+                // ProgramService
+                serviceCollection.TryAddTransient<TProgram, TProgram>();
+                serviceCollection.TryAdd(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
+            });
 
             // Return
             return hostBuilder;
         }
-    }
 
-    public static partial class HostBuilderExtensions
-    {
-        // Methods        
-        public static IHostBuilder AddMDP(this IHostBuilder hostBuilder)
+        public static IHostBuilder ConfigureMDP(this IHostBuilder hostBuilder)
         {
             #region Contracts
 
@@ -58,34 +61,14 @@ namespace MDP.NetCore
                 if (string.IsNullOrEmpty(applicationName) == true) throw new InvalidOperationException($"{nameof(applicationName)}=null");
                 serviceCollection.AddSingleton(typeof(ApplicationInfo), new ApplicationInfo(applicationName));
 
-                // RegisterModule
-                serviceCollection.RegisterModule(hostContext.Configuration);
-
                 // Logger
                 serviceCollection.TryAddSingleton(typeof(ILogger<>), typeof(LoggerAdapter<>));
 
                 // Tracer
                 serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(TracerAdapter<>));
-            });
 
-            // Return
-            return hostBuilder;
-        }
-
-        public static IHostBuilder AddProgram<TProgram>(this IHostBuilder hostBuilder) where TProgram : class
-        {
-            #region Contracts
-
-            if (hostBuilder == null) throw new ArgumentException($"{nameof(hostBuilder)}=null");
-
-            #endregion
-
-            // ContainerBuilder
-            hostBuilder.ConfigureServices((context, serviceCollection) =>
-            {
-                // ProgramService
-                serviceCollection.TryAddTransient<TProgram, TProgram>();
-                serviceCollection.TryAdd(ServiceDescriptor.Transient<IHostedService, ProgramService<TProgram>>());
+                // RegisterModule
+                serviceCollection.RegisterModule(hostContext.Configuration);
             });
 
             // Return

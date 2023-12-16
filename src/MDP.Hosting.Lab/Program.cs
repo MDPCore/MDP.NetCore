@@ -16,7 +16,7 @@ namespace MDP.Hosting.Lab
             //var environmentName = "Staging";
             //var environmentName = "Development";
 
-            // ConfigurationBuilder
+            // Configuration
             var configurationBuilder = new ConfigurationBuilder();
             {
                 // Register
@@ -25,17 +25,17 @@ namespace MDP.Hosting.Lab
             var configuration = configurationBuilder.Build();
             if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
 
-            // ContainerBuilder
-            var containerBuilder = new ServiceCollection();
+            // ServiceCollection
+            var serviceCollection = new ServiceCollection();
             {
                 // Register
-                containerBuilder.RegisterModule(configuration);
+                serviceCollection.RegisterModule(configuration);
             }
-            var container = containerBuilder.BuildServiceProvider();
-            if (container == null) throw new InvalidOperationException($"{nameof(container)}=null");
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            if (serviceProvider == null) throw new InvalidOperationException($"{nameof(serviceProvider)}=null");
 
             // Resolve
-            var messageContext = container.ResolveTyped<MessageContext>();
+            var messageContext = serviceProvider.ResolveTyped<MessageContext>();
             if (messageContext == null) throw new InvalidOperationException($"{nameof(messageContext)}=null");
 
             // Display

@@ -15,7 +15,7 @@ namespace MDP.Logging.NLog
 
 
         // Methods
-        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, NLogLoggerSetting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, NLogLoggerSetting setting)
         {
             #region Contracts
 
@@ -26,9 +26,6 @@ namespace MDP.Logging.NLog
 
             // NLog
             serviceCollection.AddNLogLogger(setting);
-
-            // Return
-            return null;
         }
     }
 }

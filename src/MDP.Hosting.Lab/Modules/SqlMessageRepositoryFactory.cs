@@ -13,18 +13,19 @@ namespace MyLab.Module
 
 
         // Methods
-        public override List<ServiceRegistration> ConfigureService(IServiceCollection builder, Setting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, Setting setting)
         {
             #region Contracts
 
-            if (builder == null) throw new ArgumentException($"{nameof(builder)}=null");
+            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
             if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
 
             #endregion
 
             // SqlMessageRepository
-            var serviceRegistration = new ServiceRegistration()
+            serviceCollection.AddSingleton(new ServiceRegistration()
             {
+                BuilderType = typeof(IServiceCollection),
                 ServiceType = typeof(MessageRepository),
                 InstanceType = typeof(SqlMessageRepository),
                 InstanceName = nameof(SqlMessageRepository),
@@ -33,10 +34,7 @@ namespace MyLab.Module
                     { "Message" , setting.Message}
                 },
                 Singleton = false,
-            };
-
-            // Return
-            return new List<ServiceRegistration>() { serviceRegistration };
+            });
         }
 
 

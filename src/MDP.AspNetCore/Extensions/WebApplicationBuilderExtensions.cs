@@ -22,21 +22,32 @@ namespace MDP.AspNetCore
     public static partial class WebApplicationBuilderExtensions
     {
         // Methods
-        public static WebApplicationBuilder ConfigureMDP(this WebApplicationBuilder webApplicationBuilder)
+        public static WebApplicationBuilder ConfigureMDP(this WebApplicationBuilder applicationBuilder)
         {
             #region Contracts
 
-            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
+            if (applicationBuilder == null) throw new ArgumentException($"{nameof(applicationBuilder)}=null");
 
             #endregion
 
+            // HostBuilder
+            applicationBuilder.Host.ConfigureMDP();
+
             // WebApplicationBuilder
-            webApplicationBuilder.AddMDP();
-            webApplicationBuilder.AddProblemDetails();
+            {
+                // RegisterModule
+                applicationBuilder.RegisterModule(applicationBuilder.Configuration);
+
+                // ProblemDetails
+                applicationBuilder.AddProblemDetails();
+            }
 
             // MvcBuilder
-            var mvcBuilder = webApplicationBuilder.Services.AddMvc();
+            var mvcBuilder = applicationBuilder.Services.AddMvc();
             {
+                // RegisterModule
+                MvcRegister.RegisterModule(mvcBuilder);
+
                 // MvcOptions
                 mvcBuilder.AddMvcOptions((options) =>
                 {
@@ -88,7 +99,7 @@ namespace MDP.AspNetCore
             }
 
             // Return
-            return webApplicationBuilder;
+            return applicationBuilder;
         }
 
 
@@ -192,70 +203,20 @@ namespace MDP.AspNetCore
     public static partial class WebApplicationBuilderExtensions
     {
         // Methods
-        public static WebApplicationBuilder AddMDP(this WebApplicationBuilder webApplicationBuilder)
+        public static void RegisterModule(this WebApplicationBuilder applicationBuilder, IConfiguration configuration)
         {
             #region Contracts
 
-            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
-
-            #endregion
-
-            // ContainerBuilder
-            {
-                // Base
-                webApplicationBuilder.Host.AddMDP();
-
-                // RegisterModule
-                webApplicationBuilder.RegisterModule(webApplicationBuilder.Configuration);
-            }
-
-            // MvcBuilder
-            var mvcBuilder = webApplicationBuilder.Services.AddMvc();
-            {
-                // RegisterModule
-                MvcRegister.RegisterModule(mvcBuilder);
-            }
-
-            // Return
-            return webApplicationBuilder;
-        }
-    }
-
-    public static partial class WebApplicationBuilderExtensions
-    {
-        // Methods
-        public static void RegisterModule(this WebApplicationBuilder webApplicationBuilder, IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
+            if (applicationBuilder == null) throw new ArgumentException($"{nameof(applicationBuilder)}=null");
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
 
             #endregion
 
             // FactoryRegister
-            FactoryRegister.RegisterModule(webApplicationBuilder, configuration, o => webApplicationBuilder.RegisterService(o));
-        }
+            FactoryRegister.RegisterModule(applicationBuilder, configuration);
 
-        private static void RegisterService(this WebApplicationBuilder webApplicationBuilder, ServiceRegistration serviceRegistration)
-        {
-            #region Contracts
-
-            if (webApplicationBuilder == null) throw new ArgumentException($"{nameof(webApplicationBuilder)}=null");
-            if (serviceRegistration == null) throw new ArgumentException($"{nameof(serviceRegistration)}=null");
-
-            #endregion
-
-            // RegisterService
-            ServiceRegister.RegisterService
-            (
-                containerBuilder: webApplicationBuilder.Services,
-                serviceType: serviceRegistration.ServiceType,
-                instanceType: serviceRegistration.InstanceType,
-                instanceName: serviceRegistration.InstanceName,
-                parameters: serviceRegistration.Parameters,
-                singleton: serviceRegistration.Singleton
-            );
+            // ServiceRegistrationRegister
+            ServiceRegistrationRegister.RegisterModule(applicationBuilder.Services, typeof(WebApplicationBuilder));
         }
     }
 }

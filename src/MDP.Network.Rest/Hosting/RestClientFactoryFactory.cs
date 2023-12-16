@@ -15,7 +15,7 @@ namespace MDP.Network.Rest
 
 
         // Methods
-        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, Setting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, Setting setting)
         {
             #region Contracts
 
@@ -26,9 +26,6 @@ namespace MDP.Network.Rest
 
             // RestClientFactory
             serviceCollection.AddRestClientFactory(setting.Endpoints);
-
-            // Return
-            return null;
         }
 
 

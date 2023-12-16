@@ -9,6 +9,8 @@ namespace MDP.Registration
     public class ServiceRegistration
     {
         // Properties
+        public Type BuilderType { get; set; } 
+
         public Type ServiceType { get; set; }
 
         public Type InstanceType { get; set; }

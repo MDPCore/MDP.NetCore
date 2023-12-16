@@ -10,11 +10,11 @@ namespace MDP.Hosting
     public partial class ServiceRegister
     {
         // Methods
-        public static IServiceCollection RegisterModule(IServiceCollection containerBuilder, IConfiguration configuration)
+        public static IServiceCollection RegisterModule(IServiceCollection serviceCollection, IConfiguration configuration)
         {
             #region Contracts
 
-            if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
+            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
 
             #endregion
@@ -63,7 +63,7 @@ namespace MDP.Hosting
                     // RegisterService
                     ServiceRegister.RegisterService
                     (
-                        containerBuilder: containerBuilder,
+                        serviceCollection: serviceCollection,
                         serviceType: serviceAttribute.ServiceType,
                         instanceType: instanceType,
                         instanceName: instanceName,
@@ -74,14 +74,14 @@ namespace MDP.Hosting
             }
 
             // Return
-            return containerBuilder;
+            return serviceCollection;
         }
 
-        public static void RegisterService(IServiceCollection containerBuilder, Type serviceType, Type instanceType, string instanceName, IConfigurationSection instanceConfig, bool singleton)
+        public static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, IConfigurationSection instanceConfig, bool singleton)
         {
             #region Contracts
 
-            if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
+            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
             if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
             if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
             if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
@@ -92,7 +92,7 @@ namespace MDP.Hosting
             // RegisterService
             ServiceRegister.RegisterService
             (
-                containerBuilder: containerBuilder,
+                serviceCollection: serviceCollection,
                 serviceType: serviceType,
                 instanceType: instanceType,
                 instanceName: instanceName,
@@ -101,11 +101,11 @@ namespace MDP.Hosting
             );
         }
 
-        public static void RegisterService(IServiceCollection containerBuilder, Type serviceType, Type instanceType, string instanceName, Dictionary<string, object> parameters, bool singleton)
+        public static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, Dictionary<string, object> parameters, bool singleton)
         {
             #region Contracts
 
-            if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
+            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
             if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
             if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
             if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
@@ -116,7 +116,7 @@ namespace MDP.Hosting
             // RegisterService
             ServiceRegister.RegisterService
             (
-                containerBuilder: containerBuilder,
+                serviceCollection: serviceCollection,
                 serviceType: serviceType,
                 instanceType: instanceType,
                 instanceName: instanceName,
@@ -125,11 +125,11 @@ namespace MDP.Hosting
             );
         }
 
-        private static void RegisterService(IServiceCollection containerBuilder, Type serviceType, Type instanceType, string instanceName, ParameterProvider parameterProvider, bool singleton)
+        private static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, ParameterProvider parameterProvider, bool singleton)
         {
             #region Contracts
 
-            if (containerBuilder == null) throw new ArgumentException($"{nameof(containerBuilder)}=null");
+            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
             if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
             if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
             if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
@@ -145,21 +145,21 @@ namespace MDP.Hosting
             if (string.IsNullOrEmpty(fullInstanceName) == true) throw new InvalidOperationException($"{nameof(fullInstanceName)}=null");
 
             // RegisterTyped: ServiceType
-            containerBuilder.RegisterTyped(serviceType, (serviceProvider) =>
+            serviceCollection.RegisterTyped(serviceType, (serviceProvider) =>
             {
                 return serviceProvider.ResolveNamed(serviceType, fullInstanceName);
             }
             , singleton);
 
             // RegisterNamed: InstanceName
-            containerBuilder.RegisterNamed(serviceType, instanceName, (serviceProvider) =>
+            serviceCollection.RegisterNamed(serviceType, instanceName, (serviceProvider) =>
             {
                 return serviceProvider.ResolveNamed(serviceType, fullInstanceName);
             }
             , singleton);
 
             // RegisterNamed: FullInstanceName
-            containerBuilder.RegisterNamed(serviceType, fullInstanceName, (serviceProvider) =>
+            serviceCollection.RegisterNamed(serviceType, fullInstanceName, (serviceProvider) =>
             {
                 return ServiceActivator.CreateInstance(instanceType, parameterProvider, serviceProvider);
             }

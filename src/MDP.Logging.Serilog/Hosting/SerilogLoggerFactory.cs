@@ -15,7 +15,7 @@ namespace MDP.Logging.Serilog
 
 
         // Methods
-        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, SerilogLoggerSetting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, SerilogLoggerSetting setting)
         {
             #region Contracts
 
@@ -26,9 +26,6 @@ namespace MDP.Logging.Serilog
 
             // Serilog
             serviceCollection.AddSerilogLogger(setting);
-
-            // Return
-            return null;
         }
     }
 }

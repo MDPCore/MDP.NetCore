@@ -38,6 +38,6 @@ namespace MDP.Registration
 
 
         // Methods
-        public abstract List<ServiceRegistration> ConfigureService(TBuilder TBuilder, TSetting setting);
+        public abstract void ConfigureService(TBuilder builder, TSetting setting);
     }
 }

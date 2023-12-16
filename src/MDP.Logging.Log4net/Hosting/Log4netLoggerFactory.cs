@@ -2,10 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MDP.Registration;
 
 namespace MDP.Logging.Log4net
 {
@@ -16,7 +12,7 @@ namespace MDP.Logging.Log4net
 
 
         // Methods
-        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, Log4netLoggerSetting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, Log4netLoggerSetting setting)
         {
             #region Contracts
 
@@ -27,9 +23,6 @@ namespace MDP.Logging.Log4net
 
             // Log4net
             serviceCollection.AddLog4netLogger(setting);
-
-            // Return
-            return null;
         }
     }
 }

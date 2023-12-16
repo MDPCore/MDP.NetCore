@@ -13,7 +13,7 @@ namespace MDP.Network.Http
 
 
         // Methods
-        public override List<ServiceRegistration> ConfigureService(IServiceCollection serviceCollection, Setting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, Setting setting)
         {
             #region Contracts
 
@@ -24,9 +24,6 @@ namespace MDP.Network.Http
 
             // HttpClientFactory
             serviceCollection.AddHttpClientFactory(setting.Endpoints);
-
-            // Return
-            return null;
         }
 
 
