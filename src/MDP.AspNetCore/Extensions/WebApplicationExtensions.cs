@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MDP.NetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace MDP.AspNetCore
             // Network 
             webApplication.UsePathBase();
             webApplication.UsePathDefault();
+            webApplication.UseForwardedHeaders();
 
             // Security
             webApplication.UseHsts();
