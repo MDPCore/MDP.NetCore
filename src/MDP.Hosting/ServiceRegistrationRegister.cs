@@ -9,15 +9,14 @@ using System.Threading.Tasks;
 
 namespace MDP.Hosting
 {
-    public class ServiceRegistrationRegister
+    public partial class ServiceRegistrationRegister
     {
         // Methods
-        public static IServiceCollection RegisterModule(IServiceCollection serviceCollection, Type builderType)
+        public static IServiceCollection RegisterModule(IServiceCollection serviceCollection)
         {
             #region Contracts
 
             if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (builderType == null) throw new ArgumentException($"{nameof(builderType)}=null");
 
             #endregion
 
@@ -29,25 +28,23 @@ namespace MDP.Hosting
             var serviceRegistrationList = serviceProvider.GetService<IList<ServiceRegistration>>();
             if (serviceRegistrationList == null) throw new InvalidOperationException($"{nameof(serviceRegistrationList)}=null");
 
-            // RegisterService
+            // ServiceRegistration
             foreach (var serviceRegistration in serviceRegistrationList)
             {
                 // Require
-                if (serviceRegistration.BuilderType == null) throw new InvalidOperationException($"{nameof(serviceRegistration.BuilderType)}=null");
                 if (serviceRegistration.ServiceType == null) throw new InvalidOperationException($"{nameof(serviceRegistration.ServiceType)}=null");
                 if (serviceRegistration.InstanceType == null) throw new InvalidOperationException($"{nameof(serviceRegistration.InstanceType)}=null");
                 if (string.IsNullOrEmpty(serviceRegistration.InstanceName) == true) throw new InvalidOperationException($"{nameof(serviceRegistration.InstanceName)}=null");
                 if (serviceRegistration.Parameters == null) throw new InvalidOperationException($"{nameof(serviceRegistration.Parameters)}=null");
-                if (serviceRegistration.BuilderType != builderType) continue;
 
-                // Register
-                ServiceRegister.RegisterService
+                // RegisterService
+                ServiceAttributeRegister.RegisterService
                 (
                     serviceCollection: serviceCollection,
                     serviceType: serviceRegistration.ServiceType,
                     instanceType: serviceRegistration.InstanceType,
                     instanceName: serviceRegistration.InstanceName,
-                    parameters: serviceRegistration.Parameters,
+                    parameterProvider: new DictionaryParameterProvider(serviceRegistration.Parameters),
                     singleton: serviceRegistration.Singleton
                 );
             }

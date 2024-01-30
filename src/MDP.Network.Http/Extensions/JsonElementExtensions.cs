@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MDP.Network.Rest
+namespace System.Net.Http
 {
     public static class JsonElementExtensions
     {

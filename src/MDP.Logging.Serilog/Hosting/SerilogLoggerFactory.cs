@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MDP.Logging.Serilog
 {
-    public class SerilogLoggerFactory : Factory<IServiceCollection, SerilogLoggerSetting>
+    public class SerilogLoggerFactory : ServiceFactory<IServiceCollection, SerilogLoggerSetting>
     {
         // Constructors
         public SerilogLoggerFactory() : base("Logging", "SerilogLogger") { }

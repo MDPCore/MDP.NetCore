@@ -15,18 +15,6 @@ namespace MDP.Network.Http
 
         public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
-
-        // Methods
-        public HttpClientEndpoint Clone()
-        {
-            // Create
-            var endpoint = new HttpClientEndpoint();
-            endpoint.Name = this.Name;
-            endpoint.BaseAddress = this.BaseAddress;
-            endpoint.Headers = new Dictionary<string, string>(this.Headers);
-
-            // Return
-            return endpoint;
-        }
+        public List<string> Handlers { get; set; } = new List<string>();
     }
 }

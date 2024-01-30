@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MDP.Hosting
+namespace CLK.ComponentModel
 {
-    public static class ServiceProviderExtensions
+    public static partial class NamedServiceProvider
     {
         // Methods
         public static TService ResolveTyped<TService>(this IServiceProvider serviceProvider)
@@ -23,25 +23,6 @@ namespace MDP.Hosting
             return instance;
         }
 
-        public static TService ResolveNamed<TService>(this IServiceProvider serviceProvider, string instanceName)
-            where TService : class
-        {
-            #region Contracts
-
-            if (serviceProvider == null) throw new ArgumentException($"{nameof(serviceProvider)}=null");
-            if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
-
-            #endregion
-
-            // ResolveNamed
-            var instance =  serviceProvider.ResolveNamed(typeof(TService), instanceName) as TService;
-            if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
-
-            // Return
-            return instance;
-        }
-
-
         public static object ResolveTyped(this IServiceProvider serviceProvider, Type serviceType)
         {
             #region Contracts
@@ -56,6 +37,48 @@ namespace MDP.Hosting
 
             // ResolveTyped
             serviceProvider.TryResolveTyped(serviceType, out instance);
+            if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
+
+            // Return
+            return instance;
+        }
+
+        public static bool TryResolveTyped(this IServiceProvider serviceProvider, Type serviceType, out object instance)
+        {
+            #region Contracts
+
+            if (serviceProvider == null) throw new ArgumentException($"{nameof(serviceProvider)}=null");
+            if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
+
+            #endregion
+
+            // Result
+            instance = null;
+
+            // Resolve
+            instance = serviceProvider.GetService(serviceType);
+            if (instance == null) return false;
+
+            // Return
+            return true;
+        }
+    }
+
+    public static partial class NamedServiceProvider
+    {
+        // Methods
+        public static TService ResolveNamed<TService>(this IServiceProvider serviceProvider, string instanceName)
+            where TService : class
+        {
+            #region Contracts
+
+            if (serviceProvider == null) throw new ArgumentException($"{nameof(serviceProvider)}=null");
+            if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
+
+            #endregion
+
+            // ResolveNamed
+            var instance = serviceProvider.ResolveNamed(typeof(TService), instanceName) as TService;
             if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
 
             // Return
@@ -82,28 +105,7 @@ namespace MDP.Hosting
             // Return
             return instance;
         }
-
-
-        public static bool TryResolveTyped(this IServiceProvider serviceProvider, Type serviceType, out object instance)
-        {
-            #region Contracts
-
-            if (serviceProvider == null) throw new ArgumentException($"{nameof(serviceProvider)}=null");
-            if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
-
-            #endregion
-
-            // Result
-            instance = null;
-
-            // Resolve
-            instance = serviceProvider.GetService(serviceType);
-            if(instance==null) return false;
-
-            // Return
-            return true;
-        }
-
+                
         public static bool TryResolveNamed(this IServiceProvider serviceProvider, Type serviceType, string instanceName, out object instance)
         {
             #region Contracts
@@ -118,7 +120,7 @@ namespace MDP.Hosting
             instance = null;
 
             // ServiceBuilderList
-            var serviceBuilderList = serviceProvider.GetService(typeof(IEnumerable<>).MakeGenericType(typeof(ServiceBuilder<>).MakeGenericType(serviceType))) as IEnumerable<ServiceBuilder>;
+            var serviceBuilderList = serviceProvider.GetService(typeof(IEnumerable<>).MakeGenericType(typeof(NamedServiceBuilder<>).MakeGenericType(serviceType))) as IEnumerable<NamedServiceBuilder>;
             if (serviceBuilderList == null) throw new InvalidOperationException($"{nameof(serviceBuilderList)}=null");
 
             // Resolve

@@ -1,4 +1,5 @@
 ﻿using MDP.Configuration;
+using CLK.ComponentModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyLab.Module;

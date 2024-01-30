@@ -16,7 +16,10 @@ namespace MDP.Network.Http.Lab
             #endregion
 
             // HttpClient
-            using (var httpClient = httpClientFactory.CreateClient("DefaultService"))
+            var httpClient = httpClientFactory.CreateClient("DefaultService");
+            if (httpClient == null) throw new InvalidOperationException($"{nameof(httpClient)}=null");
+
+            // SendAsync
             {
                 // RequestMessage
                 var requestMessage = new HttpRequestMessage(HttpMethod.Get, "get");
@@ -36,7 +39,17 @@ namespace MDP.Network.Http.Lab
 
                 // Display
                 Console.WriteLine(responseContentString);
-            }                
+            }
+
+            // GetAsync<string>
+            {
+                // ResultModel
+                var resultModel = await httpClient.GetAsync<string>("get");
+                if (string.IsNullOrEmpty(resultModel) == true) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+
+                // Display
+                Console.WriteLine(resultModel);
+            }
         }
 
         public static void Main(string[] args)

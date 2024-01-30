@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MDP.Logging.NLog
 {
-    public class NLogLoggerFactory : Factory<IServiceCollection, NLogLoggerSetting>
+    public class NLogLoggerFactory : ServiceFactory<IServiceCollection, NLogLoggerSetting>
     {
         // Constructors
         public NLogLoggerFactory() : base("Logging", "NLogLogger") { }

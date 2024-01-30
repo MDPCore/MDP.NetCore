@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MDP.Logging.Log4net
 {
-    public class Log4netLoggerFactory : Factory<IServiceCollection, Log4netLoggerSetting>
+    public class Log4netLoggerFactory : ServiceFactory<IServiceCollection, Log4netLoggerSetting>
     {
         // Constructors
         public Log4netLoggerFactory() : base("Logging", "Log4netLogger") { }

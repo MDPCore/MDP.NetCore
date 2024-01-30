@@ -220,11 +220,8 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // FactoryRegister
-            FactoryRegister.RegisterModule(applicationBuilder, configuration);
-
-            // ServiceRegistrationRegister
-            ServiceRegistrationRegister.RegisterModule(applicationBuilder.Services, typeof(WebApplicationBuilder));
+            // ServiceFactoryRegister
+            ServiceFactoryRegister.RegisterModule(applicationBuilder, configuration);
         }
     }
 }

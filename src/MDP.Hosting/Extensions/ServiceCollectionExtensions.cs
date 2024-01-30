@@ -1,4 +1,5 @@
-﻿using MDP.Registration;
+﻿using CLK.ComponentModel;
+using MDP.Registration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -45,8 +46,11 @@ namespace MDP.Hosting
             // RegisterTyped
             serviceCollection.RegisterTyped(typeof(TService), resolveAction, singleton);
         }
+    }
 
-
+    public static partial class ServiceCollectionExtensions
+    {
+        // Methods
         public static void RegisterNamed(this IServiceCollection serviceCollection, Type serviceType, string instanceName, Func<IServiceProvider, object> resolveAction, bool singleton = false)
         {
             #region Contracts
@@ -58,14 +62,19 @@ namespace MDP.Hosting
 
             #endregion
 
-            // ServiceBuilderType
-            var serviceBuilderType = typeof(ServiceBuilder<>).MakeGenericType(serviceType);
-            if (serviceBuilderType == null) throw new InvalidOperationException($"{nameof(serviceBuilderType)}=null");
+            // NamedServiceBuilder
+            var namedServiceBuilderType = typeof(NamedServiceBuilder<>).MakeGenericType(serviceType);
+            if (namedServiceBuilderType == null) throw new InvalidOperationException($"{nameof(namedServiceBuilderType)}=null");
 
             // RegisterTyped
-            serviceCollection.RegisterTyped(serviceBuilderType, (serviceProvider) =>
+            serviceCollection.RegisterTyped(namedServiceBuilderType, (serviceProvider) =>
             {
-                return ServiceActivator.CreateInstance(serviceBuilderType, new List<object>() { instanceName, resolveAction });
+                // NamedServiceBuilder
+                var namedServiceBuilder = Activator.CreateInstance(namedServiceBuilderType, new object[] { instanceName, resolveAction });
+                if (namedServiceBuilder == null) throw new InvalidOperationException($"{nameof(namedServiceBuilder)}=null");
+
+                // Return
+                return namedServiceBuilder;
             }, singleton);
         }
 
@@ -102,14 +111,51 @@ namespace MDP.Hosting
                 serviceCollection.TryAddTransient(typeof(IList<>), typeof(List<>));
             }
 
-            // ServiceRegister
-            ServiceRegister.RegisterModule(serviceCollection, configuration);
+            // ServiceFactoryRegister
+            ServiceFactoryRegister.RegisterModule(serviceCollection, configuration);
+            ServiceFactoryRegister.RegisterModule(new ServiceCollectionBuilder(serviceCollection), configuration);
 
-            // FactoryRegister
-            FactoryRegister.RegisterModule(serviceCollection, configuration);
-                
+            // ServiceAttributeRegister
+            ServiceAttributeRegister.RegisterModule(serviceCollection, configuration);            
+
             // ServiceRegistrationRegister
-            ServiceRegistrationRegister.RegisterModule(serviceCollection, typeof(IServiceCollection));
+            ServiceRegistrationRegister.RegisterModule(serviceCollection);
+        }
+
+
+        // Class
+        private class ServiceCollectionBuilder : ServiceBuilder
+        {
+            // Fields
+            private readonly IServiceCollection _serviceCollection = null;
+
+
+            // Constructors
+            public ServiceCollectionBuilder(IServiceCollection serviceCollection)
+            {
+                #region Contracts
+
+                if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
+
+                #endregion
+
+                // Default
+                _serviceCollection = serviceCollection;
+            }
+
+
+            // Methods
+            public void Add(ServiceRegistration serviceRegistration)
+            {
+                #region Contracts
+
+                if (serviceRegistration == null) throw new ArgumentException($"{nameof(serviceRegistration)}=null");
+
+                #endregion
+
+                // Register
+                _serviceCollection.AddSingleton(serviceRegistration);
+            }
         }
     }
 }

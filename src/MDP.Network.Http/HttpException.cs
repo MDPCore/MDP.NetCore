@@ -6,12 +6,12 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MDP.Network.Rest
+namespace MDP.Network.Http
 {
-    public class RestException<TErrorModel> : Exception where TErrorModel : class
+    public class HttpException<TErrorModel> : Exception where TErrorModel : class
     {
         // Constructors
-        public RestException(HttpStatusCode statusCode, string message, TErrorModel model) : base(message)        
+        public HttpException(HttpStatusCode statusCode, string message, TErrorModel model) : base(message)
         {
             // Default
             this.StatusCode = statusCode;
@@ -30,7 +30,7 @@ namespace MDP.Network.Rest
         {
             // MessageBuilder
             var messageBuilder = new StringBuilder();
-                    
+
             // Base
             messageBuilder.AppendLine(base.ToString() ?? string.Empty);
 

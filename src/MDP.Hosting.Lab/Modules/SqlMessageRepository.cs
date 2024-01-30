@@ -1,6 +1,5 @@
 ﻿namespace MyLab.Module
 {
-    //[MDP.Registration.Service<MessageRepository>()]
     public class SqlMessageRepository : MessageRepository
     {
         // Fields

@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace MDP.Network.Http
 {
-    public class HttpClientFactoryFactory: Factory<IServiceCollection, HttpClientFactoryFactory.Setting>
+    public class HttpClientFactoryFactory: ServiceFactory<IServiceCollection, HttpClientFactoryFactory.Setting>
     {
         // Constructors
         public HttpClientFactoryFactory() : base("MDP.Network.Http", "HttpClientFactory") { }

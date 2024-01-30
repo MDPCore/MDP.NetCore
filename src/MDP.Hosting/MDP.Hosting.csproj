@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CLK.Reflection\CLK.Reflection.csproj" />
+    <ProjectReference Include="..\CLK.ComponentModel\CLK.ComponentModel.csproj" />
     <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
   </ItemGroup>
 

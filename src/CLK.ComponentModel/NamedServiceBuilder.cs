@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace MDP.Hosting
+namespace CLK.ComponentModel
 {
-    internal abstract partial class ServiceBuilder
+    public interface NamedServiceBuilder
     {
         // Properties
-        public abstract string InstanceName { get; }
+        string InstanceName { get; }
 
 
         // Methods
-        public abstract object Resolve(IServiceProvider serviceProvider);
+        object Resolve(IServiceProvider serviceProvider);
     }
 
-    internal class ServiceBuilder<TService> : ServiceBuilder
+    public class NamedServiceBuilder<TService> : NamedServiceBuilder
         where TService : class
     {
         // Fields
@@ -24,7 +24,7 @@ namespace MDP.Hosting
 
 
         // Constructors
-        public ServiceBuilder(string instanceName, Func<IServiceProvider, object> resolveAction)
+        public NamedServiceBuilder(string instanceName, Func<IServiceProvider, object> resolveAction)
         {
             #region Contracts
 
@@ -40,11 +40,11 @@ namespace MDP.Hosting
 
 
         // Properties
-        public override string InstanceName { get { return _instanceName; } }
+        public string InstanceName { get { return _instanceName; } }
 
 
         // Methods
-        public override object Resolve(IServiceProvider serviceProvider)
+        public object Resolve(IServiceProvider serviceProvider)
         {
             #region Contracts
 

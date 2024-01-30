@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MDP.Registration
 {
-    public abstract class Factory
+    public abstract class ServiceFactory
     {
         // Constructors
-        internal Factory(string @namespace, string @service = null)
+        internal ServiceFactory(string @namespace, string @service = null)
         {
             #region Contracts
 
@@ -29,12 +29,23 @@ namespace MDP.Registration
         public string ServiceName { get; }
     }
 
-    public abstract class Factory<TBuilder, TSetting> : Factory
+    public abstract class ServiceFactory<TBuilder> : ServiceFactory
+        where TBuilder : class
+    {
+        // Constructors
+        public ServiceFactory(string @namespace, string @service = null) : base(@namespace, @service) { }
+
+
+        // Methods
+        public abstract void ConfigureService(TBuilder builder);
+    }
+
+    public abstract class ServiceFactory<TBuilder, TSetting> : ServiceFactory
         where TBuilder : class
         where TSetting : class, new()
     {
         // Constructors
-        public Factory(string @namespace, string @service = null) : base(@namespace, @service) { }
+        public ServiceFactory(string @namespace, string @service = null) : base(@namespace, @service) { }
 
 
         // Methods

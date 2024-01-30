@@ -7,7 +7,7 @@ namespace MDP.Network.Http
     public static class ServiceCollectionExtensions
     {
         // Methods
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, Dictionary<string, HttpClientEndpoint> endpointDictionary = null)
+        public static void AddHttpClientFactory(this IServiceCollection serviceCollection)
         {
             #region Contracts
 
@@ -16,10 +16,10 @@ namespace MDP.Network.Http
             #endregion
 
             // AddHttpClientFactory
-            serviceCollection.AddHttpClientFactory(null, endpointDictionary);
+            serviceCollection.AddHttpClientFactory(new List<HttpClientEndpoint>());
         }
 
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, string @namespace = null, Dictionary<string, HttpClientEndpoint> endpointDictionary = null)
+        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, Dictionary<string, HttpClientEndpoint> endpointDictionary)
         {
             #region Contracts
 
@@ -29,49 +29,33 @@ namespace MDP.Network.Http
 
             // EndpointList
             var endpointList = new List<HttpClientEndpoint>();
-
-            // EndpointDictionary
-            endpointDictionary = endpointDictionary ?? new Dictionary<string, HttpClientEndpoint>();
-            foreach (var endpointPair in endpointDictionary)
             {
-                // Require
-                if (endpointPair.Value == null) throw new InvalidOperationException($"{nameof(endpointPair.Value)}=null");
-                if (string.IsNullOrEmpty(endpointPair.Key) == true) throw new InvalidOperationException($"{nameof(endpointPair.Key)}=null");
-
                 // Endpoint
-                var endpoint = endpointPair.Value.Clone();
-                if (endpoint == null) throw new InvalidOperationException($"{nameof(endpoint)}=null");
-
-                // Name
-                var name = endpointPair.Value.Name;
-                if (string.IsNullOrEmpty(name) == true)
+                foreach (var endpointPair in endpointDictionary)
                 {
-                    name = endpointPair.Key;
+                    // Endpoint
+                    var endpoint = endpointPair.Value;
+                    if (endpoint == null) throw new InvalidOperationException($"{nameof(endpoint)}=null");
+
+                    // Name
+                    var name = endpointPair.Value.Name;
+                    if (string.IsNullOrEmpty(name) == true)
+                    {
+                        name = endpointPair.Key;
+                    }
+                    endpoint.Name = name;
+                    if (string.IsNullOrEmpty(endpoint.Name) == true) throw new InvalidOperationException($"{nameof(endpoint.Name)}=null");
+
+                    // Add
+                    endpointList.Add(endpoint);
                 }
-                endpoint.Name = name;
-
-                // Add
-                endpointList.Add(endpoint);
             }
-
-            // HttpClientFactory
-            serviceCollection.AddHttpClientFactory(@namespace, endpointList);
-        }
-
-
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, List<HttpClientEndpoint> endpointList = null)
-        {
-            #region Contracts
-
-            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-
-            #endregion
 
             // AddHttpClientFactory
-            serviceCollection.AddHttpClientFactory(null, endpointList);
+            serviceCollection.AddHttpClientFactory(endpointList);
         }
 
-        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, string @namespace = null, List<HttpClientEndpoint> endpointList = null)
+        public static void AddHttpClientFactory(this IServiceCollection serviceCollection, List<HttpClientEndpoint> endpointList)
         {
             #region Contracts
 
@@ -79,28 +63,18 @@ namespace MDP.Network.Http
 
             #endregion
 
+            // Default
+            serviceCollection.AddHttpClient();
+
             // EndpointList
-            endpointList = endpointList ?? new List<HttpClientEndpoint>();
-            if (endpointList.Count <= 0)
-            {
-                // HttpClient
-                serviceCollection.AddHttpClient();
-
-                // Return
-                return;
-            }
-
-            // HttpClientFactory
             foreach (var endpoint in endpointList)
             {
                 // Name
-                string name = null;
-                if (string.IsNullOrEmpty(@namespace) == true) name = $"{endpoint.Name}";
-                if (string.IsNullOrEmpty(@namespace) == false) name = $"{@namespace}.{endpoint.Name}";
+                var name = endpoint.Name;
                 if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");
 
                 // HttpClient
-                serviceCollection.AddHttpClient(name, httpClient =>
+                var httpClientBuilder = serviceCollection.AddHttpClient(name, httpClient =>
                 {
                     // BaseAddress
                     var baseAddress = endpoint.BaseAddress;
@@ -121,6 +95,19 @@ namespace MDP.Network.Http
                         httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
                 });
+
+                // HttpMessageHandler
+                //{
+                //    // Handlers
+                //    var handlers = endpoint.Handlers ?? new List<string>();
+                //    foreach (var handler in handlers)
+                //    {
+                //        // Add
+                //        httpClientBuilder.AddHttpMessageHandler(serviceProvider => {
+                //            return null;
+                //        });
+                //    }
+                //}
             }
         }
     }

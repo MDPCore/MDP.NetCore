@@ -1,4 +1,5 @@
 ﻿using MDP.Registration;
+using CLK.ComponentModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace MDP.Hosting
 {
-    public partial class ServiceRegister
+    public partial class ServiceAttributeRegister
     {
         // Methods
         public static IServiceCollection RegisterModule(IServiceCollection serviceCollection, IConfiguration configuration)
@@ -23,7 +24,7 @@ namespace MDP.Hosting
             var instanceTypeList = CLK.Reflection.Type.FindAllType();
             if (instanceTypeList == null) throw new InvalidOperationException($"{nameof(instanceTypeList)}=null");
 
-            // RegisterService
+            // InstanceType
             foreach (var instanceType in instanceTypeList)
             {
                 // Require
@@ -61,13 +62,13 @@ namespace MDP.Hosting
                     if (instanceName.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == false) continue;
 
                     // RegisterService
-                    ServiceRegister.RegisterService
+                    ServiceAttributeRegister.RegisterService
                     (
                         serviceCollection: serviceCollection,
                         serviceType: serviceAttribute.ServiceType,
                         instanceType: instanceType,
                         instanceName: instanceName,
-                        instanceConfig: instanceConfig,
+                        parameterProvider: new ConfigurationParameterProvider(instanceConfig),
                         singleton: serviceAttribute.Singleton
                     );
                 }
@@ -77,55 +78,7 @@ namespace MDP.Hosting
             return serviceCollection;
         }
 
-        public static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, IConfigurationSection instanceConfig, bool singleton)
-        {
-            #region Contracts
-
-            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
-            if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
-            if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
-            if (instanceConfig == null) throw new ArgumentException($"{nameof(instanceConfig)}=null");
-
-            #endregion
-
-            // RegisterService
-            ServiceRegister.RegisterService
-            (
-                serviceCollection: serviceCollection,
-                serviceType: serviceType,
-                instanceType: instanceType,
-                instanceName: instanceName,
-                parameterProvider: new ConfigurationParameterProvider(instanceConfig),
-                singleton: singleton
-            );
-        }
-
-        public static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, Dictionary<string, object> parameters, bool singleton)
-        {
-            #region Contracts
-
-            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
-            if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
-            if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
-            if (parameters == null) throw new ArgumentException($"{nameof(parameters)}=null");
-
-            #endregion
-
-            // RegisterService
-            ServiceRegister.RegisterService
-            (
-                serviceCollection: serviceCollection,
-                serviceType: serviceType,
-                instanceType: instanceType,
-                instanceName: instanceName,
-                parameterProvider: new DictionaryParameterProvider(parameters),
-                singleton: singleton
-            );
-        }
-
-        private static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, ParameterProvider parameterProvider, bool singleton)
+        internal static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, ParameterProvider parameterProvider, bool singleton)
         {
             #region Contracts
 
@@ -161,13 +114,29 @@ namespace MDP.Hosting
             // RegisterNamed: FullInstanceName
             serviceCollection.RegisterNamed(serviceType, fullInstanceName, (serviceProvider) =>
             {
-                return ServiceActivator.CreateInstance(instanceType, parameterProvider, serviceProvider);
+                // ConstructorInfo
+                var constructorInfo = instanceType.GetConstructors().MaxBy(o => o.GetParameters().Length);
+                if (constructorInfo == null) throw new InvalidOperationException($"{nameof(constructorInfo)}=null");
+
+                // Parameters
+                var parameters = new List<object>();
+                foreach (var parameterInfo in constructorInfo.GetParameters())
+                {
+                    parameters.Add(parameterProvider.CreateParameter(parameterInfo, serviceProvider));
+                }
+
+                // Instance
+                var instance = constructorInfo.Invoke(parameters.ToArray());
+                if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
+
+                // Return
+                return instance;
             }
             , singleton);
         }
     }
 
-    public partial class ServiceRegister
+    public partial class ServiceAttributeRegister
     {
         // Methods
         private static List<IConfigurationSection> FindAllInstanceConfig(IConfiguration configuration, string serviceNamespace)

@@ -25,7 +25,7 @@ namespace MDP.Hosting
 
 
         // Methods
-        public bool Exists(string parameterName)
+        protected override bool ExistValue(string parameterName)
         {
             #region Contracts
 
@@ -40,7 +40,7 @@ namespace MDP.Hosting
             return result;
         }
 
-        public object GetValue(string parameterName, Type parameterType)
+        protected override object GetValue(string parameterName, Type parameterType)
         {
             #region Contracts
 
