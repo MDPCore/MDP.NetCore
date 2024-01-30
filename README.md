@@ -1,4 +1,4 @@
-# MDP.Net
+# MDP.NetCore
 
 MDP.NetCore是開源的.NET開發平台，協助開發人員快速建立Web站台、API服務和Console程式。提供參數管理、依賴注入、身分驗證等多種功能模組，用以簡化開發流程並滿足多變的商業需求。
 
@@ -78,6 +78,10 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為五種類型的�
  
 
 ## 版本更新
+
+### MDP.Net 6.1.13
+
+- MDP.Registration：加入ServiceBuilder，削減Domain層對於DI框架的相依。
 
 ### MDP.Net 6.1.12
 
