@@ -10,6 +10,10 @@ namespace MDP.Network.Http
 {
     public class HttpException<TErrorModel> : Exception where TErrorModel : class
     {
+        // Constants
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
+
+
         // Constructors
         public HttpException(HttpStatusCode statusCode, string message, TErrorModel model) : base(message)
         {
@@ -35,10 +39,7 @@ namespace MDP.Network.Http
             messageBuilder.AppendLine(base.ToString() ?? string.Empty);
 
             // ErrorModel
-            messageBuilder.AppendLine(System.Text.Json.JsonSerializer.Serialize(this.ErrorModel, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            }));
+            messageBuilder.AppendLine(System.Text.Json.JsonSerializer.Serialize(this.ErrorModel, _jsonSerializerOptions));
 
             // Return
             return messageBuilder.ToString();

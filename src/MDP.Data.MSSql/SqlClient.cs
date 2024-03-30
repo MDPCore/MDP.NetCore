@@ -24,8 +24,7 @@ namespace MDP.Data.MSSql
             #endregion
 
             // Connection
-            _connection = new SqlConnection(connectionString);
-            _connection.Open();
+            _connection = new SqlConnection(connectionString);            
 
             // Command
             _command = new SqlCommand();
@@ -69,6 +68,16 @@ namespace MDP.Data.MSSql
 
 
         // Properties
+        public SqlConnection Connection
+        {
+            get { return _connection; }
+        }
+
+        public SqlCommand Command
+        {
+            get { return _command; }
+        }
+
         public string CommandText
         {
             get { return _command.CommandText; }
@@ -174,7 +183,7 @@ namespace MDP.Data.MSSql
 
         private void ReplaceParameters()
         {
-            // Parameters
+            // CommandParameters
             foreach (var parameter in _command.Parameters.OfType<SqlParameter>())
             {
                 // DBNull

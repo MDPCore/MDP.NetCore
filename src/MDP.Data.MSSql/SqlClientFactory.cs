@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MDP.Data.MSSql
 {
-    [MDP.Registration.Service<SqlClientFactory>(singleton: true)]
     public class SqlClientFactory
     {
         // Fields
-        private readonly Dictionary<string, string> _connectionStrings;
+        private readonly Dictionary<string, SqlClientOptions> _optionsDictionary;
 
 
         // Constructors
-        public SqlClientFactory(Dictionary<string, string> connectionStrings)
+        public SqlClientFactory(IList<SqlClientOptions> optionsList)
         {
             #region Contracts
 
-            if (connectionStrings == null) throw new ArgumentException(nameof(connectionStrings));
+            if (optionsList == null) throw new ArgumentException(nameof(optionsList));
 
             #endregion
 
             // Default
-            _connectionStrings = new Dictionary<string, string>(connectionStrings, StringComparer.OrdinalIgnoreCase);
+            _optionsDictionary = optionsList.ToDictionary(o => o.Name, o => o, StringComparer.OrdinalIgnoreCase);
         }
 
 
@@ -33,13 +33,26 @@ namespace MDP.Data.MSSql
 
             #endregion
 
-            // ConnectionString
-            var connectionString = string.Empty;
-            if (_connectionStrings.ContainsKey(name) == true) connectionString = _connectionStrings[name];
-            if (string.IsNullOrEmpty(connectionString) == true) throw new InvalidOperationException($"{nameof(connectionString)}=null: name={name}");
+            // SqlClientOptions
+            SqlClientOptions options = null;
+            if (_optionsDictionary.ContainsKey(name) == true) options = _optionsDictionary[name];
+            if (options == null) throw new InvalidOperationException($"{nameof(options)}=null: name={name}");
+
+            // SqlClient
+            var sqlClient = new SqlClient(options.ConnectionString);
+            
+            // SqlClientHandler
+            foreach (var sqlClientHandler in options.Handlers)
+            {
+                // Handle
+                sqlClientHandler.Handle(sqlClient);
+            }
+
+            // Open
+            sqlClient.Connection.Open();
 
             // Return
-            return new SqlClient(connectionString);
+            return sqlClient;
         }
     }
 }

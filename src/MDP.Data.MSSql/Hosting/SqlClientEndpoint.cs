@@ -4,16 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.Network.Http
+namespace MDP.Data.MSSql
 {
-    public class HttpClientEndpoint
+    public class SqlClientEndpoint
     {
         // Properties
         public string Name { get; set; } = string.Empty;
 
-        public string BaseAddress { get; set; } = string.Empty;
-
-        public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        public string ConnectionString { get; set; } = string.Empty;
 
         public List<string> Handlers { get; set; } = new List<string>();
     }
