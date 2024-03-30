@@ -6,12 +6,9 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MDP.Registration" Version="6.1.13" />
-  </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
     <ProjectReference Include="..\MDP.Data.MSSql\MDP.Data.MSSql.csproj" />
     <ProjectReference Include="..\MDP.DevKit.AzureIdentity\MDP.DevKit.AzureIdentity.csproj" />
   </ItemGroup>

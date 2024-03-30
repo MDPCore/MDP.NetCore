@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MDP.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,7 +44,7 @@ namespace CLK.Mocks
 
             // Find
             var storeEntity = this.FindById(_getEntityIdDelegate(entity));
-            if (storeEntity != null) throw new DuplicateKeyException($"Id is exist.: id={_getEntityIdDelegate(entity)}");
+            if (storeEntity != null) throw new DuplicateEntityException($"Id is exist.: id={_getEntityIdDelegate(entity)}");
 
             // Add
             _entityList.Add(entity);

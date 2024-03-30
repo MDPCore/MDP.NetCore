@@ -1,4 +1,5 @@
 ﻿using CLK;
+using MDP.Domain;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
@@ -173,8 +174,8 @@ namespace MDP.Data.MSSql
             }
             catch (SqlException ex)
             {
-                // DuplicateKeyException
-                if (ex.Errors[0].Number == 2627) throw new DuplicateKeyException();
+                // DuplicateEntityException
+                if (ex.Errors[0].Number == 2627) throw new DuplicateEntityException();
 
                 // Throw
                 throw;

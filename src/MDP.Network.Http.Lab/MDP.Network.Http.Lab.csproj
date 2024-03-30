@@ -8,10 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.NetCore" Version="6.1.13" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
     <ProjectReference Include="..\MDP.Network.Http\MDP.Network.Http.csproj" />
     <ProjectReference Include="..\MDP.Network.Http.Azure\MDP.Network.Http.Azure.csproj" />
   </ItemGroup>

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLK.Core\CLK.Core.csproj" />
+    <ProjectReference Include="..\MDP.Domain\MDP.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
