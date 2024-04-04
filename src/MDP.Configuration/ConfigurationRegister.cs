@@ -35,7 +35,7 @@ namespace MDP.Configuration
                     }
 
                     // *.{environmentName}.json
-                    jsonFilePathList.AddRange(SearchAllFilePath(entryDirectoryPath).Where(file => file.EndsWith($"{environmentName}.json", StringComparison.OrdinalIgnoreCase)));
+                    jsonFilePathList.AddRange(MDP.IO.File.GetAllFilePath($"*.{environmentName}.json", entryDirectoryPath));
                 }
 
                 // ConfigDirectoryPath
@@ -50,7 +50,7 @@ namespace MDP.Configuration
                     }
 
                     // *.{environmentName}.json
-                    jsonFilePathList.AddRange(SearchAllFilePath(configDirectoryPath).Where(file => file.EndsWith($"{environmentName}.json", StringComparison.OrdinalIgnoreCase)));
+                    jsonFilePathList.AddRange(MDP.IO.File.GetAllFilePath($"*.{environmentName}.json", configDirectoryPath));
                 }
 
                 // EnvironmentDirectoryPath
@@ -59,7 +59,7 @@ namespace MDP.Configuration
                 if (string.IsNullOrEmpty(environmentDirectoryPath) == false)
                 {
                     // *.json
-                    jsonFilePathList.AddRange(SearchAllFilePath(environmentDirectoryPath));
+                    jsonFilePathList.AddRange(MDP.IO.File.GetAllFilePath($"*.json", environmentDirectoryPath));
                 }
 
                 // Register
@@ -115,23 +115,6 @@ namespace MDP.Configuration
 
             // Return
             return configurationBuilder;
-        }
-
-        private static List<string> SearchAllFilePath(string directoryPath, string searchPattern = "*.json")
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(directoryPath) == true) throw new ArgumentException($"{nameof(directoryPath)}=null");
-            if (string.IsNullOrEmpty(searchPattern) == true) throw new ArgumentException($"{nameof(searchPattern)}=null");
-
-            #endregion
-
-            // Search
-            var fileInfoList = CLK.IO.File.GetAllFile(searchPattern, directoryPath);
-            if (fileInfoList == null) throw new InvalidOperationException($"{nameof(fileInfoList)}=null");
-
-            // Return
-            return fileInfoList.Select(o => o.FullName).ToList();
         }
     }
 }

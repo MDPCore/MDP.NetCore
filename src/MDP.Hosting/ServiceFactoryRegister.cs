@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace MDP.Hosting
 {
@@ -19,20 +20,18 @@ namespace MDP.Hosting
             #endregion
 
             // ServiceFactoryTypeList
-            var serviceFactoryTypeList = CLK.Reflection.Type.FindAllType();
+            var serviceFactoryTypeList = MDP.Reflection.Type.FindAllApplicationType();
             if (serviceFactoryTypeList == null) throw new InvalidOperationException($"{nameof(serviceFactoryTypeList)}=null");
 
-            // ServiceFactoryType
-            foreach (var serviceFactoryType in serviceFactoryTypeList)
+            // ServiceFactoryTypeList.Filter
+            serviceFactoryTypeList = serviceFactoryTypeList.AsParallel().Where(serviceFactoryType =>
             {
                 // Require
-                if (serviceFactoryType.IsClass == false) continue;
-                if (serviceFactoryType.IsPublic == false) continue;
-                if (serviceFactoryType.IsAbstract == true) continue;
-                if (serviceFactoryType.IsGenericType == true) continue;
-                if (serviceFactoryType.FullName.StartsWith("Microsoft") == true) continue;
-                if (serviceFactoryType.FullName.StartsWith("System") == true) continue;
-                if (serviceFactoryType.IsAssignableTo(typeof(ServiceFactory)) == false) continue;
+                if (serviceFactoryType.IsClass == false) return false;
+                if (serviceFactoryType.IsPublic == false) return false;
+                if (serviceFactoryType.IsAbstract == true) return false;
+                if (serviceFactoryType.IsGenericType == true) return false;
+                if (serviceFactoryType.IsAssignableTo(typeof(ServiceFactory)) == false) return false;
 
                 // ServiceFactoryInterface
                 var serviceFactoryInterface = serviceFactoryType;
@@ -49,49 +48,60 @@ namespace MDP.Hosting
 
                 // ServiceFactoryArguments
                 var serviceFactoryArguments = serviceFactoryInterface.GetGenericArguments();
-                if (serviceFactoryArguments[0].IsAssignableFrom(typeof(TBuilder)) == false) continue;
+                if (serviceFactoryArguments[0].IsAssignableFrom(typeof(TBuilder)) == false) return false;
 
+                // Return
+                return true;
+            }).ToList();
+        
+            // ServiceFactoryType
+            foreach (var serviceFactoryType in serviceFactoryTypeList)
+            {
                 // ServiceFactory
                 var serviceFactory = Activator.CreateInstance(serviceFactoryType) as ServiceFactory;
                 if (serviceFactory == null) throw new InvalidOperationException($"{nameof(serviceFactory)}=null");
 
-                // SettingConfig
-                IConfigurationSection settingConfig = null;
-                if (string.IsNullOrEmpty(serviceFactory.ServiceName) == true)
-                {
-                    settingConfig = FindNamespaceConfig(configuration, serviceFactory.ServiceNamespace);
-                }
-                else
-                {
-                    settingConfig = FindServiceConfig(configuration, serviceFactory.ServiceNamespace, serviceFactory.ServiceName);
-                }
-                if (settingConfig == null) continue;
-
-                // Setting
-                object setting = null;
-                if (serviceFactoryArguments.Length == 2)
-                {
-                    // SettingType
-                    var settingType = serviceFactoryArguments[1];
-                    if (settingType == null) throw new InvalidOperationException($"{nameof(settingType)}=null");
-
-                    // Setting
-                    setting = Activator.CreateInstance(settingType);
-                    if (setting == null) throw new InvalidOperationException($"{nameof(setting)}=null");
-
-                    // Bind
-                    ConfigurationBinder.Bind(settingConfig, setting);
-                }
+                // ServiceFactoryConfig
+                var serviceFactoryConfig = FindServiceFactoryConfig(configuration, serviceFactory.ServiceNamespace, serviceFactory.ServiceName);
+                if (serviceFactoryConfig == null && serviceFactory.AutoRegister == false) continue;
 
                 // ServiceFactory.ConfigureService
                 {
                     // ConfigureServiceMethod
                     var configureServiceMethod = serviceFactory.GetType().GetMethod("ConfigureService");
-                    if (configureServiceMethod == null) throw new InvalidOperationException($"Factory.ConfigureService({typeof(TBuilder)}, {setting.GetType()}) not found.");
+                    if (configureServiceMethod == null) throw new InvalidOperationException($"Factory.ConfigureService not found.");
 
                     // ConfigureServiceParameters
                     var configureServiceParameters = configureServiceMethod.GetParameters();
                     if (configureServiceParameters == null) throw new InvalidOperationException($"{nameof(configureServiceParameters)}=null");
+                    switch (configureServiceParameters.Length)
+                    {
+                        case 1: break;
+                        case 2: break;
+                        default: throw new InvalidOperationException($"{nameof(configureServiceParameters.Length)}={configureServiceParameters.Length}");
+                    }
+
+                    // ConfigureServiceParameters[0]
+                    if (configureServiceParameters[0].ParameterType.IsAssignableFrom(typeof(TBuilder)) == false)
+                    {
+                        throw new InvalidOperationException($"configureServiceParameters[0].ParameterType!=typeof({typeof(TBuilder).Name})");
+                    }
+                    
+                    // ConfigureServiceParameters[1]
+                    object setting = null;
+                    if (configureServiceParameters.Length == 2)
+                    {
+                        // SettingType
+                        var settingType = configureServiceParameters[1].ParameterType;
+                        if (settingType == null) throw new InvalidOperationException($"{nameof(settingType)}=null");
+
+                        // Setting
+                        setting = Activator.CreateInstance(settingType);
+                        if (setting == null) throw new InvalidOperationException($"{nameof(setting)}=null");
+
+                        // Bind
+                        if (serviceFactoryConfig != null) ConfigurationBinder.Bind(serviceFactoryConfig, setting);
+                    }
 
                     // Invoke
                     if (configureServiceParameters.Length == 1) configureServiceMethod.Invoke(serviceFactory, new object[] { builder });
@@ -104,25 +114,7 @@ namespace MDP.Hosting
     public partial class ServiceFactoryRegister
     {
         // Methods
-        private static IConfigurationSection FindNamespaceConfig(IConfiguration configuration, string serviceNamespace)
-        {
-            #region Contracts
-
-            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-            if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
-
-            #endregion
-
-            // NamespaceConfig
-            var namespaceConfig = configuration.GetSection(serviceNamespace);
-            if (namespaceConfig == null) return null;
-            if (namespaceConfig.Exists() == false) return null;
-
-            // Return
-            return namespaceConfig;
-        }
-
-        private static IConfigurationSection FindServiceConfig(IConfiguration configuration, string serviceNamespace, string serviceName)
+        private static IConfigurationSection FindServiceFactoryConfig(IConfiguration configuration, string serviceNamespace, string serviceName = null)
         {
             #region Contracts
 
@@ -136,13 +128,14 @@ namespace MDP.Hosting
             var namespaceConfig = configuration.GetSection(serviceNamespace);
             if (namespaceConfig == null) return null;
             if (namespaceConfig.Exists() == false) return null;
+            if (string.IsNullOrEmpty(serviceName) == true) return namespaceConfig;
 
             // ServiceConfigList
-            var serviceConfigList = namespaceConfig.GetChildren();
-            if (serviceConfigList == null) throw new InvalidOperationException($"{nameof(serviceConfigList)}=null");
+            var serviceConfigList = namespaceConfig.GetChildren()?.FirstOrDefault(o => string.Equals(o.Key, serviceName, StringComparison.OrdinalIgnoreCase));
+            if (serviceConfigList == null) return null;
 
             // Return
-            return serviceConfigList.FirstOrDefault(o => string.Equals(o.Key, serviceName, StringComparison.OrdinalIgnoreCase));
+            return serviceConfigList;
         }
     }
 }

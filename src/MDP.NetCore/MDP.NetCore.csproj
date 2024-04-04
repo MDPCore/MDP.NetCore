@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLK.Reflection\CLK.Reflection.csproj" />
+    <ProjectReference Include="..\MDP.Reflection\MDP.Reflection.csproj" />
     <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
     <ProjectReference Include="..\MDP.Configuration\MDP.Configuration.csproj" />
     <ProjectReference Include="..\MDP.Logging\MDP.Logging.csproj" />

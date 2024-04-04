@@ -8,7 +8,7 @@ namespace MDP.Logging.Log4net
     public class Log4netLoggerFactory : ServiceFactory<IServiceCollection, Log4netLoggerSetting>
     {
         // Constructors
-        public Log4netLoggerFactory() : base("Logging", "Log4netLogger") { }
+        public Log4netLoggerFactory() : base("Logging", "Log4netLogger", true) { }
 
 
         // Methods

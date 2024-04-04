@@ -10,7 +10,7 @@ using MDP.Registration;
 
 namespace MDP.Data.MSSql.Azure
 {
-    [Service<SqlClientHandler>(singleton: true)]
+    [Service<SqlClientHandler>(singleton: true, autoRegister: false)]
     public class AzureCredentialHandler : SqlClientHandler
     {
         // Fields

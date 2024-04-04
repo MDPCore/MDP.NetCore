@@ -19,29 +19,7 @@ namespace MDP.Network.Http.Lab
             var httpClient = httpClientFactory.CreateClient("DefaultService");
             if (httpClient == null) throw new InvalidOperationException($"{nameof(httpClient)}=null");
 
-            // SendAsync
-            {
-                // RequestMessage
-                var requestMessage = new HttpRequestMessage(HttpMethod.Get, "get");
-
-                // ResponseMessage
-                var responseMessage = await httpClient.SendAsync(requestMessage);
-                if (responseMessage.IsSuccessStatusCode == false)
-                {
-                    var errorContent = await responseMessage.Content.ReadAsStringAsync();
-                    if (string.IsNullOrEmpty(errorContent) == false) throw new HttpRequestException(errorContent);
-                    if (string.IsNullOrEmpty(errorContent) == true) throw new HttpRequestException($"An unexpected error occurred(responseMessage.StatusCode={responseMessage.StatusCode}).");
-                }
-
-                // ResponseContentString
-                var responseContentString = await responseMessage.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseContentString) == true) throw new InvalidOperationException($"{nameof(responseContentString)}=null");
-
-                // Display
-                Console.WriteLine(responseContentString);
-            }
-
-            // GetAsync<string>
+            // GetAsync
             {
                 // ResultModel
                 var resultModel = await httpClient.GetAsync<string>("get");

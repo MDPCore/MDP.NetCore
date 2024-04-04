@@ -21,7 +21,7 @@ namespace MDP.NetCore.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.NetCore.Host.Run<Program>(args);
+            MDP.NetCore.Host.Run<Program>(args);            
         }
     }
 }

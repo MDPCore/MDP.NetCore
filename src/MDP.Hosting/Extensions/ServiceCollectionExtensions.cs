@@ -1,5 +1,4 @@
-﻿using CLK.ComponentModel;
-using MDP.Registration;
+﻿using MDP.Registration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -113,49 +112,12 @@ namespace MDP.Hosting
 
             // ServiceFactoryRegister
             ServiceFactoryRegister.RegisterModule(serviceCollection, configuration);
-            ServiceFactoryRegister.RegisterModule(new ServiceCollectionBuilder(serviceCollection), configuration);
 
             // ServiceAttributeRegister
             ServiceAttributeRegister.RegisterModule(serviceCollection, configuration);            
 
             // ServiceRegistrationRegister
             ServiceRegistrationRegister.RegisterModule(serviceCollection);
-        }
-
-
-        // Class
-        private class ServiceCollectionBuilder : ServiceBuilder
-        {
-            // Fields
-            private readonly IServiceCollection _serviceCollection = null;
-
-
-            // Constructors
-            public ServiceCollectionBuilder(IServiceCollection serviceCollection)
-            {
-                #region Contracts
-
-                if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-
-                #endregion
-
-                // Default
-                _serviceCollection = serviceCollection;
-            }
-
-
-            // Methods
-            public void Add(ServiceRegistration serviceRegistration)
-            {
-                #region Contracts
-
-                if (serviceRegistration == null) throw new ArgumentException($"{nameof(serviceRegistration)}=null");
-
-                #endregion
-
-                // Register
-                _serviceCollection.AddSingleton(serviceRegistration);
-            }
         }
     }
 }

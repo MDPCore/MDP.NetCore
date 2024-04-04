@@ -45,7 +45,7 @@ namespace MDP.Logging.Serilog
             if (string.IsNullOrEmpty(configFileName) == true) throw new InvalidOperationException($"{nameof(configFileName)}=null");
 
             // ConfigFile
-            var configFile = CLK.IO.File.GetFile(configFileName);
+            var configFile = MDP.IO.File.GetFile(configFileName);
             if (configFile == null) throw new InvalidOperationException($"{configFileName} not found.");
 
             // Properties

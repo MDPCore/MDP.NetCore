@@ -64,7 +64,7 @@ namespace MDP.Logging.Log4net
             #endregion
 
             // ConfigFile
-            var configFile = CLK.IO.File.GetFile(configFileName);
+            var configFile = MDP.IO.File.GetFile(configFileName);
             if (configFile == null) throw new InvalidOperationException($"{configFileName} not found.");
 
             // GlobalContext
@@ -78,7 +78,7 @@ namespace MDP.Logging.Log4net
             if (loggerRepository == null) throw new InvalidOperationException($"{nameof(loggerRepository)}=null");
 
             // Configure
-            XmlConfigurator.Configure(loggerRepository, new FileInfo(configFileName));
+            XmlConfigurator.Configure(loggerRepository, configFile);
                                    
             // Return
             return loggerRepository;

@@ -1,5 +1,4 @@
 ﻿using MDP.Registration;
-using CLK.ComponentModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,54 +20,79 @@ namespace MDP.Hosting
             #endregion
 
             // InstanceTypeList
-            var instanceTypeList = CLK.Reflection.Type.FindAllType();
+            var instanceTypeList = MDP.Reflection.Type.FindAllApplicationType();
             if (instanceTypeList == null) throw new InvalidOperationException($"{nameof(instanceTypeList)}=null");
 
-            // InstanceType
-            foreach (var instanceType in instanceTypeList)
+            // InstanceTypeList.Filter
+            instanceTypeList = instanceTypeList.AsParallel().Where(instanceType =>
             {
                 // Require
-                if (instanceType.IsClass == false) continue;
-                if (instanceType.IsPublic == false) continue;
-                if (instanceType.IsAbstract == true) continue;
-                if (instanceType.IsGenericType == true) continue;
-                if (instanceType.FullName.StartsWith("Microsoft") == true) continue;
-                if (instanceType.FullName.StartsWith("System") == true) continue;
+                if (instanceType.IsClass == false) return false;
+                if (instanceType.IsPublic == false) return false;
+                if (instanceType.IsAbstract == true) return false;
+                if (instanceType.IsGenericType == true) return false;
+                if (instanceType.IsDefined(typeof(ServiceAttribute), inherit: false) == false) return false;
 
+                // Return
+                return true;
+            }).ToList();
+
+            // InstanceTypeList.Foreach
+            foreach (var instanceType in instanceTypeList)
+            {
                 // ServiceAttribute
                 var serviceAttribute = instanceType.GetCustomAttributes(false).Where(attr => attr.GetType().IsGenericType && attr.GetType().GetGenericTypeDefinition() == typeof(ServiceAttribute<>)).OfType<ServiceAttribute>().FirstOrDefault();
                 if (serviceAttribute == null) continue;
 
-                // InstanceConfigList
-                var instanceConfigList = new List<IConfigurationSection>();
+                // ServiceAttributeConfigList
+                var serviceAttributeConfigList = new List<IConfigurationSection>();
                 if (serviceAttribute.ServiceType.Namespace == instanceType.Namespace)
                 {
                     // Add
-                    instanceConfigList.AddRange(FindAllInstanceConfig(configuration, instanceType.Namespace));
+                    serviceAttributeConfigList.AddRange(FindAllServiceAttributeConfig(configuration, instanceType.Namespace));
                 }
                 else
                 {
                     // Add
-                    instanceConfigList.AddRange(FindAllInstanceConfig(configuration, instanceType.Namespace));
-                    instanceConfigList.AddRange(FindAllInstanceConfig(configuration, serviceAttribute.ServiceType.Namespace));
+                    serviceAttributeConfigList.AddRange(FindAllServiceAttributeConfig(configuration, instanceType.Namespace));
+                    serviceAttributeConfigList.AddRange(FindAllServiceAttributeConfig(configuration, serviceAttribute.ServiceType.Namespace));
                 }
 
-                // RegisterService
-                foreach (var instanceConfig in instanceConfigList)
+                // ServiceAttribute.RegisterService
+                var isRegistered = false;
+                foreach (var serviceAttributeConfig in serviceAttributeConfigList)
                 {
                     // InstanceName
-                    var instanceName = instanceConfig.Key;
+                    var instanceName = serviceAttributeConfig.Key;
                     if (string.IsNullOrEmpty(instanceName) == true) throw new InvalidOperationException($"{nameof(instanceName)}=null");
                     if (instanceName.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == false) continue;
 
                     // RegisterService
-                    ServiceAttributeRegister.RegisterService
+                    ServiceRegister.RegisterService
                     (
                         serviceCollection: serviceCollection,
                         serviceType: serviceAttribute.ServiceType,
                         instanceType: instanceType,
                         instanceName: instanceName,
-                        parameterProvider: new ConfigurationParameterProvider(instanceConfig),
+                        parameterProvider: new ConfigurationParameterProvider(serviceAttributeConfig),
+                        singleton: serviceAttribute.Singleton
+                    );
+
+                    // IsRegistered
+                    isRegistered = true;
+                }
+
+                // ServiceAttribute.AutoRegister
+                if (isRegistered == false && serviceAttribute.AutoRegister == true)
+                {
+                    // RegisterService
+                    ServiceRegister.RegisterService
+                    (
+                        serviceCollection: serviceCollection,
+                        serviceType: serviceAttribute.ServiceType,
+                        instanceType: instanceType,
+                        instanceName: instanceType.Name,
+                        parameterProvider: new DefaultParameterProvider(),
                         singleton: serviceAttribute.Singleton
                     );
                 }
@@ -77,69 +101,12 @@ namespace MDP.Hosting
             // Return
             return serviceCollection;
         }
-
-        internal static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, ParameterProvider parameterProvider, bool singleton)
-        {
-            #region Contracts
-
-            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (serviceType == null) throw new ArgumentException($"{nameof(serviceType)}=null");
-            if (instanceType == null) throw new ArgumentException($"{nameof(instanceType)}=null");
-            if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
-            if (parameterProvider == null) throw new ArgumentException($"{nameof(parameterProvider)}=null");
-
-            #endregion
-
-            // InstanceName
-            if (instanceName.StartsWith(instanceType.Name, StringComparison.OrdinalIgnoreCase) == false) throw new InvalidOperationException($"{nameof(instanceName)}={instanceType.Name}");
-
-            // FullInstanceName
-            var fullInstanceName = $"{instanceType.Namespace}.{instanceName}";
-            if (string.IsNullOrEmpty(fullInstanceName) == true) throw new InvalidOperationException($"{nameof(fullInstanceName)}=null");
-
-            // RegisterTyped: ServiceType
-            serviceCollection.RegisterTyped(serviceType, (serviceProvider) =>
-            {
-                return serviceProvider.ResolveNamed(serviceType, fullInstanceName);
-            }
-            , singleton);
-
-            // RegisterNamed: InstanceName
-            serviceCollection.RegisterNamed(serviceType, instanceName, (serviceProvider) =>
-            {
-                return serviceProvider.ResolveNamed(serviceType, fullInstanceName);
-            }
-            , singleton);
-
-            // RegisterNamed: FullInstanceName
-            serviceCollection.RegisterNamed(serviceType, fullInstanceName, (serviceProvider) =>
-            {
-                // ConstructorInfo
-                var constructorInfo = instanceType.GetConstructors().MaxBy(o => o.GetParameters().Length);
-                if (constructorInfo == null) throw new InvalidOperationException($"{nameof(constructorInfo)}=null");
-
-                // Parameters
-                var parameters = new List<object>();
-                foreach (var parameterInfo in constructorInfo.GetParameters())
-                {
-                    parameters.Add(parameterProvider.CreateParameter(parameterInfo, serviceProvider));
-                }
-
-                // Instance
-                var instance = constructorInfo.Invoke(parameters.ToArray());
-                if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
-
-                // Return
-                return instance;
-            }
-            , singleton);
-        }
     }
 
     public partial class ServiceAttributeRegister
     {
         // Methods
-        private static List<IConfigurationSection> FindAllInstanceConfig(IConfiguration configuration, string serviceNamespace)
+        private static List<IConfigurationSection> FindAllServiceAttributeConfig(IConfiguration configuration, string serviceNamespace)
         {
             #region Contracts
 
@@ -153,12 +120,12 @@ namespace MDP.Hosting
             if (namespaceConfig == null) return new List<IConfigurationSection>();
             if (namespaceConfig.Exists() == false) return new List<IConfigurationSection>();
 
-            // InstanceConfigList
-            var instanceConfigList = namespaceConfig.GetChildren();
-            if (instanceConfigList == null) throw new InvalidOperationException($"{nameof(instanceConfigList)}=null");
+            // ServiceConfigList
+            var serviceConfigList = namespaceConfig.GetChildren();
+            if (serviceConfigList == null) throw new InvalidOperationException($"{nameof(serviceConfigList)}=null");
 
             // Return
-            return instanceConfigList.ToList();
+            return serviceConfigList.ToList();
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using MDP.Configuration;
-using CLK.ComponentModel;
+using MDP.Registration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyLab.Module;
 using System;
+using System.Diagnostics;
 
 namespace MDP.Hosting.Lab
 {
@@ -26,7 +27,7 @@ namespace MDP.Hosting.Lab
             var configuration = configurationBuilder.Build();
             if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
 
-            // ServiceCollection
+            // ServiceProvider
             var serviceCollection = new ServiceCollection();
             {
                 // Register
@@ -36,11 +37,11 @@ namespace MDP.Hosting.Lab
             if (serviceProvider == null) throw new InvalidOperationException($"{nameof(serviceProvider)}=null");
 
             // Resolve
-            var messageContext = serviceProvider.ResolveTyped<MessageContext>();
-            if (messageContext == null) throw new InvalidOperationException($"{nameof(messageContext)}=null");
-
+            var workContext = serviceProvider.ResolveTyped<WorkContext>();
+            if (workContext == null) throw new InvalidOperationException($"{nameof(workContext)}=null");
+            
             // Display
-            Console.WriteLine(messageContext.GetValue());
+            Console.WriteLine(workContext.GetValue());
         }
     }
 }

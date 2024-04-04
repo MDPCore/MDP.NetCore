@@ -9,7 +9,7 @@ namespace MDP.Registration
     public abstract class ServiceFactory
     {
         // Constructors
-        internal ServiceFactory(string @namespace, string @service = null)
+        internal ServiceFactory(string @namespace, string @service = null, bool @autoRegister = true)
         {
             #region Contracts
 
@@ -20,6 +20,7 @@ namespace MDP.Registration
             // Default
             this.ServiceNamespace = @namespace;
             this.ServiceName = @service;
+            this.AutoRegister = @autoRegister;
         }
 
 
@@ -27,13 +28,15 @@ namespace MDP.Registration
         public string ServiceNamespace { get; }
 
         public string ServiceName { get; }
+
+        public bool AutoRegister { get; }
     }
 
     public abstract class ServiceFactory<TBuilder> : ServiceFactory
         where TBuilder : class
     {
         // Constructors
-        public ServiceFactory(string @namespace, string @service = null) : base(@namespace, @service) { }
+        public ServiceFactory(string @namespace, string @service = null, bool @autoRegister = true) : base(@namespace, @service, @autoRegister) { }
 
 
         // Methods
@@ -45,7 +48,7 @@ namespace MDP.Registration
         where TSetting : class, new()
     {
         // Constructors
-        public ServiceFactory(string @namespace, string @service = null) : base(@namespace, @service) { }
+        public ServiceFactory(string @namespace, string @service = null, bool @autoRegister = true) : base(@namespace, @service, @autoRegister) { }
 
 
         // Methods

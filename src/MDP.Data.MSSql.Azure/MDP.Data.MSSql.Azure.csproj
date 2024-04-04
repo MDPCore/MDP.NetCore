@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
     <ProjectReference Include="..\MDP.Data.MSSql\MDP.Data.MSSql.csproj" />
-    <ProjectReference Include="..\MDP.DevKit.AzureIdentity\MDP.DevKit.AzureIdentity.csproj" />
+    <ProjectReference Include="..\MDP.Security.Credentials.Azure\MDP.Security.Credentials.Azure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

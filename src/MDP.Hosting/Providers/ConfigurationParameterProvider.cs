@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 
 namespace MDP.Hosting
 {
@@ -25,23 +26,6 @@ namespace MDP.Hosting
 
 
         // Methods
-        protected override bool ExistValue(string parameterName)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(parameterName) == true) throw new ArgumentException($"{nameof(parameterName)}=null");
-
-            #endregion
-
-            // ParameterSection
-            var parameterSection = _parameterConfig.GetSection(parameterName);
-            if (parameterSection == null) return false;
-            if (parameterSection.Exists() == false) return false;
-
-            // Return
-            return false;
-        }
-
         protected override object GetValue(string parameterName, Type parameterType)
         {
             #region Contracts
@@ -51,28 +35,43 @@ namespace MDP.Hosting
 
             #endregion
 
-            // Primitive
-            if (parameterType.IsPrimitive == true || parameterType == typeof(string))
+            // ParameterSection
+            var parameterSection = _parameterConfig.GetSection(parameterName);
+            if (parameterSection == null) return null;
+            if (parameterSection.Exists() == false) return null;
+
+            // ClassType
+            if (parameterType.IsClass == true && parameterType.IsAbstract == false)
             {
-                // Parameter
+                if (parameterType.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null) != null)
+                {
+                    // Create
+                    var parameter = Activator.CreateInstance(parameterType);
+                    if (parameter != null)
+                    {
+                        // Bind
+                        parameterSection.Bind(parameter);
+
+                        // Return
+                        return parameter;
+                    }
+                }
+            }
+
+            // ValueType
+            if (parameterType.IsValueType == true || parameterType == typeof(string))
+            {
+                // GetValue
                 var parameter = _parameterConfig.GetValue(parameterType, parameterName);
-
-                // Return
-                return parameter;
+                if (parameter != null)
+                {
+                    // Return
+                    return parameter;
+                }
             }
 
-            // Reflection
-            {
-                // Create
-                var parameter = Activator.CreateInstance(parameterType);
-                if (parameter == null) throw new InvalidOperationException($"{nameof(parameter)}=null");
-
-                // Bind
-                _parameterConfig.GetSection(parameterName).Bind(parameter);
-
-                // Return
-                return parameter;
-            }
+            // Unknown
+            return null;
         }
     }
 }

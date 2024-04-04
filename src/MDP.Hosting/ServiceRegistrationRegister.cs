@@ -38,7 +38,7 @@ namespace MDP.Hosting
                 if (serviceRegistration.Parameters == null) throw new InvalidOperationException($"{nameof(serviceRegistration.Parameters)}=null");
 
                 // RegisterService
-                ServiceAttributeRegister.RegisterService
+                ServiceRegister.RegisterService
                 (
                     serviceCollection: serviceCollection,
                     serviceType: serviceRegistration.ServiceType,

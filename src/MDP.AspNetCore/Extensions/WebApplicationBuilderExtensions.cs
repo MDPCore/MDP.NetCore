@@ -35,8 +35,8 @@ namespace MDP.AspNetCore
 
             // WebApplicationBuilder
             {
-                // RegisterModule
-                applicationBuilder.RegisterModule(applicationBuilder.Configuration);
+                // ServiceFactoryRegister
+                ServiceFactoryRegister.RegisterModule(applicationBuilder, applicationBuilder.Configuration);
 
                 // ProblemDetails
                 applicationBuilder.AddProblemDetails();
@@ -45,7 +45,7 @@ namespace MDP.AspNetCore
             // MvcBuilder
             var mvcBuilder = applicationBuilder.Services.AddMvc();
             {
-                // RegisterModule
+                // MvcRegister
                 MvcRegister.RegisterModule(mvcBuilder);
 
                 // MvcOptions
@@ -205,23 +205,6 @@ namespace MDP.AspNetCore
                 // Write
                 writer.WriteStringValue(dataTimeString);
             }
-        }
-    }
-
-    public static partial class WebApplicationBuilderExtensions
-    {
-        // Methods
-        public static void RegisterModule(this WebApplicationBuilder applicationBuilder, IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (applicationBuilder == null) throw new ArgumentException($"{nameof(applicationBuilder)}=null");
-            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-
-            #endregion
-
-            // ServiceFactoryRegister
-            ServiceFactoryRegister.RegisterModule(applicationBuilder, configuration);
         }
     }
 }

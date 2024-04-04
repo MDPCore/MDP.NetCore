@@ -1,14 +1,12 @@
-﻿using CLK.ComponentModel;
-using System;
+﻿using System;
 using System.Reflection;
+using MDP.Registration;
 
 namespace MDP.Hosting
 {
     internal abstract class ParameterProvider
     {
         // Methods
-        protected abstract bool ExistValue(string parameterName);
-
         protected abstract object GetValue(string parameterName, Type parameterType);
 
 
@@ -22,30 +20,10 @@ namespace MDP.Hosting
 
             #endregion
 
-            // ParameterConfig
-            if (this.ExistValue(parameterInfo.Name) == false && parameterInfo.HasDefaultValue == true)
+            // ClassType
+            if (parameterInfo.ParameterType.IsClass == true || parameterInfo.ParameterType.IsInterface == true)
             {
-                // DefaultValue
-                var parameter = parameterInfo.DefaultValue;
-
-                // Return
-                return parameter;
-            }
-
-            // Primitive
-            if (parameterInfo.ParameterType.IsPrimitive == true || parameterInfo.ParameterType == typeof(string))
-            {
-                // GetValue
-                var parameter = this.GetValue(parameterInfo.Name, parameterInfo.ParameterType);
-
-                // Return
-                return parameter;
-            }
-
-            // Resolve
-            if (parameterInfo.ParameterType.IsInterface == true || parameterInfo.ParameterType.IsClass == true)
-            {
-                // ParameterName
+                // Resolve
                 var parameterName = this.GetValue(parameterInfo.Name, typeof(string)) as string;
                 if (string.IsNullOrEmpty(parameterName) == true)
                 {
@@ -65,16 +43,79 @@ namespace MDP.Hosting
                         return parameter;
                     }
                 }
+
+                // Provider
+                {
+                    // GetValue
+                    var parameter = this.GetValue(parameterInfo.Name, parameterInfo.ParameterType);
+                    if (parameter != null)
+                    {
+                        // Return
+                        return parameter;
+                    }
+                }
+
+                // HasDefaultValue
+                if (parameterInfo.HasDefaultValue == true)
+                {
+                    // Return
+                    return parameterInfo.DefaultValue;
+                }
+
+                // CreateDefaultValue
+                if (parameterInfo.ParameterType.IsClass == true && parameterInfo.ParameterType.IsAbstract == false)
+                {
+                    if( parameterInfo.ParameterType.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null) != null)
+                    {
+                        // Create
+                        var parameter = Activator.CreateInstance(parameterInfo.ParameterType);
+                        if (parameter != null)
+                        {
+                            // Return
+                            return parameter;
+                        }
+                    }
+                }
+
+                // Null
+                return null;
             }
 
-            // Provider
+            // ValueType
+            if (parameterInfo.ParameterType.IsValueType == true || parameterInfo.ParameterType == typeof(string))
             {
-                // GetValue
-                var parameter = this.GetValue(parameterInfo.Name, parameterInfo.ParameterType);
+                // Provider
+                {
+                    // GetValue
+                    var parameter = this.GetValue(parameterInfo.Name, parameterInfo.ParameterType);
+                    if (parameter != null)
+                    {
+                        // Return
+                        return parameter;
+                    }
+                }
 
-                // Return
-                return parameter;
+                // HasDefaultValue
+                if (parameterInfo.HasDefaultValue == true)
+                {
+                    // Return
+                    return parameterInfo.DefaultValue;
+                }
+
+                // CreateDefaultValue
+                {
+                    // Create
+                    var parameter = Activator.CreateInstance(parameterInfo.ParameterType);
+                    if (parameter != null)
+                    {
+                        // Return
+                        return parameter;
+                    }
+                }
             }
+
+            // Unknown
+            return null;
         }
     }
 }

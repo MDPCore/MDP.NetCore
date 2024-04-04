@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using CLK.ComponentModel;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MDP.Data.MSSql
@@ -11,9 +10,7 @@ namespace MDP.Data.MSSql
     public class SqlClientFactoryFactory: ServiceFactory<IServiceCollection, SqlClientFactoryFactory.Setting>
     {
         // Constructors
-        public SqlClientFactoryFactory() : base("MDP.Data.MSSql", "SqlClientFactory") { }
-
-        protected SqlClientFactoryFactory(string @namespace, string service = null) : base(@namespace, service) { }
+        public SqlClientFactoryFactory() : base("MDP.Data.MSSql", "SqlClientFactory", false) { }
 
 
         // Methods
@@ -26,77 +23,57 @@ namespace MDP.Data.MSSql
 
             #endregion
 
-            // Require
-            if (setting.Endpoints == null) setting.Endpoints = new Dictionary<string, SqlClientEndpoint>(StringComparer.OrdinalIgnoreCase);
+            // SqlClientFactory
+            serviceCollection.TryAddSingleton<SqlClientFactory, SqlClientFactory>();
 
-            // EndpointList
-            var endpointList = new List<SqlClientEndpoint>();
+            // SqlClient
+            foreach (var endpoint in setting)
             {
-                // Endpoint
-                foreach (var endpointPair in setting.Endpoints)
+                // Require
+                if (string.IsNullOrEmpty(endpoint.Key) == true) throw new InvalidOperationException($"{nameof(endpoint.Key)}=null");
+                if (endpoint.Value == null) throw new InvalidOperationException($"{nameof(endpoint.Value)}=null");
+                if (endpoint.Value.Handlers == null) endpoint.Value.Handlers = new List<string>();
+
+                // SqlClientBuilder
+                serviceCollection.AddSingleton<SqlClientBuilder>(serviceProvider =>
                 {
-                    // Endpoint
-                    var endpoint = endpointPair.Value;
-                    if (endpoint == null) throw new InvalidOperationException($"{nameof(endpoint)}=null");
+                    // SqlClientBuilder
+                    var sqlClientBuilder = new SqlClientBuilder
+                    (
+                        endpoint.Key,
+                        endpoint.Value.ConnectionString
+                    );
 
-                    // Name
-                    var name = endpointPair.Value.Name;
-                    if (string.IsNullOrEmpty(name) == true)
+                    // SqlClientHandler                    
+                    foreach (var handler in endpoint.Value.Handlers)
                     {
-                        name = endpointPair.Key;
-                    }
-                    endpoint.Name = name;
-                    if (string.IsNullOrEmpty(endpoint.Name) == true) throw new InvalidOperationException($"{nameof(endpoint.Name)}=null");
+                        // Resolve
+                        var sqlClientHandler = serviceProvider.ResolveNamed<SqlClientHandler>(handler);
+                        if (sqlClientHandler == null) throw new InvalidOperationException($"{nameof(sqlClientHandler)}=null");
 
-                    // Add
-                    endpointList.Add(endpoint);
-                }
-            }
-
-            // AddSqlClientOptions
-            foreach (var endpoint in endpointList)
-            {
-                serviceCollection.AddSingleton<SqlClientOptions>(serviceProvider =>
-                {
-                    // SqlClientOptions
-                    var sqlClientOptions = new SqlClientOptions();
-                    {
-                        // Name
-                        sqlClientOptions.Name = endpoint.Name;
-                        if (string.IsNullOrEmpty(sqlClientOptions.Name) == true) throw new InvalidOperationException($"{nameof(sqlClientOptions.Name)}=null");
-
-                        // ConnectionString
-                        sqlClientOptions.ConnectionString = endpoint.ConnectionString;
-                        if (string.IsNullOrEmpty(sqlClientOptions.ConnectionString) == true) throw new InvalidOperationException($"{nameof(sqlClientOptions.ConnectionString)}=null");
-
-                        // SqlClientHandler                    
-                        var handlerNameList = endpoint.Handlers ?? new List<string>();
-                        foreach (var handlerName in handlerNameList)
-                        {
-                            // Resolve
-                            var sqlClientHandler = serviceProvider.ResolveNamed<SqlClientHandler>(handlerName);
-                            if (sqlClientHandler == null) throw new InvalidOperationException($"{nameof(sqlClientHandler)}=null");
-
-                            // Add
-                            sqlClientOptions.Handlers.Add(sqlClientHandler);
-                        }
+                        // Add
+                        sqlClientBuilder.Handlers.Add(sqlClientHandler);
                     }
 
                     // Return
-                    return sqlClientOptions;
+                    return sqlClientBuilder;
                 });
             }
-
-            // AddSqlClientFactory
-            serviceCollection.TryAddSingleton<SqlClientFactory, SqlClientFactory>();
         }
 
 
         // Class
-        public class Setting
+        public class Setting: Dictionary<string, Endpoint>
+        {
+            
+        }
+
+        public class Endpoint
         {
             // Properties
-            public Dictionary<string, SqlClientEndpoint> Endpoints { get; set; } = null;
+            public string ConnectionString { get; set; } = string.Empty;
+
+            public List<string> Handlers { get; set; } = new List<string>();
         }
     }
 }

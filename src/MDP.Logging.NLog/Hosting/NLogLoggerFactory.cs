@@ -11,7 +11,7 @@ namespace MDP.Logging.NLog
     public class NLogLoggerFactory : ServiceFactory<IServiceCollection, NLogLoggerSetting>
     {
         // Constructors
-        public NLogLoggerFactory() : base("Logging", "NLogLogger") { }
+        public NLogLoggerFactory() : base("Logging", "NLogLogger", true) { }
 
 
         // Methods

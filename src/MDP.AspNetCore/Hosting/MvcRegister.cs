@@ -23,63 +23,41 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // ModuleAssembly
-            var moduleAssemblyList = CLK.Reflection.Assembly.FindAllAssembly();
-            if (moduleAssemblyList == null) throw new InvalidOperationException($"{nameof(moduleAssemblyList)}=null");
+            // ApplicationAssemblyList
+            var applicationAssemblyList = MDP.Reflection.Assembly.FindAllApplicationAssembly();
+            if (applicationAssemblyList == null) throw new InvalidOperationException($"{nameof(applicationAssemblyList)}=null");
 
-            // RegisteredAssembly
-            var registeredAssemblyList = new List<Assembly>();
-            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
-            registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
-
-            // RegisterMvcPart
+            // ApplicationPart
             {
-                // PartAssembly
-                var partAssemblyList = new List<Assembly>();
-                foreach (var moduleAssembly in moduleAssemblyList)
-                {
-                    if (registeredAssemblyList.Contains(moduleAssembly) == false)
-                    {
-                        partAssemblyList.Add(moduleAssembly);
-                    }
-                }
+                // RegisteredAssembly
+                var registeredAssemblyList = new List<Assembly>();
+                registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<AssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
+                registeredAssemblyList.AddRange(mvcBuilder.PartManager.ApplicationParts.OfType<CompiledRazorAssemblyPart>().Select(assemblyPart => assemblyPart.Assembly));
 
                 // Register
-                foreach (var partAssembly in partAssemblyList)
+                foreach (var applicationAssembly in applicationAssemblyList)
                 {
-                    // AddApplicationPart
-                    mvcBuilder.AddApplicationPart(partAssembly);
+                    if (registeredAssemblyList.Contains(applicationAssembly) == false)
+                    {
+                        mvcBuilder.AddApplicationPart(applicationAssembly);
+                    }
                 }
             }
 
-            // RegisterMvcAsset
+            // ApplicationAsset
             {
-                // AssetAssembly
-                var assetAssemblyList = new List<Assembly>();
-                foreach (var registeredAssembly in registeredAssemblyList)
-                {
-                    if (assetAssemblyList.Contains(registeredAssembly) == false)
-                    {
-                        assetAssemblyList.Add(registeredAssembly);
-                    }
-                }
-                foreach (var moduleAssembly in moduleAssemblyList)
-                {
-                    if (assetAssemblyList.Contains(moduleAssembly) == false)
-                    {
-                        assetAssemblyList.Add(moduleAssembly);
-                    }
-                }
-
                 // AssetProvider
                 var assetProviderList = new List<IFileProvider>();
-                foreach (var assetAssembly in assetAssemblyList)
+                foreach (var applicationAssembly in applicationAssemblyList)
                 {
+                    // Require
+                    if (applicationAssembly.GetManifestResourceNames().Length <= 0) continue;
+
                     // AssetProvider
                     IFileProvider assetProvider = null;
                     try
                     {
-                        assetProvider = new ManifestEmbeddedFileProvider(assetAssembly, @"wwwroot");
+                        assetProvider = new ManifestEmbeddedFileProvider(applicationAssembly, @"wwwroot");
                     }
                     catch
                     {
@@ -102,7 +80,7 @@ namespace MDP.AspNetCore
                         assetProviderList.Insert(0, hostEnvironment.WebRootFileProvider);
                     }
 
-                    // Attach
+                    // CompositeFileProvider
                     options.FileProvider = new CompositeFileProvider
                     (
                         assetProviderList

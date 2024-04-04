@@ -22,12 +22,13 @@ namespace MDP.Data.MSSql.Lab
                 // CommandParameters
 
                 // Execute
-                using (var reader = sqlClient.ExecuteReader())
+                var userList = sqlClient.ExecuteParseAll<User>();
+                if (userList == null) throw new InvalidOperationException($"{nameof(userList)}=null");
+
+                // Display
+                foreach(var user in userList)
                 {
-                    while (reader.Read())
-                    {
-                        Console.WriteLine($"UserId: {reader["UserId"]}, Name: {reader["Name"]}, Mail: {reader["Mail"]}");
-                    }
+                    Console.WriteLine($"UserId: {user.UserId}, Name: {user.Name}, Mail: {user.Mail}");
                 }
             }
         }
@@ -36,6 +37,18 @@ namespace MDP.Data.MSSql.Lab
         {
             // Host
             MDP.NetCore.Host.Run<Program>(args);
+        }
+
+
+        // Class
+        public class User
+        {
+            // Properties
+            public string UserId { get; set; }
+
+            public string Name { get; set; }
+
+            public string Mail { get; set; }
         }
     }
 }

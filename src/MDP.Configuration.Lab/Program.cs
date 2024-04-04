@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace MDP.Configuration.Lab
 {
@@ -27,7 +29,7 @@ namespace MDP.Configuration.Lab
             if (setting == null) throw new InvalidOperationException($"{nameof(setting)}=null");
 
             // Display
-            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(setting, Newtonsoft.Json.Formatting.Indented));
+            Console.WriteLine(JsonSerializer.Serialize(setting, new JsonSerializerOptions { WriteIndented = true }));
         }
 
         // Class

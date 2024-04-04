@@ -3,7 +3,7 @@ using System;
 
 namespace MyLab.Module
 {
-    [Service<WorkContext>()]
+    [Service<WorkContext>(singleton:true)]
     public class WorkContext
     {
         // Fields

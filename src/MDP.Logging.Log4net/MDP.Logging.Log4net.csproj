@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
-    <ProjectReference Include="..\CLK.IO\CLK.IO.csproj" />
+    <ProjectReference Include="..\MDP.IO\MDP.IO.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

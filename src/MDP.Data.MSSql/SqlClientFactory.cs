@@ -7,20 +7,20 @@ namespace MDP.Data.MSSql
     public class SqlClientFactory
     {
         // Fields
-        private readonly Dictionary<string, SqlClientOptions> _optionsDictionary;
+        private readonly Dictionary<string, SqlClientBuilder> _builderDictionary;
 
 
         // Constructors
-        public SqlClientFactory(IList<SqlClientOptions> optionsList)
+        public SqlClientFactory(IList<SqlClientBuilder> builderList)
         {
             #region Contracts
 
-            if (optionsList == null) throw new ArgumentException(nameof(optionsList));
+            if (builderList == null) throw new ArgumentException(nameof(builderList));
 
             #endregion
 
             // Default
-            _optionsDictionary = optionsList.ToDictionary(o => o.Name, o => o, StringComparer.OrdinalIgnoreCase);
+            _builderDictionary = builderList.ToDictionary(o => o.Name, o => o, StringComparer.OrdinalIgnoreCase);
         }
 
 
@@ -33,23 +33,14 @@ namespace MDP.Data.MSSql
 
             #endregion
 
-            // SqlClientOptions
-            SqlClientOptions options = null;
-            if (_optionsDictionary.ContainsKey(name) == true) options = _optionsDictionary[name];
-            if (options == null) throw new InvalidOperationException($"{nameof(options)}=null: name={name}");
+            // SqlClientBuilder
+            SqlClientBuilder builder = null;
+            if (_builderDictionary.ContainsKey(name) == true) builder = _builderDictionary[name];
+            if (builder == null) throw new InvalidOperationException($"{nameof(builder)}=null");
 
             // SqlClient
-            var sqlClient = new SqlClient(options.ConnectionString);
-            
-            // SqlClientHandler
-            foreach (var sqlClientHandler in options.Handlers)
-            {
-                // Handle
-                sqlClientHandler.Handle(sqlClient);
-            }
-
-            // Open
-            sqlClient.Connection.Open();
+            var sqlClient = builder.CreateClient(name);
+            if (sqlClient == null) throw new InvalidOperationException($"{nameof(sqlClient)}=null");
 
             // Return
             return sqlClient;

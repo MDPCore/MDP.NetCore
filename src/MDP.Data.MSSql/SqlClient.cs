@@ -1,5 +1,4 @@
-﻿using CLK;
-using MDP.Domain;
+﻿using MDP.Domain;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Data;

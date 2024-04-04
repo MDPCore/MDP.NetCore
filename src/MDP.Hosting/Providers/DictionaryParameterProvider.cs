@@ -25,21 +25,6 @@ namespace MDP.Hosting
 
 
         // Methods
-        protected override bool ExistValue(string parameterName)
-        {
-            #region Contracts
-
-            if (string.IsNullOrEmpty(parameterName) == true) throw new ArgumentException($"{nameof(parameterName)}=null");
-
-            #endregion
-
-            // Result
-            var result = _parameterDictionary.ContainsKey(parameterName);
-
-            // Return
-            return result;
-        }
-
         protected override object GetValue(string parameterName, Type parameterType)
         {
             #region Contracts

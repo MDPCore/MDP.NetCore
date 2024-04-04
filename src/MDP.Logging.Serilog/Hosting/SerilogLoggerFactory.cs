@@ -11,7 +11,7 @@ namespace MDP.Logging.Serilog
     public class SerilogLoggerFactory : ServiceFactory<IServiceCollection, SerilogLoggerSetting>
     {
         // Constructors
-        public SerilogLoggerFactory() : base("Logging", "SerilogLogger") { }
+        public SerilogLoggerFactory() : base("Logging", "SerilogLogger", true) { }
 
 
         // Methods

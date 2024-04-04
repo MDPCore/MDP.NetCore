@@ -11,7 +11,7 @@ namespace MyLab.Module
 
 
         // Constructors
-        public MessageService(string message)
+        public MessageService(string message = "Hello World")
         {
             #region Contracts
 

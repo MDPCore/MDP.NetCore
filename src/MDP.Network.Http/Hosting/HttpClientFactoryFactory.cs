@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using CLK.ComponentModel;
 using System.Net.Http;
 
 namespace MDP.Network.Http
@@ -11,9 +10,7 @@ namespace MDP.Network.Http
     public class HttpClientFactoryFactory: ServiceFactory<IServiceCollection, HttpClientFactoryFactory.Setting>
     {
         // Constructors
-        public HttpClientFactoryFactory() : base("MDP.Network.Http", "HttpClientFactory") { }
-
-        protected HttpClientFactoryFactory(string @namespace, string service = null) : base(@namespace, service) { }
+        public HttpClientFactoryFactory() : base("MDP.Network.Http", "HttpClientFactory", false) { }
 
 
         // Methods
@@ -26,45 +23,23 @@ namespace MDP.Network.Http
 
             #endregion
 
-            // Require
-            if (setting.Endpoints == null) setting.Endpoints = new Dictionary<string, HttpClientEndpoint>(StringComparer.OrdinalIgnoreCase);
+            // HttpClientFactory
+            serviceCollection.AddHttpClient();
 
-            // EndpointList
-            var endpointList = new List<HttpClientEndpoint>();
+            // HttpClient
+            foreach (var endpoint in setting)
             {
-                // Endpoint
-                foreach (var endpointPair in setting.Endpoints)
-                {
-                    // Endpoint
-                    var endpoint = endpointPair.Value;
-                    if (endpoint == null) throw new InvalidOperationException($"{nameof(endpoint)}=null");
+                // Require
+                if (string.IsNullOrEmpty(endpoint.Key) == true) throw new InvalidOperationException($"{nameof(endpoint.Key)}=null");
+                if (endpoint.Value == null) throw new InvalidOperationException($"{nameof(endpoint.Value)}=null");
+                if (endpoint.Value.Handlers == null) endpoint.Value.Handlers = new List<string>();
+                if (endpoint.Value.Headers == null) endpoint.Value.Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-                    // Name
-                    var name = endpointPair.Value.Name;
-                    if (string.IsNullOrEmpty(name) == true)
-                    {
-                        name = endpointPair.Key;
-                    }
-                    endpoint.Name = name;
-                    if (string.IsNullOrEmpty(endpoint.Name) == true) throw new InvalidOperationException($"{nameof(endpoint.Name)}=null");
-
-                    // Add
-                    endpointList.Add(endpoint);
-                }
-            }
-
-            // AddHttpClient
-            foreach (var endpoint in endpointList)
-            {
-                // Name
-                var name = endpoint.Name;
-                if (string.IsNullOrEmpty(name) == true) throw new InvalidOperationException($"{nameof(name)}=null");
-
-                // HttpClient
-                var httpClientBuilder = serviceCollection.AddHttpClient(name, httpClient =>
+                // HttpClientBuilder
+                var httpClientBuilder = serviceCollection.AddHttpClient(endpoint.Key, httpClient =>
                 {
                     // BaseAddress
-                    var baseAddress = endpoint.BaseAddress;
+                    var baseAddress = endpoint.Value.BaseAddress;
                     if (string.IsNullOrEmpty(baseAddress) == false)
                     {
                         // EndsWith
@@ -75,41 +50,45 @@ namespace MDP.Network.Http
                     }
 
                     // Headers
-                    var headers = endpoint.Headers ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                    foreach (var header in headers)
+                    foreach (var header in endpoint.Value.Headers)
                     {
                         // Add
                         httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
                     }
                 });
 
-                // HttpMessageHandler
-                var handlerNameList = endpoint.Handlers ?? new List<string>();
-                foreach (var handlerName in handlerNameList)
+                // HttpClientHandler
+                foreach (var handler in endpoint.Value.Handlers)
                 {
                     // Add
                     httpClientBuilder = httpClientBuilder.AddHttpMessageHandler(serviceProvider =>
                     {
                         // Resolve
-                        var httpMessageHandler = serviceProvider.ResolveNamed<DelegatingHandler>(handlerName);
-                        if (httpMessageHandler == null) throw new InvalidOperationException($"{nameof(httpMessageHandler)}=null");
+                        var httpClientHandler = serviceProvider.ResolveNamed<HttpClientHandler>(handler);
+                        if (httpClientHandler == null) throw new InvalidOperationException($"{nameof(httpClientHandler)}=null");
 
                         // Return
-                        return httpMessageHandler;
+                        return httpClientHandler;
                     });
                 }
             }
-
-            // Default
-            serviceCollection.AddHttpClient();
         }
 
 
         // Class
-        public class Setting
+        public class Setting : Dictionary<string, Endpoint>
+        {
+
+        }
+
+        public class Endpoint
         {
             // Properties
-            public Dictionary<string, HttpClientEndpoint> Endpoints { get; set; } = null;
+            public string BaseAddress { get; set; } = string.Empty;
+
+            public List<string> Handlers { get; set; } = new List<string>();
+
+            public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
     }
 }
