@@ -20,6 +20,8 @@ MDP.NetCore是開源的.NET開發平台，協助開發人員快速建立Web站�
 
 ![MDP.Net-平台架構](https://clark159.github.io/MDP.Net/功能說明/MDP.Net-平台架構.png)
 
+![MDP.Net-模組架構](https://clark159.github.io/MDP.Net/功能說明/MDP.Net-模組架構.png)
+
 MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過架構設計提供模組重用、參數調整、環境建置...等等面向的快速開發能力。
 
 - 模組：企業的商業知識、共用的功能邏輯，在MDP.Net裡會被開發成為一個一個的「模組」，方便開發人員依照商業需求，快速組合出應用系統。
@@ -78,6 +80,10 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為五種類型的�
  
 
 ## 版本更新
+
+### MDP.Net 6.1.16
+
+- MDP.Hosting：加入AutoRegister，削減Config設定內容。
 
 ### MDP.Net 6.1.13
 
