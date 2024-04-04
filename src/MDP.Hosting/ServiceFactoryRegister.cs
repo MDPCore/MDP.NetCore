@@ -120,7 +120,7 @@ namespace MDP.Hosting
 
             if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
             if (string.IsNullOrEmpty(serviceNamespace) == true) throw new ArgumentException($"{nameof(serviceNamespace)}=null");
-            if (string.IsNullOrEmpty(serviceName) == true) throw new ArgumentException($"{nameof(serviceName)}=null");
+            //if (string.IsNullOrEmpty(serviceName) == true) throw new ArgumentException($"{nameof(serviceName)}=null");
 
             #endregion
 
