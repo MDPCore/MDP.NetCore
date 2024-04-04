@@ -21,19 +21,14 @@ namespace MDP.Security.Tokens.Jwt
 
         private readonly string _issuer = null;
 
-        private readonly string _algorithm = null;
-
-        private readonly string _signKey = null;
-
         private readonly int _expirationMinutes = 30;
 
 
         // Constructors
-        public SecurityTokenFactory(string issuer, string algorithm, string signKey, int expirationMinutes = 30)
+        public SecurityTokenFactory(string algorithm, string signKey, string issuer = null, int expirationMinutes = 30)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(issuer) == true) throw new ArgumentException($"{nameof(issuer)}=null");
             if (string.IsNullOrEmpty(algorithm) == true) throw new ArgumentException($"{nameof(algorithm)}=null");
             if (string.IsNullOrEmpty(signKey) == true) throw new ArgumentException($"{nameof(signKey)}=null");
 
@@ -41,13 +36,13 @@ namespace MDP.Security.Tokens.Jwt
 
             // Default
             _issuer = issuer;
-            _algorithm = algorithm;
-            _signKey = signKey;
             _expirationMinutes = expirationMinutes;
 
-            // SigningCredentials
+            // SecurityKey
             var securityKey = this.CreareSecurityKey(algorithm, signKey);
             if (securityKey == null) throw new InvalidOperationException($"{nameof(securityKey)}=null");
+
+            // SigningCredentials
             _signingCredentials = new SigningCredentials(securityKey, algorithm);
         }
 
@@ -72,8 +67,11 @@ namespace MDP.Security.Tokens.Jwt
                 claimList.Add(new Claim(AuthenticationClaimTypes.AuthenticationType, identity.AuthenticationType));
 
                 // Issuer
-                claimList.RemoveAll(claim => claim.Type == JwtRegisteredClaimNames.Iss);
-                claimList.Add(new Claim(JwtRegisteredClaimNames.Iss, _issuer));
+                if (string.IsNullOrEmpty(_issuer) == false)
+                {
+                    claimList.RemoveAll(claim => claim.Type == JwtRegisteredClaimNames.Iss);
+                    claimList.Add(new Claim(JwtRegisteredClaimNames.Iss, _issuer));
+                }
             }
 
             // SecurityTokenDescriptor
