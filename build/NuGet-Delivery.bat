@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 
 :: ================================================
 :: Variables
-set version=6.1.16
+set version=6.1.17
 
 set buildDir=%~dp0
 set srcDir=%~dp0..\src

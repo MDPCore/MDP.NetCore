@@ -73,6 +73,10 @@ MDP.NetCore的模組程式遵循此分層，將每個模組拆解為五種類型
 
 ## 版本更新
 
+### MDP.NetCore 6.1.17
+
+- MDP.Security.Tokens.Jwt：加入MDP.Security.Tokens.Jwt，提供JwtToken生成功能。
+
 ### MDP.NetCore 6.1.16
 
 - MDP.Hosting：加入AutoRegister，削減Config設定內容。
