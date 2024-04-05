@@ -10,9 +10,9 @@ nav_order: 2
 
 MDP.Logging.NLog擴充.NET Core既有的日誌紀錄，加入NLog日誌寫入功能。開發人員可以透過Config設定，掛載在執行階段使用的NLog日誌紀錄。
 
-- 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
+- 說明文件：[https://mdpnetcore.github.io/MDP.NetCore/](https://mdpnetcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
+- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore/](https://github.com/MDPNetCore/MDP.NetCore/)
 
 
 ## 模組使用
@@ -60,7 +60,7 @@ MDP.Logging.NLog
 
 將日誌訊息輸出到Log檔案，方便開發人員觀測系統執行狀況，是開發系統時常見的功能需求。本篇範例協助開發人員使用MDP.Logging.NLog，逐步完成必要的設計和實作。
 
-- 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/日誌紀錄/NLog日誌紀錄/WebApplication1.zip)
+- 範例下載：[WebApplication1.zip](https://mdpnetcore.github.io/MDP.NetCore/日誌紀錄/NLog日誌紀錄/WebApplication1.zip)
 
 ### 操作步驟
 
@@ -173,4 +173,4 @@ namespace WebApplication1
 
 5.執行專案，於專案的log資料夾裡可以看到日誌檔案，日誌檔案中包含透過ILogger所寫入的日誌訊息 Hello World。(透過NLogLogger輸出)
 
-![01.執行結果01.png](https://clark159.github.io/MDP.Net/日誌紀錄/NLog日誌紀錄/01.執行結果01.png)
+![01.執行結果01.png](https://mdpnetcore.github.io/MDP.NetCore/日誌紀錄/NLog日誌紀錄/01.執行結果01.png)

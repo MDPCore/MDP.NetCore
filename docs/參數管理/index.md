@@ -11,14 +11,14 @@ has_children: false
 
 MDP.Configuration是開源的.NET開發套件，協助開發人員快速建立具有參數管理的應用系統。提供參數掛載等功能服務，用以簡化開發流程並滿足多變的商業需求。
 
-- 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
+- 說明文件：[https://mdpnetcore.github.io/MDP.NetCore/](https://mdpnetcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
+- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore/](https://github.com/MDPNetCore/MDP.NetCore/)
 
 
 ## 模組功能
 
-![MDP.Configuration-模組功能.png](https://clark159.github.io/MDP.Net/參數管理/MDP.Configuration-模組功能.png)
+![MDP.Configuration-模組功能.png](https://mdpnetcore.github.io/MDP.NetCore/參數管理/MDP.Configuration-模組功能.png)
 
 ### 參數掛載
 
@@ -142,7 +142,7 @@ namespace WebApplication1
 
 在開發/測試/正式三個執行環境，讀取不同Config設定檔，用以提供連線字串、功能參數...等等的參數管理，是開發系統時常見的功能需求。本篇範例協助開發人員使用MDP.Configuration，逐步完成必要的設計和實作。
 
-- 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/參數管理/WebApplication1.zip)
+- 範例下載：[WebApplication1.zip](https://mdpnetcore.github.io/MDP.NetCore/參數管理/WebApplication1.zip)
 
 ### 操作步驟
 
@@ -242,7 +242,7 @@ namespace WebApplication1
 
 6.執行專案，於開啟的Browser視窗內，可以看到由``` 開發環境：\config\Development\appsettings.json ```所提供的 Hello World By Development。
 
-![01.執行結果01.png](https://clark159.github.io/MDP.Net/參數管理/01.執行結果01.png)
+![01.執行結果01.png](https://mdpnetcore.github.io/MDP.NetCore/參數管理/01.執行結果01.png)
 
 7.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
 
@@ -264,4 +264,4 @@ namespace WebApplication1
 
 6.重建並執行專案，於開啟的Browser視窗內，可以看到由``` 測試環境：\config\Staging\appsettings.json ```所提供的 Hello World By Staging。
 
-![01.執行結果02.png](https://clark159.github.io/MDP.Net/參數管理/01.執行結果02.png)
+![01.執行結果02.png](https://mdpnetcore.github.io/MDP.NetCore/參數管理/01.執行結果02.png)

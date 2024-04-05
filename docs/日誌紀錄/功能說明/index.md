@@ -10,14 +10,14 @@ nav_order: 1
 
 MDP.Logging是開源的.NET開發套件，協助開發人員快速建立具有日誌紀錄的應用系統。提供NLog、Log4net、Serilog等功能模組，用以簡化開發流程並滿足多變的商業需求。
 
-- 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
+- 說明文件：[https://mdpnetcore.github.io/MDP.NetCore/](https://mdpnetcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
+- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore/](https://github.com/MDPNetCore/MDP.NetCore/)
 
 
 ## 模組功能
 
-![MDP.Logging-模組功能.png](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/MDP.Logging-模組功能.png)
+![MDP.Logging-模組功能.png](https://mdpnetcore.github.io/MDP.NetCore/日誌紀錄/功能說明/MDP.Logging-模組功能.png)
 
 ### 模組掛載
 
@@ -118,7 +118,7 @@ namespace WebApplication1
 
 將日誌訊息輸出到Console視窗，方便開發人員觀測系統執行狀況，是開發系統時常見的功能需求。本篇範例協助開發人員使用MDP.Logging，逐步完成必要的設計和實作。
 
-- 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/WebApplication1.zip)
+- 範例下載：[WebApplication1.zip](https://mdpnetcore.github.io/MDP.NetCore/日誌紀錄/功能說明/WebApplication1.zip)
 
 ### 操作步驟
 
@@ -183,4 +183,4 @@ namespace WebApplication1
 
 3.執行專案，於開啟的Console視窗內，可以看到透過ILogger所寫入的日誌訊息 Hello World。(透過.NET Core底層的ConsoleLogger輸出)
 
-![01.執行結果01.png](https://clark159.github.io/MDP.Net/日誌紀錄/功能說明/01.執行結果01.png)
+![01.執行結果01.png](https://mdpnetcore.github.io/MDP.NetCore/日誌紀錄/功能說明/01.執行結果01.png)

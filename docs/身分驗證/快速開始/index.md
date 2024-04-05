@@ -9,5 +9,5 @@ has_children: false
 # 快速開始
 
 <head>
-  <meta http-equiv="refresh" content="0; url=https://clark159.github.io/MDP.AspNetCore.Authentication/快速開始/" />
+  <meta http-equiv="refresh" content="0; url=https://mdpnetcore.github.io/MDP.AspNetCore.Authentication/快速開始/" />
 </head>

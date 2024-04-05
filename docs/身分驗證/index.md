@@ -10,5 +10,5 @@ has_children: true
 # MDP.AspNetCore.Authentication
 
 <head>
-  <meta http-equiv="refresh" content="0; url=https://clark159.github.io/MDP.AspNetCore.Authentication/" />
+  <meta http-equiv="refresh" content="0; url=https://mdpnetcore.github.io/MDP.AspNetCore.Authentication/" />
 </head>

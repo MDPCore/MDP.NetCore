@@ -11,14 +11,14 @@ has_children: false
 
 MDP.Hosting是開源的.NET開發套件，協助開發人員快速建立具有依賴注入的應用系統。提供標籤註冊、具名實例、具名注入等功能服務，用以簡化開發流程並滿足多變的商業需求。
 
-- 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
+- 說明文件：[https://mdpnetcore.github.io/MDP.NetCore/](https://mdpnetcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
+- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore/](https://github.com/MDPNetCore/MDP.NetCore/)
 
 
 ## 模組功能
 
-![MDP.Hosting-模組功能.png](https://clark159.github.io/MDP.Net/依賴注入/MDP.Hosting-模組功能.png)
+![MDP.Hosting-模組功能.png](https://mdpnetcore.github.io/MDP.NetCore/依賴注入/MDP.Hosting-模組功能.png)
 
 ### 標籤註冊
 
@@ -219,7 +219,7 @@ MDP.Hosting裡完成註冊的類別(Class)，開發人員可以透過Config設�
 
 在開發/測試/正式三個執行環境，需要各自使用不同資料來源、或是使用不同連線字串，是開發系統時常見的功能需求。例如：開發環境使用Mock資料來源(假資料)、測試環境使用SQL資料來源(連線至測試資料庫)、正式環境使用SQL資料來源(連線至正式資料庫)。本篇範例協助開發人員使用MDP.Hosting，逐步完成必要的設計和實作。
 
-- 範例下載：[WebApplication1.zip](https://clark159.github.io/MDP.Net/依賴注入/WebApplication1.zip)
+- 範例下載：[WebApplication1.zip](https://mdpnetcore.github.io/MDP.NetCore/依賴注入/WebApplication1.zip)
 
 ### 操作步驟
 
@@ -421,7 +421,7 @@ namespace WebApplication1
 
 6.執行專案，於開啟的Browser視窗內，可以看到系統依照``` 開發環境：\config\Development\appsettings.json ```的設定執行，於畫面顯示MockMessageRepository回傳的Hello World By Mock Source。
 
-![01.執行結果01.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果01.png)
+![01.執行結果01.png](https://mdpnetcore.github.io/MDP.NetCore/依賴注入/01.執行結果01.png)
 
 7.改寫專案內的啟動檔 \Properties\launchSettings.json，將ASPNETCORE_ENVIRONMENT的內容改為Staging。
 
@@ -443,8 +443,8 @@ namespace WebApplication1
 
 8.重建並執行專案，於開啟的Browser視窗內，可以看到系統依照``` 測試環境：\config\Staging\appsettings.json ```的設定執行，於畫面顯示SqlMessageRepository回傳的Hello World By Staging Database。
 
-![01.執行結果02.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果02.png)
+![01.執行結果02.png](https://mdpnetcore.github.io/MDP.NetCore/依賴注入/01.執行結果02.png)
 
 9.最後將ASPNETCORE_ENVIRONMENT的內容改為Production，重建並執行專案，於開啟的Browser視窗內，可以看到系統依照``` 正式環境：\config\Production\appsettings.json ```的設定執行，於畫面顯示SqlMessageRepository回傳的Hello World By Production Database。
 
-![01.執行結果03.png](https://clark159.github.io/MDP.Net/依賴注入/01.執行結果03.png)
+![01.執行結果03.png](https://mdpnetcore.github.io/MDP.NetCore/依賴注入/01.執行結果03.png)

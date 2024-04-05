@@ -10,5 +10,5 @@ has_children: false
 # MDP.DevKit.OpenAI
 
 <head>
-  <meta http-equiv="refresh" content="0; url=https://clark159.github.io/MDP.DevKit.OpenAI/" />
+  <meta http-equiv="refresh" content="0; url=https://mdpnetcore.github.io/MDP.DevKit.OpenAI/" />
 </head>

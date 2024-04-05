@@ -11,23 +11,23 @@ permalink: /
 
 MDP.NetCore是開源的.NET開發平台，協助開發人員快速建立Web站台、API服務和Console程式。提供參數管理、依賴注入、身分驗證等多種功能模組，用以簡化開發流程並滿足多變的商業需求。
 
-- 說明文件：[https://clark159.github.io/MDP.Net/](https://clark159.github.io/MDP.Net/)
+- 說明文件：[https://mdpnetcore.github.io/MDP.NetCore/](https://mdpnetcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/Clark159/MDP.Net/](https://github.com/Clark159/MDP.Net/)
+- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore/](https://github.com/MDPNetCore/MDP.NetCore/)
 
  
 ## 快速開始
 
-- [開發一個依賴注入+參數管理的API服務](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的API服務/)
+- [開發一個依賴注入+參數管理的API服務](https://mdpnetcore.github.io/MDP.NetCore/快速開始/開發一個依賴注入+參數管理的API服務/)
 
-- [開發一個依賴注入+參數管理的Web站台](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Web站台/)
+- [開發一個依賴注入+參數管理的Web站台](https://mdpnetcore.github.io/MDP.NetCore/快速開始/開發一個依賴注入+參數管理的Web站台/)
 
-- [開發一個依賴注入+參數管理的Console程式](https://clark159.github.io/MDP.Net/快速開始/開發一個依賴注入+參數管理的Console程式/)
+- [開發一個依賴注入+參數管理的Console程式](https://mdpnetcore.github.io/MDP.NetCore/快速開始/開發一個依賴注入+參數管理的Console程式/)
 
 
 ## 平台架構
 
-![MDP.Net-平台架構](https://clark159.github.io/MDP.Net/功能說明/MDP.Net-平台架構.png)
+![MDP.Net-平台架構](https://mdpnetcore.github.io/MDP.NetCore/功能說明/MDP.Net-平台架構.png)
 
 MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過架構設計提供模組重用、參數調整、環境建置...等等面向的快速開發能力。
 
@@ -40,7 +40,7 @@ MDP.Net將應用系統切割為：模組、隔離、平台三個分層，透過�
 
 ## 模組架構
 
-![MDP.Net-模組架構](https://clark159.github.io/MDP.Net/功能說明/MDP.Net-模組架構.png)
+![MDP.Net-模組架構](https://mdpnetcore.github.io/MDP.NetCore/功能說明/MDP.Net-模組架構.png)
 
 MDP.Net遵循三層式架構，將模組開發切割為：系統展示、領域邏輯、資料存取三個分層，減少模組對於元件、平台、框架的直接依賴，提高模組自身的內聚力。
 
@@ -77,13 +77,13 @@ MDP.Net的模組程式遵循此分層，將每個模組拆解為五種類型的�
 
 ## 模組清單
 
-- [MDP.Net](https://github.com/Clark159/MDP.Net)：協助開發人員快速建立Web站台、API服務和Console程式。
+- [MDP.Net](https://github.com/MDPNetCore/MDP.Net)：協助開發人員快速建立Web站台、API服務和Console程式。
 
-- [MDP.AspNetCore.Authentication](https://github.com/Clark159/MDP.AspNetCore.Authentication)：協助開發人員快速建立整合ASP.NET Core身分驗證的應用系統。
+- [MDP.AspNetCore.Authentication](https://github.com/MDPNetCore/MDP.AspNetCore.Authentication)：協助開發人員快速建立整合ASP.NET Core身分驗證的應用系統。
 
-- [MDP.DevKit.LineMessaging](https://github.com/Clark159/MDP.DevKit.LineMessaging)：協助開發人員快速建立整合Line訊息服務的應用系統。
+- [MDP.DevKit.LineMessaging](https://github.com/MDPNetCore/MDP.DevKit.LineMessaging)：協助開發人員快速建立整合Line訊息服務的應用系統。
 
-- [MDP.DevKit.OpenAI](https://github.com/Clark159/MDP.DevKit.OpenAI)：協助開發人員快速建立整合OpenAI智能服務的應用系統。
+- [MDP.DevKit.OpenAI](https://github.com/MDPNetCore/MDP.DevKit.OpenAI)：協助開發人員快速建立整合OpenAI智能服務的應用系統。
  
 
 ## 版本更新

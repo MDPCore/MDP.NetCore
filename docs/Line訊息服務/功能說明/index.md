@@ -10,5 +10,5 @@ has_children: false
 # MDP.DevKit.LineMessaging
 
 <head>
-  <meta http-equiv="refresh" content="0; url=https://clark159.github.io/MDP.DevKit.LineMessaging/" />
+  <meta http-equiv="refresh" content="0; url=https://mdpnetcore.github.io/MDP.DevKit.LineMessaging/" />
 </head>
