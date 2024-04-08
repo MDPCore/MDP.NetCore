@@ -91,33 +91,4 @@ namespace MDP.Hosting
             serviceCollection.RegisterNamed(typeof(TService), instanceName, resolveAction, singleton);
         }
     }
-
-    public static partial class ServiceCollectionExtensions
-    {
-        // Methods
-        public static void RegisterModule(this IServiceCollection serviceCollection, IConfiguration configuration)
-        {
-            #region Contracts
-
-            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (configuration == null) throw new ArgumentException($"{nameof(configuration)}=null");
-
-            #endregion
-
-            // DefaultRegister
-            {
-                // List
-                serviceCollection.TryAddTransient(typeof(IList<>), typeof(List<>));
-            }
-
-            // ServiceFactoryRegister
-            ServiceFactoryRegister.RegisterModule(serviceCollection, configuration);
-
-            // ServiceAttributeRegister
-            ServiceAttributeRegister.RegisterModule(serviceCollection, configuration);            
-
-            // ServiceRegistrationRegister
-            ServiceRegistrationRegister.RegisterModule(serviceCollection);
-        }
-    }
 }

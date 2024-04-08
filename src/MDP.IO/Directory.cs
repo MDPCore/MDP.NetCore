@@ -5,11 +5,12 @@ namespace MDP.IO
     public static partial class Directory
     {
         // Methods
-        public static string GetEntryDirectory()
+        public static string GetEntryDirectoryPath()
         {
             // EntryAssembly
             System.Reflection.Assembly entryAssembly = null;
             if (entryAssembly == null) entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
+            if (entryAssembly == null) entryAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             if (entryAssembly == null) entryAssembly = System.Reflection.Assembly.GetAssembly(typeof(Directory));
             if (entryAssembly == null) throw new InvalidOperationException("entryAssembly=null");
 

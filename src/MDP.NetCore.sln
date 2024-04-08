@@ -110,6 +110,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Security.Tokens.Jwt", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.Security.Tokens.Jwt.Lab", "MDP.Security.Tokens.Jwt.Lab\MDP.Security.Tokens.Jwt.Lab.csproj", "{0D42F366-5168-4D8A-B028-40460B0152D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.Configuration.Maui.Lab", "MDP.Configuration.Maui.Lab\MDP.Configuration.Maui.Lab.csproj", "{AC66B33B-AE6A-45C0-A508-2CA3A5448C42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -288,6 +290,12 @@ Global
 		{0D42F366-5168-4D8A-B028-40460B0152D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D42F366-5168-4D8A-B028-40460B0152D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D42F366-5168-4D8A-B028-40460B0152D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC66B33B-AE6A-45C0-A508-2CA3A5448C42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC66B33B-AE6A-45C0-A508-2CA3A5448C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC66B33B-AE6A-45C0-A508-2CA3A5448C42}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AC66B33B-AE6A-45C0-A508-2CA3A5448C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC66B33B-AE6A-45C0-A508-2CA3A5448C42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC66B33B-AE6A-45C0-A508-2CA3A5448C42}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -340,6 +348,7 @@ Global
 		{5F908BA2-0CD5-4FCD-9901-17178A075546} = {2F07455D-B4A7-4C69-8BC5-4F864C13344F}
 		{3159AAAA-F115-47F3-A923-9B9A3A167D94} = {E97EA41B-2FC4-4716-9444-F9CF571A0EA8}
 		{0D42F366-5168-4D8A-B028-40460B0152D9} = {E97EA41B-2FC4-4716-9444-F9CF571A0EA8}
+		{AC66B33B-AE6A-45C0-A508-2CA3A5448C42} = {7D1269C3-E371-47FA-A33B-45B13FFACD99}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CFC3A3B-E255-4661-9701-6E2A9E2A57AB}

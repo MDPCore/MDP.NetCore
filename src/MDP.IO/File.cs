@@ -20,7 +20,7 @@ namespace MDP.IO
             if (Path.IsPathRooted(fileName)==true) return new FileInfo(fileName);
 
             // EntryDirectoryPath
-            var entryDirectoryPath = Directory.GetEntryDirectory();
+            var entryDirectoryPath = Directory.GetEntryDirectoryPath();
             if (string.IsNullOrEmpty(entryDirectoryPath) == true) throw new InvalidOperationException("entryDirectoryPath=null");
 
             // FilePath
@@ -43,7 +43,7 @@ namespace MDP.IO
             if (string.IsNullOrEmpty(searchPath) == true)
             {
                 // EntryDirectoryPath
-                var entryDirectoryPath = Directory.GetEntryDirectory();
+                var entryDirectoryPath = Directory.GetEntryDirectoryPath();
                 if (string.IsNullOrEmpty(entryDirectoryPath) == true) throw new InvalidOperationException("entryDirectoryPath=null");
 
                 // Setting
@@ -97,7 +97,7 @@ namespace MDP.IO
             if (string.IsNullOrEmpty(searchPath) == true)
             {
                 // EntryDirectoryPath
-                var entryDirectoryPath = Directory.GetEntryDirectory();
+                var entryDirectoryPath = Directory.GetEntryDirectoryPath();
                 if (string.IsNullOrEmpty(entryDirectoryPath) == true) throw new InvalidOperationException("entryDirectoryPath=null");
 
                 // Setting

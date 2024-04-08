@@ -10,72 +10,21 @@ namespace MDP.Configuration
 {
     public class ConfigurationRegister
     {
-        // Methods   
-        public static IConfigurationBuilder RegisterModule(IConfigurationBuilder configurationBuilder, string environmentName, string configDirectoryName = "config")
+        // Methods
+        public static void RegisterModule(IConfigurationBuilder configurationBuilder, ConfigurationProvider configurationProvider)
         {
             #region Contracts
 
             if (configurationBuilder == null) throw new ArgumentException($"{nameof(configurationBuilder)}=null");
-            if (string.IsNullOrEmpty(environmentName) == true) throw new ArgumentException($"{nameof(environmentName)}=null");
+            if (configurationProvider == null) throw new ArgumentException($"{nameof(configurationProvider)}=null");
 
             #endregion
 
-            // RegisterJsonFilePath
-            var jsonFilePathList = new List<string>();
+            // ConfigurationProvider
+            foreach (var jsonStream in configurationProvider.GetAllJsonStream())
             {
-                // EntryDirectoryPath
-                var entryDirectoryPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
-                if (string.IsNullOrEmpty(entryDirectoryPath) == true) throw new InvalidOperationException($"{nameof(entryDirectoryPath)}=null");
-                if (string.IsNullOrEmpty(entryDirectoryPath) == false)
-                {
-                    // appsettings.json
-                    if (System.IO.File.Exists(Path.Combine(entryDirectoryPath, "appsettings.json")) == true)
-                    {
-                        jsonFilePathList.Add(Path.Combine(entryDirectoryPath, "appsettings.json"));
-                    }
-
-                    // *.{environmentName}.json
-                    jsonFilePathList.AddRange(MDP.IO.File.GetAllFilePath($"*.{environmentName}.json", entryDirectoryPath));
-                }
-
-                // ConfigDirectoryPath
-                var configDirectoryPath = Path.Combine(entryDirectoryPath, configDirectoryName);
-                if (string.IsNullOrEmpty(configDirectoryPath) == true) throw new InvalidOperationException($"{nameof(configDirectoryPath)}=null");
-                if (string.IsNullOrEmpty(configDirectoryPath) == false)
-                {
-                    // appsettings.json
-                    if (System.IO.File.Exists(Path.Combine(configDirectoryPath, "appsettings.json")) == true)
-                    {
-                        jsonFilePathList.Add(Path.Combine(configDirectoryPath, "appsettings.json"));
-                    }
-
-                    // *.{environmentName}.json
-                    jsonFilePathList.AddRange(MDP.IO.File.GetAllFilePath($"*.{environmentName}.json", configDirectoryPath));
-                }
-
-                // EnvironmentDirectoryPath
-                var environmentDirectoryPath = Path.Combine(configDirectoryPath, environmentName);
-                if (string.IsNullOrEmpty(environmentDirectoryPath) == true) throw new InvalidOperationException($"{nameof(environmentDirectoryPath)}=null");
-                if (string.IsNullOrEmpty(environmentDirectoryPath) == false)
-                {
-                    // *.json
-                    jsonFilePathList.AddRange(MDP.IO.File.GetAllFilePath($"*.json", environmentDirectoryPath));
-                }
-
-                // Register
-                foreach (var jsonFilePath in jsonFilePathList)
-                {
-                    // AddJsonFile
-                    configurationBuilder.AddJsonFile(jsonFilePath);
-                }
-            }
-
-            // RegisterJsonEmptyElement
-            var jsonEmptyElementDictionary = new Dictionary<string, string>();
-            foreach (var configFilePath in jsonFilePathList)
-            {
-                // JsonDocument
-                using (var jsonStream = new FileInfo(configFilePath).OpenRead())
+                // JsonEmptyElementDictionary
+                var jsonEmptyElementDictionary = new Dictionary<string, string>();
                 using (var jsonDocument = JsonDocument.Parse(jsonStream, new JsonDocumentOptions { CommentHandling = JsonCommentHandling.Skip, AllowTrailingCommas = true }))
                 {
                     // NamespaceConfigElement
@@ -110,11 +59,12 @@ namespace MDP.Configuration
                         }
                     }
                 }
-            }
-            configurationBuilder.AddInMemoryCollection(jsonEmptyElementDictionary);
+                configurationBuilder.AddInMemoryCollection(jsonEmptyElementDictionary);
 
-            // Return
-            return configurationBuilder;
+                // JsonStream
+                jsonStream.Position = 0;
+                configurationBuilder.AddJsonStream(jsonStream);
+            }
         }
     }
 }

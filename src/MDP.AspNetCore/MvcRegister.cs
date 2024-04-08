@@ -15,7 +15,7 @@ namespace MDP.AspNetCore
     public class MvcRegister
     {
         // Methods
-        public static IMvcBuilder RegisterModule(IMvcBuilder mvcBuilder)
+        public static void RegisterModule(IMvcBuilder mvcBuilder)
         {
             #region Contracts
 
@@ -87,9 +87,6 @@ namespace MDP.AspNetCore
                     );
                 });
             }
-
-            // Return
-            return mvcBuilder;
         }
     }
 }

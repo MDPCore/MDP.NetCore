@@ -1,13 +1,9 @@
 ﻿using MDP.Hosting;
 using MDP.NetCore;
-using MDP.Registration;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
@@ -31,7 +27,11 @@ namespace MDP.AspNetCore
             #endregion
 
             // HostBuilder
-            applicationBuilder.Host.ConfigureMDP();
+            var hostBuilder = applicationBuilder.Host;
+            {
+                // ConfigureMDP
+                hostBuilder.ConfigureMDP();
+            }
 
             // WebApplicationBuilder
             {

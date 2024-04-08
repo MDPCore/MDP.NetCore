@@ -1,0 +1,47 @@
+﻿@using Microsoft.Extensions.Configuration
+@using System.Text.Json
+
+@namespace MDP.Configuration.Maui.Lab
+@page "/"
+@code
+{
+    // Fields
+    [Inject]
+    public IConfiguration _configuration { get; set; }
+
+
+    // Constructors
+    protected override void OnInitialized()
+    {
+        // Base
+        base.OnInitialized();
+
+        // Bind
+        var setting = _configuration.Bind<Setting>("MDP.Module01:Setting");
+        if (setting == null) throw new InvalidOperationException($"{nameof(setting)}=null");
+
+        // Display
+        this.DisplayMessage = JsonSerializer.Serialize(setting, new JsonSerializerOptions { WriteIndented = true });
+    }
+
+
+    // Properties
+    public string DisplayMessage { get; set; } = string.Empty;
+
+
+    // Class
+    public class Setting
+    {
+        // Properties
+        public string MessageA { get; set; } = string.Empty;
+
+        public string MessageB { get; set; } = string.Empty;
+
+        public string MessageC { get; set; } = string.Empty;
+    }
+}
+
+
+<h1>Hello, world!</h1>
+
+<pre>@this.DisplayMessage</pre>

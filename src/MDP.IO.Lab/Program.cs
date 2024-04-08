@@ -17,10 +17,10 @@ namespace MDP.IO.Lab
             }
             Console.WriteLine("\n\n");
 
-            // EntryDirectory
-            var entryDirectory = MDP.IO.Directory.GetEntryDirectory();
-            if (string.IsNullOrEmpty(entryDirectory) == true ) throw new InvalidOperationException($"{nameof(entryDirectory)}=null");
-            Console.WriteLine(entryDirectory);
+            // EntryDirectoryPath
+            var entryDirectoryPath = MDP.IO.Directory.GetEntryDirectoryPath();
+            if (string.IsNullOrEmpty(entryDirectoryPath) == true ) throw new InvalidOperationException($"{nameof(entryDirectoryPath)}=null");
+            Console.WriteLine(entryDirectoryPath);
             Console.WriteLine("\n\n");
         }
     }

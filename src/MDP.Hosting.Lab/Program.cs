@@ -2,9 +2,10 @@
 using MDP.Registration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using MyLab.Module;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace MDP.Hosting.Lab
 {
@@ -21,8 +22,8 @@ namespace MDP.Hosting.Lab
             // Configuration
             var configurationBuilder = new ConfigurationBuilder();
             {
-                // Register
-                configurationBuilder.RegisterModule(environmentName);
+                // ConfigurationRegister
+                ConfigurationRegister.RegisterModule(configurationBuilder, new MDP.Configuration.FileConfigurationProvider(environmentName));
             }
             var configuration = configurationBuilder.Build();
             if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
@@ -30,8 +31,17 @@ namespace MDP.Hosting.Lab
             // ServiceProvider
             var serviceCollection = new ServiceCollection();
             {
-                // Register
-                serviceCollection.RegisterModule(configuration);
+                // List
+                serviceCollection.TryAddTransient(typeof(IList<>), typeof(List<>));
+
+                // ServiceFactoryRegister
+                ServiceFactoryRegister.RegisterModule(serviceCollection, configuration);
+
+                // ServiceAttributeRegister
+                ServiceAttributeRegister.RegisterModule(serviceCollection, configuration);
+
+                // ServiceRegistrationRegister
+                ServiceRegistrationRegister.RegisterModule(serviceCollection);
             }
             var serviceProvider = serviceCollection.BuildServiceProvider();
             if (serviceProvider == null) throw new InvalidOperationException($"{nameof(serviceProvider)}=null");

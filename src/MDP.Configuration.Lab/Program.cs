@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MDP.Configuration;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace MDP.Configuration.Lab
@@ -15,11 +15,11 @@ namespace MDP.Configuration.Lab
             //var environmentName = "Staging";
             //var environmentName = "Development";
 
-            // ConfigurationBuilder
+            // Configuration
             var configurationBuilder = new ConfigurationBuilder();
             {
-                // Register
-                configurationBuilder.RegisterModule(environmentName);
+                // ConfigurationRegister
+                ConfigurationRegister.RegisterModule(configurationBuilder, new MDP.Configuration.FileConfigurationProvider(environmentName));
             }
             var configuration = configurationBuilder.Build();
             if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");

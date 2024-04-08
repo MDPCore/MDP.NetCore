@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MDP.Registration
 {
-    public static partial class NamedServiceProvider
+    public static partial class ServiceProviderExtensions
     {
         // Methods
         public static TService ResolveTyped<TService>(this IServiceProvider serviceProvider)
@@ -64,7 +64,7 @@ namespace MDP.Registration
         }
     }
 
-    public static partial class NamedServiceProvider
+    public static partial class ServiceProviderExtensions
     {
         // Methods
         public static TService ResolveNamed<TService>(this IServiceProvider serviceProvider, string instanceName)

@@ -2,10 +2,12 @@
 using MDP.Hosting;
 using MDP.Logging;
 using MDP.Tracing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 
 namespace MDP.NetCore
 {
@@ -46,8 +48,8 @@ namespace MDP.NetCore
             // ConfigurationBuilder
             hostBuilder.ConfigureAppConfiguration((hostContext, configurationBuilder) =>
             {
-                // RegisterModule
-                configurationBuilder.RegisterModule(hostContext.HostingEnvironment.EnvironmentName);
+                // ConfigurationRegister
+                ConfigurationRegister.RegisterModule(configurationBuilder, new MDP.Configuration.FileConfigurationProvider(hostContext.HostingEnvironment.EnvironmentName));
             });
 
             // ContainerBuilder
@@ -59,8 +61,17 @@ namespace MDP.NetCore
                 // Tracer
                 serviceCollection.TryAddSingleton(typeof(ITracer<>), typeof(TracerAdapter<>));
 
-                // RegisterModule
-                serviceCollection.RegisterModule(hostContext.Configuration);
+                // List
+                serviceCollection.TryAddTransient(typeof(IList<>), typeof(List<>));
+
+                // ServiceFactoryRegister
+                ServiceFactoryRegister.RegisterModule(serviceCollection, hostContext.Configuration);
+
+                // ServiceAttributeRegister
+                ServiceAttributeRegister.RegisterModule(serviceCollection, hostContext.Configuration);
+
+                // ServiceRegistrationRegister
+                ServiceRegistrationRegister.RegisterModule(serviceCollection);
             });
 
             // Return
