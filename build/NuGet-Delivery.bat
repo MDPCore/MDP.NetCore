@@ -11,7 +11,9 @@ set srcDir=%~dp0..\src
 set outputDir=%~dp0packed
 
 set endsMatchFilter[0]=.Lab
-set endsMatchFilterLength=0
+set endsMatchFilter[1]=.WebLab
+set endsMatchFilter[2]=.HybridLab
+set endsMatchFilterLength=2
 
 
 :: ================================================
