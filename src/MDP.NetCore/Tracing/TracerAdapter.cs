@@ -37,7 +37,7 @@ namespace MDP.NetCore
                     if (_activitySource == null)
                     {
                         // EntryAssemblyName
-                        var entryAssemblyName = Assembly.GetEntryAssembly()?.GetName().Name;
+                        var entryAssemblyName = Assembly.GetExecutingAssembly()?.GetName().Name;
                         if (string.IsNullOrEmpty(entryAssemblyName) == true) throw new InvalidOperationException($"{nameof(entryAssemblyName)}=null");
 
                         // ActivitySource

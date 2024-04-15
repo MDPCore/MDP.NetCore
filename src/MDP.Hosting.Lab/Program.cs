@@ -28,7 +28,7 @@ namespace MDP.Hosting.Lab
             var configuration = configurationBuilder.Build();
             if (configuration == null) throw new InvalidOperationException($"{nameof(configuration)}=null");
 
-            // ServiceProvider
+            // ContainerBuilder
             var serviceCollection = new ServiceCollection();
             {
                 // List

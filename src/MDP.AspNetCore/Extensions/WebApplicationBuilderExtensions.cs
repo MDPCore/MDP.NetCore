@@ -1,8 +1,10 @@
-﻿using MDP.Hosting;
+﻿using MDP.Configuration;
+using MDP.Hosting;
 using MDP.NetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore
 {
-    public static partial class WebApplicationBuilderExtensions
+    internal static class WebApplicationBuilderExtensions
     {
         // Methods
         public static WebApplicationBuilder ConfigureMDP(this WebApplicationBuilder applicationBuilder)
@@ -26,20 +28,48 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // HostBuilder
-            var hostBuilder = applicationBuilder.Host;
+            // ConfigurationBuilder
+            var configurationBuilder = applicationBuilder.Configuration as IConfigurationBuilder;
             {
-                // ConfigureMDP
-                hostBuilder.ConfigureMDP();
+                // ConfigurationRegister
+                ConfigurationRegister.RegisterModule(configurationBuilder, new MDP.Configuration.FileConfigurationProvider(applicationBuilder.Environment.EnvironmentName));
             }
 
-            // WebApplicationBuilder
+            // ContainerBuilder
+            var serviceCollection = applicationBuilder.Services;
             {
-                // ServiceFactoryRegister
-                ServiceFactoryRegister.RegisterModule(applicationBuilder, applicationBuilder.Configuration);
+                // ContainerRegister
+                {
+                    ServiceFactoryRegister.RegisterModule(applicationBuilder, applicationBuilder.Configuration);
+                }
+                ContainerRegister.RegisterModule(serviceCollection, applicationBuilder.Configuration);                
 
                 // ProblemDetails
-                applicationBuilder.AddProblemDetails();
+                serviceCollection.AddProblemDetails();
+
+                // HttpContext
+                serviceCollection.AddHttpContextAccessor();
+
+                // HtmlEncoder
+                serviceCollection.AddSingleton<HtmlEncoder>
+                (
+                    HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+                );               
+
+                // LoggerOptions
+                serviceCollection.AddLogging(builder =>
+                {
+                    // Filter
+                    builder.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
+                });
+
+                // ForwardedHeaders
+                serviceCollection.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.All;
+                    options.KnownNetworks.Clear();
+                    options.KnownProxies.Clear();
+                });
             }
 
             // MvcBuilder
@@ -79,31 +109,7 @@ namespace MDP.AspNetCore
                 {
                     options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs);
                     options.JsonSerializerOptions.Converters.Add(new DateTimeISO8601Converter());
-                });
-
-                // HtmlEncoder
-                mvcBuilder.Services.AddSingleton<HtmlEncoder>
-                (
-                    HtmlEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
-                );
-
-                // HttpContext
-                mvcBuilder.Services.AddHttpContextAccessor();
-
-                // LoggerOptions
-                mvcBuilder.Services.AddLogging(builder =>
-                {
-                    // Filter
-                    builder.AddFilter("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware", LogLevel.None);
-                });
-
-                // ForwardedHeaders
-                mvcBuilder.Services.Configure<ForwardedHeadersOptions>(options =>
-                {
-                    options.ForwardedHeaders = ForwardedHeaders.All;
-                    options.KnownNetworks.Clear();
-                    options.KnownProxies.Clear();
-                });
+                });                
             }
 
             // Return

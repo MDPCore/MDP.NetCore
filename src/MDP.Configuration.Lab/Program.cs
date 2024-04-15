@@ -15,7 +15,7 @@ namespace MDP.Configuration.Lab
             //var environmentName = "Staging";
             //var environmentName = "Development";
 
-            // Configuration
+            // ConfigurationBuilder
             var configurationBuilder = new ConfigurationBuilder();
             {
                 // ConfigurationRegister

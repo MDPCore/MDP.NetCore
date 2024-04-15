@@ -13,16 +13,16 @@ namespace MDP.AspNetCore
 
             #endregion
 
-            // HostBuilder
-            var hostBuilder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args).ConfigureMDP();
-            if (hostBuilder == null) throw new InvalidOperationException($"{nameof(hostBuilder)}=null");
+            // ApplicationBuilder
+            var applicationBuilder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args).ConfigureMDP();
+            if (applicationBuilder == null) throw new InvalidOperationException($"{nameof(applicationBuilder)}=null");
 
-            // Host
-            var host = hostBuilder.Build().ConfigureMDP();
-            if (host == null) throw new InvalidOperationException($"{nameof(host)}=null");
+            // Application
+            var application = applicationBuilder.Build().ConfigureMDP();
+            if (application == null) throw new InvalidOperationException($"{nameof(application)}=null");
 
             // Run
-            host.Run();
+            application.Run();
         }
     }
 }

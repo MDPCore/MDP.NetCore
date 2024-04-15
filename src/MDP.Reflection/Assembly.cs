@@ -12,19 +12,17 @@ namespace MDP.Reflection
         // Fields
         private readonly static object _syncLock = new object();
 
-        private static IList<System.Reflection.Assembly> _assemblyList = null;
-
         private static IList<System.Reflection.Assembly> _applicationAssemblyList = null;
 
 
         // Methods
-        public static IList<System.Reflection.Assembly> FindAllAssembly()
+        public static IList<System.Reflection.Assembly> FindAllApplicationAssembly()
         {
             // Sync
             lock (_syncLock)
             {
                 // Require
-                if (_assemblyList != null) return _assemblyList;
+                if (_applicationAssemblyList != null) return _applicationAssemblyList;
 
                 //  LoadedAssemblyList
                 var loadedAssemblyList = AppDomain.CurrentDomain.GetAssemblies();
@@ -38,7 +36,31 @@ namespace MDP.Reflection
                 }
 
                 // AssemblyFilePathList
-                var assemblyFilePathList = MDP.IO.File.GetAllFilePath("*.dll");
+                var assemblyFilePathList = MDP.IO.File.GetAllFilePath("*.dll").Where(assemblyFilePath =>
+                {
+                    // Filter
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("System") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Microsoft") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("_Microsoft") == true) return false;
+
+                    // Filter(MAUI)
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Xamarin") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Mono") == true) return false;
+
+                    // Filter(MAUI.WinRT)
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("WinRT") == true) return false;
+
+                    // Filter(MAUI.Android)
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Java") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Google") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Windows") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("mscorlib.dll") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("netstandard.dll") == true) return false;
+                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Jsr305Binding.dll") == true) return false;
+
+                    // Return
+                    return true;
+                }).ToList();
                 if (assemblyFilePathList == null) throw new InvalidOperationException($"{nameof(assemblyFilePathList)}=null");
 
                 // AssemblyList 
@@ -67,49 +89,18 @@ namespace MDP.Reflection
 
                 // EntryAssembly
                 var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
-                if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
-                if (assemblyList.Contains(entryAssembly) == false) assemblyList.Add(entryAssembly);
-
-                // Attach
-                _assemblyList = assemblyList;
-
-                // Return
-                return _assemblyList;
-            }           
-        }
-
-        public static IList<System.Reflection.Assembly> FindAllApplicationAssembly()
-        {
-            // Sync
-            lock (_syncLock)
-            {
-                // Require
-                if (_applicationAssemblyList != null) return _applicationAssemblyList;
-
-                // AssemblyList
-                var assemblyList = Assembly.FindAllAssembly();
-                if (assemblyList == null) throw new InvalidOperationException($"{nameof(assemblyList)}=null");
-
-                // Filter
-                assemblyList = assemblyList.Where(assembly =>
+                if (entryAssembly != null && assemblyList.Contains(entryAssembly) == false)
                 {
-                    // Require
-                    if (assembly == null) return false;
-
-                    // Filter
-                    if (assembly.FullName.StartsWith("Microsoft") == true) return false;
-                    if (assembly.FullName.StartsWith("System") == true) return false;
-
-                    // Return
-                    return true;
-                }).ToList();
+                    // Add
+                    assemblyList.Add(entryAssembly);
+                }
 
                 // Attach
                 _applicationAssemblyList = assemblyList;
 
                 // Return
                 return _applicationAssemblyList;
-            }
+            }           
         }
     }
 }

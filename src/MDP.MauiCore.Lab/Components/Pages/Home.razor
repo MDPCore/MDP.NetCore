@@ -1,0 +1,33 @@
+﻿@using MDP.MauiCore
+@using MyLab.Module
+
+@namespace MDP.MauiCore.Lab
+@page "/"
+@code
+{
+    // Fields
+    [Inject]
+    public WorkContext _workContext { get; set; } = null;
+
+
+    // Constructors
+    protected override void OnInitialized()
+    {
+        // Base
+        base.OnInitialized();
+
+        // Display
+        this.DisplayMessage = _workContext.GetValue();
+    }
+
+
+    // Properties
+    public string DisplayMessage { get; set; } = string.Empty;
+}
+
+
+<!-- Content -->
+
+<h1>Hello, world!</h1>
+
+<pre>@this.DisplayMessage</pre>
