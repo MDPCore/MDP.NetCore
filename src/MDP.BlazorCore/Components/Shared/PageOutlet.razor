@@ -1,0 +1,64 @@
+﻿@using System.Text.Json;
+
+@namespace MDP.BlazorCore
+@implements IDisposable
+@code {
+
+    // Constants    
+    internal static readonly object PageDataSectionId = new();
+
+    internal static readonly object PageScriptSectionId = new();
+
+
+    // Fields
+    [Inject]
+    public IJSRuntime _jsRuntime { get; set; }
+
+    [Inject]
+    public IServiceProvider _serviceProvider { get; set; }
+
+    private DotNetObjectReference<PageOutlet> _interopReference = null;
+
+
+    // Constructors        
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Require
+        if (firstRender == false) return;
+
+        // InteropReference
+        _interopReference = DotNetObjectReference.Create(this);
+        if (_interopReference == null) throw new InvalidOperationException($"{nameof(_interopReference)}=null");
+
+        // Initialize
+        await _jsRuntime.InvokeVoidAsync("mdp.blazor.interopInvoker.initialize", _interopReference);
+    }
+
+    public void Dispose()
+    {
+        // InteropReference
+        _interopReference?.Dispose();
+    }
+
+
+    // Methods
+    [JSInvokable]
+    public Task<string> InvokeMethodAsync(JsonDocument arguments)
+    {       
+        // Return
+        return Task.FromResult(JsonSerializer.Serialize(arguments));
+    }
+}
+
+
+<SectionOutlet SectionId="@PageDataSectionId" />
+<SectionOutlet SectionId="@PageScriptSectionId" />
+<script>
+
+    // blazorPageLoaded
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // pageLoaded
+        mdp.blazor.eventInvoker.dispatchPageLoaded();
+    }, { once: true });
+</script>

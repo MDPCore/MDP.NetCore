@@ -30,44 +30,44 @@ namespace MDP.AspNetCore
     public static partial class HookMiddlewareExtensions
     {
         // Methods 
-        public static IApplicationBuilder UseHook(this IApplicationBuilder app, string hookName)
+        public static IApplicationBuilder UseHook(this IApplicationBuilder applicationBuilder, string hookName)
         {
             #region Contracts
 
-            if (app == null) throw new ArgumentException($"{nameof(app)}=null");
+            if (applicationBuilder == null) throw new ArgumentException($"{nameof(applicationBuilder)}=null");
             if (string.IsNullOrEmpty(hookName) == true) throw new ArgumentException($"{nameof(hookName)}=null");
 
             #endregion
 
-            // Host
-            var host = app as WebApplication;
-            if (host == null) throw new InvalidOperationException($"{nameof(host)}=null");
+            // Application
+            var application = applicationBuilder as WebApplication;
+            if (application == null) throw new InvalidOperationException($"{nameof(application)}=null");
 
             // UseHook
-            return host.UseHook(hookName);
+            return application.UseHook(hookName);
         }
 
-        public static WebApplication UseHook(this WebApplication host, string hookName)
+        public static WebApplication UseHook(this WebApplication application, string hookName)
         {
             #region Contracts
 
-            if (host == null) throw new ArgumentException($"{nameof(host)}=null");
+            if (application == null) throw new ArgumentException($"{nameof(application)}=null");
             if (string.IsNullOrEmpty(hookName) == true) throw new ArgumentException($"{nameof(hookName)}=null");
 
             #endregion
 
             // HookMiddlewareList
-            var hookMiddlewareList = host.Services.GetRequiredService<IEnumerable<HookMiddleware>>()?.TakeWhile(o => o.HookName == hookName);
+            var hookMiddlewareList = application.Services.GetRequiredService<IEnumerable<HookMiddleware>>()?.TakeWhile(o => o.HookName == hookName);
             if (hookMiddlewareList == null) throw new InvalidOperationException($"{nameof(hookMiddlewareList)}=null");
             
             // ConfigureMiddleware
             foreach (var hookMiddleware in hookMiddlewareList)
             {
-                hookMiddleware.ConfigureMiddleware(host);
+                hookMiddleware.ConfigureMiddleware(application);
             }
 
             // Return
-            return host;
+            return application;
         }
     }
 }

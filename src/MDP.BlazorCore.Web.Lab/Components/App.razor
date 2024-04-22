@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using MDP.BlazorCore
+@using MDP.BlazorCore.Lab
+@using MDP.BlazorCore.Lab.Layout
+
+@code {
+
+    // RenderMode
+    private IComponentRenderMode HeadOutletRenderMode { get; set; } = RenderMode.InteractiveServer;
+
+    private IComponentRenderMode RoutesRenderMode { get; set; } = RenderMode.InteractiveServer;
+
+    private IComponentRenderMode PageOutletRenderMode { get; set; } = new InteractiveServerRenderMode(prerender: false);
+}
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="MDP.BlazorCore.Web.Lab.styles.css" />
+    <script src="/lib/mdp-blazor/js/mdp-blazor.js"></script>
+    <HeadOutlet @rendermode="@this.HeadOutletRenderMode" />
+</head>
+<body>
+    <Routes @rendermode="@this.RoutesRenderMode" DefaultLayout="@(typeof(MainLayout).AssemblyQualifiedName)" />
+    <script src="_framework/blazor.web.js" autostart="false"></script>
+    <script>
+        Blazor.start({
+            ssr: { disableDomPreservation: true }
+        });
+    </script>
+    <PageOutlet @rendermode="@this.PageOutletRenderMode" />
+</body>
+</html>

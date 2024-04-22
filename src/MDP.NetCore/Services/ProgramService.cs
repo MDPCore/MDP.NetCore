@@ -1,5 +1,4 @@
-﻿using MDP.Reflection;
-using MDP.Logging;
+﻿using MDP.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -75,7 +74,7 @@ namespace MDP.NetCore
                 if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
 
                 // MethodInfo
-                var methodInfo = typeof(TProgram).FindMethod(methodName);
+                var methodInfo = typeof(TProgram).GetMethod(methodName);
                 if (methodInfo == null) throw new InvalidOperationException($"{nameof(methodInfo)}=null");
 
                 // ParameterValueArray

@@ -10,7 +10,7 @@ namespace MDP.Hosting
     public partial class ServiceAttributeRegister
     {
         // Methods
-        public static IServiceCollection RegisterModule(IServiceCollection serviceCollection, IConfiguration configuration)
+        public static void RegisterModule(IServiceCollection serviceCollection, IConfiguration configuration)
         {
             #region Contracts
 
@@ -74,7 +74,7 @@ namespace MDP.Hosting
                         serviceType: serviceAttribute.ServiceType,
                         instanceType: instanceType,
                         instanceName: instanceName,
-                        parameterProvider: new ConfigurationParameterProvider(serviceAttributeConfig),
+                        parameterProvider: new MDP.Hosting.ConfigurationParameterProvider(serviceAttributeConfig),
                         singleton: serviceAttribute.Singleton
                     );
 
@@ -92,14 +92,11 @@ namespace MDP.Hosting
                         serviceType: serviceAttribute.ServiceType,
                         instanceType: instanceType,
                         instanceName: instanceType.Name,
-                        parameterProvider: new DefaultParameterProvider(),
+                        parameterProvider: new MDP.Reflection.DefaultParameterProvider(),
                         singleton: serviceAttribute.Singleton
                     );
                 }
             }
-
-            // Return
-            return serviceCollection;
         }
     }
 

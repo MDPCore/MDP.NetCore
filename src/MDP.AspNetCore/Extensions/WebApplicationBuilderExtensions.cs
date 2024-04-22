@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore
 {
-    internal static class WebApplicationBuilderExtensions
+    public static class WebApplicationBuilderExtensions
     {
         // Methods
         public static WebApplicationBuilder ConfigureMDP(this WebApplicationBuilder applicationBuilder)

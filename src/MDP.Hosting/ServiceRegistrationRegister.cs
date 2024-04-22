@@ -12,7 +12,7 @@ namespace MDP.Hosting
     public partial class ServiceRegistrationRegister
     {
         // Methods
-        public static IServiceCollection RegisterModule(IServiceCollection serviceCollection)
+        public static void RegisterModule(IServiceCollection serviceCollection)
         {
             #region Contracts
 
@@ -44,13 +44,10 @@ namespace MDP.Hosting
                     serviceType: serviceRegistration.ServiceType,
                     instanceType: serviceRegistration.InstanceType,
                     instanceName: serviceRegistration.InstanceName,
-                    parameterProvider: new DictionaryParameterProvider(serviceRegistration.Parameters),
+                    parameterProvider: new MDP.Reflection.DictionaryParameterProvider(serviceRegistration.Parameters),
                     singleton: serviceRegistration.Singleton
                 );
             }
-
-            // Return
-            return serviceCollection;
         }
     }
 }

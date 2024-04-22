@@ -1,0 +1,58 @@
+﻿@using System.Reflection
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Routing
+
+@namespace MDP.BlazorCore
+@code {
+
+    // Properties
+    [Parameter]
+    public Assembly AppAssembly { get; set; }
+
+    [Parameter]
+    public string DefaultLayout { get; set; }
+
+
+    // Methods
+    private Assembly CreateAppAssembly()
+    {
+        // AppAssembly
+        if (this.AppAssembly != null) return this.AppAssembly;
+
+        // EntryAssembly
+        var entryAssembly = Assembly.GetEntryAssembly();
+        if (entryAssembly != null) return entryAssembly;
+
+        // Return
+        return null;
+    }
+
+    private Assembly[] CreateAdditionalAssemblies()
+    {
+        // AssemblyList
+        var assemblyList = MDP.Reflection.Assembly.FindAllApplicationAssembly();
+        assemblyList?.Remove(this.AppAssembly);
+
+        // Return
+        return assemblyList?.ToArray();
+    }
+
+    private Type CreateDefaultLayout()
+    {
+        // Required
+        if (string.IsNullOrEmpty(this.DefaultLayout)==true) return null;
+
+        // DefaultLayout
+        var defaultLayout = Type.GetType(this.DefaultLayout);
+        if (defaultLayout == null) return defaultLayout;
+
+        // Return
+        return defaultLayout;
+    }
+}
+
+<Router AppAssembly="@CreateAppAssembly()" AdditionalAssemblies="@CreateAdditionalAssemblies()">
+    <Found Context="routeData">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@CreateDefaultLayout()" />
+    </Found>
+</Router>

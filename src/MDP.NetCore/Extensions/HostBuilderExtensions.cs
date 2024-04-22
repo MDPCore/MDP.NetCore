@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace MDP.NetCore
 {
-    internal static class HostBuilderExtensions
+    public static class HostBuilderExtensions
     {
         // Methods
         public static IHostBuilder ConfigureMDP<TProgram>(this IHostBuilder hostBuilder) where TProgram : class

@@ -12,7 +12,7 @@ namespace MDP.Hosting
     internal static class ServiceRegister
     {
         // Methods
-        public static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, ParameterProvider parameterProvider, bool singleton)
+        public static void RegisterService(IServiceCollection serviceCollection, Type serviceType, Type instanceType, string instanceName, MDP.Reflection.ParameterProvider parameterProvider, bool singleton)
         {
             #region Contracts
 
@@ -48,6 +48,9 @@ namespace MDP.Hosting
             // RegisterNamed: FullInstanceName
             serviceCollection.RegisterNamed(serviceType, fullInstanceName, (serviceProvider) =>
             {
+                // ServiceParameterProvider
+                var serviceParameterProvider = new ServiceParameterProvider(serviceProvider, parameterProvider);
+
                 // ConstructorInfo
                 var constructorInfo = instanceType.GetConstructors().MaxBy(o => o.GetParameters().Length);
                 if (constructorInfo == null) throw new InvalidOperationException($"{nameof(constructorInfo)}=null");
@@ -56,7 +59,7 @@ namespace MDP.Hosting
                 var parameters = new List<object>();
                 foreach (var parameterInfo in constructorInfo.GetParameters())
                 {
-                    parameters.Add(parameterProvider.CreateParameter(parameterInfo, serviceProvider));
+                    parameters.Add(serviceParameterProvider.GetValue(parameterInfo.ParameterType, parameterInfo.Name, parameterInfo.HasDefaultValue, parameterInfo.DefaultValue));
                 }
 
                 // Instance

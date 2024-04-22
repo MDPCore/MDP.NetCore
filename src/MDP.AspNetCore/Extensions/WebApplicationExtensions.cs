@@ -1,55 +1,60 @@
-﻿using MDP.NetCore;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 
 namespace MDP.AspNetCore
 {
-    internal static class WebApplicationExtensions
+    public static class WebApplicationExtensions
     {
         // Methods
-        public static WebApplication ConfigureMDP(this WebApplication webApplication)
+        public static WebApplication ConfigureMDP(this WebApplication application)
         {
             #region Contracts
 
-            if (webApplication == null) throw new ArgumentException($"{nameof(webApplication)}=null");
+            if (application == null) throw new ArgumentException($"{nameof(application)}=null");
 
             #endregion
 
             // ExceptionHandler
-            if (webApplication.Environment.IsDevelopment() == false)
+            if (application.Environment.IsDevelopment() == false)
             {
-                webApplication.UseProblemDetails();
+                application.UseProblemDetails();
             }
-            webApplication.UseHook("ExceptionHandler");
+            application.UseHook("ExceptionHandler");
 
             // Network 
-            webApplication.UsePathBase();
-            webApplication.UsePathDefault();
-            webApplication.UseForwardedHeaders();
+            application.UsePathBase();
+            application.UsePathDefault();
+            application.UseForwardedHeaders();
 
             // Security
-            webApplication.UseHsts();
-            webApplication.UseHttpsRedirection();            
+            application.UseHttpsRedirection();
+            application.UseHsts();         
 
             // StaticFile
-            webApplication.UseDefaultFiles();
-            webApplication.UseStaticFiles();
+            application.UseDefaultFiles();
+            application.UseStaticFiles();
 
             // Routing
-            webApplication.UseRouting().UseHook("Routing");
+            application.UseRouting();
+            {
+                // Auth
+                application.UseAuthentication();
+                application.UseAuthorization();
+                application.UseAntiforgery();
 
-            // Auth
-            webApplication.UseAuthentication();
-            webApplication.UseAuthorization();
-
-            // MVC
-            webApplication.MapControllers();
-            webApplication.MapDefaultControllerRoute();
+                // Route
+                application.UseHook("Routing");
+                {
+                    // ControllerRoute
+                    application.MapControllers();
+                    application.MapDefaultControllerRoute();
+                }
+                application.UseHook("Routed");
+            }            
 
             // Return
-            return webApplication;
+            return application;
         }
     }
 }

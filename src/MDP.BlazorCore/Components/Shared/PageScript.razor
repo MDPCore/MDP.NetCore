@@ -1,0 +1,42 @@
+﻿@using System.Text.Json
+
+@namespace MDP.BlazorCore
+@code {
+
+    // Fields
+    [Inject]
+    public IJSRuntime _jsRuntime { get; set; }
+
+
+    // Properties
+    [Parameter]
+    public object PageData { get; set; } = null;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    // Methods
+    private MarkupString CreatePageData()
+    {
+        // Require
+        if (this.PageData == null) return new MarkupString("{}");
+
+        // Return
+        return new MarkupString(JsonSerializer.Serialize(this.PageData));
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Require
+        if (firstRender == false) return;
+
+        // PageLoaded
+        await _jsRuntime.InvokeVoidAsync("eval", "mdp.blazor.eventInvoker.dispatchPageLoaded();");
+    }
+}
+
+<SectionContent SectionId="@(PageOutlet.PageDataSectionId)">
+    <span id="mdp-blazor-pagedata" style="display:none;" data-value="@this.CreatePageData()"></span>
+</SectionContent>
+<SectionContent SectionId="@(PageOutlet.PageScriptSectionId)" ChildContent="@ChildContent" />
