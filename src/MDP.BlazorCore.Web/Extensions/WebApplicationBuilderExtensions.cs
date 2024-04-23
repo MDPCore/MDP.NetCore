@@ -38,7 +38,7 @@ namespace MDP.BlazorCore.Web
             var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
             if (entryAssembly == null) throw new InvalidOperationException($"{nameof(entryAssembly)}=null");
 
-            // ComponentsBuilder
+            // BlazorBuilder
             var componentsBuilder = applicationBuilder.Services.AddRazorComponents();
             {
                 // Rendermode
@@ -57,7 +57,7 @@ namespace MDP.BlazorCore.Web
             // MiddlewareBuilder
             applicationBuilder.AddHook("Routing", (application) =>
             {
-                // ComponentRoute
+                // BlazorRoute
                 application
                     .MapRazorComponents<TApp>()
                     .AddInteractiveServerRenderMode()

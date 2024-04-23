@@ -55,9 +55,13 @@ namespace MDP.BlazorCore.Maui
                 serviceCollection.AddSingleton<IHostEnvironment>(hostEnvironment);
             }
 
-            // MauiBuilder
-            applicationBuilder.UseMauiApp<MDP.BlazorCore.Maui.App>();
+            // BlazorBuilder
             {
+                // MauiApp
+                applicationBuilder.UseMauiApp<MDP.BlazorCore.Maui.App>();
+                applicationBuilder.Services.AddMauiBlazorWebView();
+                applicationBuilder.Services.AddAuthorizationCore();
+
                 // BlazorApp
                 applicationBuilder.Services.AddSingleton<RoutesOptions>(serviceProvider => { 
                     return new RoutesOptions()
@@ -66,8 +70,6 @@ namespace MDP.BlazorCore.Maui
                         DefaultLayout = defaultLayout
                     };
                 });
-                applicationBuilder.Services.AddMauiBlazorWebView();
-                applicationBuilder.Services.AddAuthorizationCore();
 
                 // BlazorTools
                 if (hostEnvironment.IsDevelopment() == true)
