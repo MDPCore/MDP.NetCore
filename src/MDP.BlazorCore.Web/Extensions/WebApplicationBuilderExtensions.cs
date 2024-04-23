@@ -23,7 +23,7 @@ namespace MDP.BlazorCore.Web
     internal static class WebApplicationBuilderExtensions
     {
         // Methods
-        public static WebApplicationBuilder ConfigureMDP<TApp>(this WebApplicationBuilder applicationBuilder) where TApp : ComponentBase
+        public static WebApplicationBuilder ConfigureMDP<TApp>(this WebApplicationBuilder applicationBuilder, Type defaultLayout = null) where TApp : ComponentBase
         {
             #region Contracts
 
@@ -43,9 +43,18 @@ namespace MDP.BlazorCore.Web
             {
                 // Rendermode
                 componentsBuilder.AddInteractiveServerComponents();
+
+                // BlazorApp
+                applicationBuilder.Services.AddSingleton<RoutesOptions>(serviceProvider => {
+                    return new RoutesOptions()
+                    {
+                        AppAssembly = entryAssembly,
+                        DefaultLayout = defaultLayout
+                    };
+                });                
             }
 
-            // RouteBuilder
+            // MiddlewareBuilder
             applicationBuilder.AddHook("Routing", (application) =>
             {
                 // ComponentRoute

@@ -12,8 +12,7 @@ namespace MDP.BlazorCore.Maui
     public static class Host
     {
         // Methods
-        public static MauiApp CreateMauiApp<TProgram>(Type defaultLayout = null) 
-            where TProgram : class
+        public static MauiApp CreateMauiApp<TProgram>(Type defaultLayout = null) where TProgram : class
         {
             // ApplicationBuilder
             var applicationBuilder = Microsoft.Maui.Hosting.MauiApp.CreateBuilder().ConfigureMDP<TProgram>(defaultLayout);

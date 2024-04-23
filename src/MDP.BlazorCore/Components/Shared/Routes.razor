@@ -5,54 +5,13 @@
 @namespace MDP.BlazorCore
 @code {
 
-    // Properties
-    [Parameter]
-    public Assembly AppAssembly { get; set; }
-
-    [Parameter]
-    public string DefaultLayout { get; set; }
-
-
-    // Methods
-    private Assembly CreateAppAssembly()
-    {
-        // AppAssembly
-        if (this.AppAssembly != null) return this.AppAssembly;
-
-        // EntryAssembly
-        var entryAssembly = Assembly.GetEntryAssembly();
-        if (entryAssembly != null) return entryAssembly;
-
-        // Return
-        return null;
-    }
-
-    private Assembly[] CreateAdditionalAssemblies()
-    {
-        // AssemblyList
-        var assemblyList = MDP.Reflection.Assembly.FindAllApplicationAssembly();
-        assemblyList?.Remove(this.AppAssembly);
-
-        // Return
-        return assemblyList?.ToArray();
-    }
-
-    private Type CreateDefaultLayout()
-    {
-        // Required
-        if (string.IsNullOrEmpty(this.DefaultLayout)==true) return null;
-
-        // DefaultLayout
-        var defaultLayout = Type.GetType(this.DefaultLayout);
-        if (defaultLayout == null) return defaultLayout;
-
-        // Return
-        return defaultLayout;
-    }
+    // Fields
+    [Inject]
+    public RoutesOptions _routesOptions { get; set; }
 }
 
-<Router AppAssembly="@CreateAppAssembly()" AdditionalAssemblies="@CreateAdditionalAssemblies()">
+<Router AppAssembly="@_routesOptions.CreateAppAssembly()" AdditionalAssemblies="@_routesOptions.CreateAdditionalAssemblies()">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@CreateDefaultLayout()" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@_routesOptions.CreateDefaultLayout()" />
     </Found>
 </Router>

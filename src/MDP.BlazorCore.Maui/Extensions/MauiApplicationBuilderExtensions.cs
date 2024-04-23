@@ -19,8 +19,7 @@ namespace MDP.BlazorCore.Maui
     internal static class MauiApplicationBuilderExtensions
     {
         // Methods
-        public static MauiAppBuilder ConfigureMDP<TProgram>(this MauiAppBuilder applicationBuilder, Type defaultLayout = null) 
-            where TProgram : class
+        public static MauiAppBuilder ConfigureMDP<TProgram>(this MauiAppBuilder applicationBuilder, Type defaultLayout = null) where TProgram : class
         {
             #region Contracts
 
@@ -57,45 +56,16 @@ namespace MDP.BlazorCore.Maui
             }
 
             // MauiBuilder
+            applicationBuilder.UseMauiApp<MDP.BlazorCore.Maui.App>();
             {
-                // MauiApp
-                applicationBuilder.UseMauiApp((serviceProvider) =>
-                {
-                    // RootComponentList
-                    var rootComponentList = new List<RootComponent>();
-                    {
-                        // Routes
-                        rootComponentList.Add(new RootComponent
-                        {
-                            Selector = "#app",
-                            ComponentType = typeof(MDP.BlazorCore.Routes),
-                            Parameters = new Dictionary<string, object>
-                            {
-                                {"AppAssembly", entryAssembly },
-                                {"DefaultLayout",  defaultLayout.AssemblyQualifiedName }
-                            }
-                        });
-
-                        // HeadOutlet
-                        rootComponentList.Add(new RootComponent
-                        {
-                            Selector = "head::after",
-                            ComponentType = typeof(Microsoft.AspNetCore.Components.Web.HeadOutlet)
-                        });
-
-                        // PageOutlet
-                        rootComponentList.Add(new RootComponent
-                        {
-                            Selector = "#pageOutlet",
-                            ComponentType = typeof(MDP.BlazorCore.PageOutlet)
-                        });
-                    }
-
-                    // MauiApp
-                    return new MDP.BlazorCore.Maui.App(new MainPage(rootComponentList));
-                });
-
                 // BlazorApp
+                applicationBuilder.Services.AddSingleton<RoutesOptions>(serviceProvider => { 
+                    return new RoutesOptions()
+                    {
+                        AppAssembly = entryAssembly,
+                        DefaultLayout = defaultLayout
+                    };
+                });
                 applicationBuilder.Services.AddMauiBlazorWebView();
                 applicationBuilder.Services.AddAuthorizationCore();
 

@@ -1,3 +1,4 @@
+using MDP.BlazorCore.Lab.Layout;
 using MDP.BlazorCore.Web.Lab.Components;
 
 namespace MDP.BlazorCore.Web.Lab
@@ -8,7 +9,7 @@ namespace MDP.BlazorCore.Web.Lab
         public static void Main(string[] args)
         {
             // Host
-            MDP.BlazorCore.Web.Host.Run<App>(args);
+            MDP.BlazorCore.Web.Host.Run<App>(typeof(MainLayout));
         }
     }
 }

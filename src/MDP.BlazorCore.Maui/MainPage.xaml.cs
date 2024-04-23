@@ -9,23 +9,10 @@ namespace MDP.BlazorCore.Maui
     public partial class MainPage : ContentPage
     {
         // Constructors
-        public MainPage(List<RootComponent> rootComponentList)
+        public MainPage()
         {
-            #region Contracts
-
-            if (rootComponentList == null) throw new InvalidOperationException($"{nameof(rootComponentList)}=null");
-           
-            #endregion
-
             // Initialize
             this.InitializeComponent();
-
-            // RootComponents
-            foreach(var rootComponent in rootComponentList)
-            {
-                // Add
-                blazorWebView.RootComponents.Add(rootComponent);
-            }
         }
     }
 }

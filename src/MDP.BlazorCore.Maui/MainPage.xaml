@@ -6,6 +6,12 @@
              xmlns:blazorLib="clr-namespace:Microsoft.AspNetCore.Components.Web;assembly=Microsoft.AspNetCore.Components.Web"         
              xmlns:blazorCore="clr-namespace:MDP.BlazorCore;assembly=MDP.BlazorCore" >
 
-    <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/app.html" />
+    <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/app.html">
+        <BlazorWebView.RootComponents>
+            <RootComponent Selector="head::after" ComponentType="{x:Type blazorLib:HeadOutlet}" />
+            <RootComponent Selector="#app"        ComponentType="{x:Type blazorCore:Routes}" />
+            <RootComponent Selector="#pageOutlet" ComponentType="{x:Type blazorCore:PageOutlet}" />
+        </BlazorWebView.RootComponents>
+    </BlazorWebView>
 
 </ContentPage>
