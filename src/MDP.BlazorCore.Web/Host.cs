@@ -1,6 +1,6 @@
-﻿using System;
-using MDP.AspNetCore;
+﻿using MDP.AspNetCore;
 using Microsoft.AspNetCore.Components;
+using System;
 
 namespace MDP.BlazorCore.Web
 {

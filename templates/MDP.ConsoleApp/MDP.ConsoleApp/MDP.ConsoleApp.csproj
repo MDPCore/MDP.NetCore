@@ -2,19 +2,24 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>11.0</LangVersion>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.AspNetCore" Version="6.1.13" />
+    <PackageReference Include="MDP.Domain" Version="8.0.2-beta02" />
+    <PackageReference Include="MDP.NetCore" Version="8.0.2-beta02" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyLab.Todos\MyLab.Todos.csproj" />
+    <ProjectReference Include="..\MyLab.Todos.Accesses\MyLab.Todos.Accesses.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Content Include="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

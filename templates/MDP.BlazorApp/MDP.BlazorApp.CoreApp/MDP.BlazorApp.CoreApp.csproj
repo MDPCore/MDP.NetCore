@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MDP.Domain" Version="8.0.2-beta02" />
+    <PackageReference Include="MDP.BlazorCore" Version="8.0.2-beta02" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyLab.Todos\MyLab.Todos.csproj" />
+    <ProjectReference Include="..\MyLab.Todos.Accesses\MyLab.Todos.Accesses.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+</Project>

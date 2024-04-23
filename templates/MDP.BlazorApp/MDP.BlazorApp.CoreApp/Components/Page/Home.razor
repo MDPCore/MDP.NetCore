@@ -1,0 +1,13 @@
+﻿@page "/"
+@page "/Home"
+@page "/Home/{*path}"
+@code {
+
+    // Properties
+    [Parameter]
+    public string Path { get; set; }
+}
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.

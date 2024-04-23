@@ -2,8 +2,8 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>MDP.WebApp</id>
-	<description>[MDP.Net] WebApp Template</description>	
-    <projectUrl>https://github.com/Clark159/MDP.Net</projectUrl>    
+	<description>MDP.WebApp Template</description>	
+    <projectUrl>https://github.com/MDPNetCore/MDP.AspNetCore</projectUrl>    
     <version>0.0.0</version>
     <icon>Package.png</icon>
     <readme>README.md</readme>    
@@ -15,9 +15,9 @@
       <packageType name="Template" />
     </packageTypes>
   </metadata>
-  <files>
-    <file src="**\*.*" target="content" exclude="**\bin\**;**\obj\**;**\.vs\**" />
-	<file src="..\..\Package.png" target="" />
-	<file src="..\..\README.md" target="" />
+  <files>    
+    <file src="**/*.*"            target="content" exclude="**/bin/**;**/obj/**;**/.vs/**;*.nuspec" />
+    <file src="../../Package.png" target="" />
+	<file src="../../README.md"   target="" />
   </files>
 </package>

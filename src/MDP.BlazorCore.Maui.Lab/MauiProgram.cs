@@ -1,4 +1,5 @@
-﻿using MDP.BlazorCore.Lab.Layout;
+﻿using MDP.BlazorCore.Lab;
+using MDP.BlazorCore.Lab.Layout;
 
 namespace MDP.BlazorCore.Maui.Lab
 {
