@@ -7,7 +7,7 @@
     "defaultName": "ConsoleApp1",
     "preferNameDirectory": true,
     "name": "[MDP] Console應用程式",
-    "description": "建立基於 MDP.NetCore平台的 Cconsole應用程式，並且附有依賴注入的範例。",
+    "description": "建立基於 MDP.NetCore的 Cconsole應用程式，並且附有依賴注入的範例。",
     "tags": {
       "language": "C#" ,
       "type":"project"

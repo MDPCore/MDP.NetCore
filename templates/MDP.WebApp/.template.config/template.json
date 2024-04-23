@@ -7,7 +7,7 @@
     "defaultName": "WebApp1",
     "preferNameDirectory": true,
     "name": "[MDP] Web應用程式",
-    "description": "建立基於 MDP.AspNetCore平台的 Web應用程式，並且附有依賴注入的範例。",
+    "description": "建立基於 MDP.AspNetCore的 Web應用程式，並且附有依賴注入的範例。",
     "tags": {
       "language": "C#" ,
       "type":"project"
