@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.Domain" Version="8.0.2-beta02" />
-    <PackageReference Include="MDP.BlazorCore" Version="8.0.2-beta02" />
+    <PackageReference Include="MDP.Domain" Version="8.0.2-beta03" />
+    <PackageReference Include="MDP.BlazorCore" Version="8.0.2-beta03" />
   </ItemGroup>
 
   <ItemGroup>
