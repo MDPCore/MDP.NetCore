@@ -4,16 +4,14 @@ setlocal enabledelayedexpansion
 
 :: ================================================
 :: Variables
-set version=8.0.1
+set version=8.0.2
 
 set buildDir=%~dp0
 set srcDir=%~dp0..\src
 set outputDir=%~dp0packed
 
 set endsMatchFilter[0]=.Lab
-set endsMatchFilter[1]=.WebLab
-set endsMatchFilter[2]=.HybridLab
-set endsMatchFilterLength=2
+set endsMatchFilterLength=0
 
 
 :: ================================================
