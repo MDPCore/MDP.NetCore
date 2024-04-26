@@ -31,7 +31,7 @@
         if (_interopReference == null) throw new InvalidOperationException($"{nameof(_interopReference)}=null");
 
         // Initialize
-        await _jsRuntime.InvokeVoidAsync("mdp.blazor.interopInvoker.initialize", _interopReference);
+        await _jsRuntime.InvokeVoidAsync("mdp.blazor.interopManager.initialize", _interopReference);
     }
 
     public void Dispose()
@@ -59,6 +59,6 @@
     document.addEventListener("DOMContentLoaded", function () {
 
         // pageLoaded
-        mdp.blazor.eventInvoker.dispatchPageLoaded();
+        mdp.blazor.eventManager.dispatchPageLoaded();
     }, { once: true });
 </script>

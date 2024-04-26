@@ -32,7 +32,7 @@
         if (firstRender == false) return;
 
         // PageLoaded
-        await _jsRuntime.InvokeVoidAsync("eval", "mdp.blazor.eventInvoker.dispatchPageLoaded();");
+        await _jsRuntime.InvokeVoidAsync("eval", "mdp.blazor.eventManager.dispatchPageLoaded();");
     }
 }
 

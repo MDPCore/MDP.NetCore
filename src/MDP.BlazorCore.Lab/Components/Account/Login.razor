@@ -1,0 +1,32 @@
+﻿@using MyLab.Module
+
+@page "/Account/Login"
+@code {
+
+    // Methods
+    protected override Task OnInitializedAsync()
+    {
+        // Return
+        return Task.CompletedTask;
+    }
+}
+
+<PageScript>
+    <script>
+
+        // blazorPageLoaded
+        document.addEventListener("BlazorPageLoaded", function (event) {
+                      
+
+            // message
+            document.getElementById("message").innerHTML += "BlazorPageLoaded";
+        }, { once: true });
+    </script>
+</PageScript>
+
+<h3>Account/Login</h3>
+<button class="btn btn-primary" id="loginByLineButton">LoginByLine</button>
+<br />
+<br />
+<br />
+<p id="message"></p>

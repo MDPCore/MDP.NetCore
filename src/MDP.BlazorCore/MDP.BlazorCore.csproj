@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MDP.Reflection\MDP.Reflection.csproj" />
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

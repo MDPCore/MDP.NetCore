@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace MDP.BlazorCore.Maui
 {
-    [Service<UserContext>(singleton:true)]
-    public class UserContext
+    [Service<UserManager>(singleton:true)]
+    public class UserManager
     {
         // Properties
         public ClaimsPrincipal CurrentUser { get; private set; } = new ClaimsPrincipal();

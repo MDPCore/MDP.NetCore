@@ -10,23 +10,23 @@ namespace MDP.BlazorCore.Maui
     public class MauiAuthenticationStateProvider : AuthenticationStateProvider
     {
         // Fields
-        private UserContext _userContext;
+        private UserManager _userManager;
 
 
         // Constructors
-        public MauiAuthenticationStateProvider(UserContext userContext)
+        public MauiAuthenticationStateProvider(UserManager userManager)
         {
             #region Contracts
 
-            if (userContext == null) throw new ArgumentException($"{nameof(userContext)}=null");
+            if (userManager == null) throw new ArgumentException($"{nameof(userManager)}=null");
 
             #endregion
 
             // Default
-            _userContext = userContext;
+            _userManager = userManager;
 
             // Event
-            userContext.UserChanged += this.UserContext_UserChanged;
+            userManager.UserChanged += this.UserManager_UserChanged;
         }
 
 
@@ -34,7 +34,7 @@ namespace MDP.BlazorCore.Maui
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             // ClaimsPrincipal
-            var claimsPrincipal = _userContext.CurrentUser;
+            var claimsPrincipal = _userManager.CurrentUser;
             if(claimsPrincipal == null) throw new InvalidOperationException($"{nameof(claimsPrincipal)}=null");
 
             // Return
@@ -43,7 +43,7 @@ namespace MDP.BlazorCore.Maui
 
 
         // Handlers
-        private void UserContext_UserChanged(ClaimsPrincipal claimsPrincipal)
+        private void UserManager_UserChanged(ClaimsPrincipal claimsPrincipal)
         {
             #region Contracts
 

@@ -122,7 +122,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.BlazorCore.Web.Lab", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.BlazorCore.Lab", "MDP.BlazorCore.Lab\MDP.BlazorCore.Lab.csproj", "{81BB8D9E-7DD2-4F29-B34C-FB8E71B2C37C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDP.BlazorCore.Maui.Lab", "MDP.BlazorCore.Maui.Lab\MDP.BlazorCore.Maui.Lab.csproj", "{C868B19A-583A-4982-9E84-65BA0411C87F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.BlazorCore.Maui.Lab", "MDP.BlazorCore.Maui.Lab\MDP.BlazorCore.Maui.Lab.csproj", "{C868B19A-583A-4982-9E84-65BA0411C87F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.MDP.AspNetCore", "01.MDP.AspNetCore", "{1C2735CD-E108-4857-8A78-093688944EAE}"
 EndProject

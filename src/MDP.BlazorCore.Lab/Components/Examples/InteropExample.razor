@@ -29,7 +29,7 @@
             document.getElementById("runDotNetButton").addEventListener("click", function (event) {
 
                 // invokeMethod
-                mdp.blazor.interopInvoker.invokeMethodAsync(
+                mdp.blazor.interopManager.invokeMethodAsync(
                     pageData.b
                 ).then(result => {
                     alert(result);
