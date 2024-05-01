@@ -1,6 +1,6 @@
 ---
 layout: default
-title: MDP.NetCore
+title: [MDP.NetCore]
 parent: null
 nav_order: 1
 permalink: /
