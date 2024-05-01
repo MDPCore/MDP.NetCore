@@ -11,8 +11,7 @@ using System.Xml.Linq;
 
 namespace MDP.Security.Tokens.Jwt
 {
-    [MDP.Registration.Service<SecurityTokenFactory>(singleton: true, autoRegister: false)]
-    public class SecurityTokenFactory
+    public class TokenProvider
     {
         // Fields
         private readonly JwtSecurityTokenHandler _securityTokenHandler = new JwtSecurityTokenHandler();
@@ -25,7 +24,7 @@ namespace MDP.Security.Tokens.Jwt
 
 
         // Constructors
-        public SecurityTokenFactory(string algorithm, string signKey, string issuer = null, int expirationMinutes = 30)
+        public TokenProvider(string algorithm, string signKey, string issuer = null, int expirationMinutes = 30)
         {
             #region Contracts
 

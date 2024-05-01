@@ -7,45 +7,46 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MDP.Data.MSSql
 {
-    public class SqlClientFactoryFactory: ServiceFactory<IServiceCollection, SqlClientFactoryFactory.Setting>
+    public class SqlClientFactoryFactory: ServiceFactory<IServiceCollection, SqlClientFactoryFactory.SettingDictionary>
     {
         // Constructors
         public SqlClientFactoryFactory() : base("MDP.Data.MSSql", "SqlClientFactory", false) { }
 
 
         // Methods
-        public override void ConfigureService(IServiceCollection serviceCollection, Setting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, SettingDictionary settingDictionary)
         {
             #region Contracts
 
             if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
+            if (settingDictionary == null) throw new ArgumentException($"{nameof(settingDictionary)}=null");
 
             #endregion
 
             // SqlClientFactory
             serviceCollection.TryAddSingleton<SqlClientFactory, SqlClientFactory>();
 
-            // SqlClient
-            foreach (var endpoint in setting)
+            // SqlClientBuilder
+            foreach (var setting in settingDictionary)
             {
                 // Require
-                if (string.IsNullOrEmpty(endpoint.Key) == true) throw new InvalidOperationException($"{nameof(endpoint.Key)}=null");
-                if (endpoint.Value == null) throw new InvalidOperationException($"{nameof(endpoint.Value)}=null");
-                if (endpoint.Value.Handlers == null) endpoint.Value.Handlers = new List<string>();
+                if (string.IsNullOrEmpty(setting.Key) == true) throw new InvalidOperationException($"{nameof(setting.Key)}=null");
+                if (setting.Value == null) throw new InvalidOperationException($"{nameof(setting.Value)}=null");
+                if (setting.Value.Handlers == null) setting.Value.Handlers = new List<string>();
+                if (string.IsNullOrEmpty(setting.Value.ConnectionString) == true) throw new ArgumentException($"{nameof(setting.Value.ConnectionString)}=null");
 
-                // SqlClientBuilder
+                // Add
                 serviceCollection.AddSingleton<SqlClientBuilder>(serviceProvider =>
                 {
                     // SqlClientBuilder
                     var sqlClientBuilder = new SqlClientBuilder
                     (
-                        endpoint.Key,
-                        endpoint.Value.ConnectionString
+                        setting.Key,
+                        setting.Value.ConnectionString
                     );
 
                     // SqlClientHandler                    
-                    foreach (var handler in endpoint.Value.Handlers)
+                    foreach (var handler in setting.Value.Handlers)
                     {
                         // Resolve
                         var sqlClientHandler = serviceProvider.ResolveNamed<SqlClientHandler>(handler);
@@ -63,7 +64,7 @@ namespace MDP.Data.MSSql
 
 
         // Class
-        public class Setting: Dictionary<string, Endpoint>
+        public class SettingDictionary : Dictionary<string, Endpoint>
         {
             
         }

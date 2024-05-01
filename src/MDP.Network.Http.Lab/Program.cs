@@ -20,14 +20,11 @@ namespace MDP.Network.Http.Lab
             if (httpClient == null) throw new InvalidOperationException($"{nameof(httpClient)}=null");
 
             // GetAsync
-            {
-                // ResultModel
-                var resultModel = await httpClient.GetAsync<string>("get");
-                if (string.IsNullOrEmpty(resultModel) == true) throw new InvalidOperationException($"{nameof(resultModel)}=null");
+            var resultModel = await httpClient.GetAsync<string>("get");
+            if (string.IsNullOrEmpty(resultModel) == true) throw new InvalidOperationException($"{nameof(resultModel)}=null");
 
-                // Display
-                Console.WriteLine(resultModel);
-            }
+            // Display
+            Console.WriteLine(resultModel);
         }
 
         public static void Main(string[] args)

@@ -73,6 +73,14 @@ MDP.NetCore的模組程式遵循此分層，將每個模組拆解為五種類型
 
 ## 版本更新
 
+### MDP.NetCore 8.0.3
+
+- MDP.Security.Tokens.Jwt：加入多組Token同時使用功能。
+
+### MDP.NetCore 8.0.2
+
+- MDP.BlazorCore：加入Web、App跨平台執行能力。
+
 ### MDP.NetCore 8.0.1
 
 - MDP.NetCore：升級至.NET8.0

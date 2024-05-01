@@ -8,11 +8,11 @@ namespace MDP.Security.Tokens.Jwt.Lab
     public partial class Program
     {
         // Methods
-        public static void Run(SecurityTokenFactory securityTokenFactory)
+        public static void Run(TokenProviderFactory tokenProviderFactory)
         {
             #region Contracts
 
-            if (securityTokenFactory == null) throw new ArgumentException($"{nameof(securityTokenFactory)}=null");
+            if (tokenProviderFactory == null) throw new ArgumentException($"{nameof(tokenProviderFactory)}=null");
 
             #endregion
 
@@ -26,11 +26,16 @@ namespace MDP.Security.Tokens.Jwt.Lab
                 new Claim(ClaimTypes.Role, "User")
             });
 
-            // SecurityToken
-            var securityToken = securityTokenFactory.CreateToken(claimsIdentity);
-            if (string.IsNullOrEmpty(securityToken) == true) throw new InvalidOperationException($"{nameof(securityToken)}=null");
-            Console.WriteLine(securityToken);
-            Console.WriteLine();
+            // TokenProvider
+            var tokenProvider = tokenProviderFactory.CreateProvider("DefaultToken");
+            if (tokenProvider == null) throw new InvalidOperationException($"{nameof(tokenProvider)}=null");
+                        
+            // Token
+            var token = tokenProvider.CreateToken(claimsIdentity);
+            if (string.IsNullOrEmpty(token) == true) throw new InvalidOperationException($"{nameof(token)}=null");
+
+            // Display
+            Console.WriteLine(token);
         }
 
         public static void Main(string[] args)
@@ -39,7 +44,10 @@ namespace MDP.Security.Tokens.Jwt.Lab
             MDP.NetCore.Host.Run<Program>(args);
         }
     }
+}
 
+namespace MDP.Security.Tokens.Jwt.Lab
+{
     public partial class Program
     {
         // Methods

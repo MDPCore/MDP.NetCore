@@ -7,39 +7,39 @@ using System.Net.Http;
 
 namespace MDP.Network.Http
 {
-    public class HttpClientFactoryFactory: ServiceFactory<IServiceCollection, HttpClientFactoryFactory.Setting>
+    public class HttpClientFactoryFactory: ServiceFactory<IServiceCollection, HttpClientFactoryFactory.SettingDictionary>
     {
         // Constructors
         public HttpClientFactoryFactory() : base("MDP.Network.Http", "HttpClientFactory", false) { }
 
 
         // Methods
-        public override void ConfigureService(IServiceCollection serviceCollection, Setting setting)
+        public override void ConfigureService(IServiceCollection serviceCollection, SettingDictionary settingDictionary)
         {
             #region Contracts
 
             if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
-            if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
+            if (settingDictionary == null) throw new ArgumentException($"{nameof(settingDictionary)}=null");
 
             #endregion
 
             // HttpClientFactory
             serviceCollection.AddHttpClient();
 
-            // HttpClient
-            foreach (var endpoint in setting)
+            // HttpClientBuilder
+            foreach (var setting in settingDictionary)
             {
                 // Require
-                if (string.IsNullOrEmpty(endpoint.Key) == true) throw new InvalidOperationException($"{nameof(endpoint.Key)}=null");
-                if (endpoint.Value == null) throw new InvalidOperationException($"{nameof(endpoint.Value)}=null");
-                if (endpoint.Value.Handlers == null) endpoint.Value.Handlers = new List<string>();
-                if (endpoint.Value.Headers == null) endpoint.Value.Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                if (string.IsNullOrEmpty(setting.Key) == true) throw new InvalidOperationException($"{nameof(setting.Key)}=null");
+                if (setting.Value == null) throw new InvalidOperationException($"{nameof(setting.Value)}=null");
+                if (setting.Value.Handlers == null) setting.Value.Handlers = new List<string>();
+                if (setting.Value.Headers == null) setting.Value.Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
                 // HttpClientBuilder
-                var httpClientBuilder = serviceCollection.AddHttpClient(endpoint.Key, httpClient =>
+                var httpClientBuilder = serviceCollection.AddHttpClient(setting.Key, httpClient =>
                 {
                     // BaseAddress
-                    var baseAddress = endpoint.Value.BaseAddress;
+                    var baseAddress = setting.Value.BaseAddress;
                     if (string.IsNullOrEmpty(baseAddress) == false)
                     {
                         // EndsWith
@@ -50,7 +50,7 @@ namespace MDP.Network.Http
                     }
 
                     // Headers
-                    foreach (var header in endpoint.Value.Headers)
+                    foreach (var header in setting.Value.Headers)
                     {
                         // Add
                         httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
@@ -58,7 +58,7 @@ namespace MDP.Network.Http
                 });
 
                 // HttpClientHandler
-                foreach (var handler in endpoint.Value.Handlers)
+                foreach (var handler in setting.Value.Handlers)
                 {
                     // Add
                     httpClientBuilder = httpClientBuilder.AddHttpMessageHandler(serviceProvider =>
@@ -76,12 +76,12 @@ namespace MDP.Network.Http
 
 
         // Class
-        public class Setting : Dictionary<string, Endpoint>
+        public class SettingDictionary : Dictionary<string, Setting>
         {
 
         }
 
-        public class Endpoint
+        public class Setting
         {
             // Properties
             public string BaseAddress { get; set; } = string.Empty;
