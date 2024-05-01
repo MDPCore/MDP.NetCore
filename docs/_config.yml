@@ -1,12 +1,12 @@
 
 # Site
-title: MDP.Net
+title: MDP.NetCore
 
 # Theme
 remote_theme: pmarsceill/just-the-docs
 aux_links:
   "Source Code on GitHub":
-    - "//github.com/Clark159/MDP.Net"
+    - "//github.com/MDPNetCore/MDP.NetCore"
 color_scheme: dark
 callouts:
   highlight:
