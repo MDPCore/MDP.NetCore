@@ -29,13 +29,13 @@ namespace MDP.Security.Tokens.Jwt.Lab
             // TokenProvider
             var tokenProvider = tokenProviderFactory.CreateProvider("DefaultToken");
             if (tokenProvider == null) throw new InvalidOperationException($"{nameof(tokenProvider)}=null");
-                        
-            // Token
-            var token = tokenProvider.CreateToken(claimsIdentity);
-            if (string.IsNullOrEmpty(token) == true) throw new InvalidOperationException($"{nameof(token)}=null");
+
+            // SecurityToken
+            var securityToken = tokenProvider.CreateToken(claimsIdentity);
+            if (string.IsNullOrEmpty(securityToken) == true) throw new InvalidOperationException($"{nameof(securityToken)}=null");
 
             // Display
-            Console.WriteLine(token);
+            Console.WriteLine(securityToken);
         }
 
         public static void Main(string[] args)
