@@ -25,21 +25,22 @@ namespace MDP.Data.MSSql
 
 
         // Methods
-        public SqlClient CreateClient(string name)
+        public SqlClient CreateClient(string name = null)
         {
-            #region Contracts
-
-            if (name == null) throw new ArgumentException(nameof(name));
-
-            #endregion
-
             // SqlClientBuilder
             SqlClientBuilder builder = null;
-            if (_builderDictionary.ContainsKey(name) == true) builder = _builderDictionary[name];
-            if (builder == null) throw new InvalidOperationException($"{nameof(builder)}=null");
+            if (string.IsNullOrEmpty(name) == true)
+            {
+                builder = _builderDictionary.Values.FirstOrDefault();
+            }
+            if (string.IsNullOrEmpty(name) == false && _builderDictionary.ContainsKey(name) == true)
+            {
+                builder = _builderDictionary[name];
+            }
+            if (builder == null) return null;
 
             // SqlClient
-            var sqlClient = builder.CreateClient(name);
+            var sqlClient = builder.CreateClient();
             if (sqlClient == null) throw new InvalidOperationException($"{nameof(sqlClient)}=null");
 
             // Return

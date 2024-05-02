@@ -25,25 +25,26 @@ namespace MDP.Security.Tokens.Jwt
 
 
         // Methods
-        public TokenProvider CreateProvider(string name)
+        public TokenProvider CreateProvider(string name = null)
         {
-            #region Contracts
-
-            if (name == null) throw new ArgumentException(nameof(name));
-
-            #endregion
-
             // TokenProviderBuilder
             TokenProviderBuilder builder = null;
-            if (_builderDictionary.ContainsKey(name) == true) builder = _builderDictionary[name];
-            if (builder == null) throw new InvalidOperationException($"{nameof(builder)}=null");
+            if (string.IsNullOrEmpty(name) == true)
+            {
+                builder = _builderDictionary.Values.FirstOrDefault();
+            }
+            if (string.IsNullOrEmpty(name) == false && _builderDictionary.ContainsKey(name) == true)
+            {
+                builder = _builderDictionary[name];
+            }
+            if (builder == null) return null;
 
             // TokenProvider
-            var sqlClient = builder.CreateProvider();
-            if (sqlClient == null) throw new InvalidOperationException($"{nameof(sqlClient)}=null");
+            var tokenProvider = builder.CreateProvider();
+            if (tokenProvider == null) throw new InvalidOperationException($"{nameof(tokenProvider)}=null");
 
             // Return
-            return sqlClient;
+            return tokenProvider;
         }
     }
 }

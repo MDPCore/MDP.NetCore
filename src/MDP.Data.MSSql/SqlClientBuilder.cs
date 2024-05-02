@@ -34,14 +34,8 @@ namespace MDP.Data.MSSql
 
 
         // Methods
-        public SqlClient CreateClient(string name)
+        public SqlClient CreateClient()
         {
-            #region Contracts
-
-            if (name == null) throw new ArgumentException(nameof(name));
-
-            #endregion
-
             // SqlClient
             var sqlClient = new SqlClient(this.ConnectionString);
 
