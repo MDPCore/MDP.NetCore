@@ -25,19 +25,18 @@ namespace MDP.Security.Tokens.Jwt
 
 
         // Methods
-        public TokenProvider CreateProvider(string name = null)
+        public TokenProvider CreateProvider(string name)
         {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(name) == true) throw new ArgumentException($"{nameof(name)}=null");
+
+            #endregion
+
             // TokenProviderBuilder
             TokenProviderBuilder builder = null;
-            if (string.IsNullOrEmpty(name) == true)
-            {
-                builder = _builderDictionary.Values.FirstOrDefault();
-            }
-            if (string.IsNullOrEmpty(name) == false && _builderDictionary.ContainsKey(name) == true)
-            {
-                builder = _builderDictionary[name];
-            }
-            if (builder == null) return null;
+            if (_builderDictionary.ContainsKey(name) == true) builder = _builderDictionary[name];
+            if (builder == null) throw new InvalidOperationException($"{nameof(builder)}=null");
 
             // TokenProvider
             var tokenProvider = builder.CreateProvider();
