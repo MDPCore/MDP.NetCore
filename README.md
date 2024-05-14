@@ -73,6 +73,10 @@ MDP.NetCore的模組程式遵循此分層，將每個模組拆解為五種類型
 
 ## 版本更新
 
+### MDP.NetCore 8.0.6
+
+- MDP.Registration：TryResolve加入對於強型別的支援。
+
 ### MDP.NetCore 8.0.3
 
 - MDP.Security.Tokens.Jwt：加入多組Token同時使用功能。

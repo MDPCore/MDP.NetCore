@@ -15,8 +15,11 @@ namespace MDP.Registration
 
             #endregion
 
-            // ResolveTyped
-            var instance = serviceProvider.ResolveTyped(typeof(TService)) as TService;
+            // Result
+            TService instance = null;
+
+            // Resolve
+            serviceProvider.TryResolveTyped<TService>(out instance);
             if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
 
             // Return
@@ -35,12 +38,35 @@ namespace MDP.Registration
             // Result
             object instance = null;
 
-            // ResolveTyped
+            // Resolve
             serviceProvider.TryResolveTyped(serviceType, out instance);
             if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
 
             // Return
             return instance;
+        }
+
+        public static bool TryResolveTyped<TService>(this IServiceProvider serviceProvider, out TService instance)
+            where TService : class
+        {
+            #region Contracts
+
+            if (serviceProvider == null) throw new ArgumentException($"{nameof(serviceProvider)}=null");
+
+            #endregion
+
+            // Result
+            instance = null;
+
+            // Resolve
+            serviceProvider.TryResolveTyped(typeof(TService), out var result);
+            {
+                instance = result as TService;
+            }
+            if (instance != null) return true;
+
+            // Return
+            return false;
         }
 
         public static bool TryResolveTyped(this IServiceProvider serviceProvider, Type serviceType, out object instance)
@@ -77,8 +103,11 @@ namespace MDP.Registration
 
             #endregion
 
-            // ResolveNamed
-            var instance = serviceProvider.ResolveNamed(typeof(TService), instanceName) as TService;
+            // Result
+            TService instance = null;
+
+            // Resolve
+            serviceProvider.TryResolveNamed<TService>(instanceName, out instance);
             if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
 
             // Return
@@ -98,14 +127,38 @@ namespace MDP.Registration
             // Result
             object instance = null;
 
-            // ResolveNamed
+            // Resolve
             serviceProvider.TryResolveNamed(serviceType, instanceName, out instance);
             if (instance == null) throw new InvalidOperationException($"{nameof(instance)}=null");
 
             // Return
             return instance;
         }
-                
+
+        public static bool TryResolveNamed<TService>(this IServiceProvider serviceProvider, string instanceName, out TService instance)
+            where TService : class
+        {
+            #region Contracts
+
+            if (serviceProvider == null) throw new ArgumentException($"{nameof(serviceProvider)}=null");
+            if (string.IsNullOrEmpty(instanceName) == true) throw new ArgumentException($"{nameof(instanceName)}=null");
+
+            #endregion
+
+            // Result
+            instance = null;
+
+            // Resolve
+            serviceProvider.TryResolveNamed(typeof(TService), instanceName, out var result);
+            {
+                instance = result as TService;
+            }
+            if (instance != null) return true;
+
+            // Return
+            return false;
+        }
+
         public static bool TryResolveNamed(this IServiceProvider serviceProvider, Type serviceType, string instanceName, out object instance)
         {
             #region Contracts
@@ -123,7 +176,7 @@ namespace MDP.Registration
             var serviceBuilderList = serviceProvider.GetService(typeof(IEnumerable<>).MakeGenericType(typeof(NamedServiceBuilder<>).MakeGenericType(serviceType))) as IEnumerable<NamedServiceBuilder>;
             if (serviceBuilderList == null) throw new InvalidOperationException($"{nameof(serviceBuilderList)}=null");
 
-            // Resolve
+            // ServiceBuilderList.Foreach
             foreach (var serviceBuilder in serviceBuilderList)
             {
                 if (string.Equals(serviceBuilder.InstanceName, instanceName, StringComparison.OrdinalIgnoreCase) == true)
