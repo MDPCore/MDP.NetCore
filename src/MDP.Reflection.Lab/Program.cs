@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MDP.Reflection.Lab
 {
     public class Program
     {
         // Methods
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // ApplicationAssemblyList
             var applicationAssemblyList = MDP.Reflection.Assembly.FindAllApplicationAssembly();
@@ -25,6 +26,34 @@ namespace MDP.Reflection.Lab
                 Console.WriteLine(applicationType.FullName);
             }
             Console.WriteLine("\n\n");
+
+            // Activator
+            var messageService = Activator.CreateInstance(typeof(MessageService)) as MessageService;
+            {
+                Console.WriteLine(Activator.InvokeMethod(messageService, "GetValue"));
+                Console.WriteLine(Activator.InvokeMethod(messageService, "GetValueAsync"));
+                Console.WriteLine(await Activator.InvokeMethodAsync(messageService, "GetValue"));
+                Console.WriteLine(await Activator.InvokeMethodAsync(messageService, "GetValueAsync"));
+            }
+            Console.WriteLine("\n\n");
+        }
+
+
+        // Class
+        public class MessageService 
+        {
+            // Methods
+            public string GetValue()
+            {
+                // Return
+                return "Hello World";
+            }
+
+            public Task<string> GetValueAsync()
+            {
+                // Return
+                return Task.FromResult("Hello World");
+            }
         }
     }
 }

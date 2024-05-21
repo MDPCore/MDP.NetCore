@@ -52,7 +52,7 @@ namespace MDP.Reflection
         }
 
 
-        public static object ExecuteMethod(object instance, string methodName)
+        public static object InvokeMethod(object instance, string methodName)
         {
             #region Contracts
 
@@ -62,10 +62,10 @@ namespace MDP.Reflection
             #endregion
 
             // Return
-            return MDP.Reflection.Activator.ExecuteMethod(instance, methodName, new DefaultParameterProvider());
+            return MDP.Reflection.Activator.InvokeMethod(instance, methodName, new DefaultParameterProvider());
         }
 
-        public static object ExecuteMethod(object instance, string methodName, ParameterProvider parameterProvider)
+        public static object InvokeMethod(object instance, string methodName, ParameterProvider parameterProvider)
         {
             #region Contracts
 
@@ -88,9 +88,74 @@ namespace MDP.Reflection
 
             // Invoke
             var result = methodInfo.Invoke(instance, parameters.ToArray());
+            if (result is Task task)
+            {
+                if (methodInfo.ReturnType.IsGenericType == true && task.GetType().GetGenericTypeDefinition() == typeof(Task<>))
+                {
+                    return task.GetType().GetProperty("Result").GetValue(task);
+                }
+                else
+                {
+                    task.GetAwaiter().GetResult();
+                    return null;
+                }
+            }
 
             // Return
             return result;
+        }
+
+
+        public static Task<object> InvokeMethodAsync(object instance, string methodName)
+        {
+            #region Contracts
+
+            if (instance == null) throw new ArgumentException($"{nameof(instance)}=null");
+            if (string.IsNullOrEmpty(methodName) == true) throw new ArgumentException($"{nameof(methodName)}=null");
+
+            #endregion
+
+            // Return
+            return MDP.Reflection.Activator.InvokeMethodAsync(instance, methodName, new DefaultParameterProvider());
+        }
+
+        public static Task<object> InvokeMethodAsync(object instance, string methodName, ParameterProvider parameterProvider)
+        {
+            #region Contracts
+
+            if (instance == null) throw new ArgumentException($"{nameof(instance)}=null");
+            if (string.IsNullOrEmpty(methodName) == true) throw new ArgumentException($"{nameof(methodName)}=null");
+            if (parameterProvider == null) throw new ArgumentException($"{nameof(parameterProvider)}=null");
+
+            #endregion
+
+            // MethodInfo
+            var methodInfo = instance.GetType().GetMethod(methodName);
+            if (methodInfo == null) throw new InvalidOperationException($"{nameof(methodInfo)}=null");
+
+            // Parameters
+            var parameters = new List<object>();
+            foreach (var parameterInfo in methodInfo.GetParameters())
+            {
+                parameters.Add(parameterProvider.GetValue(parameterInfo.ParameterType, parameterInfo.Name, parameterInfo.HasDefaultValue, parameterInfo.DefaultValue));
+            }
+
+            // Invoke
+            var result = methodInfo.Invoke(instance, parameters.ToArray());
+            if (result is Task task)
+            {
+                if (methodInfo.ReturnType.IsGenericType == true && task.GetType().GetGenericTypeDefinition() == typeof(Task<>))
+                {
+                    return task.ContinueWith(o => (object)(task.GetType().GetProperty("Result").GetValue(o)));
+                }
+                else
+                {
+                    return task.ContinueWith(o => (object)null);
+                }
+            }
+
+            // Return
+            return Task.FromResult(result);
         }
     }
 }
