@@ -32,8 +32,27 @@ namespace MDP.Reflection
                 var applicationTypeList = applicationAssemblyList.AsParallel().SelectMany(applicationAssembly =>
                 {
                     // TypeList
-                    var typeList = applicationAssembly.GetTypes();
+                    var typeList = applicationAssembly.GetTypes() as IEnumerable<System.Type>;
                     if (typeList == null) return null;
+
+                    // TypeList.Filter
+                    typeList = typeList.Where(type =>
+                    {
+                        if(type.FullName == "MDP.Reflection.Lab.Class1+Class2")
+                        {
+                            if (type.IsClass == false) return false;
+                        }
+
+                        // Require
+                        if (type.IsClass == false) return false;
+                        if (type.IsAbstract == true) return false;
+                        if (type.IsGenericType == true) return false;
+                        if (type.IsNested == false && type.IsPublic == false) return false;
+                        if (type.IsNested == true && type.IsNestedPublic == false) return false;
+
+                        // Return
+                        return true;
+                    });
 
                     // Return
                     return typeList;

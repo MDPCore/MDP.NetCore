@@ -27,10 +27,6 @@ namespace MDP.Hosting
             instanceTypeList = instanceTypeList.AsParallel().Where(instanceType =>
             {
                 // Require
-                if (instanceType.IsClass == false) return false;
-                if (instanceType.IsPublic == false) return false;
-                if (instanceType.IsAbstract == true) return false;
-                if (instanceType.IsGenericType == true) return false;
                 if (instanceType.IsDefined(typeof(ServiceAttribute), inherit: false) == false) return false;
 
                 // Return

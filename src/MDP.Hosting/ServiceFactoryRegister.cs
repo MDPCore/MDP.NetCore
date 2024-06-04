@@ -27,10 +27,6 @@ namespace MDP.Hosting
             serviceFactoryTypeList = serviceFactoryTypeList.AsParallel().Where(serviceFactoryType =>
             {
                 // Require
-                if (serviceFactoryType.IsClass == false) return false;
-                if (serviceFactoryType.IsPublic == false) return false;
-                if (serviceFactoryType.IsAbstract == true) return false;
-                if (serviceFactoryType.IsGenericType == true) return false;
                 if (serviceFactoryType.IsAssignableTo(typeof(ServiceFactory)) == false) return false;
 
                 // ServiceFactoryInterface
