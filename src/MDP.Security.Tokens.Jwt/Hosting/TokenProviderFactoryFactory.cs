@@ -46,7 +46,7 @@ namespace MDP.Security.Tokens.Jwt
                         setting.Value.Algorithm,
                         setting.Value.SignKey,
                         setting.Value.Issuer,
-                        setting.Value.ExpirationMinutes
+                        setting.Value.ExpireMinutes
                     );
 
                     // Return
@@ -71,7 +71,7 @@ namespace MDP.Security.Tokens.Jwt
 
             public string Issuer { get; set; } = null;
 
-            public int ExpirationMinutes { get; set; } = 30;
+            public int ExpireMinutes { get; set; } = 30;
         }
     }
 }

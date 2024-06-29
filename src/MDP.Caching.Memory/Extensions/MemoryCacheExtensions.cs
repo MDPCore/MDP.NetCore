@@ -13,7 +13,7 @@ namespace MDP.Caching.Memory
     public static class MemoryCacheExtensions
     {
         // Methods
-        public static TItem GetValue<TItem>(this IMemoryCache memoryCache, object key, Func<TItem> getValueAction, TimeSpan expirationTime = default)
+        public static TItem GetValue<TItem>(this IMemoryCache memoryCache, object key, Func<TItem> getValueAction, TimeSpan expireTimeSpan = default)
         {
             #region Contracts
 
@@ -24,7 +24,7 @@ namespace MDP.Caching.Memory
             #endregion
 
             // Require
-            if (expirationTime == default) expirationTime = TimeSpan.FromMinutes(30);
+            if (expireTimeSpan == default) expireTimeSpan = TimeSpan.FromMinutes(30);
 
             // TryGetValue
             var value = default(TItem);
@@ -34,7 +34,7 @@ namespace MDP.Caching.Memory
                 value = getValueAction();
 
                 // Set
-                memoryCache.Set(key, value, DateTimeOffset.Now.Add(expirationTime));
+                memoryCache.Set(key, value, DateTimeOffset.Now.Add(expireTimeSpan));
             }
 
             // Return

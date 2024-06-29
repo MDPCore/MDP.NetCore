@@ -14,7 +14,7 @@ namespace MDP.Security.Tokens.Jwt
     public class TokenProviderBuilder
     {
         // Constructors
-        public TokenProviderBuilder(string name, string algorithm, string signKey, string issuer = null, int expirationMinutes = 30)
+        public TokenProviderBuilder(string name, string algorithm, string signKey, string issuer = null, int expireMinutes = 30)
         {
             #region Contracts
 
@@ -29,7 +29,7 @@ namespace MDP.Security.Tokens.Jwt
             this.Algorithm = algorithm;
             this.SignKey = signKey;
             this.Issuer = issuer;
-            this.ExpirationMinutes = expirationMinutes;
+            this.ExpireMinutes = expireMinutes;
         }
 
 
@@ -42,7 +42,7 @@ namespace MDP.Security.Tokens.Jwt
 
         public string Issuer { get; } = null;
 
-        public int ExpirationMinutes { get; } = 30;
+        public int ExpireMinutes { get; } = 30;
 
 
         // Methods
@@ -54,7 +54,7 @@ namespace MDP.Security.Tokens.Jwt
                 this.Algorithm, 
                 this.SignKey, 
                 this.Issuer, 
-                this.ExpirationMinutes
+                this.ExpireMinutes
             );
 
             // Return

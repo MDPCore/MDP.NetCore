@@ -20,11 +20,11 @@ namespace MDP.Security.Tokens.Jwt
 
         private readonly string _issuer = null;
 
-        private readonly int _expirationMinutes = 30;
+        private readonly int _expireMinutes = 30;
 
 
         // Constructors
-        public TokenProvider(string algorithm, string signKey, string issuer = null, int expirationMinutes = 30)
+        public TokenProvider(string algorithm, string signKey, string issuer = null, int expireMinutes = 30)
         {
             #region Contracts
 
@@ -35,7 +35,7 @@ namespace MDP.Security.Tokens.Jwt
 
             // Default
             _issuer = issuer;
-            _expirationMinutes = expirationMinutes;
+            _expireMinutes = expireMinutes;
 
             // SecurityKey
             var securityKey = this.CreareSecurityKey(algorithm, signKey);
@@ -56,15 +56,15 @@ namespace MDP.Security.Tokens.Jwt
             #endregion
 
             // Return
-            return this.CreateToken(identity, TimeSpan.FromMinutes(_expirationMinutes));
+            return this.CreateToken(identity, TimeSpan.FromMinutes(_expireMinutes));
         }
 
-        public string CreateToken(ClaimsIdentity identity, TimeSpan expirationTimeSpan)
+        public string CreateToken(ClaimsIdentity identity, TimeSpan expireTimeSpanSpan)
         {
             #region Contracts
 
             ArgumentNullException.ThrowIfNull(identity);
-            ArgumentNullException.ThrowIfNull(expirationTimeSpan);
+            ArgumentNullException.ThrowIfNull(expireTimeSpanSpan);
 
             #endregion
 
@@ -95,7 +95,7 @@ namespace MDP.Security.Tokens.Jwt
                 // Lifetime
                 IssuedAt = DateTime.Now, // 建立時間
                 NotBefore = DateTime.Now, // 在此之前不可用時間
-                Expires = DateTime.Now.Add(expirationTimeSpan), // 逾期時間
+                Expires = DateTime.Now.Add(expireTimeSpanSpan), // 逾期時間
 
                 // Signing
                 SigningCredentials = _signingCredentials
