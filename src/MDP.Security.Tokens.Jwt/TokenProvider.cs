@@ -51,7 +51,20 @@ namespace MDP.Security.Tokens.Jwt
         {
             #region Contracts
 
-            if (identity == null) throw new ArgumentException($"{nameof(identity)}=null");
+            ArgumentNullException.ThrowIfNull(identity);
+
+            #endregion
+
+            // Return
+            return this.CreateToken(identity, TimeSpan.FromMinutes(_expirationMinutes));
+        }
+
+        public string CreateToken(ClaimsIdentity identity, TimeSpan expirationTimeSpan)
+        {
+            #region Contracts
+
+            ArgumentNullException.ThrowIfNull(identity);
+            ArgumentNullException.ThrowIfNull(expirationTimeSpan);
 
             #endregion
 
@@ -82,7 +95,7 @@ namespace MDP.Security.Tokens.Jwt
                 // Lifetime
                 IssuedAt = DateTime.Now, // 建立時間
                 NotBefore = DateTime.Now, // 在此之前不可用時間
-                Expires = DateTime.Now.AddMinutes(_expirationMinutes), // 逾期時間
+                Expires = DateTime.Now.Add(expirationTimeSpan), // 逾期時間
 
                 // Signing
                 SigningCredentials = _signingCredentials
