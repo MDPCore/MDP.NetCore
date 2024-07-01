@@ -59,12 +59,12 @@ namespace MDP.Security.Tokens.Jwt
             return this.CreateToken(identity, TimeSpan.FromMinutes(_expireMinutes));
         }
 
-        public string CreateToken(ClaimsIdentity identity, TimeSpan expireTimeSpanSpan)
+        public string CreateToken(ClaimsIdentity identity, TimeSpan expireTimeSpan)
         {
             #region Contracts
 
             ArgumentNullException.ThrowIfNull(identity);
-            ArgumentNullException.ThrowIfNull(expireTimeSpanSpan);
+            ArgumentNullException.ThrowIfNull(expireTimeSpan);
 
             #endregion
 
@@ -95,7 +95,7 @@ namespace MDP.Security.Tokens.Jwt
                 // Lifetime
                 IssuedAt = DateTime.Now, // 建立時間
                 NotBefore = DateTime.Now, // 在此之前不可用時間
-                Expires = DateTime.Now.Add(expireTimeSpanSpan), // 逾期時間
+                Expires = DateTime.Now.Add(expireTimeSpan), // 逾期時間
 
                 // Signing
                 SigningCredentials = _signingCredentials
