@@ -58,17 +58,37 @@ namespace MDP.Network.Http
                 });
 
                 // HttpClientHandler
+                httpClientBuilder = httpClientBuilder.ConfigurePrimaryHttpMessageHandler(serviceProvider =>
+                {
+                    // Create
+                    var httpClientHandler = new HttpClientHandler();
+                    {
+                        // UseCookies
+                        httpClientHandler.UseCookies = setting.Value.UseCookies;
+
+                        // IgnoreCertificates
+                        if (setting.Value.IgnoreServerCertificate == true)
+                        {
+                            httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                        }
+                    }
+
+                    // Return
+                    return httpClientHandler;
+                });
+
+                // HttpDelegatingHandler
                 foreach (var handler in setting.Value.Handlers)
                 {
                     // Add
                     httpClientBuilder = httpClientBuilder.AddHttpMessageHandler(serviceProvider =>
                     {
                         // Resolve
-                        var httpClientHandler = serviceProvider.ResolveNamed<HttpClientHandler>(handler);
-                        if (httpClientHandler == null) throw new InvalidOperationException($"{nameof(httpClientHandler)}=null");
+                        var httpDelegatingHandler = serviceProvider.ResolveNamed<HttpDelegatingHandler>(handler);
+                        if (httpDelegatingHandler == null) throw new InvalidOperationException($"{nameof(httpDelegatingHandler)}=null");
 
                         // Return
-                        return httpClientHandler;
+                        return httpDelegatingHandler;
                     });
                 }
             }
@@ -85,6 +105,10 @@ namespace MDP.Network.Http
         {
             // Properties
             public string BaseAddress { get; set; } = string.Empty;
+
+            public bool UseCookies { get; set; } = false;
+
+            public bool IgnoreServerCertificate { get; set; } = false;
 
             public List<string> Handlers { get; set; } = new List<string>();
 
