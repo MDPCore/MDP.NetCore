@@ -11,7 +11,7 @@ using MDP.Registration;
 
 namespace MDP.Network.Http.Azure
 {
-    [Service<HttpDelegatingHandler>(singleton: true, autoRegister:false)]
+    [Service<HttpDelegatingHandler>(singleton: false, autoRegister:false)]
     public class AzureCredentialHandler : HttpDelegatingHandler
     {
         // Fields
