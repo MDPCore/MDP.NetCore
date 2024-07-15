@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MDP.Reflection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -144,13 +145,13 @@ namespace MDP.Reflection
             var result = methodInfo.Invoke(instance, parameters.ToArray());
             if (result is Task task)
             {
-                if (methodInfo.ReturnType.IsGenericType == true && task.GetType().GetGenericTypeDefinition() == typeof(Task<>))
+                if (methodInfo.ReturnType.IsGenericType == true && methodInfo.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
                 {
-                    return task.ContinueWith(o => (object)(task.GetType().GetProperty("Result").GetValue(o)));
+                    return task.ContinueWith(o => (object)o.GetType().GetProperty("Result").GetValue(o), TaskContinuationOptions.ExecuteSynchronously);
                 }
                 else
                 {
-                    return task.ContinueWith(o => (object)null);
+                    return task.ContinueWith(o => (object)null, TaskContinuationOptions.ExecuteSynchronously);
                 }
             }
 
