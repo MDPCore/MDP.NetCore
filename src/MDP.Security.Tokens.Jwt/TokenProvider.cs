@@ -55,8 +55,11 @@ namespace MDP.Security.Tokens.Jwt
 
             #endregion
 
+            // NowTime
+            var nowTime = DateTime.Now;
+
             // Return
-            return this.CreateToken(identity, TimeSpan.FromMinutes(_expireMinutes));
+            return this.CreateToken(identity, nowTime, nowTime.Add(TimeSpan.FromMinutes(_expireMinutes)));
         }
 
         public string CreateToken(ClaimsIdentity identity, TimeSpan expireTimeSpan)
@@ -65,6 +68,23 @@ namespace MDP.Security.Tokens.Jwt
 
             ArgumentNullException.ThrowIfNull(identity);
             ArgumentNullException.ThrowIfNull(expireTimeSpan);
+
+            #endregion
+
+            // NowTime
+            var nowTime = DateTime.Now;
+
+            // Return
+            return this.CreateToken(identity, nowTime, nowTime.Add(expireTimeSpan));
+        }
+
+        public string CreateToken(ClaimsIdentity identity, DateTime issueTime, DateTime expireTime)
+        {
+            #region Contracts
+
+            ArgumentNullException.ThrowIfNull(identity);
+            ArgumentNullException.ThrowIfNull(issueTime);
+            ArgumentNullException.ThrowIfNull(expireTime);
 
             #endregion
 
@@ -93,9 +113,9 @@ namespace MDP.Security.Tokens.Jwt
                 Subject = new ClaimsIdentity(claimList),
 
                 // Lifetime
-                IssuedAt = DateTime.Now, // 建立時間
-                NotBefore = DateTime.Now, // 在此之前不可用時間
-                Expires = DateTime.Now.Add(expireTimeSpan), // 逾期時間
+                IssuedAt = issueTime,  // 建立時間
+                NotBefore = issueTime, // 在此之前不可用時間
+                Expires = expireTime,  // 逾期時間
 
                 // Signing
                 SigningCredentials = _signingCredentials
