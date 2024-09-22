@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MDP.NetCore" Version="8.0.7.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Drawing.QRCode\MDP.Drawing.QRCode.csproj" />
+    <ProjectReference Include="..\MDP.Drawing.QRCode.SkiaSharp\MDP.Drawing.QRCode.SkiaSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

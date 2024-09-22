@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MDP.NetCore" Version="8.0.7.21" />
+    <PackageReference Include="MDP.Security.Credentials.Azure" Version="8.0.7.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Storage.Images\MDP.Storage.Images.csproj" />
+    <ProjectReference Include="..\MDP.Storage.Images.Azure\MDP.Storage.Images.Azure.csproj" />
+    <ProjectReference Include="..\MDP.Storage.Images.SkiaSharp\MDP.Storage.Images.SkiaSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

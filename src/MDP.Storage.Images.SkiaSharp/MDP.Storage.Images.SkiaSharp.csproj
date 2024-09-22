@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.8" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.Storage.Images\MDP.Storage.Images.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <authors>CLK Software Studio</authors>
+    <copyright>Copyright © 2014 CLK Software Studio</copyright>
+    <description>MDP.NetCore Library</description>
+    <PackageIcon>Package.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Clark159/MDP.Net</PackageProjectUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\Package.png" Pack="true" PackagePath="\Package.png" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\README.md" />
+  </ItemGroup>
+
+</Project>
