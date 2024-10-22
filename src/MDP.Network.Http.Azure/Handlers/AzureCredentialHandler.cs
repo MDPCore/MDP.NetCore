@@ -17,7 +17,7 @@ namespace MDP.Network.Http.Azure
         // Fields
         private readonly object _lockObject = new object();
 
-        private readonly TokenCredential _credential;
+        private readonly TokenCredential _azureCredential;
 
         private readonly string[] _scopes = null;
 
@@ -25,17 +25,17 @@ namespace MDP.Network.Http.Azure
 
 
         // Constructors
-        public AzureCredentialHandler(TokenCredential credential, List<string> scopes)
+        public AzureCredentialHandler(TokenCredential azureCredential, List<string> scopes)
         {
             #region Contracts
 
-            if (credential == null) throw new ArgumentException($"{nameof(credential)}=null");
-            if (scopes == null) throw new ArgumentException($"{nameof(scopes)}=null");
+            ArgumentNullException.ThrowIfNull(azureCredential);
+            ArgumentNullException.ThrowIfNull(scopes);
 
             #endregion
 
             // Default
-            _credential = credential;
+            _azureCredential = azureCredential;
             _scopes = scopes.ToArray();
         }
 
@@ -60,7 +60,7 @@ namespace MDP.Network.Http.Azure
                 if (accessToken.ExpiresOn <= DateTimeOffset.UtcNow)
                 {
                     // GetToken
-                    accessToken = _credential.GetToken(new TokenRequestContext(_scopes), cancellationToken);
+                    accessToken = _azureCredential.GetToken(new TokenRequestContext(_scopes), cancellationToken);
                     if (accessToken.Token == null) throw new InvalidOperationException($"{nameof(accessToken)}=null");
                     if (accessToken.Token == String.Empty) throw new InvalidOperationException($"{nameof(accessToken)}=null");
                     if (accessToken.ExpiresOn <= DateTimeOffset.UtcNow) throw new InvalidOperationException($"{nameof(accessToken)}=null");

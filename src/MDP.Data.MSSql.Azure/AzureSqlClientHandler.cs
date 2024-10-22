@@ -10,32 +10,30 @@ using MDP.Registration;
 
 namespace MDP.Data.MSSql.Azure
 {
-    [Service<SqlClientHandler>(singleton: true, autoRegister: false)]
-    public class AzureCredentialHandler : SqlClientHandler
+    [Service<SqlClientHandler>(singleton: true, autoRegister: true)]
+    public class AzureSqlClientHandler : SqlClientHandler
     {
         // Fields
         private readonly object _lockObject = new object();
 
-        private readonly TokenCredential _credential;
+        private readonly TokenCredential _azureCredential;
 
-        private readonly string[] _scopes = null;
+        private readonly string[] _scopes = new string[] { "https://database.windows.net/.default" };
 
         private AccessToken _accessToken = new AccessToken();
 
 
         // Constructors
-        public AzureCredentialHandler(TokenCredential credential, List<string> scopes)
+        public AzureSqlClientHandler(TokenCredential azureCredential)
         {
             #region Contracts
 
-            if (credential == null) throw new ArgumentException($"{nameof(credential)}=null");
-            if (scopes == null) throw new ArgumentException($"{nameof(scopes)}=null");
+            ArgumentNullException.ThrowIfNull(azureCredential);
 
             #endregion
 
             // Default
-            _credential = credential;
-            _scopes = scopes.ToArray();
+            _azureCredential = azureCredential;
         }
 
 
@@ -44,7 +42,7 @@ namespace MDP.Data.MSSql.Azure
         {
             #region Contracts
 
-            if (sqlClient == null) throw new ArgumentException($"{nameof(sqlClient)}=null");
+            ArgumentNullException.ThrowIfNull(sqlClient);
 
             #endregion
 
@@ -59,7 +57,7 @@ namespace MDP.Data.MSSql.Azure
                 if (accessToken.ExpiresOn <= DateTimeOffset.UtcNow)
                 {
                     // GetToken
-                    accessToken = _credential.GetToken(new TokenRequestContext(_scopes), CancellationToken.None);
+                    accessToken = _azureCredential.GetToken(new TokenRequestContext(_scopes), CancellationToken.None);
                     if (accessToken.Token == null) throw new InvalidOperationException($"{nameof(accessToken)}=null");
                     if (accessToken.Token == String.Empty) throw new InvalidOperationException($"{nameof(accessToken)}=null");
                     if (accessToken.ExpiresOn <= DateTimeOffset.UtcNow) throw new InvalidOperationException($"{nameof(accessToken)}=null");

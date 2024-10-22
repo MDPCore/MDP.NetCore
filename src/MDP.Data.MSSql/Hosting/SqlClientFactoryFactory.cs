@@ -34,7 +34,7 @@ namespace MDP.Data.MSSql
                 if (setting.Value == null) throw new InvalidOperationException($"{nameof(setting.Value)}=null");
                 if (setting.Value.Handlers == null) setting.Value.Handlers = new List<string>();
                 if (string.IsNullOrEmpty(setting.Value.ConnectionString) == true) throw new ArgumentException($"{nameof(setting.Value.ConnectionString)}=null");
-
+                                
                 // Add
                 serviceCollection.AddSingleton<SqlClientBuilder>(serviceProvider =>
                 {
@@ -45,15 +45,32 @@ namespace MDP.Data.MSSql
                         setting.Value.ConnectionString
                     );
 
-                    // SqlClientHandler                    
-                    foreach (var handler in setting.Value.Handlers)
+                    // SqlClientHandler 
+                    if (setting.Value.Handlers.Count <= 0)
                     {
-                        // Resolve
-                        var sqlClientHandler = serviceProvider.ResolveNamed<SqlClientHandler>(handler);
-                        if (sqlClientHandler == null) throw new InvalidOperationException($"{nameof(sqlClientHandler)}=null");
+                        // Typed
+                        var sqlClientHandlerList = serviceProvider.GetServices<SqlClientHandler>();
+                        if (sqlClientHandlerList == null) throw new InvalidOperationException($"{nameof(sqlClientHandlerList)}=null");
 
-                        // Add
-                        sqlClientBuilder.Handlers.Add(sqlClientHandler);
+                        // foreach
+                        foreach (var sqlClientHandler in sqlClientHandlerList)
+                        {
+                            // Add
+                            sqlClientBuilder.Handlers.Add(sqlClientHandler);
+                        }
+                    }
+                    else
+                    {
+                        // Named                   
+                        foreach (var handlerName in setting.Value.Handlers)
+                        {
+                            // Resolve
+                            var sqlClientHandler = serviceProvider.ResolveNamed<SqlClientHandler>(handlerName);
+                            if (sqlClientHandler == null) throw new InvalidOperationException($"{nameof(sqlClientHandler)}=null");
+
+                            // Add
+                            sqlClientBuilder.Handlers.Add(sqlClientHandler);
+                        }
                     }
 
                     // Return

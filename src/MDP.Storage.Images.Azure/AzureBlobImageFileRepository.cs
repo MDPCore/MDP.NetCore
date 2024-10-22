@@ -32,18 +32,18 @@ namespace MDP.Storage.Images.Azure
 
 
         // Constructors
-        public AzureBlobImageFileRepository(string serviceUri, string containerName, TokenCredential tokenCredential)
+        public AzureBlobImageFileRepository(string serviceUri, string containerName, TokenCredential azureCredential)
         {
             #region Contracts
 
             ArgumentNullException.ThrowIfNullOrEmpty(serviceUri);
             ArgumentNullException.ThrowIfNullOrEmpty(containerName);
-            ArgumentNullException.ThrowIfNull(tokenCredential);
+            ArgumentNullException.ThrowIfNull(azureCredential);
 
             #endregion
 
             // Default
-            _serviceClient = new BlobServiceClient(new Uri(serviceUri), tokenCredential);
+            _serviceClient = new BlobServiceClient(new Uri(serviceUri), azureCredential);
             _containerClient = _serviceClient.GetBlobContainerClient(containerName);
         }
 

@@ -17,7 +17,7 @@ namespace MDP.Data.MSSql.Lab
             using (var sqlClient = sqlClientFactory.CreateClient("DefaultDatabase"))
             {
                 // CommandText
-                sqlClient.CommandText = "SELECT * FROM [dbo].[Users]";
+                sqlClient.CommandText = "SELECT * FROM [dbo].[Users_Users]";
 
                 // CommandParameters
 
