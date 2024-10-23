@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.Domain" Version="8.0.7.21" />
-    <PackageReference Include="MDP.Registration" Version="8.0.7.21" />
+    <ProjectReference Include="..\MDP.Domain\MDP.Domain.csproj" />
+    <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

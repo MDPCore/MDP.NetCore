@@ -7,9 +7,9 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\MDP.Security.Credentials.Azure\MDP.Security.Credentials.Azure.csproj" />
-    <ProjectReference Include="..\MDP.Network.Http\MDP.Network.Http.csproj" />
     <ProjectReference Include="..\MDP.Registration\MDP.Registration.csproj" />
+    <ProjectReference Include="..\MDP.Network.Http\MDP.Network.Http.csproj" />
+    <ProjectReference Include="..\MDP.Security.Credentials.Azure\MDP.Security.Credentials.Azure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -8,10 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.NetCore" Version="8.0.7.21" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
     <ProjectReference Include="..\MDP.Drawing.QRCode\MDP.Drawing.QRCode.csproj" />
     <ProjectReference Include="..\MDP.Drawing.QRCode.SkiaSharp\MDP.Drawing.QRCode.SkiaSharp.csproj" />
   </ItemGroup>

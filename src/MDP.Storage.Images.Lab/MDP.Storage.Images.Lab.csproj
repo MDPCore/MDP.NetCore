@@ -8,14 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.NetCore" Version="8.0.7.21" />
-    <PackageReference Include="MDP.Security.Credentials.Azure" Version="8.0.7.21" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\MDP.NetCore\MDP.NetCore.csproj" />
     <ProjectReference Include="..\MDP.Storage.Images\MDP.Storage.Images.csproj" />
     <ProjectReference Include="..\MDP.Storage.Images.Azure\MDP.Storage.Images.Azure.csproj" />
     <ProjectReference Include="..\MDP.Storage.Images.SkiaSharp\MDP.Storage.Images.SkiaSharp.csproj" />
+    <ProjectReference Include="..\MDP.Security.Credentials.Azure\MDP.Security.Credentials.Azure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,5 +20,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>
