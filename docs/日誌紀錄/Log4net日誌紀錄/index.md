@@ -12,7 +12,7 @@ MDP.Logging.Log4net擴充.NET Core既有的日誌紀錄，加入Log4net日誌寫
     
 - 說明文件：[https://mdpcore.github.io/MDP.NetCore/](https://mdpcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore/](https://github.com/MDPNetCore/MDP.NetCore/)
+- 程式源碼：[https://github.com/MDPCore/MDP.NetCore/](https://github.com/MDPCore/MDP.NetCore/)
 
 
 ## 模組使用

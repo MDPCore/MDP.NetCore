@@ -13,7 +13,7 @@ MDP.NetCore是開源的.NET開發平台，協助開發人員快速建立Web站�
 
 - 說明文件：[https://mdpcore.github.io/MDP.NetCore/](https://mdpcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore](https://github.com/MDPNetCore/MDP.NetCore)
+- 程式源碼：[https://github.com/MDPCore/MDP.NetCore](https://github.com/MDPCore/MDP.NetCore)
 
  
 ## 快速開始
@@ -86,9 +86,9 @@ MDP.NetCore的模組程式遵循此分層，將每個模組拆解為五種類型
 
 - MDP.Security.Tokens.Jwt：加入多組Token同時使用功能。
 
-- MDP.BlazorCore：整併至[MDPNetCore/MDP.BlazorCore](https://github.com/MDPNetCore/MDP.BlazorCore) 
+- MDP.BlazorCore：整併至[MDPCore/MDP.BlazorCore](https://github.com/MDPCore/MDP.BlazorCore) 
 
-- MDP.AspNetCore：整併至[MDPNetCore/MDP.AspNetCore](https://github.com/MDPNetCore/MDP.AspNetCore) 
+- MDP.AspNetCore：整併至[MDPCore/MDP.AspNetCore](https://github.com/MDPCore/MDP.AspNetCore) 
 
 ### MDP.NetCore 8.0.2
 

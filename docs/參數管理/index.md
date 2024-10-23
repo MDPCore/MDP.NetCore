@@ -13,7 +13,7 @@ MDP.Configuration是開源的.NET開發套件，協助開發人員快速建立�
 
 - 說明文件：[https://mdpcore.github.io/MDP.NetCore/](https://mdpcore.github.io/MDP.NetCore/)
 
-- 程式源碼：[https://github.com/MDPNetCore/MDP.NetCore/](https://github.com/MDPNetCore/MDP.NetCore/)
+- 程式源碼：[https://github.com/MDPCore/MDP.NetCore/](https://github.com/MDPCore/MDP.NetCore/)
 
 
 ## 模組功能
