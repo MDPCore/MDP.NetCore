@@ -11,7 +11,7 @@ has_children: false
 
 從零開始，開發一個依賴注入+參數管理的API服務，是難度不高但繁瑣的工作項目。本篇範例協助開發人員使用MDP.Net，逐步完成必要的設計和實作。
 
-- 範例下載：[WebApplication1.zip](https://mdpnetcore.github.io/MDP.NetCore/快速開始/開發一個依賴注入+參數管理的API服務/WebApplication1.zip)
+- 範例下載：[WebApplication1.zip](https://mdpcore.github.io/MDP.NetCore/快速開始/開發一個依賴注入+參數管理的API服務/WebApplication1.zip)
 
 
 ## 操作步驟
@@ -124,4 +124,4 @@ namespace WebApplication1
 
 6.執行專案，於開啟的Console視窗內，可以看到由MessageRepository所提供的Hello World。
 
-![01.執行結果01.png](https://mdpnetcore.github.io/MDP.NetCore/快速開始/開發一個依賴注入+參數管理的API服務/01.執行結果01.png)
+![01.執行結果01.png](https://mdpcore.github.io/MDP.NetCore/快速開始/開發一個依賴注入+參數管理的API服務/01.執行結果01.png)
