@@ -11,7 +11,7 @@ using MDP.Registration;
 namespace MDP.Data.MSSql.Azure
 {
     [Service<SqlClientHandler>(singleton: true, autoRegister: true)]
-    public class AzureSqlClientHandler : SqlClientHandler
+    public class AzureCredentialHandler : SqlClientHandler
     {
         // Fields
         private readonly object _lockObject = new object();
@@ -24,7 +24,7 @@ namespace MDP.Data.MSSql.Azure
 
 
         // Constructors
-        public AzureSqlClientHandler(TokenCredential azureCredential)
+        public AzureCredentialHandler(TokenCredential azureCredential)
         {
             #region Contracts
 

@@ -57,11 +57,11 @@ namespace MDP.Network.Http
                     }
                 });
 
-                // HttpClientHandler
+                // System.Net.Http.HttpClientHandler
                 httpClientBuilder = httpClientBuilder.ConfigurePrimaryHttpMessageHandler(serviceProvider =>
                 {
                     // Create
-                    var httpClientHandler = new HttpClientHandler();
+                    var httpClientHandler = new System.Net.Http.HttpClientHandler();
                     {
                         // UseCookies
                         httpClientHandler.UseCookies = setting.Value.UseCookies;
@@ -69,7 +69,7 @@ namespace MDP.Network.Http
                         // IgnoreCertificates
                         if (setting.Value.IgnoreServerCertificate == true)
                         {
-                            httpClientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                            httpClientHandler.ServerCertificateCustomValidationCallback = System.Net.Http.HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
                         }
                     }
 
@@ -77,20 +77,38 @@ namespace MDP.Network.Http
                     return httpClientHandler;
                 });
 
-                // HttpDelegatingHandler
-                foreach (var handler in setting.Value.Handlers)
+                // MDP.Network.Http.HttpClientHandler
+                httpClientBuilder = httpClientBuilder.ConfigureAdditionalHttpMessageHandlers((httpMessageHandlerList, serviceProvider) =>
                 {
-                    // Add
-                    httpClientBuilder = httpClientBuilder.AddHttpMessageHandler(serviceProvider =>
+                    if (setting.Value.Handlers.Count <= 0)
                     {
-                        // Resolve
-                        var httpDelegatingHandler = serviceProvider.ResolveNamed<HttpDelegatingHandler>(handler);
-                        if (httpDelegatingHandler == null) throw new InvalidOperationException($"{nameof(httpDelegatingHandler)}=null");
+                        // Typed
+                        {
+                            // Resolve
+                            var httpClientHandlerList = serviceProvider.GetServices<MDP.Network.Http.HttpClientHandler>();
+                            if (httpClientHandlerList == null) throw new InvalidOperationException($"{nameof(httpClientHandlerList)}=null");
 
-                        // Return
-                        return httpDelegatingHandler;
-                    });
-                }
+                            // Add
+                            foreach (var httpClientHandler in httpClientHandlerList)
+                            {
+                                httpMessageHandlerList.Add(httpClientHandler);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Named   
+                        foreach (var handler in setting.Value.Handlers)
+                        {
+                            // Resolve
+                            var httpClientHandler = serviceProvider.ResolveNamed<MDP.Network.Http.HttpClientHandler>(handler);
+                            if (httpClientHandler == null) throw new InvalidOperationException($"{nameof(httpClientHandler)}=null");
+
+                            // Add
+                            httpMessageHandlerList.Add(httpClientHandler);
+                        }
+                    }
+                });
             }
         }
 

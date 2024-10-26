@@ -11,8 +11,7 @@ using MDP.Registration;
 
 namespace MDP.Network.Http.Azure
 {
-    [Service<HttpDelegatingHandler>(singleton: false, autoRegister:false)]
-    public class AzureCredentialHandler : HttpDelegatingHandler
+    public abstract class AzureCredentialHandler : HttpClientHandler
     {
         // Fields
         private readonly object _lockObject = new object();

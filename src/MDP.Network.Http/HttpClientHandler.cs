@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MDP.Network.Http
 {
-    public abstract class HttpDelegatingHandler : DelegatingHandler
+    public abstract class HttpClientHandler : DelegatingHandler
     {
 
     }

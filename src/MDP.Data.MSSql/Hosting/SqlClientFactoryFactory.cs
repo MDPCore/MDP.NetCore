@@ -34,8 +34,8 @@ namespace MDP.Data.MSSql
                 if (setting.Value == null) throw new InvalidOperationException($"{nameof(setting.Value)}=null");
                 if (setting.Value.Handlers == null) setting.Value.Handlers = new List<string>();
                 if (string.IsNullOrEmpty(setting.Value.ConnectionString) == true) throw new ArgumentException($"{nameof(setting.Value.ConnectionString)}=null");
-                                
-                // Add
+
+                // Register
                 serviceCollection.AddSingleton<SqlClientBuilder>(serviceProvider =>
                 {
                     // SqlClientBuilder
@@ -49,14 +49,16 @@ namespace MDP.Data.MSSql
                     if (setting.Value.Handlers.Count <= 0)
                     {
                         // Typed
-                        var sqlClientHandlerList = serviceProvider.GetServices<SqlClientHandler>();
-                        if (sqlClientHandlerList == null) throw new InvalidOperationException($"{nameof(sqlClientHandlerList)}=null");
-
-                        // foreach
-                        foreach (var sqlClientHandler in sqlClientHandlerList)
                         {
+                            // Resolve
+                            var sqlClientHandlerList = serviceProvider.GetServices<SqlClientHandler>();
+                            if (sqlClientHandlerList == null) throw new InvalidOperationException($"{nameof(sqlClientHandlerList)}=null");
+
                             // Add
-                            sqlClientBuilder.Handlers.Add(sqlClientHandler);
+                            foreach (var sqlClientHandler in sqlClientHandlerList)
+                            {
+                                sqlClientBuilder.Handlers.Add(sqlClientHandler);
+                            }
                         }
                     }
                     else
