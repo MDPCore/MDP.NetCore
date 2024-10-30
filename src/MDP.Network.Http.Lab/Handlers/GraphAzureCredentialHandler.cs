@@ -9,7 +9,7 @@ using Azure.Core;
 
 namespace MDP.Network.Http.Lab
 {
-    [Service<HttpClientHandler>(singleton: true, autoRegister: true)]
+    [Service<HttpClientHandler>(singleton: false, autoRegister: true)]
     public class GraphAzureCredentialHandler : AzureCredentialHandler
     {
         // Constructors
