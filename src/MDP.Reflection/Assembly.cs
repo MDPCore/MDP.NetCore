@@ -73,7 +73,7 @@ namespace MDP.Reflection
                     // Filter
                     if (IsApplicationAssembly(assembly.Location)==false) return false;
 
-                    // Return
+                    // Return 
                     return true;
                 }).ToList();
 
