@@ -24,76 +24,58 @@ namespace MDP.Reflection
                 // Require
                 if (_applicationAssemblyList != null) return _applicationAssemblyList;
 
+                // AssemblyDictionary
+                var assemblyDictionary = new Dictionary<string, System.Reflection.Assembly>(StringComparer.OrdinalIgnoreCase);
+
                 //  LoadedAssemblyList
                 var loadedAssemblyList = AppDomain.CurrentDomain.GetAssemblies();
                 if (loadedAssemblyList == null) throw new InvalidOperationException($"{nameof(loadedAssemblyList)}=null");
-
-                // LoadedAssemblyDictionary
-                var loadedAssemblyDictionary = new Dictionary<string, System.Reflection.Assembly>(StringComparer.OrdinalIgnoreCase);
-                foreach (var assembly in loadedAssemblyList)
+                foreach (var loadedAssembly in loadedAssemblyList)
                 {
-                    loadedAssemblyDictionary[assembly.Location] = assembly;
+                    if (assemblyDictionary.ContainsKey(loadedAssembly.Location) == false)
+                    {
+                        assemblyDictionary[loadedAssembly.Location] = loadedAssembly;
+                    }
                 }
 
-                // AssemblyFilePathList
-                var assemblyFilePathList = MDP.IO.File.GetAllFilePath("*.dll").Where(assemblyFilePath =>
+                // FileAssemblyPathList
+                var fileAssemblyPathList = MDP.IO.File.GetAllFilePath("*.dll");
+                if (fileAssemblyPathList == null) throw new InvalidOperationException($"{nameof(fileAssemblyPathList)}=null");
+                foreach (var fileAssemblyPath in fileAssemblyPathList)
                 {
-                    // Filter
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("System") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Microsoft") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("_Microsoft") == true) return false;
-
-                    // Filter(MAUI)
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Xamarin") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Mono") == true) return false;
-
-                    // Filter(MAUI.WinRT)
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("WinRT") == true) return false;
-
-                    // Filter(MAUI.Android)
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Java") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Google") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Windows") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("mscorlib.dll") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("netstandard.dll") == true) return false;
-                    if (System.IO.Path.GetFileName(assemblyFilePath)?.StartsWith("Jsr305Binding.dll") == true) return false;
-
-                    // Return
-                    return true;
-                }).ToList();
-                if (assemblyFilePathList == null) throw new InvalidOperationException($"{nameof(assemblyFilePathList)}=null");
-
-                // AssemblyList 
-                var assemblyList = new List<System.Reflection.Assembly>();
-                foreach (var assemblyFilePath in assemblyFilePathList)
-                {
-                    if (loadedAssemblyDictionary.ContainsKey(assemblyFilePath) == true)
+                    if (assemblyDictionary.ContainsKey(fileAssemblyPath) == false)
                     {
-                        // Assembly
-                        var assembly = loadedAssemblyDictionary[assemblyFilePath];
-                        if (assembly == null) throw new InvalidOperationException($"{nameof(assembly)}=null");
+                        // Filter
+                        if (IsApplicationAssembly(fileAssemblyPath) == false) continue;
+
+                        // FileAssembly
+                        var fileAssembly = System.Reflection.Assembly.LoadFrom(fileAssemblyPath);
+                        if (fileAssembly == null) throw new InvalidOperationException($"{nameof(fileAssembly)}=null");
 
                         // Add
-                        assemblyList.Add(assembly);
-                    }
-                    else
-                    {
-                        // Assembly
-                        var assembly = System.Reflection.Assembly.LoadFrom(assemblyFilePath);
-                        if (assembly == null) throw new InvalidOperationException($"{nameof(assembly)}=null");
-
-                        // Add
-                        assemblyList.Add(assembly);
+                        assemblyDictionary[fileAssembly.Location] = fileAssembly;
                     }
                 }
 
                 // EntryAssembly
                 var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
-                if (entryAssembly != null && assemblyList.Contains(entryAssembly) == false)
+                if (entryAssembly != null)
                 {
-                    // Add
-                    assemblyList.Add(entryAssembly);
+                    if (assemblyDictionary.ContainsKey(entryAssembly.Location) == false)
+                    {
+                        assemblyDictionary[entryAssembly.Location] = entryAssembly;
+                    }
                 }
+
+                // AssemblyList 
+                var assemblyList = assemblyDictionary.Values.Where(assembly =>
+                {
+                    // Filter
+                    if (IsApplicationAssembly(assembly.Location)==false) return false;
+
+                    // Return
+                    return true;
+                }).ToList();
 
                 // Attach
                 _applicationAssemblyList = assemblyList;
@@ -101,6 +83,43 @@ namespace MDP.Reflection
                 // Return
                 return _applicationAssemblyList;
             }           
+        }
+
+        private static bool IsApplicationAssembly(string assemblyLocation)
+        {
+            #region Contracts
+
+            ArgumentNullException.ThrowIfNullOrEmpty(assemblyLocation);
+
+            #endregion
+
+            // AssemblyName
+            var assemblyName = System.IO.Path.GetFileName(assemblyLocation);
+            if (string.IsNullOrEmpty(assemblyName) == true) throw new InvalidOperationException($"{nameof(assemblyName)}=null");
+
+            // Filter
+            if (assemblyName.StartsWith("Azure") == true) return false;
+            if (assemblyName.StartsWith("System") == true) return false;
+            if (assemblyName.StartsWith("Microsoft") == true) return false;
+            if (assemblyName.StartsWith("_Microsoft") == true) return false;
+
+            // Filter(MAUI)
+            if (assemblyName.StartsWith("Xamarin") == true) return false;
+            if (assemblyName.StartsWith("Mono") == true) return false;
+
+            // Filter(MAUI.WinRT)
+            if (assemblyName.StartsWith("WinRT") == true) return false;
+
+            // Filter(MAUI.Android)
+            if (assemblyName.StartsWith("Java") == true) return false;
+            if (assemblyName.StartsWith("Google") == true) return false;
+            if (assemblyName.StartsWith("Windows") == true) return false;
+            if (assemblyName.StartsWith("mscorlib.dll") == true) return false;
+            if (assemblyName.StartsWith("netstandard.dll") == true) return false;
+            if (assemblyName.StartsWith("Jsr305Binding.dll") == true) return false;
+
+            // Return
+            return true;
         }
     }
 }
