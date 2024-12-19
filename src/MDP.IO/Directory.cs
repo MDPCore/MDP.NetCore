@@ -14,12 +14,11 @@ namespace MDP.IO
             if (entryAssembly == null) entryAssembly = System.Reflection.Assembly.GetAssembly(typeof(Directory));
             if (entryAssembly == null) throw new InvalidOperationException("entryAssembly=null");
 
-            // EntryAssemblyPath
-            var entryAssemblyPath = entryAssembly.Location;
-            if (string.IsNullOrEmpty(entryAssemblyPath) == true) throw new InvalidOperationException("entryAssemblyPath=null");
-
             // EntryDirectoryPath
-            var entryDirectoryPath = System.IO.Path.GetDirectoryName(entryAssemblyPath);
+            var entryDirectoryPath = System.IO.Path.GetDirectoryName(entryAssembly.Location);
+            if (string.IsNullOrEmpty(entryDirectoryPath) == true) entryDirectoryPath = System.AppDomain.CurrentDomain.BaseDirectory;
+            if (string.IsNullOrEmpty(entryDirectoryPath) == true) entryDirectoryPath = System.Environment.CurrentDirectory;
+            if (string.IsNullOrEmpty(entryDirectoryPath) == true) entryDirectoryPath = System.IO.Directory.GetCurrentDirectory();
             if (string.IsNullOrEmpty(entryDirectoryPath) == true) throw new InvalidOperationException("entryDirectoryPath=null");
 
             // Return
