@@ -32,7 +32,7 @@ namespace MDP.Reflection
                 if (loadedAssemblyList == null) throw new InvalidOperationException($"{nameof(loadedAssemblyList)}=null");
                 foreach (var loadedAssembly in loadedAssemblyList)
                 {
-                    if (assemblyDictionary.ContainsKey(loadedAssembly.Location) == false)
+                    if (assemblyDictionary.ContainsKey(loadedAssembly.Location) == false && IsApplicationAssembly(loadedAssembly.Location) == true)
                     {
                         assemblyDictionary[loadedAssembly.Location] = loadedAssembly;
                     }
@@ -43,11 +43,8 @@ namespace MDP.Reflection
                 if (fileAssemblyPathList == null) throw new InvalidOperationException($"{nameof(fileAssemblyPathList)}=null");
                 foreach (var fileAssemblyPath in fileAssemblyPathList)
                 {
-                    if (assemblyDictionary.ContainsKey(fileAssemblyPath) == false)
+                    if (assemblyDictionary.ContainsKey(fileAssemblyPath) == false && IsApplicationAssembly(fileAssemblyPath) == true)
                     {
-                        // Filter
-                        if (IsApplicationAssembly(fileAssemblyPath) == false) continue;
-
                         // FileAssembly
                         var fileAssembly = System.Reflection.Assembly.LoadFrom(fileAssemblyPath);
                         if (fileAssembly == null) throw new InvalidOperationException($"{nameof(fileAssembly)}=null");
@@ -61,31 +58,22 @@ namespace MDP.Reflection
                 var entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
                 if (entryAssembly != null)
                 {
-                    if (assemblyDictionary.ContainsKey(entryAssembly.Location) == false)
+                    if (assemblyDictionary.ContainsKey(entryAssembly.Location) == false && IsApplicationAssembly(entryAssembly.Location) == true)
                     {
+                        // Add
                         assemblyDictionary[entryAssembly.Location] = entryAssembly;
                     }
                 }
 
                 // AssemblyList 
-                var assemblyList = assemblyDictionary.Values.Where(assembly =>
-                {
-                    // Filter
-                    if (IsApplicationAssembly(assembly.Location)==false) return false;
-
-                    // Return 
-                    return true;
-                }).ToList();
-
-                // Attach
-                _applicationAssemblyList = assemblyList;
+                _applicationAssemblyList = assemblyDictionary.Values.ToList();
 
                 // Return
                 return _applicationAssemblyList;
             }           
         }
 
-        private static bool IsApplicationAssembly(string assemblyLocation)
+        public static bool IsApplicationAssembly(string assemblyLocation)
         {
             #region Contracts
 

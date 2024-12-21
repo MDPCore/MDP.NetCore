@@ -16,6 +16,7 @@ namespace MDP.IO
 
             // EntryDirectoryPath
             var entryDirectoryPath = System.IO.Path.GetDirectoryName(entryAssembly.Location);
+            if (string.IsNullOrEmpty(entryDirectoryPath) == true) entryDirectoryPath = System.AppContext.BaseDirectory;
             if (string.IsNullOrEmpty(entryDirectoryPath) == true) entryDirectoryPath = System.AppDomain.CurrentDomain.BaseDirectory;
             if (string.IsNullOrEmpty(entryDirectoryPath) == true) entryDirectoryPath = System.Environment.CurrentDirectory;
             if (string.IsNullOrEmpty(entryDirectoryPath) == true) entryDirectoryPath = System.IO.Directory.GetCurrentDirectory();
